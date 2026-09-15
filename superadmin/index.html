@@ -4,380 +4,556 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#9e0620">
-  <title>Super Admin Portal - Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi</title>
+  <title>Super Admin Portal — Mini Soccer 88 Alpha Sport</title>
   <meta name="robots" content="noindex, nofollow">
-  <link rel="icon" type="image/png" href="../assets/images/sport.png">
+  <link rel="icon" href="../assets/logos/new-Favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="admin.css">
-  <script src="admin.js" defer></script>
 </head>
 <body>
 
-  <!-- Toast Notification Container -->
-  <div class="toast-container" id="toastContainer"></div>
+<!-- Auth guard: immediately redirect if not logged in -->
+<script>
+  if (sessionStorage.getItem('ms88_admin_logged_in') !== '1') {
+    location.replace('./login.html');
+  }
+</script>
 
-  <!-- Sidebar -->
-  <aside class="admin-sidebar" id="adminSidebar">
-    <div class="sidebar-header">
-      <div class="brand-badge">MS88</div>
-      <div class="brand-info">
-        <h1>ALPHA SPORT</h1>
-        <span>SUPERADMIN PORTAL</span>
-      </div>
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Sidebar -->
+<aside class="admin-sidebar" id="adminSidebar">
+  <div class="sidebar-header">
+    <div class="brand-badge">MS88</div>
+    <div class="brand-info">
+      <h1>ALPHA SPORT</h1>
+      <span>SUPERADMIN PORTAL</span>
     </div>
-
-    <nav class="sidebar-nav">
-      <div class="nav-section-title">Operasional Venue</div>
-      <button class="nav-link-btn active" id="tabBtnOverview" onclick="switchTab('overview')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="9"></rect>
-          <rect x="14" y="3" width="7" height="5"></rect>
-          <rect x="14" y="12" width="7" height="9"></rect>
-          <rect x="3" y="16" width="7" height="5"></rect>
-        </svg>
-        <span>Ringkasan &amp; Omset</span>
-      </button>
-
-      <button class="nav-link-btn" id="tabBtnSlots" onclick="switchTab('slots')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <polygon points="12 6 12 12 16 14"></polygon>
-        </svg>
-        <span>Kelola Slot Lapangan</span>
-      </button>
-
-      <button class="nav-link-btn" id="tabBtnOrders" onclick="switchTab('orders')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-          <polyline points="14 2 14 8 20 8"></polyline>
-          <line x1="16" y1="13" x2="8" y2="13"></line>
-          <line x1="16" y1="17" x2="8" y2="17"></line>
-        </svg>
-        <span>Manajemen Booking</span>
-      </button>
-
-      <div class="nav-section-title">Komunitas &amp; Acara</div>
-      <button class="nav-link-btn" id="tabBtnMabar" onclick="switchTab('mabar')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-          <circle cx="9" cy="7" r="4"></circle>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-        </svg>
-        <span>Sesi Mabar &amp; Sparring</span>
-      </button>
-
-      <div class="nav-section-title">Pengaturan</div>
-      <button class="nav-link-btn" id="tabBtnPricing" onclick="switchTab('pricing')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="12" y1="1" x2="12" y2="23"></line>
-          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-        </svg>
-        <span>Tarif Lapangan</span>
-      </button>
-
-      <button class="nav-link-btn" id="tabBtnSettings" onclick="switchTab('settings')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-        </svg>
-        <span>Pengaturan Venue</span>
-      </button>
-    </nav>
-
-    <div class="sidebar-footer">
-      <div class="admin-profile-pill">
-        <div class="profile-avatar">VI</div>
-        <div class="profile-details">
-          <div class="name">Vikro Irwan</div>
-          <div class="role">👑 Super Admin</div>
-        </div>
-      </div>
-      <a href="/" title="Kembali ke Website Utama" style="color: rgba(255,255,255,0.6); font-size: 18px;">⎋</a>
-    </div>
-  </aside>
-
-  <!-- Main Content Area -->
-  <div class="admin-main">
-    <!-- Topbar -->
-    <header class="admin-topbar">
-      <div class="topbar-left">
-        <h2 id="currentTabHeading">Dashboard Ringkasan &amp; Omset</h2>
-      </div>
-      <div class="topbar-right">
-        <a href="/" class="btn-visit-site" target="_blank">
-          <span>🌐</span>
-          <span>Buka Website Publik</span>
-          <small>↗</small>
-        </a>
-        <button class="btn-primary-action" onclick="simulateNewOrder()">
-          <span>+</span>
-          <span>Simulasi Booking Masuk</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- Page Content -->
-    <main class="admin-content">
-      <!-- ================= TAB 1: OVERVIEW ================= -->
-      <section id="sectionOverview">
-        <div class="kpi-grid">
-          <div class="kpi-card">
-            <div>
-              <div class="kpi-label">Estimasi Omset Bulan Ini</div>
-              <div class="kpi-value" id="kpiRevenue">Rp 24.850.000</div>
-              <div class="kpi-sub up">↑ +18% vs bulan lalu</div>
-            </div>
-            <div class="kpi-icon-badge">💰</div>
-          </div>
-
-          <div class="kpi-card">
-            <div>
-              <div class="kpi-label">Slot Terisi Hari Ini</div>
-              <div class="kpi-value" id="kpiOccupancy">7 / 18 Slot</div>
-              <div class="kpi-sub up">Okupansi 39%</div>
-            </div>
-            <div class="kpi-icon-badge">⚽</div>
-          </div>
-
-          <div class="kpi-card">
-            <div>
-              <div class="kpi-label">Booking Menunggu Bayar</div>
-              <div class="kpi-value" id="kpiPendingCount" style="color: var(--warning);">2 Pesanan</div>
-              <div class="kpi-sub warn">Perlu cek mutasi</div>
-            </div>
-            <div class="kpi-icon-badge">⏳</div>
-          </div>
-
-          <div class="kpi-card">
-            <div>
-              <div class="kpi-label">Komunitas Terdaftar</div>
-              <div class="kpi-value">48 Tim</div>
-              <div class="kpi-sub up">Cimahi &amp; Bandung</div>
-            </div>
-            <div class="kpi-icon-badge">🏆</div>
-          </div>
-        </div>
-
-        <div class="admin-card">
-          <div class="admin-card-header">
-            <div>
-              <h3 class="admin-card-title">Pemesanan Lapangan Terbaru</h3>
-              <p class="admin-card-subtitle">Transaksi yang baru masuk secara real-time dari website publik.</p>
-            </div>
-            <button class="btn-table-action" onclick="switchTab('orders')">Lihat Semua Data →</button>
-          </div>
-          <div class="data-table-wrap">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>No. Order</th>
-                  <th>Pemesan &amp; Tim</th>
-                  <th>WhatsApp</th>
-                  <th>Jadwal Lapangan</th>
-                  <th>Total Tagihan</th>
-                  <th>Status</th>
-                  <th>Aksi Cepat</th>
-                </tr>
-              </thead>
-              <tbody id="tableRecentOrders"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= TAB 2: MANAGE SLOTS ================= -->
-      <section id="sectionSlots" style="display: none;">
-        <div class="admin-card">
-          <div class="admin-card-header">
-            <div>
-              <h3 class="admin-card-title">Kontrol Slot Lapangan (Kunci / Buka)</h3>
-              <p class="admin-card-subtitle">
-                Kunci slot jika lapangan sedang ada renovasi, turnamen internal, atau booking offline. Perubahan ini langsung otomatis tercermin di halaman publik website!
-              </p>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn-table-action pay" id="btnField1" onclick="selectField(1)">Lapangan 1 (FIFA Synth)</button>
-              <button class="btn-table-action" id="btnField2" onclick="selectField(2)">Lapangan 2 (Alpha Turf)</button>
-            </div>
-          </div>
-
-          <div class="slot-matrix-grid" id="slotMatrixContainer"></div>
-        </div>
-      </section>
-
-      <!-- ================= TAB 3: ORDERS MANAGEMENT ================= -->
-      <section id="sectionOrders" style="display: none;">
-        <div class="admin-card">
-          <div class="admin-card-header">
-            <div>
-              <h3 class="admin-card-title">Daftar Semua Reservasi Lapangan</h3>
-              <p class="admin-card-subtitle">Kelola pembayaran, batalkan, atau kirim konfirmasi WhatsApp otomatis ke pemesan.</p>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <input type="text" id="orderSearchInput" class="form-input" placeholder="Cari nama pemesan atau nomor order..." style="width: 280px;" oninput="filterOrders()">
-            </div>
-          </div>
-
-          <div class="data-table-wrap">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nama Lengkap</th>
-                  <th>Tim</th>
-                  <th>Kontak WhatsApp</th>
-                  <th>Jadwal Lapangan</th>
-                  <th>Produk Tambahan</th>
-                  <th>Total Biaya</th>
-                  <th>Status</th>
-                  <th>Tindakan Pengelola</th>
-                </tr>
-              </thead>
-              <tbody id="tableAllOrders"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= TAB 4: MABAR SESSIONS ================= -->
-      <section id="sectionMabar" style="display: none;">
-        <div class="admin-card" style="max-width: 760px; margin-bottom: 30px;">
-          <div class="admin-card-header">
-            <div>
-              <h3 class="admin-card-title">Publikasi Sesi Main Bareng (Mabar) / Sparring Baru</h3>
-              <p class="admin-card-subtitle">Jadwal yang dibuat di sini akan langsung muncul pada kartu Main Bareng di website publik.</p>
-            </div>
-          </div>
-
-          <form onsubmit="event.preventDefault(); handleCreateMabar();">
-            <div class="form-grid">
-              <div class="form-group full">
-                <label class="form-label" for="mabarTitle">Judul Sesi *</label>
-                <input class="form-input" id="mabarTitle" type="text" placeholder="Contoh: Mabar Seru Jumat Malam (7v7)" required>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="mabarTime">Hari &amp; Jam *</label>
-                <input class="form-input" id="mabarTime" type="text" placeholder="Contoh: Jumat Malam, 20:00 - 22:00 WIB" required>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="mabarField">Pilihan Lapangan *</label>
-                <select class="form-select" id="mabarField">
-                  <option value="Lapangan 1 (FIFA Synthetic)">Lapangan 1 (FIFA Synthetic)</option>
-                  <option value="Lapangan 2 (Alpha Pro Turf)">Lapangan 2 (Alpha Pro Turf)</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="mabarType">Tipe Aktivitas *</label>
-                <select class="form-select" id="mabarType">
-                  <option value="MAIN BARENG">MAIN BARENG (MABAR)</option>
-                  <option value="OPEN SPARRING">OPEN SPARRING (TANTANG TIM)</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="mabarLevel">Level Permainan</label>
-                <input class="form-input" id="mabarLevel" type="text" placeholder="Level: Fun Game / All Level">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="mabarQuota">Kuota Pemain *</label>
-                <input class="form-input" id="mabarQuota" type="number" value="14" required>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="mabarPrice">Biaya per Orang (Rp) *</label>
-                <input class="form-input" id="mabarPrice" type="number" value="45000" required>
-              </div>
-
-              <div class="form-group full">
-                <button type="submit" class="btn-primary-action" style="width: 100%; justify-content: center; padding: 14px;">
-                  🚀 Publikasikan Sesi ke Halaman Depan
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div class="admin-card">
-          <div class="admin-card-header">
-            <h3 class="admin-card-title">Sesi Komunitas yang Sedang Aktif</h3>
-          </div>
-          <div class="data-table-wrap">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>Judul Sesi</th>
-                  <th>Jadwal</th>
-                  <th>Lapangan</th>
-                  <th>Tipe</th>
-                  <th>Kuota Terisi</th>
-                  <th>Biaya</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="tableMabarList"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= TAB 5: PRICING SETTINGS ================= -->
-      <section id="sectionPricing" style="display: none;">
-        <div class="admin-card" style="max-width: 650px;">
-          <div class="admin-card-header">
-            <h3 class="admin-card-title">Pengaturan Tarif Sewa Lapangan</h3>
-            <p class="admin-card-subtitle">Kustomisasi harga per slot 2 jam.</p>
-          </div>
-          <form onsubmit="event.preventDefault(); showToast('Tarif Disimpan', 'Tarif lapangan berhasil diperbarui.', 'success');">
-            <div class="form-group">
-              <label class="form-label">Tarif Slot Pagi (06:00 - 14:00)</label>
-              <input class="form-input" type="text" value="Rp 300.000 - Rp 350.000">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Tarif Slot Sore Primetime (14:00 - 18:00)</label>
-              <input class="form-input" type="text" value="Rp 400.000 - Rp 450.000">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Tarif Slot Malam Lampu LED (18:00 - 24:00)</label>
-              <input class="form-input" type="text" value="Rp 500.000">
-            </div>
-            <button type="submit" class="btn-primary-action">Simpan Perubahan Tarif</button>
-          </form>
-        </div>
-      </section>
-
-      <!-- ================= TAB 6: VENUE SETTINGS ================= -->
-      <section id="sectionSettings" style="display: none;">
-        <div class="admin-card" style="max-width: 650px;">
-          <div class="admin-card-header">
-            <h3 class="admin-card-title">Informasi &amp; Kontak Resmi Venue</h3>
-          </div>
-          <form onsubmit="event.preventDefault(); showToast('Pengaturan Disimpan', 'Data venue berhasil disimpan.', 'success');">
-            <div class="form-group">
-              <label class="form-label">Nama Resmi Venue</label>
-              <input class="form-input" type="text" value="Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Nomor WhatsApp Pengelola</label>
-              <input class="form-input" type="text" value="+62 812-3456-7890">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Rekening Pembayaran Bank</label>
-              <input class="form-input" type="text" value="BCA 1234567890 a.n. Mini Soccer 88 Pusdikif">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Alamat Lengkap</label>
-              <input class="form-input" type="text" value="Komplek Pusdikif, Jl. Cisangkan No. 88, Kota Cimahi">
-            </div>
-            <button type="submit" class="btn-primary-action">Simpan Profil Venue</button>
-          </form>
-        </div>
-      </section>
-    </main>
   </div>
 
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">Operasional Venue</div>
+    <button class="nav-link-btn active" id="tabBtnOverview" onclick="switchTab('overview')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+      <span>Ringkasan &amp; Omset</span>
+    </button>
+
+    <button class="nav-link-btn" id="tabBtnSlots" onclick="switchTab('slots')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 6 12 12 16 14"></polygon></svg>
+      <span>Kelola Slot Lapangan</span>
+    </button>
+
+    <button class="nav-link-btn" id="tabBtnOrders" onclick="switchTab('orders')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+      <span>Manajemen Booking</span>
+    </button>
+
+    <div class="nav-section-title">Komunitas &amp; Acara</div>
+    <button class="nav-link-btn" id="tabBtnMabar" onclick="switchTab('mabar')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      <span>Sesi Mabar &amp; Sparring</span>
+    </button>
+
+    <div class="nav-section-title">Konten Website</div>
+    <button class="nav-link-btn" id="tabBtnBlog" onclick="switchTab('blog')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+      <span>Blog &amp; Artikel</span>
+    </button>
+
+    <button class="nav-link-btn" id="tabBtnAssets" onclick="switchTab('assets')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+      <span>Pengaturan Aset</span>
+    </button>
+
+    <div class="nav-section-title">Pengaturan</div>
+    <button class="nav-link-btn" id="tabBtnPricing" onclick="switchTab('pricing')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+      <span>Tarif Lapangan</span>
+    </button>
+
+    <button class="nav-link-btn" id="tabBtnContact" onclick="switchTab('contact')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+      <span>Kontak &amp; Sosmed</span>
+    </button>
+
+    <button class="nav-link-btn" id="tabBtnSettings" onclick="switchTab('settings')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      <span>Pengaturan Sistem</span>
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar" id="userAvatar">A</div>
+      <div class="user-details">
+        <span class="user-name" id="userNameDisplay">Admin</span>
+        <span class="user-role">Super Administrator</span>
+      </div>
+    </div>
+    <button class="btn-logout" onclick="doLogout()" title="Logout">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+    </button>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="admin-main" id="adminMain">
+
+  <!-- Topbar -->
+  <header class="admin-topbar">
+    <button class="hamburger-btn" onclick="toggleSidebar()" title="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="topbar-title" id="topbarTitle">Dashboard</div>
+    <div class="topbar-right">
+      <a href="http://localhost:8888/" target="_blank" class="btn-view-site">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        Lihat Website
+      </a>
+    </div>
+  </header>
+
+  <!-- === OVERVIEW TAB === -->
+  <section class="tab-panel active" id="tabOverview">
+    <div class="panel-header">
+      <h2>Ringkasan &amp; Omset</h2>
+      <p>Data real-time Mini Soccer 88 Alpha Sport Pusdikif</p>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-primary">
+        <div class="kpi-icon">💰</div>
+        <div class="kpi-body">
+          <div class="kpi-label">Omset Hari Ini</div>
+          <div class="kpi-value" id="kpiOmset">Rp 0</div>
+        </div>
+      </div>
+      <div class="kpi-card kpi-green">
+        <div class="kpi-icon">🏟</div>
+        <div class="kpi-body">
+          <div class="kpi-label">Tingkat Hunian</div>
+          <div class="kpi-value" id="kpiOccupancy">0%</div>
+        </div>
+      </div>
+      <div class="kpi-card kpi-orange">
+        <div class="kpi-icon">⏳</div>
+        <div class="kpi-body">
+          <div class="kpi-label">Order Pending</div>
+          <div class="kpi-value" id="kpiPending">0</div>
+        </div>
+      </div>
+      <div class="kpi-card kpi-blue">
+        <div class="kpi-icon">✅</div>
+        <div class="kpi-body">
+          <div class="kpi-label">Booking Selesai</div>
+          <div class="kpi-value" id="kpiDone">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-head"><h3>Aktivitas Terbaru</h3></div>
+        <div class="card-body" id="recentActivity">
+          <p class="empty-state">Belum ada aktivitas hari ini.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Slot Hari Ini</h3></div>
+        <div class="card-body">
+          <div class="slot-mini-grid" id="slotMiniGrid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === SLOTS TAB === -->
+  <section class="tab-panel" id="tabSlots">
+    <div class="panel-header">
+      <h2>Kelola Slot Lapangan</h2>
+      <p>Kunci/buka slot dan atur ketersediaan lapangan</p>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <h3>Slot Matrix — <span id="slotDateLabel"></span></h3>
+        <input type="date" id="slotDate" class="input-inline" onchange="renderSlots()">
+      </div>
+      <div class="card-body">
+        <div class="slot-legend">
+          <span class="slot-dot slot-dot-free"></span>Tersedia
+          <span class="slot-dot slot-dot-booked"></span>Dipesan
+          <span class="slot-dot slot-dot-locked"></span>Dikunci Admin
+        </div>
+        <div class="slot-grid" id="slotGrid"></div>
+        <div class="slot-actions">
+          <button class="btn btn-outline" onclick="lockAllSlots()">🔒 Kunci Semua</button>
+          <button class="btn btn-outline" onclick="unlockAllSlots()">🔓 Buka Semua</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === ORDERS TAB === -->
+  <section class="tab-panel" id="tabOrders">
+    <div class="panel-header">
+      <h2>Manajemen Booking</h2>
+      <p>Semua data pesanan lapangan</p>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <h3>Daftar Booking</h3>
+        <div class="table-filters">
+          <select id="filterStatus" class="input-inline" onchange="renderOrders()">
+            <option value="">Semua Status</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <button class="btn btn-sm" onclick="addDummyOrder()">+ Tambah Booking</button>
+        </div>
+      </div>
+      <div class="card-body table-wrap">
+        <table class="data-table" id="ordersTable">
+          <thead>
+            <tr><th>#</th><th>Nama</th><th>Lapangan</th><th>Tanggal</th><th>Jam</th><th>Total</th><th>Status</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- === MABAR TAB === -->
+  <section class="tab-panel" id="tabMabar">
+    <div class="panel-header">
+      <h2>Sesi Mabar &amp; Sparring</h2>
+      <p>Buat dan kelola sesi main bareng / sparring terbuka</p>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-head"><h3>Buat Sesi Baru</h3></div>
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label">Nama Sesi</label>
+            <input type="text" id="mabarName" class="form-input" placeholder="cth: Sparring Pagi Sabtu">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tanggal &amp; Jam</label>
+            <input type="datetime-local" id="mabarDatetime" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Slot Tersedia</label>
+            <input type="number" id="mabarSlots" class="form-input" placeholder="10" min="1">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Biaya (Rp)</label>
+            <input type="number" id="mabarFee" class="form-input" placeholder="50000" min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Deskripsi</label>
+            <textarea id="mabarDesc" class="form-input" rows="3" placeholder="Info tambahan sesi..."></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="createMabar()">Buat Sesi Mabar</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Sesi Aktif</h3></div>
+        <div class="card-body" id="mabarList">
+          <p class="empty-state">Belum ada sesi mabar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === BLOG TAB === -->
+  <section class="tab-panel" id="tabBlog">
+    <div class="panel-header">
+      <h2>Blog &amp; Artikel</h2>
+      <p>Kelola konten berita dan artikel venue</p>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-head"><h3 id="blogFormTitle">Tulis Artikel Baru</h3></div>
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label">Judul Artikel</label>
+            <input type="text" id="blogTitle" class="form-input" placeholder="Judul artikel...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Kategori</label>
+            <select id="blogCategory" class="form-input">
+              <option value="Berita">Berita</option>
+              <option value="Promo">Promo</option>
+              <option value="Event">Event</option>
+              <option value="Tips">Tips &amp; Trik</option>
+              <option value="Turnamen">Turnamen</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Thumbnail URL / Path</label>
+            <input type="text" id="blogThumb" class="form-input" placeholder="https://... atau assets/img/...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ringkasan</label>
+            <textarea id="blogSummary" class="form-input" rows="2" placeholder="Ringkasan singkat artikel..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Konten Artikel</label>
+            <textarea id="blogContent" class="form-input" rows="6" placeholder="Tulis konten lengkap di sini..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select id="blogStatus" class="form-input">
+              <option value="published">Publikasi</option>
+              <option value="draft">Draft</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <button class="btn btn-primary" onclick="saveBlog()">💾 Simpan Artikel</button>
+            <button class="btn btn-outline" onclick="clearBlogForm()">Bersihkan</button>
+          </div>
+          <input type="hidden" id="blogEditId" value="">
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Daftar Artikel</h3>
+          <select id="filterBlogStatus" class="input-inline" onchange="renderBlogs()">
+            <option value="">Semua</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+          </select>
+        </div>
+        <div class="card-body" id="blogList">
+          <p class="empty-state">Belum ada artikel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === ASSETS TAB === -->
+  <section class="tab-panel" id="tabAssets">
+    <div class="panel-header">
+      <h2>Pengaturan Aset &amp; Media</h2>
+      <p>Update URL gambar untuk setiap bagian website</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Manajemen Aset Website</h3></div>
+      <div class="card-body">
+        <p style="font-size:13px;color:#888;margin-bottom:20px;">Ganti URL/path gambar yang tampil di homepage. Kosongkan untuk pakai aset default.</p>
+        <div class="assets-grid" id="assetsGrid"></div>
+        <button class="btn btn-primary" style="margin-top:20px;" onclick="saveAssets()">💾 Simpan Semua Aset</button>
+        <button class="btn btn-outline" style="margin-top:20px;margin-left:12px;" onclick="resetAssets()">↺ Reset ke Default</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- === CONTACT TAB === -->
+  <section class="tab-panel" id="tabContact">
+    <div class="panel-header">
+      <h2>Kontak &amp; Informasi Venue</h2>
+      <p>Update alamat, nomor telepon, email, dan media sosial</p>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-head"><h3>📍 Informasi Kontak</h3></div>
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label">Nama Venue</label>
+            <input type="text" id="cNama" class="form-input" placeholder="Mini Soccer 88 Alpha Sport Pusdikif">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Alamat Lengkap</label>
+            <textarea id="cAlamat" class="form-input" rows="3" placeholder="Jl. Pusdikif No. xx, Kota Cimahi..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nomor Telepon</label>
+            <input type="tel" id="cTelp" class="form-input" placeholder="+62 xxx-xxxx-xxxx">
+          </div>
+          <div class="form-group">
+            <label class="form-label">WhatsApp</label>
+            <input type="tel" id="cWa" class="form-input" placeholder="+62 xxx-xxxx-xxxx">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" id="cEmail" class="form-input" placeholder="admin@minisoccer88.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Link Google Maps</label>
+            <input type="url" id="cMaps" class="form-input" placeholder="https://maps.google.com/...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Jam Operasional</label>
+            <input type="text" id="cJam" class="form-input" placeholder="07:00 – 23:00 WIB (Setiap hari)">
+          </div>
+          <button class="btn btn-primary" onclick="saveContact()">💾 Simpan Kontak</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>📱 Media Sosial</h3></div>
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label">Instagram</label>
+            <div class="input-with-prefix">
+              <span class="input-prefix">instagram.com/</span>
+              <input type="text" id="smInstagram" class="form-input" placeholder="minisoccer88_cimahi">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">TikTok</label>
+            <div class="input-with-prefix">
+              <span class="input-prefix">tiktok.com/@</span>
+              <input type="text" id="smTiktok" class="form-input" placeholder="minisoccer88">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Facebook</label>
+            <div class="input-with-prefix">
+              <span class="input-prefix">facebook.com/</span>
+              <input type="text" id="smFacebook" class="form-input" placeholder="minisoccer88cimahi">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">YouTube</label>
+            <input type="url" id="smYoutube" class="form-input" placeholder="https://youtube.com/@...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Twitter / X</label>
+            <div class="input-with-prefix">
+              <span class="input-prefix">x.com/</span>
+              <input type="text" id="smTwitter" class="form-input" placeholder="minisoccer88">
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="saveSosmed()">💾 Simpan Sosmed</button>
+        </div>
+
+        <div class="card-head" style="margin-top:8px;"><h3>📊 Info Statistik Publik</h3></div>
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label">Jumlah Lapangan</label>
+            <input type="number" id="statLapangan" class="form-input" placeholder="6">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Total Member</label>
+            <input type="text" id="statMember" class="form-input" placeholder="1.200+">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Kota / Wilayah</label>
+            <input type="text" id="statKota" class="form-input" placeholder="Kota Cimahi">
+          </div>
+          <button class="btn btn-primary" onclick="saveStats()">💾 Simpan Statistik</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === PRICING TAB === -->
+  <section class="tab-panel" id="tabPricing">
+    <div class="panel-header">
+      <h2>Tarif Lapangan</h2>
+      <p>Atur harga sewa lapangan per jam</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Daftar Harga</h3></div>
+      <div class="card-body" id="pricingBody"></div>
+      <div class="card-head" style="margin-top:8px;"><h3>Tambah Tarif Baru</h3></div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end;">
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Lapangan</label>
+            <input type="text" id="pLapangan" class="form-input" placeholder="Lapangan A">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Sesi</label>
+            <select id="pSesi" class="form-input">
+              <option>Pagi (06-12)</option>
+              <option>Siang (12-17)</option>
+              <option>Sore (17-19)</option>
+              <option>Malam (19-23)</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Harga/Jam (Rp)</label>
+            <input type="number" id="pHarga" class="form-input" placeholder="150000">
+          </div>
+          <button class="btn btn-primary" onclick="addPricing()">Tambah</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === SETTINGS TAB === -->
+  <section class="tab-panel" id="tabSettings">
+    <div class="panel-header">
+      <h2>Pengaturan Sistem</h2>
+      <p>Konfigurasi akun dan keamanan portal admin</p>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-head"><h3>🔐 Ganti Kredensial Admin</h3></div>
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label">Username Baru</label>
+            <input type="text" id="newUsername" class="form-input" placeholder="Username baru">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password Lama</label>
+            <input type="password" id="oldPassword" class="form-input" placeholder="Password saat ini">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password Baru</label>
+            <input type="password" id="newPassword" class="form-input" placeholder="Minimal 8 karakter">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Konfirmasi Password</label>
+            <input type="password" id="confirmPassword" class="form-input" placeholder="Ulangi password baru">
+          </div>
+          <button class="btn btn-primary" onclick="changeCreds()">🔑 Simpan Kredensial</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>⚙️ Pengaturan Umum</h3></div>
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label">Nama Venue (Judul Website)</label>
+            <input type="text" id="setVenueName" class="form-input" placeholder="Mini Soccer 88 Alpha Sport Pusdikif">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Jumlah Lapangan</label>
+            <input type="number" id="setNumCourts" class="form-input" placeholder="6">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Jam Buka</label>
+            <input type="time" id="setOpenTime" class="form-input" value="07:00">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Jam Tutup</label>
+            <input type="time" id="setCloseTime" class="form-input" value="23:00">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Durasi Slot (menit)</label>
+            <select id="setSlotDuration" class="form-input">
+              <option value="60">60 menit</option>
+              <option value="90">90 menit</option>
+              <option value="120">120 menit</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="saveGeneral()">💾 Simpan Pengaturan</button>
+        </div>
+        <div class="card-head" style="margin-top:8px;"><h3>🗑️ Reset Data</h3></div>
+        <div class="card-body">
+          <p style="font-size:13px;color:#888;margin-bottom:16px;">Hapus semua data booking dan slot. Aksi ini tidak dapat dibatalkan.</p>
+          <button class="btn btn-danger" onclick="clearAllData()">Hapus Semua Data</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="admin.js"></script>
 </body>
 </html>
