@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#9e0620">
   <title>Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi - Platform Booking Lapangan, Sparring & Mabar</title>
-  <meta name="description" content="Platform all-in-one sewa lapangan, cari lawan sparring, dan main bareng di Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi. Rumput sintetis standar internasional, lampu LED malam hari, fasilitas lengkap.">
+  <meta name="description" content="Platform all-in-one sewa lapangan, cari lawan sparring, dan main bareng di Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi. Dilengkapi portal kelola venue untuk admin.">
   <meta name="keywords" content="mini soccer 88, alpha sport pusdikif, mini soccer cimahi, sewa lapangan cimahi, main bareng mini soccer, sparring bola cimahi, ayo indonesia">
 
   <!-- Open Graph -->
@@ -22,6 +22,9 @@
   <script src="assets/app.js" defer></script>
 </head>
 <body>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
 
   <!-- ================= TOPBAR NAVBAR ================= -->
   <header class="topbar" id="topbar">
@@ -54,8 +57,48 @@
           <span class="cart-counter" id="cartBadgeCount">0</span>
         </button>
 
-        <button class="btn-auth-login" id="openLoginModalBtn" type="button">Masuk</button>
-        <button class="btn-auth-register" id="openRegisterModalBtn" type="button">Daftar</button>
+        <!-- Guest Auth Controls -->
+        <div id="guestAuthWrap" style="display: none; align-items: center; gap: 10px;">
+          <button class="btn-auth-login" id="openLoginModalBtn" type="button">Masuk</button>
+          <button class="btn-auth-register" id="openRegisterModalBtn" type="button">Daftar</button>
+        </div>
+
+        <!-- Logged-in User Profile Controls -->
+        <div class="user-profile-nav" id="userProfileNav">
+          <!-- Direct Admin Dashboard Trigger -->
+          <button class="btn-admin-badge" id="btnAdminQuick" onclick="toggleAdminModal(true)" title="Portal Pengelola Venue">
+            <span>👑</span>
+            <span>Kelola Venue</span>
+          </button>
+
+          <!-- User Avatar & Dropdown -->
+          <div class="user-avatar-btn" id="userAvatarBtn" onclick="toggleUserDropdown()">
+            <div class="user-avatar-circle" id="userAvatarCircle">VI</div>
+            <span class="user-name-display" id="userNameDisplay">Vikro Irwan</span>
+            <small>⌄</small>
+          </div>
+
+          <!-- Dropdown Menu -->
+          <div class="user-dropdown-menu" id="userDropdownMenu">
+            <div class="dropdown-user-header">
+              <div class="name" id="dropdownUserName">Vikro Irwan</div>
+              <div class="email" id="dropdownUserEmail">vikroirwan@gmail.com</div>
+            </div>
+            <div class="dropdown-item" onclick="toggleAdminModal(true)">
+              <span>👑</span>
+              <strong>Dashboard Admin (Venue)</strong>
+            </div>
+            <div class="dropdown-item" onclick="openHistoryModal()">
+              <span>📋</span>
+              <span>Riwayat Booking Saya</span>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item logout" onclick="logoutUser()">
+              <span>🚪</span>
+              <span>Keluar (Logout)</span>
+            </div>
+          </div>
+        </div>
 
         <div class="lang-selector" id="langSelector" title="Ubah Bahasa">
           <span>🇮🇩 ID</span>
@@ -89,7 +132,7 @@
             Mini Soccer <span class="highlight">Community</span> &amp; Venue
           </h1>
           <p class="hero-subtitle">
-            Platform all-in-one untuk sewa lapangan, cari lawan sparring tim, dan main bareng di Alpha Sport Pusdikif Kota Cimahi. Rasakan atmosfer bermain sepak bola modern dengan fasilitas standar terbaik!
+            Platform all-in-one untuk sewa lapangan, cari lawan sparring tim, dan main bareng di Alpha Sport Pusdikif Kota Cimahi. Dilengkapi portal pengelolaan venue modern ala AYO.co.id!
           </p>
           <div class="hero-buttons">
             <a href="#booking" class="btn-primary">
@@ -101,15 +144,9 @@
               </svg>
               <span>Booking Lapangan Sekarang</span>
             </a>
-            <a href="#mabar" class="btn-glass">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
-              <span>Cari Main Bareng</span>
-            </a>
+            <button onclick="toggleAdminModal(true)" class="btn-glass" style="background: rgba(255, 215, 0, 0.15); border-color: rgba(255, 215, 0, 0.4); color: #FFF275;">
+              <span>👑 Masuk Portal Admin Venue</span>
+            </button>
           </div>
         </div>
       </div>
@@ -213,7 +250,7 @@
           <span class="section-kicker">JADWAL &amp; RESERVASI</span>
           <h2 class="section-title">Pilih Waktu Main Terbaikmu</h2>
           <p class="section-subtitle">
-            Klik slot jam yang diinginkan untuk menambahkan ke keranjang pemesanan. Jadwal ter-update secara real-time dan konfirmasi cepat via WhatsApp.
+            Klik slot jam yang diinginkan untuk menambahkan ke keranjang pemesanan. Terkoneksi langsung dengan sistem pengelola.
           </p>
         </div>
 
@@ -242,9 +279,7 @@
           </div>
 
           <!-- Date Selector -->
-          <div class="date-selector-bar" id="dateSelectorBar" role="tablist" aria-label="Pilih Hari">
-            <!-- Populated dynamically by app.js -->
-          </div>
+          <div class="date-selector-bar" id="dateSelectorBar" role="tablist" aria-label="Pilih Hari"></div>
 
           <!-- Field Selector Tabs -->
           <div class="field-selector-tabs">
@@ -260,9 +295,7 @@
                 <span>Pagi &amp; Siang (06:00 - 14:00)</span>
                 <span class="badge">Tarif Reguler</span>
               </div>
-              <div class="slots-grid" id="gridMorning">
-                <!-- Populated by JavaScript -->
-              </div>
+              <div class="slots-grid" id="gridMorning"></div>
             </div>
 
             <!-- Afternoon Slots -->
@@ -271,9 +304,7 @@
                 <span>Sore Primetime (14:00 - 18:00)</span>
                 <span class="badge">Favorit Sparring</span>
               </div>
-              <div class="slots-grid" id="gridAfternoon">
-                <!-- Populated by JavaScript -->
-              </div>
+              <div class="slots-grid" id="gridAfternoon"></div>
             </div>
 
             <!-- Night Slots -->
@@ -282,9 +313,7 @@
                 <span>Malam Hari Lampu LED (18:00 - 24:00)</span>
                 <span class="badge">Primetime Lampu</span>
               </div>
-              <div class="slots-grid" id="gridNight">
-                <!-- Populated by JavaScript -->
-              </div>
+              <div class="slots-grid" id="gridNight"></div>
             </div>
           </div>
         </div>
@@ -303,158 +332,7 @@
         </div>
 
         <div class="mabar-grid" id="mabarGrid">
-          <!-- Card 1 -->
-          <div class="mabar-card">
-            <div class="mabar-card-header">
-              <span class="mabar-badge-type">MAIN BARENG</span>
-              <span class="mabar-level-badge">Level: Fun Game / All Level</span>
-            </div>
-            <div class="mabar-card-body">
-              <h3 class="mabar-session-title">Mabar Seru Pekan Ini (7 vs 7)</h3>
-              <div class="mabar-detail-row">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                  <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-                <span>Rabu Malam, 19:00 - 21:00 WIB</span>
-              </div>
-              <div class="mabar-detail-row">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-                <span>Lapangan 1 (Pusdikif Cimahi)</span>
-              </div>
-              <div class="mabar-detail-row">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-                <span>Host: Coach Dani (MS88 Academy)</span>
-              </div>
-
-              <div class="mabar-quota-box">
-                <div class="mabar-quota-labels">
-                  <span>Kuota Pemain: 11 / 14</span>
-                  <span style="color: var(--primary); font-weight: 700;">Sisa 3 Slot!</span>
-                </div>
-                <div class="mabar-progress-bar">
-                  <div class="mabar-progress-fill" style="width: 78%;"></div>
-                </div>
-              </div>
-            </div>
-            <div class="mabar-card-footer">
-              <div class="mabar-price-tag">
-                <span class="small">Biaya per Orang</span>
-                <span class="cost">Rp 45.000</span>
-              </div>
-              <button class="btn-join-mabar" onclick="openRsvpModal('Mabar Seru Pekan Ini (Rabu Malam)', 45000)">Gabung Mabar</button>
-            </div>
-          </div>
-
-          <!-- Card 2 -->
-          <div class="mabar-card" id="sparring">
-            <div class="mabar-card-header">
-              <span class="mabar-badge-type" style="background: #E8F0FE; color: #1967D2; border-color: #D2E3FC;">OPEN SPARRING</span>
-              <span class="mabar-level-badge">Level: Intermediate / Competitive</span>
-            </div>
-            <div class="mabar-card-body">
-              <h3 class="mabar-session-title">Sparring: Pusdikif FC vs Open Team</h3>
-              <div class="mabar-detail-row">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                  <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-                <span>Jumat Sore, 16:00 - 18:00 WIB</span>
-              </div>
-              <div class="mabar-detail-row">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-                <span>Lapangan 1 (FIFA Synthetic)</span>
-              </div>
-              <div class="mabar-detail-row">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-                <span>Tuan Rumah: Pusdikif All Stars</span>
-              </div>
-
-              <div class="mabar-quota-box">
-                <div class="mabar-quota-labels">
-                  <span>Status Tantangan:</span>
-                  <span style="color: #28A745; font-weight: 700;">Menunggu 1 Tim Penantang</span>
-                </div>
-                <div class="mabar-progress-bar">
-                  <div class="mabar-progress-fill" style="width: 50%; background: #1967D2;"></div>
-                </div>
-              </div>
-            </div>
-            <div class="mabar-card-footer">
-              <div class="mabar-price-tag">
-                <span class="small">Share Biaya Lapangan</span>
-                <span class="cost">Rp 225.000 / Tim</span>
-              </div>
-              <button class="btn-join-mabar" style="background: #1967D2;" onclick="openRsvpModal('Tantang Sparring Pusdikif FC (Jumat Sore)', 225000)">Tantang Tim</button>
-            </div>
-          </div>
-
-          <!-- Card 3 -->
-          <div class="mabar-card">
-            <div class="mabar-card-header">
-              <span class="mabar-badge-type">MAIN BARENG</span>
-              <span class="mabar-level-badge">Level: Sunday Morning Football</span>
-            </div>
-            <div class="mabar-card-body">
-              <h3 class="mabar-session-title">Minggu Sehat MS88 Community</h3>
-              <div class="mabar-detail-row">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                  <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-                <span>Minggu Pagi, 07:00 - 09:00 WIB</span>
-              </div>
-              <div class="mabar-detail-row">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-                <span>Lapangan 2 (Alpha Pro Turf)</span>
-              </div>
-              <div class="mabar-detail-row">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-                <span>Host: Komunitas Bola Cimahi</span>
-              </div>
-
-              <div class="mabar-quota-box">
-                <div class="mabar-quota-labels">
-                  <span>Kuota Pemain: 8 / 14</span>
-                  <span style="color: var(--primary); font-weight: 700;">Sisa 6 Slot!</span>
-                </div>
-                <div class="mabar-progress-bar">
-                  <div class="mabar-progress-fill" style="width: 57%;"></div>
-                </div>
-              </div>
-            </div>
-            <div class="mabar-card-footer">
-              <div class="mabar-price-tag">
-                <span class="small">Biaya per Orang</span>
-                <span class="cost">Rp 40.000</span>
-              </div>
-              <button class="btn-join-mabar" onclick="openRsvpModal('Minggu Sehat MS88 Community', 40000)">Gabung Mabar</button>
-            </div>
-          </div>
+          <!-- Populated dynamically and includes custom admin sessions -->
         </div>
       </div>
     </section>
@@ -476,7 +354,6 @@
         </div>
 
         <div class="mgmt-content-box" id="mgmtContentBox">
-          <!-- Text column -->
           <div class="mgmt-text-col text-left" style="text-align: left;">
             <h3 id="mgmtHeading">Main Nyaman Tanpa Khawatir Cedera</h3>
             <p id="mgmtDesc">
@@ -500,10 +377,14 @@
                 <span>Sistem booking transparan langsung terkonfirmasi otomatis</span>
               </li>
             </ul>
-            <a href="#booking" class="btn-primary">Cek Ketersediaan Hari Ini →</a>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href="#booking" class="btn-primary">Cek Ketersediaan Hari Ini →</a>
+              <button onclick="toggleAdminModal(true)" class="btn-glass" style="color: var(--text-main); border-color: var(--border-color); background: #fff;">
+                <span>👑 Buka Portal Pengelola</span>
+              </button>
+            </div>
           </div>
 
-          <!-- Image Column -->
           <div class="mgmt-image-col">
             <img id="mgmtImage" src="assets/images/ayo-sports-reference.jpg" alt="Fasilitas Lapangan Mini Soccer 88">
           </div>
@@ -627,7 +508,7 @@
         </div>
       </div>
 
-      <!-- Add-ons selection (Optional) -->
+      <!-- Add-ons selection -->
       <div class="cart-addons-section" id="cartAddonsWrap" style="display: none;">
         <div class="addons-title">Produk Tambahan (Opsional)</div>
         <div class="addon-option-item">
@@ -670,6 +551,220 @@
       <button class="btn-checkout" onclick="openCheckoutModal()">Lanjutkan Pemesanan →</button>
     </div>
   </aside>
+
+  <!-- ================= PORTAL ADMIN VENUE MANAGEMENT (AYO VENUE MANAGEMENT STYLE) ================= -->
+  <div class="admin-modal-overlay" id="adminModal">
+    <div class="admin-dashboard-container">
+      <!-- Admin Sidebar -->
+      <div class="admin-sidebar">
+        <div class="admin-brand-box">
+          <span class="admin-brand-logo">MS88</span>
+          <div>
+            <strong style="font-size: 14px; display: block;">VENUE PORTAL</strong>
+            <small style="color: #FFD700; font-size: 11px;">SUPER ADMIN</small>
+          </div>
+        </div>
+
+        <ul class="admin-nav-list">
+          <li>
+            <button class="admin-nav-btn active" id="btnAdminTabOverview" onclick="switchAdminTab('overview')">
+              <span>📊</span>
+              <span>Ringkasan &amp; Omset</span>
+            </button>
+          </li>
+          <li>
+            <button class="admin-nav-btn" id="btnAdminTabSlots" onclick="switchAdminTab('slots')">
+              <span>⚽</span>
+              <span>Kelola Slot Lapangan</span>
+            </button>
+          </li>
+          <li>
+            <button class="admin-nav-btn" id="btnAdminTabOrders" onclick="switchAdminTab('orders')">
+              <span>📝</span>
+              <span>Pesanan Booking</span>
+            </button>
+          </li>
+          <li>
+            <button class="admin-nav-btn" id="btnAdminTabMabar" onclick="switchAdminTab('mabar')">
+              <span>👥</span>
+              <span>Buat Sesi Mabar</span>
+            </button>
+          </li>
+        </ul>
+
+        <div style="padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: rgba(255,255,255,0.5);">
+          Admin: <strong>Vikro Irwan</strong><br>
+          Mini Soccer 88 Pusdikif
+        </div>
+      </div>
+
+      <!-- Admin Main Panel -->
+      <div class="admin-main-panel">
+        <div class="admin-top-bar">
+          <h2 id="adminPanelTitle">Dashboard Pengelola Venue</h2>
+          <button class="admin-close-btn" onclick="toggleAdminModal(false)" title="Tutup Dashboard">✕</button>
+        </div>
+
+        <div class="admin-content-area">
+          <!-- TAB 1: OVERVIEW -->
+          <div id="adminTabContentOverview">
+            <div class="admin-metrics-grid">
+              <div class="admin-metric-card">
+                <div class="metric-title">Estimasi Omset Bulan Ini</div>
+                <div class="metric-num" id="metricRevenue">Rp 24.850.000</div>
+                <div class="metric-trend up">↑ +18% vs bulan lalu</div>
+              </div>
+              <div class="admin-metric-card">
+                <div class="metric-title">Slot Terisi Hari Ini</div>
+                <div class="metric-num" id="metricSlotsFilled">7 / 18 Slot</div>
+                <div class="metric-trend up">Tingkat Okupansi 39%</div>
+              </div>
+              <div class="admin-metric-card">
+                <div class="metric-title">Booking Baru Menunggu</div>
+                <div class="metric-num" id="metricPendingOrders" style="color: #FFB800;">2 Pesanan</div>
+                <div class="metric-trend">Perlu verifikasi WA</div>
+              </div>
+              <div class="admin-metric-card">
+                <div class="metric-title">Komunitas Aktif</div>
+                <div class="metric-num">48 Tim</div>
+                <div class="metric-trend up">Bandung &amp; Cimahi</div>
+              </div>
+            </div>
+
+            <div class="admin-card-section">
+              <div class="admin-card-header">
+                <h3>Pesanan Terbaru Masuk</h3>
+                <button class="btn-action-sm" onclick="switchAdminTab('orders')">Lihat Semua →</button>
+              </div>
+              <div style="overflow-x: auto;">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>ID Pesanan</th>
+                      <th>Pemesan</th>
+                      <th>Lapangan &amp; Jadwal</th>
+                      <th>Total</th>
+                      <th>Status</th>
+                      <th>Aksi Cepat</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminRecentOrdersTable">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: MANAGE SLOTS (BLOCK/UNBLOCK) -->
+          <div id="adminTabContentSlots" style="display: none;">
+            <div class="admin-card-section">
+              <div class="admin-card-header">
+                <div>
+                  <h3>Kunci / Buka Slot Jadwal Lapangan</h3>
+                  <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">
+                    Blokir slot jika ada perbaikan lapangan, event offline, atau sewa langsung di lokasi. Perubahan ini langsung sinkron ke halaman publik.
+                  </p>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn-action-sm" id="adminSlotField1Btn" onclick="setAdminSlotField(1)" style="font-weight: 700; background: var(--dark); color: #fff;">Lapangan 1</button>
+                  <button class="btn-action-sm" id="adminSlotField2Btn" onclick="setAdminSlotField(2)">Lapangan 2</button>
+                </div>
+              </div>
+
+              <div class="admin-slot-matrix" id="adminSlotMatrixContainer">
+                <!-- Slot blocks populated by app.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3: ALL BOOKING ORDERS -->
+          <div id="adminTabContentOrders" style="display: none;">
+            <div class="admin-card-section">
+              <div class="admin-card-header">
+                <h3>Daftar Seluruh Reservasi Booking</h3>
+                <button class="btn-action-sm" onclick="simulateNewIncomingOrder()">+ Simulasi Booking Masuk</button>
+              </div>
+              <div style="overflow-x: auto;">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nama Pemesan</th>
+                      <th>WhatsApp</th>
+                      <th>Jadwal Slot</th>
+                      <th>Add-on</th>
+                      <th>Total</th>
+                      <th>Status</th>
+                      <th>Tindakan</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminAllOrdersTable">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: CREATE MABAR SESSION -->
+          <div id="adminTabContentMabar" style="display: none;">
+            <div class="admin-card-section" style="max-width: 650px;">
+              <div class="admin-card-header">
+                <h3>Publikasikan Sesi Main Bareng (Mabar) Baru</h3>
+              </div>
+              <form onsubmit="event.preventDefault(); submitAdminNewMabar();">
+                <div class="form-group">
+                  <label class="form-label" for="mabarTitleInput">Judul Sesi Mabar *</label>
+                  <input class="form-input" id="mabarTitleInput" type="text" placeholder="Contoh: Mabar Santai Jumat Malam (7v7)" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="mabarTimeInput">Hari &amp; Jam Pertandingan *</label>
+                  <input class="form-input" id="mabarTimeInput" type="text" placeholder="Contoh: Jumat Malam, 20:00 - 22:00 WIB" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="mabarFieldSelect">Pilihan Lapangan *</label>
+                  <select class="form-input" id="mabarFieldSelect">
+                    <option value="Lapangan 1 (Pusdikif Cimahi)">Lapangan 1 (FIFA Synth)</option>
+                    <option value="Lapangan 2 (Alpha Pro Turf)">Lapangan 2 (Alpha Pro Turf)</option>
+                  </select>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                  <div class="form-group">
+                    <label class="form-label" for="mabarQuotaInput">Total Kuota Pemain *</label>
+                    <input class="form-input" id="mabarQuotaInput" type="number" value="14" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="mabarPriceInput">Biaya per Orang (Rp) *</label>
+                    <input class="form-input" id="mabarPriceInput" type="number" value="45000" required>
+                  </div>
+                </div>
+                <button type="submit" class="btn-form-submit">
+                  🚀 Terbitkan Sesi Mabar ke Halaman Depan
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= USER BOOKING HISTORY MODAL ================= -->
+  <div class="modal-overlay" id="historyModal" onclick="if(event.target === this) closeHistoryModal()">
+    <div class="modal-card" style="max-width: 550px;">
+      <div class="modal-card-header">
+        <div class="modal-card-title">
+          <h3>Riwayat Booking Anda</h3>
+          <p>Daftar tiket jadwal lapangan yang telah Anda pesan.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeHistoryModal()">✕</button>
+      </div>
+      <div class="modal-card-body" id="userTicketsContainer">
+        <!-- Tickets populated by app.js -->
+      </div>
+    </div>
+  </div>
 
   <!-- ================= AUTH MODAL (MASUK & DAFTAR) ================= -->
   <div class="modal-overlay" id="authModal" onclick="if(event.target === this) closeAuthModal()">
@@ -753,7 +848,7 @@
               <span style="color: var(--primary);" id="checkoutTotalDisplay">Rp 0</span>
             </div>
             <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
-              Pemesanan akan langsung diteruskan ke WhatsApp Pengelola Mini Soccer 88 Pusdikif Cimahi.
+              Pemesanan akan otomatis tersimpan di Dashboard Admin &amp; diteruskan ke WhatsApp Pengelola Mini Soccer 88 Pusdikif Cimahi.
             </p>
           </div>
 
@@ -792,12 +887,12 @@
         </div>
 
         <div class="footer-col">
-          <h5>Fasilitas</h5>
+          <h5>Pengelola Venue</h5>
           <ul class="footer-links">
-            <li><a href="#venue">Rumput Sintetis FIFA</a></li>
-            <li><a href="#venue">Lampu LED Primetime</a></li>
-            <li><a href="#venue">Ruang Ganti &amp; Shower</a></li>
-            <li><a href="#venue">Kantin &amp; Area Parkir</a></li>
+            <li><a href="javascript:void(0)" onclick="toggleAdminModal(true)">👑 Dashboard Admin</a></li>
+            <li><a href="javascript:void(0)" onclick="openHistoryModal()">📋 Tiket Booking</a></li>
+            <li><a href="#venue">Spesifikasi Rumput FIFA</a></li>
+            <li><a href="#venue">Pencahayaan LED 500 Lux</a></li>
           </ul>
         </div>
 
