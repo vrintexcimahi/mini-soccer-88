@@ -4,6 +4,9 @@
   "rewrites": [
     { "source": "/login", "destination": "/superadmin/login.html" },
     { "source": "/admin", "destination": "/superadmin/index.html" },
-    { "source": "/superadmin/login", "destination": "/superadmin/login.html" }
+    { "source": "/superadmin", "destination": "/superadmin/index.html" },
+    { "source": "/superadmin/login", "destination": "/superadmin/login.html" },
+    { "source": "/admin.css", "destination": "/superadmin/admin.css" },
+    { "source": "/admin.js", "destination": "/superadmin/admin.js" }
   ]
 }
