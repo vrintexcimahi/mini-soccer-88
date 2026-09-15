@@ -1,7 +1,7 @@
 import urllib.request
 import os
 
-with open('ayo.co.id_header_string_1789459377528.txt', 'r', encoding='utf-8') as f:
+with open('local_header_string_1789459377528.txt', 'r', encoding='utf-8') as f:
     cookie = f.read().strip()
 
 headers = {
@@ -11,25 +11,25 @@ headers = {
 
 # Missing vendor & extra files
 urls = [
-    'https://ayo.co.id/vendor/toastify/toastify.min.css',
-    'https://ayo.co.id/vendor/toastify/toastify.js',
-    'https://ayo.co.id/js/custom.js',
-    'https://ayo.co.id/fonts/rubik/rubik-v31-latin-300italic.woff2',
-    'https://ayo.co.id/fonts/rubik/rubik-v31-latin-500.woff2',
-    'https://ayo.co.id/fonts/rubik/rubik-v31-latin-500italic.woff2',
-    'https://ayo.co.id/fonts/rubik/rubik-v31-latin-600italic.woff2',
-    'https://ayo.co.id/fonts/rubik/rubik-v31-latin-700italic.woff2',
-    'https://ayo.co.id/fonts/rubik/rubik-v31-latin-800.woff2',
-    'https://ayo.co.id/fonts/rubik/rubik-v31-latin-800italic.woff2',
-    'https://ayo.co.id/fonts/rubik/rubik-v31-latin-900.woff2',
-    'https://ayo.co.id/fonts/rubik/rubik-v31-latin-900italic.woff2',
-    'https://ayo.co.id/fonts/nunito/nunito-v32-latin-regular.woff2',
-    'https://ayo.co.id/fonts/nunito/nunito-v32-latin-600.woff2',
-    'https://ayo.co.id/fonts/nunito/nunito-v32-latin-700.woff2',
+    '//vendor/toastify/toastify.min.css',
+    '//vendor/toastify/toastify.js',
+    '//js/custom.js',
+    '//fonts/rubik/rubik-v31-latin-300italic.woff2',
+    '//fonts/rubik/rubik-v31-latin-500.woff2',
+    '//fonts/rubik/rubik-v31-latin-500italic.woff2',
+    '//fonts/rubik/rubik-v31-latin-600italic.woff2',
+    '//fonts/rubik/rubik-v31-latin-700italic.woff2',
+    '//fonts/rubik/rubik-v31-latin-800.woff2',
+    '//fonts/rubik/rubik-v31-latin-800italic.woff2',
+    '//fonts/rubik/rubik-v31-latin-900.woff2',
+    '//fonts/rubik/rubik-v31-latin-900italic.woff2',
+    '//fonts/nunito/nunito-v32-latin-regular.woff2',
+    '//fonts/nunito/nunito-v32-latin-600.woff2',
+    '//fonts/nunito/nunito-v32-latin-700.woff2',
 ]
 
 for url in urls:
-    rel = url.replace('https://ayo.co.id/', '')
+    rel = url.replace('//', '')
     dest = os.path.join(os.getcwd(), rel.replace('/', os.sep))
     if os.path.exists(dest) and os.path.getsize(dest) > 0:
         print(f'Skip (exists): {rel}')

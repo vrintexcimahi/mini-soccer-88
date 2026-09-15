@@ -3,37 +3,37 @@ import re
 with open('ayo_live.html', 'r', encoding='utf-8') as f:
     html = f.read()
 
-# Replace all ayo.co.id absolute URLs with relative paths
+# Replace all local absolute URLs with relative paths
 # CSS/JS/Font/Image assets
-html = html.replace('https://ayo.co.id/assets/', 'assets/')
-html = html.replace('https://ayo.co.id/css/', 'css/')
-html = html.replace('https://ayo.co.id/js/', 'js/')
-html = html.replace('https://ayo.co.id/fonts/', 'fonts/')
+html = html.replace('//assets/', 'assets/')
+html = html.replace('//css/', 'css/')
+html = html.replace('//js/', 'js/')
+html = html.replace('//fonts/', 'fonts/')
 
 # Fix inline JS BASE_URL and ASSET_URL
 html = html.replace(
-    "const BASE_URL = `https://ayo.co.id`;",
+    "const BASE_URL = `/`;",
     "const BASE_URL = `http://localhost:8888`;"
 )
 html = html.replace(
-    "const ASSET_URL = `https://asset.ayo.co.id/`;",
+    "const ASSET_URL = `https://asset.local/`;",
     "const ASSET_URL = `http://localhost:8888/assets/`;"
 )
 
-# Fix navigation links to keep ayo.co.id for external pages (sparring, venues, etc.)
+# Fix navigation links to keep local for external pages (sparring, venues, etc.)
 # but homepage link -> localhost:8888
 html = html.replace(
-    'href="https://ayo.co.id"',
+    'href="/"',
     'href="http://localhost:8888"'
 )
 html = html.replace(
-    "href='https://ayo.co.id'",
+    "href='/'",
     "href='http://localhost:8888'"
 )
 
 # Fix favicon
 html = html.replace(
-    'href="https://ayo.co.id/assets/logos/new-Favicon.png"',
+    'href="//assets/logos/new-Favicon.png"',
     'href="assets/logos/new-Favicon.png"'
 )
 

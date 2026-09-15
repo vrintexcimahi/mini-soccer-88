@@ -2,7 +2,7 @@ import urllib.request
 import os
 import re
 
-with open('ayo.co.id_header_string_1789459377528.txt', 'r', encoding='utf-8') as f:
+with open('local_header_string_1789459377528.txt', 'r', encoding='utf-8') as f:
     cookie = f.read().strip()
 
 headers = {
@@ -24,7 +24,7 @@ file_matches = set(re.findall(r'(?:https://ayo\.co\.id/|[\"\'\(])((?:assets|font
 
 print(f'Total candidates to download: {len(file_matches)}')
 for rel in sorted(file_matches):
-    url = f'https://ayo.co.id/{rel}'
+    url = f'//{rel}'
     dest = os.path.join(os.getcwd(), rel.replace('/', os.sep))
     if os.path.exists(dest) and os.path.getsize(dest) > 0:
         continue
