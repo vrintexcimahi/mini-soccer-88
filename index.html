@@ -66,10 +66,10 @@
         <!-- Logged-in User Profile Controls -->
         <div class="user-profile-nav" id="userProfileNav">
           <!-- Direct Admin Dashboard Trigger -->
-          <button class="btn-admin-badge" id="btnAdminQuick" onclick="toggleAdminModal(true)" title="Portal Pengelola Venue">
+          <a href="/superadmin/" class="btn-admin-badge" id="btnAdminQuick" title="Portal Pengelola Venue">
             <span>👑</span>
             <span>Kelola Venue</span>
-          </button>
+          </a>
 
           <!-- User Avatar & Dropdown -->
           <div class="user-avatar-btn" id="userAvatarBtn" onclick="toggleUserDropdown()">
@@ -84,10 +84,10 @@
               <div class="name" id="dropdownUserName">Vikro Irwan</div>
               <div class="email" id="dropdownUserEmail">vikroirwan@gmail.com</div>
             </div>
-            <div class="dropdown-item" onclick="toggleAdminModal(true)">
+            <a class="dropdown-item" href="/superadmin/">
               <span>👑</span>
               <strong>Dashboard Admin (Venue)</strong>
-            </div>
+            </a>
             <div class="dropdown-item" onclick="openHistoryModal()">
               <span>📋</span>
               <span>Riwayat Booking Saya</span>
@@ -144,9 +144,9 @@
               </svg>
               <span>Booking Lapangan Sekarang</span>
             </a>
-            <button onclick="toggleAdminModal(true)" class="btn-glass" style="background: rgba(255, 215, 0, 0.15); border-color: rgba(255, 215, 0, 0.4); color: #FFF275;">
+            <a href="/superadmin/" class="btn-glass" style="background: rgba(255, 215, 0, 0.15); border-color: rgba(255, 215, 0, 0.4); color: #FFF275; text-decoration: none;">
               <span>👑 Masuk Portal Admin Venue</span>
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -379,9 +379,9 @@
             </ul>
             <div style="display: flex; gap: 12px; flex-wrap: wrap;">
               <a href="#booking" class="btn-primary">Cek Ketersediaan Hari Ini →</a>
-              <button onclick="toggleAdminModal(true)" class="btn-glass" style="color: var(--text-main); border-color: var(--border-color); background: #fff;">
+              <a href="/superadmin/" class="btn-glass" style="color: var(--text-main); border-color: var(--border-color); background: #fff; text-decoration: none;">
                 <span>👑 Buka Portal Pengelola</span>
-              </button>
+              </a>
             </div>
           </div>
 
