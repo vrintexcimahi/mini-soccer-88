@@ -1,0 +1,14 @@
+# Windows thumbnail cache
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+
+# Folder config
+Desktop.ini
+
+# Logs
+*.log
+
+# Editor directories
+.vscode/
+.idea/

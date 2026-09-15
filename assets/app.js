@@ -1,0 +1,4 @@
+'use strict';
+const menuButton=document.querySelector('.hamburger');const navigation=document.querySelector('.topbar nav');
+menuButton.addEventListener('click',()=>{const open=menuButton.getAttribute('aria-expanded')!=='true';menuButton.setAttribute('aria-expanded',String(open));navigation.classList.toggle('open',open)});
+document.querySelector('#booking').addEventListener('submit',event=>{event.preventDefault();const activity=document.querySelector('select[aria-label="Aktivitas"]').value;const location=document.querySelector('input[aria-label="Lokasi"]').value.trim()||'Kota Cimahi';window.alert(activity==='Pilih Aktivitas'?`Pilih aktivitas terlebih dahulu untuk mencari lapangan di ${location}.`:`Permintaan ${activity} di ${location} sudah disiapkan. Konfirmasi jadwal dengan pengelola Mini Soccer 88.`)});
