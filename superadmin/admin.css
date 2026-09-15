@@ -670,7 +670,9 @@ textarea.form-input { resize: vertical; min-height: 80px; }
   margin-bottom: 8px;
 }
 .mabar-head strong { font-size: 14px; color: var(--text); }
-.mabar-meta { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+.mabar-meta { font-size: 13px; color: var(--text-muted); line-height: 1.9; }
+.meta-row { display: inline-flex; align-items: center; gap: 6px; }
+.meta-row svg { flex-shrink: 0; opacity: 0.7; }
 
 /* =========================================================
    BLOG LIST
