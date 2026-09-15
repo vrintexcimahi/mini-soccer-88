@@ -9,6 +9,9 @@ Desktop.ini
 # Logs
 *.log
 
+# Sensitive headers & tokens
+*header_string*.txt
+
 # Editor directories
 .vscode/
 .idea/

@@ -1,20 +1,823 @@
 <!doctype html>
 <html lang="id">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#9e0620"><meta name="description" content="Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi."><title>Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi</title><link rel="stylesheet" href="assets/ayo-home.css"><script src="assets/app.js" defer></script></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#9e0620">
+  <title>Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi - Platform Booking Lapangan, Sparring & Mabar</title>
+  <meta name="description" content="Platform all-in-one sewa lapangan, cari lawan sparring, dan main bareng di Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi. Rumput sintetis standar internasional, lampu LED malam hari, fasilitas lengkap.">
+  <meta name="keywords" content="mini soccer 88, alpha sport pusdikif, mini soccer cimahi, sewa lapangan cimahi, main bareng mini soccer, sparring bola cimahi, ayo indonesia">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi">
+  <meta property="og:description" content="Booking jadwal lapangan, gabung main bareng (mabar), dan cari lawan sparring di Pusdikif Cimahi secara instan!">
+  <meta property="og:image" content="assets/images/ayo-sports-reference.jpg">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/sport.png">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/ayo-home.css">
+  <script src="assets/app.js" defer></script>
+</head>
 <body>
-  <header class="topbar">
-    <a class="logo" href="#beranda" aria-label="Mini Soccer 88 beranda"><span>MS</span><b>88</b><small>ALPHA SPORT</small></a><button class="hamburger" aria-label="Buka menu" aria-expanded="false">☰</button>
-    <nav aria-label="Navigasi utama"><a href="#booking">Sewa Lapangan</a><a href="#main-bareng">Main Bareng</a><a href="#tentang">Tentang Kami</a><a href="#kontak">Kontak</a></nav>
-    <div class="account-nav"><a class="cart" href="#booking" aria-label="Rencana bermain">♧<i>0</i></a><a href="#booking">Masuk</a><a class="register" href="#booking">Daftar</a><button class="language" type="button">◎ ID⌄</button></div>
+
+  <!-- ================= TOPBAR NAVBAR ================= -->
+  <header class="topbar" id="topbar">
+    <div class="container topbar-inner">
+      <a class="brand-logo" href="#beranda" aria-label="Mini Soccer 88 Alpha Sport">
+        <span class="brand-badge">MS88</span>
+        <div class="brand-text">
+          <span class="brand-title">ALPHA SPORT</span>
+          <span class="brand-subtitle">PUSDIKIF CIMAHI</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Navigasi Utama">
+        <a href="#booking" class="active" id="nav-sewa">Sewa Lapangan</a>
+        <a href="#mabar" id="nav-mabar-link">Main Bareng</a>
+        <a href="#sparring" id="nav-sparring-link">Sparring</a>
+        <a href="#turnamen" id="nav-turnamen-link">Kompetisi</a>
+        <a href="#venue" id="nav-venue-link">Tentang Venue</a>
+        <a href="#kontak" id="nav-kontak-link">Kontak</a>
+      </nav>
+
+      <div class="topbar-actions">
+        <!-- Cart Trigger Button -->
+        <button class="cart-btn" id="openCartBtn" aria-label="Lihat jadwal yang dipilih" title="Keranjang Jadwal">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-counter" id="cartBadgeCount">0</span>
+        </button>
+
+        <button class="btn-auth-login" id="openLoginModalBtn" type="button">Masuk</button>
+        <button class="btn-auth-register" id="openRegisterModalBtn" type="button">Daftar</button>
+
+        <div class="lang-selector" id="langSelector" title="Ubah Bahasa">
+          <span>🇮🇩 ID</span>
+          <small>⌄</small>
+        </div>
+
+        <button class="hamburger-btn" id="mobileMenuBtn" aria-label="Buka menu mobile">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
   </header>
+
   <main>
-    <section id="beranda" class="hero"><img class="hero-image" src="assets/images/ayo-sports-reference.jpg" alt="Lapangan olahraga indoor" width="1440" height="810" fetchpriority="high"><div class="shade"></div>
-      <div class="hero-content"><h1>Mini Soccer<br>Community</h1><p>Lapangan untuk tim yang ingin bertanding, sparring, atau sekadar main bareng. Olahraga makin mudah dan menyenangkan!</p><div class="store-buttons"><a href="#booking" class="store-button"><span class="play">▶</span><span><small>Rencanakan</small><b>Jadwal Main</b></span></a><a href="#booking" class="store-button"><span class="apple-icon">●</span><span><small>Booking di</small><b>Mini Soccer 88</b></span></a></div></div>
-      <p class="photo-note">Visual referensi olahraga · bukan foto venue Mini Soccer 88</p>
-      <form id="booking" class="finder"><label class="finder-item"><img src="assets/images/activity.png" alt=""><span><b>Aktivitas</b><select aria-label="Aktivitas"><option>Pilih Aktivitas</option><option>Sewa Lapangan</option><option>Sparring</option><option>Main Bareng</option></select></span></label><label class="finder-item"><img src="assets/images/location.png" alt=""><span><b>Lokasi</b><input value="Kota Cimahi" aria-label="Lokasi"></span></label><label class="finder-item"><img src="assets/images/sport.png" alt=""><span><b>Cabang Olahraga</b><select aria-label="Cabang olahraga"><option>Mini Soccer</option></select></span></label><button type="submit">Temukan <span>→</span></button></form>
+    <!-- ================= HERO SECTION ================= -->
+    <section id="beranda" class="hero-section">
+      <img class="hero-backdrop" src="assets/images/ayo-sports-reference.jpg" alt="Mini Soccer 88 Alpha Sport Pusdikif Cimahi" fetchpriority="high">
+      <div class="hero-overlay"></div>
+
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-tag">
+            <span class="dot"></span>
+            <span>Lapangan Aktif &amp; Siap Pakai Hari Ini</span>
+          </div>
+          <h1 class="hero-title">
+            Mini Soccer <span class="highlight">Community</span> &amp; Venue
+          </h1>
+          <p class="hero-subtitle">
+            Platform all-in-one untuk sewa lapangan, cari lawan sparring tim, dan main bareng di Alpha Sport Pusdikif Kota Cimahi. Rasakan atmosfer bermain sepak bola modern dengan fasilitas standar terbaik!
+          </p>
+          <div class="hero-buttons">
+            <a href="#booking" class="btn-primary">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>Booking Lapangan Sekarang</span>
+            </a>
+            <a href="#mabar" class="btn-glass">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <span>Cari Main Bareng</span>
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
-    <section id="main-bareng" class="intro-section"><p class="section-kicker">MINI SOCCER 88</p><h2>Temukan waktu terbaik<br>untuk timmu.</h2><p>Mulai dari rencana main, sparring, sampai pertandingan komunitas di Alpha Sport Pusdikif Kota Cimahi.</p></section>
-    <section id="tentang" class="about"><div><p class="section-kicker">TENTANG LAPANGAN</p><h2>Rumah untuk setiap permainan.</h2></div><p>Mini Soccer 88 menghadirkan tempat untuk bertemu, berolahraga, dan membangun cerita bersama tim. Ketersediaan jadwal dikonfirmasi langsung oleh pengelola.</p></section>
-    <section id="kontak" class="contact"><p>MINI SOCCER 88 ALPHA SPORT PUSDIKIF</p><h2>Siap main?</h2><a href="#booking">Cari jadwal sekarang →</a></section>
-  </main><footer>© 2026 Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi</footer>
-</body></html>
+
+    <!-- ================= FLOATING QUICK FINDER (AYO STYLE) ================= -->
+    <div class="container floating-finder-wrap">
+      <form class="floating-finder" id="quickFinderForm" onsubmit="event.preventDefault(); handleFinderSearch();">
+        <div class="finder-col">
+          <div class="finder-icon-box">
+            <img src="assets/images/activity.png" alt="Aktivitas">
+          </div>
+          <div class="finder-details">
+            <span class="finder-label">Aktivitas</span>
+            <select class="finder-select" id="finderActivity" aria-label="Pilih Aktivitas">
+              <option value="sewa">Sewa Lapangan</option>
+              <option value="mabar">Main Bareng (Mabar)</option>
+              <option value="sparring">Sparring Komunitas</option>
+              <option value="turnamen">Turnamen / Event</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="finder-divider"></div>
+
+        <div class="finder-col">
+          <div class="finder-icon-box">
+            <img src="assets/images/location.png" alt="Lokasi">
+          </div>
+          <div class="finder-details">
+            <span class="finder-label">Lokasi Venue</span>
+            <input class="finder-input" id="finderLocation" type="text" value="Pusdikif, Kota Cimahi" readonly aria-label="Lokasi">
+          </div>
+        </div>
+
+        <div class="finder-divider"></div>
+
+        <div class="finder-col">
+          <div class="finder-icon-box">
+            <img src="assets/images/sport.png" alt="Cabang Olahraga">
+          </div>
+          <div class="finder-details">
+            <span class="finder-label">Cabang Olahraga</span>
+            <select class="finder-select" id="finderSport" aria-label="Cabang Olahraga">
+              <option value="mini-soccer">Mini Soccer 7v7 (Sintetis)</option>
+              <option value="futsal">Futsal Outdoor</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-finder-search" id="btnFinderSubmit">
+          <span>Temukan Jadwal</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- ================= STATS SECTION ================= -->
+    <section class="stats-section">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-accent-bar"></div>
+            <div>
+              <div class="stat-value">1.500+</div>
+              <div class="stat-desc">Pemain Terdaftar</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-accent-bar"></div>
+            <div>
+              <div class="stat-value">350+</div>
+              <div class="stat-desc">Sparring Selesai</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-accent-bar"></div>
+            <div>
+              <div class="stat-value">2 Lapangan</div>
+              <div class="stat-desc">Rumput Sintetis FIFA Standard</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-accent-bar"></div>
+            <div>
+              <div class="stat-value">4.9 / 5.0</div>
+              <div class="stat-desc">Rating Kepuasan Tim</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CORE FEATURE: INTERACTIVE BOOKING SCHEDULE ================= -->
+    <section id="booking" class="section-padding booking-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-kicker">JADWAL &amp; RESERVASI</span>
+          <h2 class="section-title">Pilih Waktu Main Terbaikmu</h2>
+          <p class="section-subtitle">
+            Klik slot jam yang diinginkan untuk menambahkan ke keranjang pemesanan. Jadwal ter-update secara real-time dan konfirmasi cepat via WhatsApp.
+          </p>
+        </div>
+
+        <div class="venue-card-wrapper">
+          <!-- Venue Header Details -->
+          <div class="venue-header-info">
+            <div>
+              <div class="venue-main-name">
+                Mini Soccer 88 Alpha Sport
+                <span class="venue-tag-verified">✓ Verified Venue</span>
+              </div>
+              <div class="venue-location-str">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Komplek Pusdikif, Jl. Cisangkan No. 88, Kota Cimahi, Jawa Barat
+              </div>
+            </div>
+            <div class="venue-amenities">
+              <span class="amenity-pill">💡 Lampu LED 500 Lux</span>
+              <span class="amenity-pill">🚿 Ruang Ganti &amp; Shower</span>
+              <span class="amenity-pill">🚗 Parkir Mobil &amp; Motor Luas</span>
+              <span class="amenity-pill">🥤 Kantin &amp; Musholla</span>
+            </div>
+          </div>
+
+          <!-- Date Selector -->
+          <div class="date-selector-bar" id="dateSelectorBar" role="tablist" aria-label="Pilih Hari">
+            <!-- Populated dynamically by app.js -->
+          </div>
+
+          <!-- Field Selector Tabs -->
+          <div class="field-selector-tabs">
+            <button class="field-tab-btn active" id="tabField1" onclick="switchField(1)">Lapangan 1 (FIFA Synth)</button>
+            <button class="field-tab-btn" id="tabField2" onclick="switchField(2)">Lapangan 2 (Alpha Pro Turf)</button>
+          </div>
+
+          <!-- Slots Time Categories -->
+          <div class="slots-container" id="slotsContainer">
+            <!-- Morning Slots -->
+            <div class="slot-category-group">
+              <div class="slot-category-title">
+                <span>Pagi &amp; Siang (06:00 - 14:00)</span>
+                <span class="badge">Tarif Reguler</span>
+              </div>
+              <div class="slots-grid" id="gridMorning">
+                <!-- Populated by JavaScript -->
+              </div>
+            </div>
+
+            <!-- Afternoon Slots -->
+            <div class="slot-category-group">
+              <div class="slot-category-title">
+                <span>Sore Primetime (14:00 - 18:00)</span>
+                <span class="badge">Favorit Sparring</span>
+              </div>
+              <div class="slots-grid" id="gridAfternoon">
+                <!-- Populated by JavaScript -->
+              </div>
+            </div>
+
+            <!-- Night Slots -->
+            <div class="slot-category-group">
+              <div class="slot-category-title">
+                <span>Malam Hari Lampu LED (18:00 - 24:00)</span>
+                <span class="badge">Primetime Lampu</span>
+              </div>
+              <div class="slots-grid" id="gridNight">
+                <!-- Populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MAIN BARENG (MABAR) & SPARRING HUB ================= -->
+    <section id="mabar" class="section-padding mabar-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-kicker">KOMUNITAS &amp; SPAR</span>
+          <h2 class="section-title">Main Bareng &amp; Tantang Sparring</h2>
+          <p class="section-subtitle">
+            Mau main tapi kurang pemain? Atau tim kamu siap menguji kemampuan? Gabung ke sesi yang tersedia di bawah ini!
+          </p>
+        </div>
+
+        <div class="mabar-grid" id="mabarGrid">
+          <!-- Card 1 -->
+          <div class="mabar-card">
+            <div class="mabar-card-header">
+              <span class="mabar-badge-type">MAIN BARENG</span>
+              <span class="mabar-level-badge">Level: Fun Game / All Level</span>
+            </div>
+            <div class="mabar-card-body">
+              <h3 class="mabar-session-title">Mabar Seru Pekan Ini (7 vs 7)</h3>
+              <div class="mabar-detail-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Rabu Malam, 19:00 - 21:00 WIB</span>
+              </div>
+              <div class="mabar-detail-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>Lapangan 1 (Pusdikif Cimahi)</span>
+              </div>
+              <div class="mabar-detail-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>Host: Coach Dani (MS88 Academy)</span>
+              </div>
+
+              <div class="mabar-quota-box">
+                <div class="mabar-quota-labels">
+                  <span>Kuota Pemain: 11 / 14</span>
+                  <span style="color: var(--primary); font-weight: 700;">Sisa 3 Slot!</span>
+                </div>
+                <div class="mabar-progress-bar">
+                  <div class="mabar-progress-fill" style="width: 78%;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="mabar-card-footer">
+              <div class="mabar-price-tag">
+                <span class="small">Biaya per Orang</span>
+                <span class="cost">Rp 45.000</span>
+              </div>
+              <button class="btn-join-mabar" onclick="openRsvpModal('Mabar Seru Pekan Ini (Rabu Malam)', 45000)">Gabung Mabar</button>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="mabar-card" id="sparring">
+            <div class="mabar-card-header">
+              <span class="mabar-badge-type" style="background: #E8F0FE; color: #1967D2; border-color: #D2E3FC;">OPEN SPARRING</span>
+              <span class="mabar-level-badge">Level: Intermediate / Competitive</span>
+            </div>
+            <div class="mabar-card-body">
+              <h3 class="mabar-session-title">Sparring: Pusdikif FC vs Open Team</h3>
+              <div class="mabar-detail-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Jumat Sore, 16:00 - 18:00 WIB</span>
+              </div>
+              <div class="mabar-detail-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>Lapangan 1 (FIFA Synthetic)</span>
+              </div>
+              <div class="mabar-detail-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>Tuan Rumah: Pusdikif All Stars</span>
+              </div>
+
+              <div class="mabar-quota-box">
+                <div class="mabar-quota-labels">
+                  <span>Status Tantangan:</span>
+                  <span style="color: #28A745; font-weight: 700;">Menunggu 1 Tim Penantang</span>
+                </div>
+                <div class="mabar-progress-bar">
+                  <div class="mabar-progress-fill" style="width: 50%; background: #1967D2;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="mabar-card-footer">
+              <div class="mabar-price-tag">
+                <span class="small">Share Biaya Lapangan</span>
+                <span class="cost">Rp 225.000 / Tim</span>
+              </div>
+              <button class="btn-join-mabar" style="background: #1967D2;" onclick="openRsvpModal('Tantang Sparring Pusdikif FC (Jumat Sore)', 225000)">Tantang Tim</button>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="mabar-card">
+            <div class="mabar-card-header">
+              <span class="mabar-badge-type">MAIN BARENG</span>
+              <span class="mabar-level-badge">Level: Sunday Morning Football</span>
+            </div>
+            <div class="mabar-card-body">
+              <h3 class="mabar-session-title">Minggu Sehat MS88 Community</h3>
+              <div class="mabar-detail-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Minggu Pagi, 07:00 - 09:00 WIB</span>
+              </div>
+              <div class="mabar-detail-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>Lapangan 2 (Alpha Pro Turf)</span>
+              </div>
+              <div class="mabar-detail-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>Host: Komunitas Bola Cimahi</span>
+              </div>
+
+              <div class="mabar-quota-box">
+                <div class="mabar-quota-labels">
+                  <span>Kuota Pemain: 8 / 14</span>
+                  <span style="color: var(--primary); font-weight: 700;">Sisa 6 Slot!</span>
+                </div>
+                <div class="mabar-progress-bar">
+                  <div class="mabar-progress-fill" style="width: 57%;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="mabar-card-footer">
+              <div class="mabar-price-tag">
+                <span class="small">Biaya per Orang</span>
+                <span class="cost">Rp 40.000</span>
+              </div>
+              <button class="btn-join-mabar" onclick="openRsvpModal('Minggu Sehat MS88 Community', 40000)">Gabung Mabar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VENUE MANAGEMENT COMPARISON TAB (AYO STYLE) ================= -->
+    <section id="venue" class="section-padding venue-mgmt-section">
+      <div class="container text-center">
+        <div class="section-header">
+          <span class="section-kicker">KEUNGGULAN FASILITAS</span>
+          <h2 class="section-title">Kenapa Memilih Mini Soccer 88 Pusdikif?</h2>
+          <p class="section-subtitle">
+            Dikelola dengan standar profesional untuk memberikan pengalaman bermain terbaik bagi tim amatir, komunitas, maupun operator turnamen di Bandung Raya &amp; Cimahi.
+          </p>
+        </div>
+
+        <div class="mgmt-toggle-pills" role="tablist">
+          <button class="mgmt-pill-btn active" id="btnTabPenyewa" onclick="switchMgmtTab('penyewa')">UNTUK PENYEWA &amp; TIM</button>
+          <button class="mgmt-pill-btn" id="btnTabPengelola" onclick="switchMgmtTab('pengelola')">UNTUK EVENT &amp; OPERATOR</button>
+        </div>
+
+        <div class="mgmt-content-box" id="mgmtContentBox">
+          <!-- Text column -->
+          <div class="mgmt-text-col text-left" style="text-align: left;">
+            <h3 id="mgmtHeading">Main Nyaman Tanpa Khawatir Cedera</h3>
+            <p id="mgmtDesc">
+              Mini Soccer 88 didesain khusus dengan standar rumput sintetis lembut dan drainase modern agar tetap optimal di cuaca panas maupun hujan lebat.
+            </p>
+            <ul class="mgmt-feature-list" id="mgmtFeatures">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>Rumput Sintetis Monofilament 50mm dengan infill karet silica empuk</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>Pencahayaan LED Floodlight 500 Lux untuk pertandingan malam tanpa silau</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>Ketersediaan rompi bersih, wasit bersertifikasi, dan bola resmi match standard</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>Sistem booking transparan langsung terkonfirmasi otomatis</span>
+              </li>
+            </ul>
+            <a href="#booking" class="btn-primary">Cek Ketersediaan Hari Ini →</a>
+          </div>
+
+          <!-- Image Column -->
+          <div class="mgmt-image-col">
+            <img id="mgmtImage" src="assets/images/ayo-sports-reference.jpg" alt="Fasilitas Lapangan Mini Soccer 88">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= COMPETITIONS & TOURNAMENT SECTION ================= -->
+    <section id="turnamen" class="section-padding tournament-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-kicker" style="color: #FF536D;">LIGA &amp; TURNAMEN</span>
+          <h2 class="section-title">Panggung Juara Komunitas Cimahi</h2>
+          <p class="section-subtitle">
+            Buktikan ketangguhan timmu di ajang kompetisi resmi yang diselenggarakan berkala di Alpha Sport Pusdikif.
+          </p>
+        </div>
+
+        <div class="tournament-grid">
+          <div class="tournament-card">
+            <div class="tournament-num">01</div>
+            <h4>Liga Mini Soccer 88 Season 3</h4>
+            <p>Liga reguler antar komunitas se-Bandung Raya &amp; Cimahi dengan sistem kompetisi penuh, statistik gol lengkap, dan trofi bergengsi.</p>
+          </div>
+          <div class="tournament-card">
+            <div class="tournament-num">02</div>
+            <h4>Weekend Cup Knockout</h4>
+            <p>Turnamen 1 hari sistem gugur setiap akhir bulan. Cocok untuk mengasah mental tanding dan kekompakan taktik tim dalam format kilat.</p>
+          </div>
+          <div class="tournament-card">
+            <div class="tournament-num">03</div>
+            <h4>Fasilitasi Event Mandiri</h4>
+            <p>Ingin mengadakan turnamen internal perusahaan atau reuni angkatan? Tim MS88 menyediakan wasit, perangkat pertandingan, dan dokumentasi lengkap.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TESTIMONIALS SECTION ================= -->
+    <section class="section-padding testimonials-section">
+      <div class="container">
+        <div class="testi-card-box">
+          <div class="testi-banner-side">
+            <h3 class="testi-banner-title">Apa Kata Kawan MS88?</h3>
+            <p style="margin-top: 14px; opacity: 0.9; font-size: 15px;">
+              Pengalaman langsung dari kapten tim dan pegiat olahraga yang telah rutin bermain di Lapangan Pusdikif.
+            </p>
+          </div>
+
+          <div class="testi-content-side">
+            <div class="testi-author-info">
+              <div class="author-avatar" id="testiAvatar">R</div>
+              <div>
+                <div class="author-name" id="testiName">Rifqi Pratama</div>
+                <div class="author-team" id="testiTeam">Kapten Barudak Cimahi FC</div>
+              </div>
+            </div>
+
+            <p class="testi-quote-text" id="testiQuote">
+              “Rumput sintetis di Mini Soccer 88 Pusdikif ini salah satu yang paling empuk di Cimahi. Lapangan luas, pencahayaan malamnya terang benderang tidak silau. Booking jadwal lewat web juga sangat praktis dan fast respon!”
+            </p>
+
+            <div class="testi-nav-controls">
+              <span class="testi-counter-text" id="testiCounter">01 / 03</span>
+              <button class="btn-testi-nav" id="btnTestiPrev" onclick="navigateTestimonial(-1)" aria-label="Testimoni Sebelumnya">‹</button>
+              <button class="btn-testi-nav" id="btnTestiNext" onclick="navigateTestimonial(1)" aria-label="Testimoni Selanjutnya">›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= APP DOWNLOAD & FAST BOOKING CALLOUT ================= -->
+    <div class="container" id="kontak">
+      <div class="download-banner">
+        <div class="download-text">
+          <h3>Siap Main dan Rasakan Keseruannya?</h3>
+          <p>
+            Jangan biarkan tim kamu kehabisan jadwal primetime! Amankan slot bermain sekarang juga dan nikmati fasilitas olahraga premium di Kota Cimahi.
+          </p>
+        </div>
+        <div class="download-action-btns">
+          <a href="#booking" class="btn-primary" style="background: #fff; color: var(--primary); box-shadow: none;">
+            <span>Pilih Jadwal Sekarang</span>
+          </a>
+          <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Mini%20Soccer%2088%20Pusdikif,%20saya%20ingin%20tanya%20jadwal%20lapangan" target="_blank" class="btn-glass">
+            <span>Hubungi WhatsApp Pengelola</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= OFFCANVAS CART DRAWER ================= -->
+  <div class="cart-drawer-backdrop" id="cartDrawerBackdrop" onclick="toggleCartDrawer(false)"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Keranjang Pemesanan">
+    <div class="cart-drawer-header">
+      <div class="cart-drawer-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span>Jadwal Dipilih (<span id="cartItemCountText">0</span>)</span>
+      </div>
+      <button class="cart-close-btn" onclick="toggleCartDrawer(false)" aria-label="Tutup keranjang">✕</button>
+    </div>
+
+    <div class="cart-drawer-body">
+      <!-- Items Container -->
+      <div id="cartItemsList">
+        <div class="empty-cart-state" id="cartEmptyState">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+            <circle cx="12" cy="16" r="2"></circle>
+          </svg>
+          <p style="font-weight: 600; font-size: 16px; margin-bottom: 6px;">Belum Ada Jadwal Dipilih</p>
+          <p style="font-size: 13px;">Silakan klik slot jam di tabel jadwal untuk memesan lapangan.</p>
+        </div>
+      </div>
+
+      <!-- Add-ons selection (Optional) -->
+      <div class="cart-addons-section" id="cartAddonsWrap" style="display: none;">
+        <div class="addons-title">Produk Tambahan (Opsional)</div>
+        <div class="addon-option-item">
+          <label class="addon-label">
+            <input type="checkbox" id="addonReferee" onchange="updateAddons()">
+            <span>Wasit Resmi PSSI (1 Orang)</span>
+          </label>
+          <span class="addon-price">+Rp 100.000</span>
+        </div>
+        <div class="addon-option-item">
+          <label class="addon-label">
+            <input type="checkbox" id="addonBibs" onchange="updateAddons()">
+            <span>Sewa 2 Set Rompi (14 pcs)</span>
+          </label>
+          <span class="addon-price">+Rp 35.000</span>
+        </div>
+        <div class="addon-option-item">
+          <label class="addon-label">
+            <input type="checkbox" id="addonPhoto" onchange="updateAddons()">
+            <span>Fotografer Match (Semua File Foto)</span>
+          </label>
+          <span class="addon-price">+Rp 150.000</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-drawer-footer" id="cartFooter" style="display: none;">
+      <div class="cart-summary-row">
+        <span>Sewa Lapangan</span>
+        <span id="cartSubtotalText">Rp 0</span>
+      </div>
+      <div class="cart-summary-row">
+        <span>Produk Tambahan</span>
+        <span id="cartAddonsText">Rp 0</span>
+      </div>
+      <div class="cart-summary-row total-row">
+        <span>Total Pembayaran</span>
+        <span class="total-price" id="cartTotalText">Rp 0</span>
+      </div>
+      <button class="btn-checkout" onclick="openCheckoutModal()">Lanjutkan Pemesanan →</button>
+    </div>
+  </aside>
+
+  <!-- ================= AUTH MODAL (MASUK & DAFTAR) ================= -->
+  <div class="modal-overlay" id="authModal" onclick="if(event.target === this) closeAuthModal()">
+    <div class="modal-card">
+      <div class="modal-card-header">
+        <div class="modal-card-title">
+          <h3 id="authModalTitle">Masuk ke Akun</h3>
+          <p id="authModalSubtitle">Masuk untuk melihat riwayat booking &amp; jadwal sparring timmu.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeAuthModal()">✕</button>
+      </div>
+
+      <div class="modal-card-body">
+        <form onsubmit="event.preventDefault(); handleAuthSubmit();">
+          <div class="form-group">
+            <label class="form-label" for="authIdentifier">Nomor WhatsApp atau Email</label>
+            <input class="form-input" id="authIdentifier" type="text" placeholder="0812xxxx atau email@domain.com" required>
+          </div>
+          <div class="form-group" id="authPasswordGroup">
+            <label class="form-label" for="authPassword">Kata Sandi</label>
+            <input class="form-input" id="authPassword" type="password" placeholder="Masukkan kata sandi" required>
+          </div>
+          <button type="submit" class="btn-form-submit" id="btnAuthSubmit">Masuk Sekarang</button>
+        </form>
+
+        <div class="auth-divider">
+          <span>atau</span>
+        </div>
+
+        <button type="button" class="btn-social-auth" onclick="handleGoogleAuth()">
+          <svg width="18" height="18" viewBox="0 0 18 18">
+            <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.616z"/>
+            <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+            <path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.347 2.825.957 4.039l3.007-2.332z"/>
+            <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/>
+          </svg>
+          <span>Lanjutkan dengan Google</span>
+        </button>
+
+        <p style="text-align: center; margin-top: 18px; font-size: 13px; color: var(--text-muted);">
+          <span id="authToggleQuestion">Belum punya akun?</span>
+          <a href="#" id="authToggleLink" onclick="event.preventDefault(); toggleAuthMode();" style="color: var(--primary); font-weight: 700; margin-left: 4px;">Daftar di sini</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= CHECKOUT CONFIRMATION MODAL ================= -->
+  <div class="modal-overlay" id="checkoutModal" onclick="if(event.target === this) closeCheckoutModal()">
+    <div class="modal-card">
+      <div class="modal-card-header">
+        <div class="modal-card-title">
+          <h3>Konfirmasi Pemesanan</h3>
+          <p>Lengkapi data pemesan untuk verifikasi jadwal langsung via WhatsApp.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeCheckoutModal()">✕</button>
+      </div>
+
+      <div class="modal-card-body">
+        <form onsubmit="event.preventDefault(); submitBookingToWhatsApp();">
+          <div class="form-group">
+            <label class="form-label" for="bookName">Nama Lengkap / Kontak PJ *</label>
+            <input class="form-input" id="bookName" type="text" placeholder="Contoh: Budi Santoso" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="bookPhone">Nomor WhatsApp *</label>
+            <input class="form-input" id="bookPhone" type="tel" placeholder="Contoh: 081234567890" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="bookTeam">Nama Tim / Komunitas</label>
+            <input class="form-input" id="bookTeam" type="text" placeholder="Contoh: Garuda Muda FC">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="bookNotes">Catatan Tambahan (Opsional)</label>
+            <input class="form-input" id="bookNotes" type="text" placeholder="Misal: butuh air mineral tambahan">
+          </div>
+
+          <div style="background: var(--bg-page); padding: 14px; border-radius: var(--radius-md); margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 15px;">
+              <span>Total yang dibayar:</span>
+              <span style="color: var(--primary);" id="checkoutTotalDisplay">Rp 0</span>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+              Pemesanan akan langsung diteruskan ke WhatsApp Pengelola Mini Soccer 88 Pusdikif Cimahi.
+            </p>
+          </div>
+
+          <button type="submit" class="btn-form-submit">
+            Kirim Booking via WhatsApp →
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= RICH FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>MINI SOCCER 88 ALPHA SPORT</h4>
+          <p>
+            Venue mini soccer standar internasional di kawasan strategis Pusdikif Kota Cimahi. Tempat berkumpul, berkompetisi, dan membangun kebersamaan komunitas sepak bola.
+          </p>
+          <div class="footer-socials">
+            <a href="https://instagram.com" class="social-icon-btn" aria-label="Instagram">📸</a>
+            <a href="https://facebook.com" class="social-icon-btn" aria-label="Facebook">📘</a>
+            <a href="https://wa.me/6281234567890" class="social-icon-btn" aria-label="WhatsApp">💬</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h5>Aktivitas</h5>
+          <ul class="footer-links">
+            <li><a href="#booking">Sewa Lapangan</a></li>
+            <li><a href="#mabar">Main Bareng (Mabar)</a></li>
+            <li><a href="#sparring">Cari Sparring</a></li>
+            <li><a href="#turnamen">Turnamen &amp; Event</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Fasilitas</h5>
+          <ul class="footer-links">
+            <li><a href="#venue">Rumput Sintetis FIFA</a></li>
+            <li><a href="#venue">Lampu LED Primetime</a></li>
+            <li><a href="#venue">Ruang Ganti &amp; Shower</a></li>
+            <li><a href="#venue">Kantin &amp; Area Parkir</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Lokasi &amp; Kontak</h5>
+          <ul class="footer-links">
+            <li><strong>Alamat:</strong> Komplek Pusdikif, Jl. Cisangkan No. 88, Kota Cimahi</li>
+            <li><strong>Jam Buka:</strong> Setiap Hari, 06.00 - 24.00 WIB</li>
+            <li><strong>WhatsApp:</strong> +62 812-3456-7890</li>
+            <li><a href="https://maps.google.com" target="_blank" style="color: var(--primary); font-weight: 600;">Lihat di Google Maps ↗</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi. All Rights Reserved.</p>
+        <p>Inspirasi Desain &amp; Fitur oleh AYO Indonesia Sport Platform.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
