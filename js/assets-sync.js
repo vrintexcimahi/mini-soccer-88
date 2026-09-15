@@ -7,6 +7,23 @@
   'use strict';
 
   function applyCustomAssets() {
+  // Inject global strict size constraints for logo so it NEVER overflows navbar
+  if (!document.getElementById('ms88-logo-constraint-style')) {
+    const s = document.createElement('style');
+    s.id = 'ms88-logo-constraint-style';
+    s.textContent = `
+      img.ayo-logo, img.ms88-brand-logo, .nav-logo img, .navbar-brand img, header.navbar .navbar-top-row a img, header.navbar a.p-0 img {
+        max-height: 50px !important;
+        max-width: 220px !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
+        display: inline-block !important;
+      }
+    `;
+    document.head.appendChild(s);
+  }
+
     try {
       const raw = localStorage.getItem('ms88_assets');
       if (!raw) return;
@@ -15,8 +32,13 @@
 
       // 1. Logo
       if (assets.logo) {
-        document.querySelectorAll('img.ayo-logo, img[alt*="Ayo Indonesia Logo"], img[alt="Logo"], .navbar-brand img').forEach(el => {
+        document.querySelectorAll('img.ayo-logo, img.ms88-brand-logo, img[alt*="Ayo Indonesia Logo"], img[alt*="Mini Soccer 88"], img[alt="Logo"], .navbar-brand img, .nav-logo img').forEach(el => {
           el.src = assets.logo;
+          el.style.setProperty('max-height', '50px', 'important');
+          el.style.setProperty('max-width', '220px', 'important');
+          el.style.setProperty('width', 'auto', 'important');
+          el.style.setProperty('height', 'auto', 'important');
+          el.style.setProperty('object-fit', 'contain', 'important');
         });
       }
 

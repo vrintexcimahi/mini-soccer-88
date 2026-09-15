@@ -522,7 +522,23 @@
     --ms88-light: #F9FAFB;
     --ms88-border: #E5E7EB;
   }
-  .ms88-brand-logo {
+  
+  .ms88-brand-logo,
+  .ayo-logo,
+  .nav-logo img,
+  .navbar-brand img,
+  header.navbar .navbar-top-row a img,
+  header.navbar a.p-0 img {
+    max-height: 50px !important;
+    max-width: 220px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: inline-block !important;
+    transition: transform 0.2s ease;
+  }
+
+  .ms88-brand-logo-old {
     height: 42px;
     width: auto;
     max-width: 230px;

@@ -24,19 +24,19 @@ const ICON = {
 // Default asset definitions with lay-user friendly labels, guidance & TARGET DIMENSIONS
 // targetW / targetH = exact output resolution after auto-compress. null = aspect-ratio clamp only.
 const DEFAULT_ASSETS = [
-  { key: 'hero_desktop',     label: 'Hero Banner (Desktop)',     def: '/assets/img/ayoindonesia-padel-1.jpg',        hint: 'Foto latar utama desktop • Disarankan 1920×1080 px',  targetW: 1920, targetH: 1080 },
-  { key: 'hero_mobile',      label: 'Hero Banner (HP / Mobile)', def: '/assets/img/ayoindonesia-padel-mobile-1.jpg', hint: 'Foto latar utama ponsel • Disarankan 1080×1920 px',   targetW: 1080, targetH: 1920 },
-  { key: 'logo',             label: 'Logo Utama Website',        def: '/assets/logo/new-new-logo.svg',               hint: 'Format SVG atau PNG transparan',                      targetW: 400,  targetH: null },
-  { key: 'favicon',          label: 'Favicon Tab Browser',       def: '/assets/logos/new-Favicon.png',               hint: 'Ikon kecil tab browser (PNG 32×32 / 64×64 px)',       targetW: 64,   targetH: 64   },
-  { key: 'banner_cta',       label: 'Banner Promo CTA',          def: '/assets/banner/baner.png',                    hint: 'Banner ajakan bermain / promo mini soccer',           targetW: 1200, targetH: 400  },
-  { key: 'banner_1_desktop', label: 'Slider Banner 1',           def: '/assets/banner/1-desktop.png',                hint: 'Banner carousel utama slide 1',                       targetW: 1440, targetH: 560  },
-  { key: 'banner_2_desktop', label: 'Slider Banner 2',           def: '/assets/banner/2-desktop.png',                hint: 'Banner carousel utama slide 2',                       targetW: 1440, targetH: 560  },
-  { key: 'phone_mockup1',    label: 'Mockup Aplikasi Mobile 1',  def: '/assets/img/hp-ayo.png',                      hint: 'Gambar tampilan aplikasi ponsel 1',                   targetW: 480,  targetH: 960  },
-  { key: 'phone_mockup2',    label: 'Mockup Aplikasi Mobile 2',  def: '/assets/img/hp-ayo2.png',                     hint: 'Gambar tampilan aplikasi ponsel 2',                   targetW: 480,  targetH: 960  },
-  { key: 'venue_prev',       label: 'Foto Preview Lapangan',     def: '/assets/img/venue-preview.webp',              hint: 'Foto fasilitas lapangan mini soccer',                 targetW: 960,  targetH: 640  },
-  { key: 'kompetisi1',       label: 'Banner Turnamen 1',         def: '/assets/dummy/new_kompetisi_home1.png',       hint: 'Kartu kompetisi / turnamen 1',                        targetW: 640,  targetH: 480  },
-  { key: 'kompetisi2',       label: 'Banner Turnamen 2',         def: '/assets/dummy/new_kompetisi_home2.png',       hint: 'Kartu kompetisi / turnamen 2',                        targetW: 640,  targetH: 480  },
-  { key: 'kompetisi3',       label: 'Banner Turnamen 3',         def: '/assets/dummy/new_kompetisi_home3.png',       hint: 'Kartu kompetisi / turnamen 3',                        targetW: 640,  targetH: 480  },
+  { key: 'hero_desktop',     label: 'Hero Banner (Desktop)',     def: '/assets/img/ayoindonesia-padel-1.jpg',        hint: 'Foto latar utama desktop • Disarankan 1920×1080 px',  targetW: 1920, targetH: 1080, fit: 'cover'   },
+  { key: 'hero_mobile',      label: 'Hero Banner (HP / Mobile)', def: '/assets/img/ayoindonesia-padel-mobile-1.jpg', hint: 'Foto latar utama ponsel • Disarankan 1080×1920 px',   targetW: 1080, targetH: 1920, fit: 'cover'   },
+  { key: 'logo',             label: 'Logo Utama Website',        def: '/assets/logo/ms88-logo.svg',                  hint: 'Format SVG/PNG transparan • Proporsional max 240×60 px', targetW: 240,  targetH: 60,   fit: 'contain' },
+  { key: 'favicon',          label: 'Favicon Tab Browser',       def: '/assets/logos/new-Favicon.png',               hint: 'Ikon kecil tab browser (PNG 32×32 / 64×64 px)',       targetW: 64,   targetH: 64,   fit: 'contain' },
+  { key: 'banner_cta',       label: 'Banner Promo CTA',          def: '/assets/banner/baner.png',                    hint: 'Banner ajakan bermain • Disarankan 1200×400 px',      targetW: 1200, targetH: 400,  fit: 'cover'   },
+  { key: 'banner_1_desktop', label: 'Slider Banner 1',           def: '/assets/banner/1-desktop.png',                hint: 'Banner carousel utama slide 1 • 1440×560 px',        targetW: 1440, targetH: 560,  fit: 'cover'   },
+  { key: 'banner_2_desktop', label: 'Slider Banner 2',           def: '/assets/banner/2-desktop.png',                hint: 'Banner carousel utama slide 2 • 1440×560 px',        targetW: 1440, targetH: 560,  fit: 'cover'   },
+  { key: 'phone_mockup1',    label: 'Mockup Aplikasi Mobile 1',  def: '/assets/img/hp-ayo.png',                      hint: 'Gambar tampilan aplikasi ponsel 1 • 480×960 px',      targetW: 480,  targetH: 960,  fit: 'contain' },
+  { key: 'phone_mockup2',    label: 'Mockup Aplikasi Mobile 2',  def: '/assets/img/hp-ayo2.png',                     hint: 'Gambar tampilan aplikasi ponsel 2 • 480×960 px',      targetW: 480,  targetH: 960,  fit: 'contain' },
+  { key: 'venue_prev',       label: 'Foto Preview Lapangan',     def: '/assets/img/venue-preview.webp',              hint: 'Foto fasilitas lapangan mini soccer • 960×640 px',   targetW: 960,  targetH: 640,  fit: 'cover'   },
+  { key: 'kompetisi1',       label: 'Banner Turnamen 1',         def: '/assets/dummy/new_kompetisi_home1.png',       hint: 'Kartu kompetisi / turnamen 1 • 640×480 px',           targetW: 640,  targetH: 480,  fit: 'cover'   },
+  { key: 'kompetisi2',       label: 'Banner Turnamen 2',         def: '/assets/dummy/new_kompetisi_home2.png',       hint: 'Kartu kompetisi / turnamen 2 • 640×480 px',           targetW: 640,  targetH: 480,  fit: 'cover'   },
+  { key: 'kompetisi3',       label: 'Banner Turnamen 3',         def: '/assets/dummy/new_kompetisi_home3.png',       hint: 'Kartu kompetisi / turnamen 3 • 640×480 px',           targetW: 640,  targetH: 480,  fit: 'cover'   },
 ];
 
 // --- Init ---
@@ -496,7 +496,7 @@ function renderAssets() {
     const isCustom = Boolean(saved[a.key]);
     const imgSrc = saved[a.key] || a.def;
     return `
-      <div class="asset-card ${isCustom ? 'is-custom' : ''}" id="assetCard_${a.key}"
+      <div class="asset-card ${isCustom ? 'is-custom' : ''}" id="assetCard_${a.key}" data-key="${a.key}"
            ondragover="handleAssetDragOver(event, this)"
            ondragleave="handleAssetDragLeave(event, this)"
            ondrop="handleAssetDrop(event, '${a.key}', this)">
@@ -517,6 +517,7 @@ function renderAssets() {
         <div class="asset-details">
           <div class="asset-title-row">
             <span class="asset-name">${a.label}</span>
+            <span style="font-size:10.5px;padding:2px 7px;border-radius:4px;background:#f3f4f6;color:#6b7280;font-weight:600;margin-left:auto;">${a.targetW ? (a.targetW + (a.targetH ? '×' + a.targetH : '') + ' px') : 'Auto'}</span>
           </div>
           <p class="asset-hint">${a.hint}</p>
 
@@ -554,73 +555,117 @@ function triggerAssetUpload(key) {
 //  Always downscales oversized images; upscales undersized images to target.
 // =========================================================
 function autoCompressImage(img, assetMeta, mimeType, onDone) {
-  const origW = img.width;
-  const origH = img.height;
+  const origW = img.naturalWidth || img.width;
+  const origH = img.naturalHeight || img.height;
   const tW = assetMeta && assetMeta.targetW ? assetMeta.targetW : null;
   const tH = assetMeta && assetMeta.targetH ? assetMeta.targetH : null;
-  const MAX_SAFE = 1600; // fallback max dimension
+  const fitMode = (assetMeta && assetMeta.fit) ? assetMeta.fit : 'cover';
+  const isLogo = assetMeta && assetMeta.key === 'logo';
+  const isFavicon = assetMeta && assetMeta.key === 'favicon';
+  const isContain = fitMode === 'contain' || isLogo || isFavicon;
 
-  let canvasW, canvasH, sx, sy, sw, sh;
+  let canvasW, canvasH;
+  let sx = 0, sy = 0, sw = origW, sh = origH;
+  let dx = 0, dy = 0, dw, dh;
 
-  if (tW && tH) {
-    // Cover-fit: scale source to fill tW×tH, then crop center
+  if (isContain) {
+    // Proportional fit: never crop, maintain exact original aspect ratio inside bounding box
+    const maxW = tW || (isLogo ? 240 : 400);
+    const maxH = tH || (isLogo ? 60 : 400);
+    const scale = Math.min(maxW / origW, maxH / origH, 1);
+    canvasW = Math.max(1, Math.round(origW * scale));
+    canvasH = Math.max(1, Math.round(origH * scale));
+    dw = canvasW;
+    dh = canvasH;
+  } else if (tW && tH) {
+    // Cover-fit: scale source to fill exact target box, center-crop excess
     canvasW = tW;
     canvasH = tH;
     const scaleX = tW / origW;
     const scaleY = tH / origH;
-    const scale  = Math.max(scaleX, scaleY); // cover (never letterbox)
+    const scale  = Math.max(scaleX, scaleY);
     sw = Math.round(tW / scale);
     sh = Math.round(tH / scale);
     sx = Math.round((origW - sw) / 2);
     sy = Math.round((origH - sh) / 2);
+    dw = canvasW;
+    dh = canvasH;
   } else if (tW) {
-    // Proportional clamp to width target (upscale or downscale)
+    // Proportional clamp to width target
+    const scale = tW / origW;
     canvasW = tW;
-    canvasH = Math.round((origH / origW) * tW);
-    sx = 0; sy = 0; sw = origW; sh = origH;
+    canvasH = Math.round(origH * scale);
+    dw = canvasW;
+    dh = canvasH;
   } else {
-    // No specific target: only downscale if larger than MAX_SAFE
-    let w = origW, h = origH;
-    if (w > MAX_SAFE || h > MAX_SAFE) {
-      if (w > h) { h = Math.round((h * MAX_SAFE) / w); w = MAX_SAFE; }
-      else        { w = Math.round((w * MAX_SAFE) / h); h = MAX_SAFE; }
+    // Fallback safe clamp
+    const MAX_SAFE = 1600;
+    let scale = 1;
+    if (origW > MAX_SAFE || origH > MAX_SAFE) {
+      scale = Math.min(MAX_SAFE / origW, MAX_SAFE / origH);
     }
-    canvasW = w; canvasH = h;
-    sx = 0; sy = 0; sw = origW; sh = origH;
+    canvasW = Math.round(origW * scale);
+    canvasH = Math.round(origH * scale);
+    dw = canvasW;
+    dh = canvasH;
   }
 
   const canvas = document.createElement('canvas');
   canvas.width  = canvasW;
   canvas.height = canvasH;
   const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
 
-  // Sharp lanczos-like via repeated halving for large downscales
+  const isTransparent = isLogo || isFavicon || mimeType === 'image/png' || mimeType === 'image/webp';
+  if (!isTransparent) {
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, canvasW, canvasH);
+  }
+
+  // Multi-step downsampling for sharpness
   if (origW / canvasW > 2 || origH / canvasH > 2) {
-    // Step-down: halve until within 2× of target
-    let tmpW = origW, tmpH = origH;
+    let tmpW = sw, tmpH = sh;
     let tmpCanvas = document.createElement('canvas');
     let tmpCtx = tmpCanvas.getContext('2d');
-    tmpCanvas.width  = origW;
-    tmpCanvas.height = origH;
-    tmpCtx.drawImage(img, sx, sy, sw, sh, 0, 0, origW, origH);
+    tmpCanvas.width  = sw;
+    tmpCanvas.height = sh;
+    tmpCtx.imageSmoothingEnabled = true;
+    tmpCtx.imageSmoothingQuality = 'high';
+    tmpCtx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+
     while (tmpW / canvasW > 2 || tmpH / canvasH > 2) {
       const nw = Math.max(Math.round(tmpW / 2), canvasW);
       const nh = Math.max(Math.round(tmpH / 2), canvasH);
       const step = document.createElement('canvas');
       step.width = nw; step.height = nh;
-      step.getContext('2d').drawImage(tmpCanvas, 0, 0, nw, nh);
-      tmpCanvas = step; tmpCtx = step.getContext('2d');
+      const sCtx = step.getContext('2d');
+      sCtx.imageSmoothingEnabled = true;
+      sCtx.imageSmoothingQuality = 'high';
+      sCtx.drawImage(tmpCanvas, 0, 0, nw, nh);
+      tmpCanvas = step;
       tmpW = nw; tmpH = nh;
     }
     ctx.drawImage(tmpCanvas, 0, 0, canvasW, canvasH);
   } else {
-    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvasW, canvasH);
+    ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
   }
 
-  // Quality: JPEG 0.88 for banners, 0.82 for small thumbnails, PNG otherwise
-  const outType = mimeType === 'image/png' ? 'image/png' : 'image/jpeg';
-  const quality = outType === 'image/jpeg' ? (canvasW >= 1000 ? 0.88 : 0.82) : undefined;
-  const dataUrl = canvas.toDataURL(outType, quality);
+  const outType = isTransparent ? 'image/png' : 'image/jpeg';
+  const quality = isTransparent ? undefined : (canvasW >= 1200 ? 0.84 : 0.80);
+  let dataUrl = canvas.toDataURL(outType, quality);
+
+  // If PNG is over 500KB and not a logo/favicon, convert to JPEG to protect LocalStorage quota
+  if (outType === 'image/png' && dataUrl.length > 550000 && !isLogo && !isFavicon) {
+    const bgCanvas = document.createElement('canvas');
+    bgCanvas.width = canvasW;
+    bgCanvas.height = canvasH;
+    const bgCtx = bgCanvas.getContext('2d');
+    bgCtx.fillStyle = '#FFFFFF';
+    bgCtx.fillRect(0, 0, canvasW, canvasH);
+    bgCtx.drawImage(canvas, 0, 0);
+    dataUrl = bgCanvas.toDataURL('image/jpeg', 0.82);
+  }
 
   onDone(dataUrl, { origW, origH, outW: canvasW, outH: canvasH });
 }

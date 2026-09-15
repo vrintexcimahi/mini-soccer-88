@@ -772,6 +772,16 @@ textarea.form-input { resize: vertical; min-height: 80px; }
   justify-content: center;
 }
 
+
+/* Fix logo & mockup preview cards: contain image and prevent text clipping */
+.asset-card[data-key="logo"] .asset-img,
+.asset-card[data-key="favicon"] .asset-img,
+.asset-card[data-key*="mockup"] .asset-img {
+  object-fit: contain !important;
+  padding: 10px;
+  background: #0f172a;
+}
+
 .asset-preview-wrap .asset-img {
   max-width: 100%;
   max-height: 100%;
@@ -781,7 +791,17 @@ textarea.form-input { resize: vertical; min-height: 80px; }
   transition: transform 0.25s ease;
 }
 
-.asset-card:hover .asset-preview-wrap .asset-img {
+.asset-card:hover 
+/* Fix logo & mockup preview cards: contain image and prevent text clipping */
+.asset-card[data-key="logo"] .asset-img,
+.asset-card[data-key="favicon"] .asset-img,
+.asset-card[data-key*="mockup"] .asset-img {
+  object-fit: contain !important;
+  padding: 10px;
+  background: #0f172a;
+}
+
+.asset-preview-wrap .asset-img {
   transform: scale(1.03);
 }
 
