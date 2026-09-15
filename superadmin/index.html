@@ -343,17 +343,22 @@
 
   <!-- === ASSETS TAB === -->
   <section class="tab-panel" id="tabAssets">
-    <div class="panel-header">
-      <h2>Pengaturan Aset &amp; Media</h2>
-      <p>Update URL gambar untuk setiap bagian website</p>
+    <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h2>Pengaturan Gambar &amp; Aset Website</h2>
+        <p>Cukup klik tombol <strong>Upload Gambar</strong> pada bagian yang ingin diganti. Perubahan langsung tersimpan dan aktif.</p>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <button class="btn btn-outline" style="font-size:13px;padding:8px 14px;" onclick="resetAssets()">↺ Reset Semua ke Bawaan</button>
+        <a href="../" target="_blank" class="btn btn-primary" style="font-size:13px;padding:8px 14px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">👁 Lihat Website</a>
+      </div>
     </div>
     <div class="card">
-      <div class="card-head"><h3>Manajemen Aset Website</h3></div>
+      <div class="card-head">
+        <h3>Galeri Target Gambar Website</h3>
+      </div>
       <div class="card-body">
-        <p style="font-size:13px;color:#888;margin-bottom:20px;">Ganti URL/path gambar yang tampil di homepage. Kosongkan untuk pakai aset default.</p>
         <div class="assets-grid" id="assetsGrid"></div>
-        <button class="btn btn-primary" style="margin-top:20px;" onclick="saveAssets()">💾 Simpan Semua Aset</button>
-        <button class="btn btn-outline" style="margin-top:20px;margin-left:12px;" onclick="resetAssets()">↺ Reset ke Default</button>
       </div>
     </div>
   </section>

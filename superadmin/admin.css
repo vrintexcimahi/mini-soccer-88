@@ -719,36 +719,215 @@ textarea.form-input { resize: vertical; min-height: 80px; }
 .blog-actions { display: flex; flex-direction: column; gap: 4px; }
 
 /* =========================================================
-   ASSETS GRID
+   ASSETS MANAGEMENT (USER-FRIENDLY & INSTANT UPLOAD)
    ========================================================= */
 .assets-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 20px;
 }
-.asset-item {
-  background: #fafafa;
+
+.asset-card {
+  background: #ffffff;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: 12px;
   overflow: hidden;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  position: relative;
 }
-.asset-preview {
-  height: 120px;
-  background: #eee;
+
+.asset-card:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.07);
+}
+
+.asset-card.is-custom {
+  border-color: #10b981;
+}
+
+.asset-card.drag-over {
+  border: 2px dashed var(--primary);
+  background: #fff8f8;
+  transform: scale(1.01);
+}
+
+.asset-preview-wrap {
+  position: relative;
+  height: 145px;
+  background: #f8fafc;
+  background-image: 
+    linear-gradient(45deg, #f1f5f9 25%, transparent 25%), 
+    linear-gradient(-45deg, #f1f5f9 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #f1f5f9 75%), 
+    linear-gradient(-45deg, transparent 75%, #f1f5f9 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+  cursor: pointer;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
-.asset-preview img {
+
+.asset-preview-wrap .asset-img {
+  max-width: 100%;
+  max-height: 100%;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.25s ease;
 }
-.asset-info {
-  padding: 12px;
+
+.asset-card:hover .asset-preview-wrap .asset-img {
+  transform: scale(1.03);
 }
-.asset-input { margin-top: 6px; }
+
+.asset-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  backdrop-filter: blur(4px);
+  z-index: 2;
+  letter-spacing: 0.2px;
+}
+
+.asset-badge.badge-default {
+  background: rgba(17, 24, 39, 0.72);
+  color: #f9fafb;
+}
+
+.asset-badge.badge-custom {
+  background: rgba(16, 185, 129, 0.95);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(16,185,129,0.3);
+}
+
+.asset-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 3;
+}
+
+.asset-preview-wrap:hover .asset-overlay {
+  opacity: 1;
+}
+
+.overlay-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  padding: 0 12px;
+}
+
+.overlay-content svg {
+  width: 22px;
+  height: 22px;
+  opacity: 0.95;
+}
+
+.asset-details {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: #ffffff;
+}
+
+.asset-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.asset-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.asset-hint {
+  font-size: 11.5px;
+  color: #6b7280;
+  margin-bottom: 14px;
+  line-height: 1.45;
+  flex: 1;
+}
+
+.asset-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.btn-upload-direct {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: #9E0620;
+  color: #ffffff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn-upload-direct:hover {
+  background: #b70826;
+}
+
+.btn-upload-direct:active {
+  transform: scale(0.98);
+}
+
+.btn-reset-direct {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: #ffffff;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  padding: 8px 11px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-reset-direct:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
 
 /* =========================================================
    TOAST

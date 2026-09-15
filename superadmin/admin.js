@@ -16,24 +16,26 @@ const ICON = {
   pin:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>',
   clock:    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
   image:    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>',
+  upload:   '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>',
+  rotate:   '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>',
   settings: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>',
 };
 
-// Default asset definitions
+// Default asset definitions with lay-user friendly labels & guidance
 const DEFAULT_ASSETS = [
-  { key: 'hero_desktop', label: 'Hero Background (Desktop)', def: '../assets/img/ayoindonesia-padel-1.jpg' },
-  { key: 'hero_mobile',  label: 'Hero Background (Mobile)',  def: '../assets/img/ayoindonesia-padel-mobile-1.jpg' },
-  { key: 'logo',         label: 'Logo Utama (SVG)',          def: '../assets/logo/new-new-logo.svg' },
-  { key: 'favicon',      label: 'Favicon',                   def: '../assets/logos/new-Favicon.png' },
-  { key: 'banner_cta',   label: 'Banner CTA (baner.png)',    def: '../assets/banner/baner.png' },
-  { key: 'banner_1_desktop', label: 'Slider Banner 1 Desktop', def: '../assets/banner/1-desktop.png' },
-  { key: 'banner_2_desktop', label: 'Slider Banner 2 Desktop', def: '../assets/banner/2-desktop.png' },
-  { key: 'phone_mockup1',label: 'Phone Mockup 1 (hp-ayo)',   def: '../assets/img/hp-ayo.png' },
-  { key: 'phone_mockup2',label: 'Phone Mockup 2 (hp-ayo2)',  def: '../assets/img/hp-ayo2.png' },
-  { key: 'venue_prev',   label: 'Venue Preview',             def: '../assets/img/venue-preview.webp' },
-  { key: 'kompetisi1',   label: 'Kompetisi Card 1',          def: '../assets/dummy/new_kompetisi_home1.png' },
-  { key: 'kompetisi2',   label: 'Kompetisi Card 2',          def: '../assets/dummy/new_kompetisi_home2.png' },
-  { key: 'kompetisi3',   label: 'Kompetisi Card 3',          def: '../assets/dummy/new_kompetisi_home3.png' },
+  { key: 'hero_desktop',     label: 'Hero Banner (Desktop)',     def: '../assets/img/ayoindonesia-padel-1.jpg',        hint: 'Foto latar utama desktop • Disarankan 1920×1080 px' },
+  { key: 'hero_mobile',      label: 'Hero Banner (HP / Mobile)', def: '../assets/img/ayoindonesia-padel-mobile-1.jpg', hint: 'Foto latar utama ponsel • Disarankan 1080×1920 px' },
+  { key: 'logo',             label: 'Logo Utama Website',        def: '../assets/logo/new-new-logo.svg',               hint: 'Format SVG atau PNG transparan' },
+  { key: 'favicon',          label: 'Favicon Tab Browser',       def: '../assets/logos/new-Favicon.png',               hint: 'Ikon kecil tab browser (PNG 32×32 / 64×64 px)' },
+  { key: 'banner_cta',       label: 'Banner Promo CTA',          def: '../assets/banner/baner.png',                    hint: 'Banner ajakan bermain / promo mini soccer' },
+  { key: 'banner_1_desktop', label: 'Slider Banner 1',           def: '../assets/banner/1-desktop.png',                hint: 'Banner carousel utama slide 1' },
+  { key: 'banner_2_desktop', label: 'Slider Banner 2',           def: '../assets/banner/2-desktop.png',                hint: 'Banner carousel utama slide 2' },
+  { key: 'phone_mockup1',    label: 'Mockup Aplikasi Mobile 1',  def: '../assets/img/hp-ayo.png',                      hint: 'Gambar tampilan aplikasi ponsel 1' },
+  { key: 'phone_mockup2',    label: 'Mockup Aplikasi Mobile 2',  def: '../assets/img/hp-ayo2.png',                     hint: 'Gambar tampilan aplikasi ponsel 2' },
+  { key: 'venue_prev',       label: 'Foto Preview Lapangan',     def: '../assets/img/venue-preview.webp',              hint: 'Foto fasilitas lapangan mini soccer' },
+  { key: 'kompetisi1',       label: 'Banner Turnamen 1',         def: '../assets/dummy/new_kompetisi_home1.png',       hint: 'Kartu kompetisi / turnamen 1' },
+  { key: 'kompetisi2',       label: 'Banner Turnamen 2',         def: '../assets/dummy/new_kompetisi_home2.png',       hint: 'Kartu kompetisi / turnamen 2' },
+  { key: 'kompetisi3',       label: 'Banner Turnamen 3',         def: '../assets/dummy/new_kompetisi_home3.png',       hint: 'Kartu kompetisi / turnamen 3' },
 ];
 
 // --- Init ---
@@ -482,45 +484,175 @@ function clearBlogForm() {
 }
 
 // =========================================================
-//  ASSETS
+//  ASSETS (LAYMAN-FRIENDLY & INSTANT UPLOAD)
 // =========================================================
 function renderAssets() {
   const saved = getLS('ms88_assets', {});
   const grid = document.getElementById('assetsGrid');
   if (!grid) return;
 
-  grid.innerHTML = DEFAULT_ASSETS.map(a => `
-    <div class="asset-item">
-      <div class="asset-preview">
-        <img src="${saved[a.key] || a.def}" alt="${a.label}" onerror="this.style.display='none'">
-        <div class="asset-preview-icon" style="display:none;">${ICON.image}</div>
+  grid.innerHTML = DEFAULT_ASSETS.map(a => {
+    const isCustom = Boolean(saved[a.key]);
+    const imgSrc = saved[a.key] || a.def;
+    return `
+      <div class="asset-card ${isCustom ? 'is-custom' : ''}" id="assetCard_${a.key}"
+           ondragover="handleAssetDragOver(event, this)"
+           ondragleave="handleAssetDragLeave(event, this)"
+           ondrop="handleAssetDrop(event, '${a.key}', this)">
+        
+        <div class="asset-preview-wrap" onclick="triggerAssetUpload('${a.key}')" title="Klik untuk upload gambar baru">
+          <img src="${imgSrc}" alt="${a.label}" class="asset-img" id="imgPrev_${a.key}" onerror="this.src='../assets/dummy/bola.png'">
+          <div class="asset-badge ${isCustom ? 'badge-custom' : 'badge-default'}">
+            ${isCustom ? (ICON.check + ' Gambar Kustom') : 'Bawaan'}
+          </div>
+          <div class="asset-overlay">
+            <div class="overlay-content">
+              ${ICON.upload}
+              <span>Klik / Drag Gambar ke Sini</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="asset-details">
+          <div class="asset-title-row">
+            <span class="asset-name">${a.label}</span>
+          </div>
+          <p class="asset-hint">${a.hint}</p>
+
+          <div class="asset-actions">
+            <button type="button" class="btn-upload-direct" onclick="triggerAssetUpload('${a.key}')">
+              ${ICON.upload} Upload Gambar
+            </button>
+            <input type="file" id="assetFile_${a.key}" accept="image/*" style="display:none;" onchange="uploadAssetFile('${a.key}', this)">
+            ${isCustom ? `
+              <button type="button" class="btn-reset-direct" onclick="resetSingleAsset('${a.key}')" title="Kembalikan ke gambar asli bawaan">
+                ${ICON.rotate} Reset
+              </button>
+            ` : ''}
+          </div>
+        </div>
       </div>
-      <div class="asset-info">
-        <label class="form-label">${ICON.image} ${a.label}</label>
-        <input type="text" class="form-input asset-input" id="asset_${a.key}"
-               value="${saved[a.key] || ''}" placeholder="${a.def}">
-        <small style="color:#888;font-size:11px;">Default: ${a.def}</small>
-      </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
-function saveAssets() {
-  const saved = {};
-  DEFAULT_ASSETS.forEach(a => {
-    const val = document.getElementById('asset_' + a.key)?.value.trim();
-    if (val) saved[a.key] = val;
-  });
+function triggerAssetUpload(key) {
+  const input = document.getElementById('assetFile_' + key);
+  if (input) {
+    input.value = '';
+    input.click();
+  }
+}
+
+function uploadAssetFile(key, input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith('image/')) {
+    toast('Harap pilih file gambar (JPG, PNG, WebP, SVG)', 'error');
+    return;
+  }
+
+  const assetMeta = DEFAULT_ASSETS.find(a => a.key === key);
+  const label = assetMeta ? assetMeta.label : 'Gambar';
+
+  // If SVG or very small (< 150KB), read directly as DataURL
+  if (file.type === 'image/svg+xml' || file.size < 150 * 1024) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      saveSingleAsset(key, e.target.result, label);
+    };
+    reader.readAsDataURL(file);
+    return;
+  }
+
+  // Optimize & resize via canvas to keep localStorage fast and prevent quota errors
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      const MAX_DIM = 1600;
+
+      if (width > MAX_DIM || height > MAX_DIM) {
+        if (width > height) {
+          height = Math.round((height * MAX_DIM) / width);
+          width = MAX_DIM;
+        } else {
+          width = Math.round((width * MAX_DIM) / height);
+          height = MAX_DIM;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const outType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+      const quality = outType === 'image/jpeg' ? 0.85 : undefined;
+      const dataUrl = canvas.toDataURL(outType, quality);
+
+      saveSingleAsset(key, dataUrl, label);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveSingleAsset(key, dataUrl, label) {
+  try {
+    const saved = getLS('ms88_assets', {});
+    saved[key] = dataUrl;
+    setLS('ms88_assets', saved);
+    renderAssets();
+    toast(label + ' berhasil diunggah & tersimpan! ✓');
+  } catch (err) {
+    console.error(err);
+    toast('Gagal menyimpan: kapasitas penyimpanan penuh. Coba pilih foto dengan ukuran lebih ringkas.', 'error');
+  }
+}
+
+function resetSingleAsset(key) {
+  const assetMeta = DEFAULT_ASSETS.find(a => a.key === key);
+  const label = assetMeta ? assetMeta.label : 'gambar';
+  if (!confirm('Kembalikan "' + label + '" ke gambar bawaan asli?')) return;
+  const saved = getLS('ms88_assets', {});
+  delete saved[key];
   setLS('ms88_assets', saved);
   renderAssets();
-  toast('Aset disimpan ✓');
+  toast(label + ' dikembalikan ke bawaan ✓');
 }
 
 function resetAssets() {
-  if (!confirm('Reset semua aset ke default?')) return;
+  if (!confirm('Kembalikan SEMUA gambar aset ke gambar bawaan default?')) return;
   localStorage.removeItem('ms88_assets');
   renderAssets();
-  toast('Aset direset ke default');
+  toast('Semua gambar aset dikembalikan ke default ✓');
+}
+
+function saveAssets() {
+  toast('Semua gambar aset sudah otomatis tersimpan! ✓');
+}
+
+function handleAssetDragOver(e, card) {
+  e.preventDefault();
+  card.classList.add('drag-over');
+}
+
+function handleAssetDragLeave(e, card) {
+  e.preventDefault();
+  card.classList.remove('drag-over');
+}
+
+function handleAssetDrop(e, key, card) {
+  e.preventDefault();
+  card.classList.remove('drag-over');
+  if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+    uploadAssetFile(key, { files: e.dataTransfer.files });
+  }
 }
 
 // =========================================================
