@@ -132,6 +132,7 @@
         <a href="/kontak.html">Kontak</a>
         <a href="/partner.html">Partner</a>
       </div>
+      <div id="ms88LocationBar" class="ms88-location-bar" onclick="GeoMS88.showModal()" style="cursor:pointer;"><span class="geo-pin">📍</span><span class="geo-placeholder">Deteksi Lokasi</span></div>
       <a href="/" class="nav-back">← Kembali ke Beranda</a>
     </nav>
   </header>
@@ -199,5 +200,7 @@
     e.target.reset();
   }
 </script>
+<script src="/js/geo.js"></script>
+<script>GeoMS88.init();</script>
 </body>
 </html>

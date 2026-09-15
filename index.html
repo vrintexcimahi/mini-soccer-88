@@ -692,6 +692,9 @@
         <div class="navbar-top-row d-flex align-items-center justify-content-between">
             <a class="p-0" href="http://localhost:8888">
                 <img class="mr-3 ayo-logo"  src="assets/logo/new-new-logo.svg" alt="Ayo Indonesia Logo" style="margin-top:3px">
+        <div id="ms88LocationBar" class="ms88-location-bar" onclick="GeoMS88.showModal()" style="margin-left:16px;cursor:pointer;">
+          <span class="geo-pin">📍</span><span class="geo-placeholder">Deteksi Lokasi</span>
+        </div>
             </a>
             <div class="d-flex flex-row align-items-center cart-mobile-icon d-xl-none">
              <a href="#" class="cart-icon-mobile venue-cart-view-btn">
@@ -1290,7 +1293,8 @@ object-fit:cover; object-position: center center;" fetchpriority="high">
                     <div class="col-auto py-2 s12-500 px-3 penyewa ml-2 rounded-pill pointer s12-500" style="letter-spacing: 1px;">PENYEWA
                     </div>
                 </div>
-                <h2 class="venue-title">Kelola venue lebih praktis dan menguntungkan. </h2>
+                <h2 class="venue-title">Kelola venue lebih praktis dan menguntungkan.
+                    <span id="ms88VenueDistance" style="margin-left:12px;vertical-align:middle;">📍 Mendeteksi jarak...</span> </h2>
 
                 <h3 class="venue-text mb-4">Waktunya buat venue anda lebih dari sekadar venue. Semuanya dimulai dengan pengelolaan yang simpel, fleksibel, dan profitable lewat AYO Venue Management.</h3>
             <div class="my-4">
@@ -3473,5 +3477,7 @@ $('#myModal').on('hide.bs.modal', function (e) {
 
 <a href="https://ayo.co.id/internal/venues-export" style="display:none" aria-hidden="true" tabindex="-1" rel="nofollow">venues export</a>
 
+<script src="js/geo.js"></script>
+<script>GeoMS88.init();</script>
 </body>
 </html>
