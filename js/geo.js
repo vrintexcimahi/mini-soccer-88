@@ -90,7 +90,7 @@
           localStorage.removeItem(LS_DENY);
           if (overlay) overlay.classList.remove('active');
           updateAllLocationDisplays(data);
-          showToast('📍 Lokasi terdeteksi: ' + cityName);
+          showToast('Lokasi terdeteksi: ' + cityName);
           if (opts && opts.onLocation) opts.onLocation(data);
         });
       },
@@ -180,10 +180,11 @@
 
     // Update location bar if present
     const locBar = document.getElementById('ms88LocationBar');
+    const pinSvg = '<svg class="geo-pin-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>';
     if (locBar) {
       locBar.innerHTML = data
-        ? `<span class="geo-pin">📍</span><span class="geo-city">${data.city}</span><button class="geo-clear" onclick="GeoMS88.clearLocation()" title="Hapus Lokasi">✕</button>`
-        : `<span class="geo-pin">📍</span><span class="geo-placeholder">Pilih Lokasi</span><button class="geo-detect-btn" onclick="GeoMS88.showModal()">Deteksi Otomatis</button>`;
+        ? `<span class="geo-pin">${pinSvg}</span><span class="geo-city">${data.city}</span><button class="geo-clear" onclick="GeoMS88.clearLocation()" title="Hapus Lokasi">✕</button>`
+        : `<span class="geo-pin">${pinSvg}</span><span class="geo-placeholder">Pilih Lokasi</span><button class="geo-detect-btn" onclick="GeoMS88.showModal()">Deteksi Otomatis</button>`;
     }
 
     // Update distance badge if venue distance element exists
@@ -191,9 +192,7 @@
     if (distEl && data) {
       const dist = getDistance();
       if (dist !== null) {
-        distEl.textContent = dist < 1
-          ? `${Math.round(dist * 1000)} m dari lokasi Anda`
-          : `${dist.toFixed(1)} km dari lokasi Anda`;
+        distEl.innerHTML = `${pinSvg} <span>${dist < 1 ? Math.round(dist * 1000) + ' m dari lokasi Anda' : dist.toFixed(1) + ' km dari lokasi Anda'}</span>`;
         distEl.style.display = 'inline-flex';
       }
     }
@@ -209,7 +208,10 @@
       <div class="ms88-geo-modal" role="dialog" aria-modal="true" aria-labelledby="ms88GeoTitle">
         <button class="ms88-geo-close" id="ms88GeoClose" aria-label="Tutup">✕</button>
         <div class="ms88-geo-icon-wrap">
-          <div class="ms88-geo-icon">📍</div>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
         </div>
         <h2 id="ms88GeoTitle" class="ms88-geo-title">Aktifkan lokasi kamu?</h2>
         <p class="ms88-geo-desc">
@@ -285,12 +287,15 @@
       }
       .ms88-geo-close:hover { background: #e5e7eb; }
       .ms88-geo-icon-wrap {
-        width: 72px; height: 72px;
-        background: linear-gradient(135deg, #fce7e7, #ffdde0);
+        width: 64px; height: 64px;
+        background: rgba(158, 6, 32, 0.08);
         border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
         margin: 0 auto 20px;
-        font-size: 32px;
+        color: #9E0620;
+      }
+      .ms88-geo-icon-wrap svg {
+        width: 32px; height: 32px;
       }
       .ms88-geo-title {
         font-size: 20px; font-weight: 700;
@@ -305,14 +310,14 @@
       .ms88-geo-btn-primary {
         display: block; width: 100%;
         padding: 14px;
-        background: linear-gradient(135deg, #9E0620, #dc2643);
+        background: #9E0620;
         color: #fff; border: none; border-radius: 12px;
         font-family: 'Rubik', sans-serif; font-size: 15px; font-weight: 600;
         cursor: pointer; margin-bottom: 10px;
-        transition: opacity 0.18s, transform 0.18s;
-        box-shadow: 0 4px 14px rgba(158,6,32,0.35);
+        transition: background 0.18s, transform 0.18s;
+        box-shadow: 0 4px 14px rgba(158,6,32,0.3);
       }
-      .ms88-geo-btn-primary:hover { opacity: 0.92; transform: translateY(-1px); }
+      .ms88-geo-btn-primary:hover { background: #b70826; transform: translateY(-1px); }
       .ms88-geo-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
       .ms88-geo-btn-secondary {
         display: block; width: 100%;
@@ -334,34 +339,36 @@
       .ms88-location-bar {
         display: inline-flex; align-items: center; gap: 8px;
         background: #fff; border: 1.5px solid #e5e7eb;
-        border-radius: 100px; padding: 8px 14px;
-        font-size: 14px; color: #374151; font-weight: 500;
+        border-radius: 100px; padding: 7px 14px;
+        font-size: 13.5px; color: #374151; font-weight: 500;
         cursor: pointer; transition: border-color 0.18s, box-shadow 0.18s;
         font-family: 'Rubik', sans-serif;
       }
-      .ms88-location-bar:hover { border-color: #9E0620; box-shadow: 0 0 0 3px rgba(158,6,32,0.1); }
-      .geo-pin { font-size: 16px; }
+      .ms88-location-bar:hover { border-color: #9E0620; box-shadow: 0 0 0 3px rgba(158,6,32,0.08); }
+      .geo-pin { display: inline-flex; align-items: center; color: #9E0620; }
+      .geo-pin-svg { flex-shrink: 0; color: #9E0620; }
       .geo-city { font-weight: 600; color: #9E0620; }
-      .geo-placeholder { color: #9ca3af; }
+      .geo-placeholder { color: #6b7280; font-size: 13px; }
       .geo-clear {
         background: none; border: none; cursor: pointer;
         color: #9ca3af; font-size: 13px; padding: 0 0 0 4px;
         transition: color 0.18s;
+        display: inline-flex; align-items: center;
       }
       .geo-clear:hover { color: #ef4444; }
       .geo-detect-btn {
-        background: #fce7e7; color: #9E0620; border: none;
+        background: rgba(158, 6, 32, 0.08); color: #9E0620; border: none;
         border-radius: 100px; padding: 4px 10px; font-size: 12px;
         font-weight: 600; cursor: pointer; font-family: 'Rubik', sans-serif;
         transition: background 0.18s;
       }
-      .geo-detect-btn:hover { background: #fecdd3; }
+      .geo-detect-btn:hover { background: rgba(158, 6, 32, 0.15); }
 
       /* Venue distance badge */
       #ms88VenueDistance {
         display: none;
         align-items: center; gap: 6px;
-        background: #fce7e7; color: #9E0620;
+        background: rgba(158, 6, 32, 0.08); color: #9E0620;
         border-radius: 100px; padding: 6px 14px;
         font-size: 13px; font-weight: 600;
         font-family: 'Rubik', sans-serif;

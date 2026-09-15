@@ -736,7 +736,7 @@ function renderPricing() {
             <td>${p.lapangan}</td>
             <td>${p.sesi}</td>
             <td>${fmtRp(p.harga)}</td>
-            <td><button class="btn-icon btn-red" onclick="deletePricing(${i})">🗑</button></td>
+            <td><button class="btn-icon btn-red" onclick="deletePricing(${i})">${ICON.trash}</button></td>
           </tr>
         `).join('')}
       </tbody>

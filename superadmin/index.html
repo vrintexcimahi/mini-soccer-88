@@ -196,8 +196,8 @@
         </div>
         <div class="slot-grid" id="slotGrid"></div>
         <div class="slot-actions">
-          <button class="btn btn-outline" onclick="lockAllSlots()">🔒 Kunci Semua</button>
-          <button class="btn btn-outline" onclick="unlockAllSlots()">🔓 Buka Semua</button>
+          <button class="btn btn-outline" onclick="lockAllSlots()">Kunci Semua</button>
+          <button class="btn btn-outline" onclick="unlockAllSlots()">Buka Semua</button>
         </div>
       </div>
     </div>
@@ -319,7 +319,7 @@
             </select>
           </div>
           <div style="display:flex;gap:12px;">
-            <button class="btn btn-primary" onclick="saveBlog()">💾 Simpan Artikel</button>
+            <button class="btn btn-primary" onclick="saveBlog()">Simpan Artikel</button>
             <button class="btn btn-outline" onclick="clearBlogForm()">Bersihkan</button>
           </div>
           <input type="hidden" id="blogEditId" value="">
@@ -350,7 +350,7 @@
       </div>
       <div style="display:flex;gap:10px;align-items:center;">
         <button class="btn btn-outline" style="font-size:13px;padding:8px 14px;" onclick="resetAssets()">↺ Reset Semua ke Bawaan</button>
-        <a href="../" target="_blank" class="btn btn-primary" style="font-size:13px;padding:8px 14px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">👁 Lihat Website</a>
+        <a href="../" target="_blank" class="btn btn-primary" style="font-size:13px;padding:8px 14px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">Lihat Website</a>
       </div>
     </div>
     <div class="card">
@@ -371,42 +371,44 @@
     </div>
     <div class="two-col">
       <div class="card">
-        <div class="card-head"><h3>📍 Informasi Kontak</h3></div>
+        <div class="card-head"><h3>Informasi Kontak</h3></div>
         <div class="card-body">
           <div class="form-group">
             <label class="form-label">Nama Venue</label>
             <input type="text" id="cNama" class="form-input" placeholder="Mini Soccer 88 Alpha Sport Pusdikif">
           </div>
           <div class="form-group">
-            <label class="form-label">Alamat Lengkap</label>
-            <textarea id="cAlamat" class="form-input" rows="3" placeholder="Jl. Pusdikif No. xx, Kota Cimahi..."></textarea>
+            <label class="form-label">Alamat</label>
+            <textarea id="cAlamat" class="form-input" rows="2" placeholder="Pusdikif, Kota Cimahi"></textarea>
           </div>
-          <div class="form-group">
-            <label class="form-label">Nomor Telepon</label>
-            <input type="tel" id="cTelp" class="form-input" placeholder="+62 xxx-xxxx-xxxx">
-          </div>
-          <div class="form-group">
-            <label class="form-label">WhatsApp</label>
-            <input type="tel" id="cWa" class="form-input" placeholder="+62 xxx-xxxx-xxxx">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">No. Telepon</label>
+              <input type="tel" id="cTelp" class="form-input" placeholder="022-xxxxxxx">
+            </div>
+            <div class="form-group">
+              <label class="form-label">WhatsApp Admin</label>
+              <input type="tel" id="cWa" class="form-input" placeholder="08xxxxxxxxxx">
+            </div>
           </div>
           <div class="form-group">
             <label class="form-label">Email</label>
-            <input type="email" id="cEmail" class="form-input" placeholder="admin@minisoccer88.com">
+            <input type="email" id="cEmail" class="form-input" placeholder="info@minisoccer88.com">
           </div>
           <div class="form-group">
-            <label class="form-label">Link Google Maps</label>
-            <input type="url" id="cMaps" class="form-input" placeholder="https://maps.google.com/...">
+            <label class="form-label">Link Google Maps (Embed/URL)</label>
+            <input type="text" id="cMaps" class="form-input" placeholder="https://maps.google.com/...">
           </div>
           <div class="form-group">
             <label class="form-label">Jam Operasional</label>
             <input type="text" id="cJam" class="form-input" placeholder="07:00 – 23:00 WIB (Setiap hari)">
           </div>
-          <button class="btn btn-primary" onclick="saveContact()">💾 Simpan Kontak</button>
+          <button class="btn btn-primary" onclick="saveContact()">Simpan Kontak</button>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-head"><h3>📱 Media Sosial</h3></div>
+        <div class="card-head"><h3>Media Sosial</h3></div>
         <div class="card-body">
           <div class="form-group">
             <label class="form-label">Instagram</label>
@@ -440,10 +442,10 @@
               <input type="text" id="smTwitter" class="form-input" placeholder="minisoccer88">
             </div>
           </div>
-          <button class="btn btn-primary" onclick="saveSosmed()">💾 Simpan Sosmed</button>
+          <button class="btn btn-primary" onclick="saveSosmed()">Simpan Sosmed</button>
         </div>
 
-        <div class="card-head" style="margin-top:8px;"><h3>📊 Info Statistik Publik</h3></div>
+        <div class="card-head" style="margin-top:8px;"><h3>Info Statistik Publik</h3></div>
         <div class="card-body">
           <div class="form-group">
             <label class="form-label">Jumlah Lapangan</label>
@@ -457,7 +459,7 @@
             <label class="form-label">Kota / Wilayah</label>
             <input type="text" id="statKota" class="form-input" placeholder="Kota Cimahi">
           </div>
-          <button class="btn btn-primary" onclick="saveStats()">💾 Simpan Statistik</button>
+          <button class="btn btn-primary" onclick="saveStats()">Simpan Statistik</button>
         </div>
       </div>
     </div>
@@ -506,7 +508,7 @@
     </div>
     <div class="two-col">
       <div class="card">
-        <div class="card-head"><h3>🔐 Ganti Kredensial Admin</h3></div>
+        <div class="card-head"><h3>Ganti Kredensial Admin</h3></div>
         <div class="card-body">
           <div class="form-group">
             <label class="form-label">Username Baru</label>
@@ -524,11 +526,11 @@
             <label class="form-label">Konfirmasi Password</label>
             <input type="password" id="confirmPassword" class="form-input" placeholder="Ulangi password baru">
           </div>
-          <button class="btn btn-primary" onclick="changeCreds()">🔑 Simpan Kredensial</button>
+          <button class="btn btn-primary" onclick="changeCreds()">Simpan Kredensial</button>
         </div>
       </div>
       <div class="card">
-        <div class="card-head"><h3>⚙️ Pengaturan Umum</h3></div>
+        <div class="card-head"><h3>Pengaturan Umum</h3></div>
         <div class="card-body">
           <div class="form-group">
             <label class="form-label">Nama Venue (Judul Website)</label>
@@ -554,9 +556,9 @@
               <option value="120">120 menit</option>
             </select>
           </div>
-          <button class="btn btn-primary" onclick="saveGeneral()">💾 Simpan Pengaturan</button>
+          <button class="btn btn-primary" onclick="saveGeneral()">Simpan Pengaturan</button>
         </div>
-        <div class="card-head" style="margin-top:8px;"><h3>🗑️ Reset Data</h3></div>
+        <div class="card-head" style="margin-top:8px;"><h3>Reset Data</h3></div>
         <div class="card-body">
           <p style="font-size:13px;color:#888;margin-bottom:16px;">Hapus semua data booking dan slot. Aksi ini tidak dapat dibatalkan.</p>
           <button class="btn btn-danger" onclick="clearAllData()">Hapus Semua Data</button>
