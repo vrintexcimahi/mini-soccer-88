@@ -16,9 +16,10 @@
 <!-- Auth guard: immediately redirect if not logged in -->
 <script>
   if (sessionStorage.getItem('ms88_admin_logged_in') !== '1') {
-    location.replace('./login.html');
+    location.replace('/superadmin/login.html');
   }
 </script>
+
 
 <!-- Toast Container -->
 <div class="toast-container" id="toastContainer"></div>

@@ -292,7 +292,7 @@
 
   // If already logged in, redirect to dashboard
   if (sessionStorage.getItem('ms88_admin_logged_in') === '1') {
-    location.replace('./');
+    location.replace('/superadmin/');
   }
 
   function doLogin(e) {
@@ -315,7 +315,7 @@
         sessionStorage.setItem('ms88_admin_user', user);
         btn.innerHTML = '✓ Berhasil! Mengalihkan...';
         btn.style.background = 'linear-gradient(135deg,#1a6e3d,#22a05b)';
-        setTimeout(() => location.replace('./'), 800);
+        setTimeout(() => location.replace('/superadmin/'), 800);
       } else {
         btn.disabled = false;
         btn.innerHTML = 'Masuk ke Dashboard';

@@ -1,5 +1,9 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/login", "destination": "/superadmin/login.html" },
+    { "source": "/admin", "destination": "/superadmin/index.html" },
+    { "source": "/superadmin/login", "destination": "/superadmin/login.html" }
+  ]
 }
-

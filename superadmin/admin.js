@@ -98,7 +98,7 @@ function doLogout() {
   if (!confirm('Keluar dari dashboard admin?')) return;
   sessionStorage.removeItem('ms88_admin_logged_in');
   sessionStorage.removeItem('ms88_admin_user');
-  location.replace('./login.html');
+  location.replace('/superadmin/login.html');
 }
 
 // --- Toast ---
