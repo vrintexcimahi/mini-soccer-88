@@ -28,12 +28,14 @@ const createGmapsUrl = (latitude, longitude) => `https://maps.google.com/?q=${la
 
 const open_map = (lat, lng) => window.open(`https://maps.google.com/?q=${lat},${lng}`, '_blank').focus();
 
+let totalCartItem = 0;
+
 const incrementCartItem = (totalCart = '') => {
     // Check if cart icon counter is exist or not
     const cartIconCounter = document.querySelectorAll(`span.cart-icon-counter`)
 
     if (totalCart !== '') {
-        totalCartItem = parseInt(totalCart);
+        totalCartItem = parseInt(totalCart, 10) || 0;
     } else {
         totalCartItem++;
     }
@@ -42,9 +44,9 @@ const incrementCartItem = (totalCart = '') => {
 }
 
 const decrementCartItem = () => {
-    totalCartItem--;
-    const cartIconCounter = document.querySelectorAll(`a.venue-cart-view-btn span.cart-icon-counter`)
-    cartIconCounter.forEach(el => el.innerText = totalCartItem > 0 ? totalCartItem : 0);
+    totalCartItem = Math.max(0, (totalCartItem || 0) - 1);
+    const cartIconCounter = document.querySelectorAll(`span.cart-icon-counter`);
+    cartIconCounter.forEach(el => el.innerText = totalCartItem);
 }
 
 /**
@@ -116,16 +118,16 @@ const parseJsonString = (jsonString) => {
  * @returns {string}
  */
 const maskingPhoneNumber = (phone, showDigits = 4) => {
-    {
-        let numberLength = phone.toString().length;
-        let hiddenNumber = '';
-        let counter = 0;
-        for (let i = (numberLength - 1); i > 0; i--) {
-            hiddenNumber += counter <= showDigits ? phone[i] : "*";
-            counter++;
-        }
-        return hiddenNumber.split('').reverse().join('');
+    if (!phone) return '';
+    const phoneStr = phone.toString();
+    const numberLength = phoneStr.length;
+    let hiddenNumber = '';
+    let counter = 0;
+    for (let i = (numberLength - 1); i >= 0; i--) {
+        hiddenNumber += counter < showDigits ? phoneStr[i] : "*";
+        counter++;
     }
+    return hiddenNumber.split('').reverse().join('');
 }
 
 

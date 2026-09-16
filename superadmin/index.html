@@ -6,17 +6,17 @@
   <meta name="theme-color" content="#9e0620">
   <title>Super Admin Portal — Mini Soccer 88 Alpha Sport</title>
   <meta name="robots" content="noindex, nofollow">
-  <link rel="icon" href="/assets/logos/new-Favicon.png">
+  <link rel="icon" href="../assets/logo/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/superadmin/admin.css">
+  <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
 <!-- Auth guard: immediately redirect if not logged in -->
 <script>
   if (sessionStorage.getItem('ms88_admin_logged_in') !== '1') {
-    location.replace('/superadmin/login.html');
+    location.replace('login.html');
   }
 </script>
 
@@ -27,10 +27,10 @@
 <!-- Sidebar -->
 <aside class="admin-sidebar" id="adminSidebar">
   <div class="sidebar-header">
-    <div class="brand-badge">MS88</div>
+    <img src="../assets/logo/ms88-logo-transparent.png" alt="88 Alpha Sport" style="width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));">
     <div class="brand-info">
-      <h1>ALPHA SPORT</h1>
-      <span>SUPERADMIN PORTAL</span>
+      <h1>88 ALPHA SPORT</h1>
+      <span>PUSDIKIF CIMAHI</span>
     </div>
   </div>
 
@@ -539,11 +539,11 @@
           </div>
           <div class="form-group">
             <label class="form-label">Jumlah Lapangan</label>
-            <input type="number" id="setNumCourts" class="form-input" placeholder="6">
+            <input type="number" id="setNumCourts" class="form-input" placeholder="1" value="1">
           </div>
           <div class="form-group">
             <label class="form-label">Jam Buka</label>
-            <input type="time" id="setOpenTime" class="form-input" value="07:00">
+            <input type="time" id="setOpenTime" class="form-input" value="06:00">
           </div>
           <div class="form-group">
             <label class="form-label">Jam Tutup</label>
@@ -570,6 +570,6 @@
 
 </main>
 
-<script src="/superadmin/admin.js"></script>
+<script src="admin.js"></script>
 </body>
 </html>

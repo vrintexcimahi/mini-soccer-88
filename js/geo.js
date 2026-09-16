@@ -47,6 +47,12 @@
     if (overlay) {
       overlay.classList.add('active');
 
+      const allowBtn = document.getElementById('ms88GeoBtnAllow');
+      if (allowBtn) {
+        allowBtn.textContent = 'Izinkan Lokasi';
+        allowBtn.disabled = false;
+      }
+
       document.getElementById('ms88GeoBtnAllow').onclick = () => {
         requestLocation(opts, overlay);
       };
@@ -95,6 +101,10 @@
         });
       },
       (err) => {
+        if (btn) {
+          btn.textContent = 'Izinkan Lokasi';
+          btn.disabled = false;
+        }
         localStorage.setItem(LS_DENY, '1');
         if (overlay) overlay.classList.remove('active');
         showToast('Izin lokasi ditolak. Anda bisa aktifkan kapan saja.', 'warning');
@@ -106,15 +116,19 @@
 
   /* ---- Reverse geocode using OpenStreetMap Nominatim (free, no key) ---- */
   function reverseGeocode(lat, lng, callback) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 4000);
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=id`;
-    fetch(url, { headers: { 'Accept-Language': 'id' } })
+    fetch(url, { signal: controller.signal, headers: { 'Accept-Language': 'id' } })
       .then(r => r.json())
       .then(data => {
+        clearTimeout(timer);
         const addr = data.address || {};
         const city = addr.city || addr.town || addr.county || addr.state || 'Lokasi Anda';
         callback(city);
       })
       .catch(() => {
+        clearTimeout(timer);
         // Fallback: calculate approximate city from coordinates
         callback(approxCity(lat, lng));
       });

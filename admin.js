@@ -24,19 +24,19 @@ const ICON = {
 // Default asset definitions with lay-user friendly labels, guidance & TARGET DIMENSIONS
 // targetW / targetH = exact output resolution after auto-compress. null = aspect-ratio clamp only.
 const DEFAULT_ASSETS = [
-  { key: 'hero_desktop',     label: 'Hero Banner (Desktop)',     def: '/assets/img/ayoindonesia-padel-1.jpg',        hint: 'Foto latar utama desktop • Disarankan 1920×1080 px',  targetW: 1920, targetH: 1080, fit: 'cover'   },
-  { key: 'hero_mobile',      label: 'Hero Banner (HP / Mobile)', def: '/assets/img/ayoindonesia-padel-mobile-1.jpg', hint: 'Foto latar utama ponsel • Disarankan 1080×1920 px',   targetW: 1080, targetH: 1920, fit: 'cover'   },
-  { key: 'logo',             label: 'Logo Utama Website',        def: '/assets/logo/ms88-logo.svg',                  hint: 'Format SVG/PNG transparan • Proporsional max 240×60 px', targetW: 240,  targetH: 60,   fit: 'contain' },
-  { key: 'favicon',          label: 'Favicon Tab Browser',       def: '/assets/logos/new-Favicon.png',               hint: 'Ikon kecil tab browser (PNG 32×32 / 64×64 px)',       targetW: 64,   targetH: 64,   fit: 'contain' },
-  { key: 'banner_cta',       label: 'Banner Promo CTA',          def: '/assets/banner/baner.png',                    hint: 'Banner ajakan bermain • Disarankan 1200×400 px',      targetW: 1200, targetH: 400,  fit: 'cover'   },
-  { key: 'banner_1_desktop', label: 'Slider Banner 1',           def: '/assets/banner/1-desktop.png',                hint: 'Banner carousel utama slide 1 • 1440×560 px',        targetW: 1440, targetH: 560,  fit: 'cover'   },
-  { key: 'banner_2_desktop', label: 'Slider Banner 2',           def: '/assets/banner/2-desktop.png',                hint: 'Banner carousel utama slide 2 • 1440×560 px',        targetW: 1440, targetH: 560,  fit: 'cover'   },
-  { key: 'phone_mockup1',    label: 'Mockup Aplikasi Mobile 1',  def: '/assets/img/hp-ayo.png',                      hint: 'Gambar tampilan aplikasi ponsel 1 • 480×960 px',      targetW: 480,  targetH: 960,  fit: 'contain' },
-  { key: 'phone_mockup2',    label: 'Mockup Aplikasi Mobile 2',  def: '/assets/img/hp-ayo2.png',                     hint: 'Gambar tampilan aplikasi ponsel 2 • 480×960 px',      targetW: 480,  targetH: 960,  fit: 'contain' },
-  { key: 'venue_prev',       label: 'Foto Preview Lapangan',     def: '/assets/img/venue-preview.webp',              hint: 'Foto fasilitas lapangan mini soccer • 960×640 px',   targetW: 960,  targetH: 640,  fit: 'cover'   },
-  { key: 'kompetisi1',       label: 'Banner Turnamen 1',         def: '/assets/dummy/new_kompetisi_home1.png',       hint: 'Kartu kompetisi / turnamen 1 • 640×480 px',           targetW: 640,  targetH: 480,  fit: 'cover'   },
-  { key: 'kompetisi2',       label: 'Banner Turnamen 2',         def: '/assets/dummy/new_kompetisi_home2.png',       hint: 'Kartu kompetisi / turnamen 2 • 640×480 px',           targetW: 640,  targetH: 480,  fit: 'cover'   },
-  { key: 'kompetisi3',       label: 'Banner Turnamen 3',         def: '/assets/dummy/new_kompetisi_home3.png',       hint: 'Kartu kompetisi / turnamen 3 • 640×480 px',           targetW: 640,  targetH: 480,  fit: 'cover'   },
+  { key: 'hero_desktop',     label: 'Hero Banner (Desktop)',     def: '/assets/img/venue/field-night-floodlight.jpg', hint: 'Foto latar utama desktop • Disarankan 1920×1080 px',  targetW: 1920, targetH: 1080, fit: 'cover'   },
+  { key: 'hero_mobile',      label: 'Hero Banner (HP / Mobile)', def: '/assets/img/venue/field-day-center.jpg',      hint: 'Foto latar utama ponsel • Disarankan 1080×1920 px',   targetW: 1080, targetH: 1920, fit: 'cover'   },
+  { key: 'logo',             label: 'Logo Utama Website (3D)',   def: '/assets/logo/ms88-logo-transparent.png',      hint: 'Format PNG 3D transparan resmi 88 Alpha Sport', targetW: 240,  targetH: 90,   fit: 'contain' },
+  { key: 'favicon',          label: 'Favicon Tab Browser',       def: '/assets/logo/favicon.png',                     hint: 'Ikon kecil tab browser (PNG 64×64 px)',               targetW: 64,   targetH: 64,   fit: 'contain' },
+  { key: 'mascot',           label: 'Maskot Alpha Commando',     def: '/assets/logo/ms88-mascot-transparent.png',     hint: 'Maskot resmi anime loreng komando 88 Alpha Sport',    targetW: 400,  targetH: 600,  fit: 'contain' },
+  { key: 'qris',             label: 'Barcode QRIS Pembayaran',   def: '/assets/payment/qris-alpha-sport.jpg',         hint: 'QRIS resmi 88 Alpha Mini Soccer NMID ID1026529171542',targetW: 600, targetH: 800,  fit: 'contain' },
+  { key: 'venue_prev',       label: 'Foto Preview Lapangan',     def: '/assets/img/venue/field-night-ball-fifa.jpg',  hint: 'Foto fasilitas lapangan mini soccer • 960×640 px',    targetW: 960,  targetH: 640,  fit: 'cover'   },
+  { key: 'banner_cta',       label: 'Banner Promo CTA',          def: '/assets/payment/qris-banner-mascot.jpg',       hint: 'Banner ajakan bermain • Disarankan 1200×400 px',       targetW: 1200, targetH: 400,  fit: 'cover'   },
+  { key: 'banner_1_desktop', label: 'Slider Banner 1',           def: '/assets/promo/poster-ekskul-sekolah.jpg',      hint: 'Poster program sekolah & ekskul • 1440×560 px',       targetW: 1440, targetH: 560,  fit: 'cover'   },
+  { key: 'banner_2_desktop', label: 'Slider Banner 2',           def: '/assets/promo/poster-fotografer.jpg',          hint: 'Poster dokumentasi fotografer GERAK • 1440×560 px',   targetW: 1440, targetH: 560,  fit: 'cover'   },
+  { key: 'kompetisi1',       label: 'Poster Kommoto 7-8',        def: '/assets/promo/poster-kommoto.jpg',             hint: 'Program komunitas pagi jam 7-8',                      targetW: 640,  targetH: 480,  fit: 'cover'   },
+  { key: 'kompetisi2',       label: 'Poster Creator Collab',     def: '/assets/promo/poster-content-creator.jpg',     hint: 'Kerjasama content creator @88alphasport',             targetW: 640,  targetH: 480,  fit: 'cover'   },
+  { key: 'kompetisi3',       label: 'Poster Pricelist Resmi',    def: '/assets/promo/poster-pricelist.jpg',           hint: 'Tabel harga sewa per jam September 2026',             targetW: 640,  targetH: 480,  fit: 'cover'   },
 ];
 
 // --- Init ---
@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Load all panels
+  initDefaultOrdersIfEmpty();
   renderOverview();
   renderSlots();
   renderOrders();
@@ -135,11 +136,11 @@ function renderOverview() {
   const orders = getLS('ms88_orders', []);
   const today  = getTodayStr();
   const todayOrders = orders.filter(o => o.date === today);
-  const kpiOmset = orders.filter(o => o.status === 'confirmed').reduce((s, o) => s + (o.total || 0), 0);
+  const kpiOmset = orders.filter(o => o.status === 'confirmed' || o.status === 'paid').reduce((s, o) => s + (o.total || 0), 0);
   const pending = orders.filter(o => o.status === 'pending').length;
-  const done   = orders.filter(o => o.status === 'confirmed').length;
+  const done   = orders.filter(o => o.status === 'confirmed' || o.status === 'paid').length;
 
-  const settings = getLS('ms88_settings', { numCourts: 6, openTime: '07:00', closeTime: '23:00', slotDuration: 60 });
+  const settings = getLS('ms88_settings', { numCourts: 1, openTime: '06:00', closeTime: '23:00', slotDuration: 60 });
   const slots  = getLS('ms88_blocked_slots', []);
   const totalSlots = settings.numCourts * 8;
   const bookedSlots = slots.filter(s => s.date === today).length;
@@ -159,7 +160,7 @@ function renderOverview() {
     } else {
       actEl.innerHTML = recent.map(o => `
         <div class="activity-item">
-          <div class="activity-dot ${o.status === 'confirmed' ? 'dot-green' : o.status === 'cancelled' ? 'dot-red' : 'dot-orange'}"></div>
+          <div class="activity-dot ${(o.status === 'confirmed' || o.status === 'paid') ? 'dot-green' : o.status === 'cancelled' ? 'dot-red' : 'dot-orange'}"></div>
           <div class="activity-text">
             <strong>${o.name}</strong> — ${o.court ? o.court + ' · ' : (o.field ? o.field + ' · ' : '')}${o.time}<br>
             <small>${o.date} · ${fmtRp(o.total)} · <span class="badge-status ${o.status}">${o.status}</span></small>
@@ -172,7 +173,7 @@ function renderOverview() {
   // Mini slot grid for today
   const miniGrid = document.getElementById('slotMiniGrid');
   if (miniGrid) {
-    const hours = ['07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
+    const hours = ['06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
     miniGrid.innerHTML = hours.map(h => {
       const isBlocked = slots.some(s => s.date === today && s.hour === h);
       return `<div class="slot-mini ${isBlocked ? 'slot-mini-blocked' : 'slot-mini-free'}" title="${h}:00">${h}</div>`;
@@ -194,11 +195,11 @@ function renderSlots() {
     dateLabel.textContent = d.toLocaleDateString('id-ID', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
   }
 
-  const settings  = getLS('ms88_settings', { numCourts: 6, openTime: '07:00', closeTime: '23:00', slotDuration: 60 });
+  const settings  = getLS('ms88_settings', { numCourts: 1, openTime: '06:00', closeTime: '23:00', slotDuration: 60 });
   const blocked   = getLS('ms88_blocked_slots', []);
   const orders    = getLS('ms88_orders', []);
-  const numCourts = settings.numCourts || 6;
-  const hours     = ['07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
+  const numCourts = settings.numCourts || 1;
+  const hours     = ['06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
 
   const grid = document.getElementById('slotGrid');
   if (!grid) return;
@@ -211,7 +212,7 @@ function renderSlots() {
     html += `<div class="slot-row"><div class="slot-time">${h}:00</div>`;
     for (let c = 1; c <= numCourts; c++) {
       const isBlocked = blocked.some(s => s.date === date && s.hour === h && s.court == c);
-      const isBooked  = orders.some(o => o.date === date && o.time && o.time.startsWith(h) && o.court === `Lapangan ${c}` && o.status === 'confirmed');
+      const isBooked  = orders.some(o => o.date === date && o.time && o.time.startsWith(h) && (o.court === `Lapangan ${c}` || (o.field && o.field.includes(`Lapangan ${c}`))) && (o.status === 'confirmed' || o.status === 'paid'));
       let cls = 'slot-cell-free', label = 'Tersedia';
       if (isBooked)  { cls = 'slot-cell-booked';  label = 'Dipesan'; }
       if (isBlocked) { cls = 'slot-cell-locked';  label = 'Dikunci'; }
@@ -236,9 +237,9 @@ function toggleSlot(date, hour, court) {
 function lockAllSlots() {
   if (!confirm('Kunci semua slot hari ini?')) return;
   const date = document.getElementById('slotDate').value || getTodayStr();
-  const settings = getLS('ms88_settings', { numCourts: 6 });
+  const settings = getLS('ms88_settings', { numCourts: 1 });
   const blocked = getLS('ms88_blocked_slots', []);
-  const hours = ['07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
+  const hours = ['06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
   hours.forEach(h => {
     for (let c = 1; c <= settings.numCourts; c++) {
       if (!blocked.some(s => s.date === date && s.hour === h && s.court == c)) {
@@ -279,14 +280,14 @@ function renderOrders() {
     <tr>
       <td>${i + 1}</td>
       <td><strong>${o.name}</strong><br><small>${o.phone || '-'}</small></td>
-      <td>${o.court || '-'}</td>
+      <td>${o.court || o.field || '-'}</td>
       <td>${o.date || '-'}</td>
       <td>${o.time || '-'}</td>
       <td>${fmtRp(o.total || 0)}</td>
       <td><span class="badge-status ${o.status}">${o.status}</span></td>
       <td class="action-cell">
-        ${o.status === 'pending' ? `<button class="btn-icon btn-green" onclick="confirmOrder(${o.id})" title="Konfirmasi">${ICON.check}</button>` : ''}
-        <button class="btn-icon btn-red" onclick="deleteOrder(${o.id})" title="Hapus">${ICON.trash}</button>
+        ${o.status === 'pending' ? `<button class="btn-icon btn-green" onclick="confirmOrder('${o.id}')" title="Konfirmasi">${ICON.check}</button>` : ''}
+        <button class="btn-icon btn-red" onclick="deleteOrder('${o.id}')" title="Hapus">${ICON.trash}</button>
       </td>
     </tr>
   `).join('');
@@ -294,39 +295,87 @@ function renderOrders() {
 
 function confirmOrder(id) {
   const orders = getLS('ms88_orders', []);
-  const idx = orders.findIndex(o => o.id === id);
+  const idx = orders.findIndex(o => String(o.id) === String(id));
   if (idx >= 0) { orders[idx].status = 'confirmed'; setLS('ms88_orders', orders); }
-  renderOrders(); renderOverview();
+  renderOrders(); initDefaultOrdersIfEmpty();
+  renderOverview();
   toast('Booking dikonfirmasi ✓');
 }
 
 function deleteOrder(id) {
   if (!confirm('Hapus booking ini?')) return;
-  const orders = getLS('ms88_orders', []).filter(o => o.id !== id);
+  const orders = getLS('ms88_orders', []).filter(o => String(o.id) !== String(id));
   setLS('ms88_orders', orders);
-  renderOrders(); renderOverview();
+  renderOrders(); initDefaultOrdersIfEmpty();
+  renderOverview();
   toast('Booking dihapus', 'warning');
 }
 
 function addDummyOrder() {
   const orders = getLS('ms88_orders', []);
-  const names  = ['Budi Santoso','Andi Kurniawan','Rizki Pratama','Deni Setiawan','Hendra Wijaya'];
-  const courts = ['Lapangan 1','Lapangan 2','Lapangan 3','Lapangan 4'];
-  const times  = ['08:00','10:00','13:00','15:00','19:00','20:00'];
+  const names  = ['Sparta FC', 'Sang Mantan FC', 'Kirari Space Yoga', 'Kommoto 7-8', 'Cimahi United', 'Alpha Warrior FC', 'Pusdikif FC'];
+  const courts = ['Lapangan Utama (30×50m Pusdikif)'];
+  const times  = ['06.00-07.00', '07.00-08.00', '15.00-16.00', '16.00-17.00', '18.00-19.00', '19.00-20.00', '20.00-21.00'];
+  const prices = [250000, 250000, 300000, 300000, 350000, 350000, 350000];
+  const randIdx = Math.floor(Math.random() * times.length);
   const newOrder = {
-    id:    Date.now(),
+    id:    'BKG-' + Date.now().toString().slice(-6),
     name:  names[Math.floor(Math.random() * names.length)],
-    phone: '08' + Math.floor(Math.random() * 9e9),
-    court: courts[Math.floor(Math.random() * courts.length)],
+    phone: '0812' + Math.floor(10000000 + Math.random() * 90000000),
+    court: courts[0],
     date:  getTodayStr(),
-    time:  times[Math.floor(Math.random() * times.length)],
-    total: (Math.floor(Math.random() * 5) + 1) * 100000,
+    time:  times[randIdx],
+    total: prices[randIdx],
     status:'pending'
   };
   orders.push(newOrder);
   setLS('ms88_orders', orders);
-  renderOrders(); renderOverview();
+  renderOrders(); initDefaultOrdersIfEmpty();
+  renderOverview();
   toast('Booking baru ditambahkan');
+}
+
+function initDefaultOrdersIfEmpty() {
+  const existing = getLS('ms88_orders', null);
+  if (existing && Array.isArray(existing) && existing.length > 0) return;
+  const jsonPath = window.location.pathname.includes('/superadmin') ? '../assets/data/bookings_september_2026.json' : 'assets/data/bookings_september_2026.json';
+  fetch(jsonPath)
+    .catch(() => fetch('/assets/data/bookings_september_2026.json'))
+    .then(r => r.json())
+    .then(data => {
+      const orders = [];
+      let counter = 1;
+      const pricingMap = {
+        '06': 250000, '07': 250000,
+        '08': 275000, '09': 275000,
+        '10': 225000, '11': 225000, '12': 225000, '13': 225000, '14': 225000,
+        '15': 300000, '16': 300000, '17': 300000,
+        '18': 350000, '19': 350000, '20': 350000, '21': 350000
+      };
+      Object.keys(data).forEach(week => {
+        data[week].forEach(item => {
+          const hourKey = item.time.slice(0, 2);
+          const price = pricingMap[hourKey] || 250000;
+          orders.push({
+            id: 'BKG-2609' + String(counter++).padStart(3, '0'),
+            name: item.team,
+            phone: '08' + (8120000000 + counter * 7919).toString().slice(0, 10),
+            court: 'Lapangan Utama (30×50m Pusdikif)',
+            date: '2026-09-' + String(item.date).padStart(2, '0'),
+            time: item.time,
+            total: price,
+            status: 'confirmed'
+          });
+        });
+      });
+      if (orders.length > 0) {
+        setLS('ms88_orders', orders);
+        renderOrders();
+        initDefaultOrdersIfEmpty();
+  renderOverview();
+      }
+    })
+    .catch(() => {});
 }
 
 // =========================================================
@@ -340,20 +389,22 @@ function renderMabar() {
 
   listEl.innerHTML = sessions.map(s => {
     // Safe date formatting
-    let dtStr = '-';
+    let dtStr = s.time || '-';
     if (s.datetime) {
       const d = new Date(s.datetime);
       if (!isNaN(d.getTime())) {
         dtStr = d.toLocaleString('id-ID', { weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' });
       }
     }
-    const slots = s.slots !== undefined ? s.slots : '-';
-    const fee = !isNaN(Number(s.fee)) ? fmtRp(Number(s.fee)) : 'Gratis';
+    const slots = (s.slots !== undefined ? s.slots : (s.quota !== undefined ? `${s.filled || 0}/${s.quota}` : '-'));
+    const feeVal = s.fee !== undefined ? s.fee : s.price;
+    const fee = !isNaN(Number(feeVal)) ? fmtRp(Number(feeVal)) : 'Gratis';
+    const title = s.name || s.title || 'Sesi Mabar';
     return `
     <div class="mabar-card">
       <div class="mabar-head">
-        <strong>${s.name || 'Sesi Mabar'}</strong>
-        <button class="btn-icon btn-red" onclick="deleteMabar(${s.id})" title="Hapus">${ICON.trash}</button>
+        <strong>${title}</strong>
+        <button class="btn-icon btn-red" onclick="deleteMabar('${s.id}')" title="Hapus">${ICON.trash}</button>
       </div>
       <div class="mabar-meta">
         <span class="meta-row">${ICON.calendar} ${dtStr}</span><br>
@@ -388,7 +439,7 @@ function createMabar() {
 
 function deleteMabar(id) {
   if (!confirm('Hapus sesi mabar ini?')) return;
-  const sessions = getLS('ms88_mabar_sessions', []).filter(s => s.id !== id);
+  const sessions = getLS('ms88_mabar_sessions', []).filter(s => String(s.id) !== String(id));
   setLS('ms88_mabar_sessions', sessions);
   renderMabar();
   toast('Sesi dihapus', 'warning');
@@ -419,8 +470,8 @@ function renderBlogs() {
         </div>
       </div>
       <div class="blog-actions">
-        <button class="btn-icon" onclick="editBlog(${b.id})" title="Edit">${ICON.edit}</button>
-        <button class="btn-icon btn-red" onclick="deleteBlog(${b.id})" title="Hapus">${ICON.trash}</button>
+        <button class="btn-icon" onclick="editBlog('${b.id}')" title="Edit">${ICON.edit}</button>
+        <button class="btn-icon btn-red" onclick="deleteBlog('${b.id}')" title="Hapus">${ICON.trash}</button>
       </div>
     </div>
   `).join('');
@@ -453,7 +504,7 @@ function saveBlog() {
 }
 
 function editBlog(id) {
-  const blog = getLS('ms88_blogs', []).find(b => b.id === id);
+  const blog = getLS('ms88_blogs', []).find(b => String(b.id) === String(id));
   if (!blog) return;
   document.getElementById('blogEditId').value = id;
   document.getElementById('blogTitle').value = blog.title;
@@ -469,7 +520,7 @@ function editBlog(id) {
 
 function deleteBlog(id) {
   if (!confirm('Hapus artikel ini?')) return;
-  setLS('ms88_blogs', getLS('ms88_blogs', []).filter(b => b.id !== id));
+  setLS('ms88_blogs', getLS('ms88_blogs', []).filter(b => String(b.id) !== String(id)));
   renderBlogs();
   toast('Artikel dihapus', 'warning');
 }
@@ -773,9 +824,27 @@ function handleAssetDrop(e, key, card) {
 //  CONTACT & SOSMED
 // =========================================================
 function renderContact() {
-  const d = getLS('ms88_contact', {});
-  const sm = getLS('ms88_sosmed', {});
-  const st = getLS('ms88_pubstats', {});
+  const defaultContact = {
+    nama: 'Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi',
+    alamat: 'Lapangan Pusdikif, Jalan Gatot Subroto, Kota Cimahi, Jawa Barat',
+    telp: '081295679799',
+    wa: '081295679799',
+    email: 'alphasport88cimahi@gmail.com',
+    maps: 'https://maps.google.com/?q=Pusdikif+Cimahi',
+    jam: 'Setiap Hari 06.00 – 23.00 WIB'
+  };
+  const defaultSosmed = {
+    instagram: '88alphasport',
+    tiktok: '88alphasport',
+    facebook: '88alphasport',
+    youtube: '88 Alpha Sport Pusdikif',
+    twitter: '88alphasport'
+  };
+  const defaultStats = { lapangan: '1 (30x50m)', member: '250+', kota: 'Cimahi & Bandung' };
+
+  const d = Object.assign({}, defaultContact, getLS('ms88_contact', {}));
+  const sm = Object.assign({}, defaultSosmed, getLS('ms88_sosmed', {}));
+  const st = Object.assign({}, defaultStats, getLS('ms88_pubstats', {}));
 
   const fields = { cNama:'nama', cAlamat:'alamat', cTelp:'telp', cWa:'wa', cEmail:'email', cMaps:'maps', cJam:'jam' };
   Object.entries(fields).forEach(([id, key]) => {
@@ -836,7 +905,18 @@ function saveStats() {
 //  PRICING
 // =========================================================
 function renderPricing() {
-  const pricing = getLS('ms88_pricing', []);
+  let pricing = getLS('ms88_pricing', null);
+  if (!pricing || pricing.length === 0) {
+    pricing = [
+      { lapangan: 'Lapangan Pusdikif 30x50m', sesi: 'Prime Morning (06.00 - 08.00)', harga: 250000 },
+      { lapangan: 'Lapangan Pusdikif 30x50m', sesi: 'Morning (08.00 - 10.00)', harga: 275000 },
+      { lapangan: 'Lapangan Pusdikif 30x50m', sesi: 'Happy Hours (10.00 - 15.00)', harga: 225000 },
+      { lapangan: 'Lapangan Pusdikif 30x50m', sesi: 'Prime Time (15.00 - 18.00)', harga: 300000 },
+      { lapangan: 'Lapangan Pusdikif 30x50m', sesi: 'Premium Night (18.00 - 22.00)', harga: 350000 },
+    ];
+    setLS('ms88_pricing', pricing);
+  }
+
   const el = document.getElementById('pricingBody');
   if (!el) return;
   if (pricing.length === 0) { el.innerHTML = '<p class="empty-state">Belum ada tarif.</p>'; return; }
@@ -884,10 +964,10 @@ function deletePricing(idx) {
 //  SETTINGS
 // =========================================================
 function loadSettings() {
-  const s = getLS('ms88_settings', { venueName:'Mini Soccer 88 Alpha Sport Pusdikif', numCourts:6, openTime:'07:00', closeTime:'23:00', slotDuration:60 });
+  const s = getLS('ms88_settings', { venueName:'Mini Soccer 88 Alpha Sport Pusdikif', numCourts:1, openTime:'06:00', closeTime:'23:00', slotDuration:60 });
   const el = id => document.getElementById(id);
   if (el('setVenueName')) el('setVenueName').value = s.venueName || '';
-  if (el('setNumCourts')) el('setNumCourts').value = s.numCourts || 6;
+  if (el('setNumCourts')) el('setNumCourts').value = s.numCourts || 1;
   if (el('setOpenTime'))  el('setOpenTime').value  = s.openTime  || '07:00';
   if (el('setCloseTime')) el('setCloseTime').value = s.closeTime || '23:00';
   if (el('setSlotDuration')) el('setSlotDuration').value = s.slotDuration || 60;
@@ -896,7 +976,7 @@ function loadSettings() {
 function saveGeneral() {
   const s = {
     venueName:    document.getElementById('setVenueName')?.value.trim(),
-    numCourts:    +document.getElementById('setNumCourts')?.value || 6,
+    numCourts:    +document.getElementById('setNumCourts')?.value || 1,
     openTime:     document.getElementById('setOpenTime')?.value || '07:00',
     closeTime:    document.getElementById('setCloseTime')?.value || '23:00',
     slotDuration: +document.getElementById('setSlotDuration')?.value || 60,
@@ -932,6 +1012,7 @@ function changeCreds() {
 function clearAllData() {
   if (!confirm('PERINGATAN: Hapus semua data booking, slot, mabar, blog, dan aset?\n\nAksi ini tidak dapat dibatalkan!')) return;
   ['ms88_orders','ms88_blocked_slots','ms88_mabar_sessions','ms88_blogs','ms88_assets','ms88_pricing','ms88_contact','ms88_sosmed','ms88_pubstats'].forEach(k => localStorage.removeItem(k));
+  initDefaultOrdersIfEmpty();
   renderOverview(); renderOrders(); renderSlots(); renderMabar(); renderBlogs(); renderAssets(); renderPricing(); renderContact();
   toast('Semua data telah dihapus', 'warning');
 }

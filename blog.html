@@ -4,21 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blog & Artikel — Mini Soccer 88 Alpha Sport Pusdikif</title>
-<meta name="description" content="Berita terbaru, tips bermain, dan informasi seputar Mini Soccer 88 Alpha Sport Pusdikif.">
-<link rel="icon" href="/assets/logos/new-Favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="description" content="Informasi terbaru seputar jadwal, tips olahraga, dan event di Mini Soccer 88 Alpha Sport Pusdikif.">
+<link rel="icon" type="image/png" href="assets/logo/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
 
   body { font-family: 'Rubik', sans-serif; background: #f8f9fa; color: #1a1d23; margin: 0; }
   *,*::before,*::after{box-sizing:border-box;}
   header { background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.08); position: sticky; top:0; z-index:100; }
-  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display:flex; align-items:center; justify-content:space-between; height:70px; }
   .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
-  .nav-logo img { height:36px; }
-  .nav-links { display:flex; gap:24px; }
-  .nav-links a { text-decoration:none; color:#52575c; font-size:14px; font-weight:500; transition:color 0.18s; }
-  .nav-links a:hover { color:#9E0620; }
-  .nav-back { font-size:14px; color:#9E0620; font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; }
+  .nav-logo img { height:48px; width:auto; object-fit:contain; }
+  .nav-links { display:flex; gap:20px; align-items:center; }
+  .nav-links a { text-decoration:none; color:#374151; font-size:14px; font-weight:600; transition:color 0.18s; }
+  .nav-links a:hover { color:#B91C1C; }
+  .nav-back { font-size:13.5px; color:#B91C1C; font-weight:700; text-decoration:none; display:flex; align-items:center; gap:6px; background:rgba(185,28,28,0.08); padding:6px 14px; border-radius:100px; }
   
   /* Location Bar */
   .ms88-location-bar {
@@ -28,157 +29,102 @@
     font-size: 13.5px; color: #374151; font-weight: 500;
     cursor: pointer; transition: border-color 0.18s, box-shadow 0.18s;
   }
-  .ms88-location-bar:hover { border-color: #9E0620; box-shadow: 0 0 0 3px rgba(158,6,32,0.08); }
-  .geo-pin { display: inline-flex; align-items: center; color: #9E0620; }
+  .ms88-location-bar:hover { border-color: #B91C1C; box-shadow: 0 0 0 3px rgba(185,28,28,0.08); }
+  .geo-pin { display: inline-flex; align-items: center; color: #B91C1C; }
   .geo-pin svg { width: 15px; height: 15px; }
-  .geo-city { font-weight: 600; color: #9E0620; }
-  .geo-placeholder { color: #6b7280; }
 
   /* Hero Section */
-  .page-hero { background: linear-gradient(135deg, #140005 0%, #29000d 100%); color:#fff; padding:64px 24px; text-align:center; }
+  .page-hero { background: linear-gradient(135deg, #111827 0%, #1F2937 60%, #991B1B 100%); color:#fff; padding:60px 24px; text-align:center; }
   .page-hero .icon {
-    width: 64px; height: 64px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.14);
+    width: 60px; height: 60px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 18px;
-    color: #ffffff;
+    margin-bottom: 16px;
+    color: #F59E0B;
   }
-  .page-hero .icon svg { width: 32px; height: 32px; }
-  .page-hero h1 { font-size:34px; font-weight:700; margin:0 0 12px; }
-  .page-hero p { font-size:16px; color:rgba(255,255,255,0.7); max-width:600px; margin:0 auto; }
+  .page-hero .icon svg { width: 30px; height: 30px; }
+  .page-hero h1 { font-size:32px; font-weight:800; margin:0 0 10px; }
+  .page-hero p { font-size:15px; color:rgba(255,255,255,0.85); max-width:620px; margin:0 auto; }
   .page-content { max-width:1200px; margin:0 auto; padding:48px 24px; }
 
   /* Cards / Grid */
   .page-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:24px; margin-bottom:48px; }
-  .court-card,.comp-card { background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.07); }
-  .court-img { height:180px; }
-  .court-info,.comp-info { padding:20px; }
-  .court-info h3,.comp-info h3 { font-size:18px; font-weight:700; margin:0 0 8px; }
-  .court-info p,.comp-info p { font-size:13.5px; color:#6b7280; margin:0 0 12px; }
+  .court-card,.comp-card { background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.07); border:1px solid #E5E7EB; }
+  .court-info,.comp-info { padding:22px; }
+  .court-info h3,.comp-info h3 { font-size:19px; font-weight:700; margin:0 0 8px; color:#111827; }
+  .court-info p,.comp-info p { font-size:13.5px; color:#6b7280; margin:0 0 14px; line-height:1.6; }
   .court-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
-  .court-tags span { background:rgba(158,6,32,0.08); color:#9E0620; padding:4px 10px; border-radius:100px; font-size:12px; font-weight:500; }
-  .comp-badge { display:inline-block; background:rgba(158,6,32,0.08); color:#9E0620; padding:4px 10px; border-radius:100px; font-size:11px; font-weight:700; margin-bottom:8px; }
+  .court-tags span { background:rgba(185,28,28,0.08); color:#B91C1C; padding:4px 10px; border-radius:100px; font-size:12px; font-weight:600; }
+  .comp-badge { display:inline-block; background:rgba(185,28,28,0.08); color:#B91C1C; padding:4px 10px; border-radius:100px; font-size:11px; font-weight:700; margin-bottom:8px; }
   .comp-badge-open { background:#d1fae5; color:#065f46; }
-  .comp-detail { font-size:12.5px; color:#6b7280; margin-bottom:12px; }
-  .btn-book { display:inline-block; background:#9E0620; color:#fff; padding:10px 20px; border-radius:8px; font-size:14px; font-weight:600; text-decoration:none; transition:all 0.18s; }
-  .btn-book:hover { background:#7a0419; transform:translateY(-1px); }
+  .comp-detail { font-size:13px; color:#4b5563; margin-bottom:16px; line-height:1.7; }
+  .btn-book { display:inline-block; background:#B91C1C; color:#fff; padding:10px 20px; border-radius:8px; font-size:14px; font-weight:700; text-decoration:none; transition:all 0.18s; }
+  .btn-book:hover { background:#991B1B; color:#fff; transform:translateY(-1px); }
 
   /* Forms */
-  .booking-form-section { background:#fff; border-radius:16px; padding:40px; box-shadow:0 2px 12px rgba(0,0,0,0.07); }
-  .booking-form-section h2 { font-size:22px; font-weight:700; margin:0 0 8px; }
+  .booking-form-section { background:#fff; border-radius:16px; padding:36px; box-shadow:0 2px 12px rgba(0,0,0,0.07); border:1px solid #E5E7EB; }
+  .booking-form-section h2 { font-size:22px; font-weight:700; margin:0 0 8px; color:#111827; }
   .booking-form-section > p { font-size:14px; color:#6b7280; margin:0 0 24px; }
   .booking-form { display:flex; flex-direction:column; gap:16px; }
   .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
   .form-group { display:flex; flex-direction:column; gap:6px; }
-  .form-group label { font-size:13px; font-weight:500; color:#4b5563; }
-  .form-group input,.form-group select,.form-group textarea { padding:10px 12px; border:1px solid #e5e7eb; border-radius:8px; font-family:inherit; font-size:14px; outline:none; transition:border-color 0.18s; }
-  .form-group input:focus,.form-group select:focus,.form-group textarea:focus { border-color:#9E0620; box-shadow:0 0 0 3px rgba(158,6,32,0.1); }
-  .form-group textarea { resize:vertical; min-height:80px; }
-  .btn-submit { background:#9E0620; color:#fff; border:none; padding:14px 28px; border-radius:10px; font-family:inherit; font-size:15px; font-weight:600; cursor:pointer; transition:all 0.18s; box-shadow:0 4px 14px rgba(158,6,32,0.3); align-self:flex-start; }
-  .btn-submit:hover { background:#b70826; transform:translateY(-2px); box-shadow:0 6px 20px rgba(158,6,32,0.4); }
+  .form-group label { font-size:13px; font-weight:600; color:#374151; }
+  .form-group input,.form-group select,.form-group textarea { padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; font-family:inherit; font-size:14px; outline:none; transition:border-color 0.18s; }
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus { border-color:#B91C1C; box-shadow:0 0 0 3px rgba(185,28,28,0.1); }
+  .btn-submit { background:#B91C1C; color:#fff; border:none; padding:13px 26px; border-radius:10px; font-family:inherit; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.18s; box-shadow:0 4px 14px rgba(185,28,28,0.3); align-self:flex-start; }
+  .btn-submit:hover { background:#991B1B; transform:translateY(-2px); }
 
   /* Mabar */
-  .mabar-steps { display:flex; flex-direction:column; gap:20px; margin-bottom:40px; }
-  .step { display:flex; gap:16px; align-items:flex-start; }
-  .step-num { width:36px; height:36px; border-radius:50%; background:#9E0620; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0; }
-  .step strong { display:block; font-size:16px; margin-bottom:4px; }
-  .step p { font-size:14px; color:#6b7280; margin:0; }
+  .mabar-steps { display:flex; flex-direction:column; gap:18px; margin-bottom:36px; }
+  .step { display:flex; gap:14px; align-items:flex-start; }
+  .step-num { width:34px; height:34px; border-radius:50%; background:#B91C1C; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; flex-shrink:0; }
+  .step strong { display:block; font-size:15px; margin-bottom:2px; color:#111827; }
+  .step p { font-size:13.5px; color:#6b7280; margin:0; }
   .sessions-section { margin-bottom:40px; }
   .sessions-section h2 { font-size:22px; font-weight:700; margin:0 0 20px; }
   .sessions-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; }
-  .session-card { background:#fff; border-radius:12px; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.07); border-top:4px solid #9E0620; }
-  .session-time { font-size:12.5px; color:#6b7280; margin-bottom:6px; font-weight:500; }
-  .session-card h3 { font-size:16px; font-weight:700; margin:0 0 8px; }
-  .session-card p { font-size:13.5px; color:#6b7280; margin:0 0 10px; }
-  .session-slots { font-size:12.5px; color:#065f46; background:#d1fae5; padding:4px 10px; border-radius:100px; display:inline-block; margin-bottom:14px; font-weight:600; }
-
-  /* Blog */
-  .blog-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:24px; }
-  .blog-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,0.07); cursor:pointer; transition:transform 0.2s,box-shadow 0.2s; }
-  .blog-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,0.12); }
-  .blog-card-thumb { height:160px; background:#f0f0f0; }
-  .blog-card-body { padding:16px; }
-  .blog-card-cat { font-size:11px; font-weight:700; color:#9E0620; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:6px; }
-  .blog-card-body h3 { font-size:16px; font-weight:700; margin:0 0 8px; }
+  .session-card { background:#fff; border-radius:14px; padding:22px; box-shadow:0 2px 10px rgba(0,0,0,0.07); border:1px solid #E5E7EB; }
+  .session-time { font-size:12.5px; color:#B91C1C; margin-bottom:6px; font-weight:700; }
+  .session-card h3 { font-size:17px; font-weight:700; margin:0 0 8px; color:#111827; }
+  .session-card p { font-size:13.5px; color:#6b7280; margin:0 0 12px; line-height:1.5; }
+  .session-slots { font-size:12px; color:#065f46; background:#d1fae5; padding:4px 10px; border-radius:100px; display:inline-block; margin-bottom:14px; font-weight:700; }
 
   /* Partner */
-  .partner-benefits { margin-bottom:48px; }
+  .partner-benefits { margin-bottom:40px; }
   .partner-benefits h2 { font-size:22px; font-weight:700; margin:0 0 20px; }
   .benefit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px; }
-  .benefit-card { background:#fff; border-radius:12px; padding:24px; box-shadow:0 2px 10px rgba(0,0,0,0.07); }
-  .benefit-icon {
-    width: 44px; height: 44px;
-    background: rgba(158,6,32,0.08);
-    border-radius: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #9E0620;
-    margin-bottom: 14px;
-  }
+  .benefit-card { background:#fff; border-radius:14px; padding:22px; box-shadow:0 2px 10px rgba(0,0,0,0.07); border:1px solid #E5E7EB; }
+  .benefit-icon { width: 44px; height: 44px; background: rgba(185,28,28,0.08); border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; color: #B91C1C; margin-bottom: 12px; }
   .benefit-icon svg { width: 22px; height: 22px; }
-  .benefit-card h3 { font-size:16px; font-weight:700; margin:0 0 8px; }
-  .benefit-card p { font-size:13.5px; color:#6b7280; margin:0; }
+  .benefit-card h3 { font-size:16px; font-weight:700; margin:0 0 8px; color:#111827; }
+  .benefit-card p { font-size:13px; color:#6b7280; margin:0; line-height:1.5; }
 
   /* Venue Mgmt */
   .vm-features { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; margin-bottom:40px; }
-  .vm-list h2 { font-size:22px; font-weight:700; margin:0 0 20px; }
+  .vm-list h2 { font-size:22px; font-weight:700; margin:0 0 20px; color:#111827; }
   .vm-item { display:flex; gap:14px; margin-bottom:20px; align-items:flex-start; }
-  .vm-icon {
-    width: 40px; height: 40px;
-    background: rgba(158,6,32,0.08);
-    border-radius: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #9E0620;
-    flex-shrink: 0;
-  }
+  .vm-icon { width: 40px; height: 40px; background: rgba(185,28,28,0.08); border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; color: #B91C1C; flex-shrink: 0; }
   .vm-icon svg { width: 20px; height: 20px; }
-  .vm-item strong { display:block; font-size:15px; font-weight:600; margin-bottom:4px; }
+  .vm-item strong { display:block; font-size:15px; font-weight:700; margin-bottom:4px; color:#111827; }
   .vm-item p { font-size:13.5px; color:#6b7280; margin:0; }
 
   /* Contact */
   .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; }
-  .contact-info-col h2,.contact-form-col h2 { font-size:22px; font-weight:700; margin:0 0 20px; }
+  .contact-info-col h2,.contact-form-col h2 { font-size:22px; font-weight:700; margin:0 0 20px; color:#111827; }
   .contact-item { display:flex; gap:14px; margin-bottom:18px; align-items:flex-start; }
-  .contact-icon {
-    width: 36px; height: 36px;
-    background: rgba(158,6,32,0.08);
-    border-radius: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #9E0620;
-    flex-shrink: 0;
-  }
+  .contact-icon { width: 36px; height: 36px; background: rgba(185,28,28,0.08); border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; color: #B91C1C; flex-shrink: 0; }
   .contact-icon svg { width: 18px; height: 18px; }
-  .contact-item strong { display:block; font-size:14px; font-weight:600; margin-bottom:2px; }
-  .contact-item p { font-size:14px; color:#6b7280; margin:0; }
+  .contact-item strong { display:block; font-size:14px; font-weight:700; margin-bottom:2px; color:#111827; }
+  .contact-item p { font-size:13.5px; color:#4b5563; margin:0; }
   .sosmed-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
-  .sm-badge {
-    padding:8px 16px; background:#f3f4f6; border-radius:8px;
-    font-size:13px; text-decoration:none; color:#374151; font-weight:500;
-    transition:background 0.18s, color 0.18s;
-    display:inline-flex; align-items:center; gap:8px;
-  }
-  .sm-badge:hover { background:rgba(158,6,32,0.08); color:#9E0620; }
-  .sm-icon { display:inline-flex; align-items:center; }
+  .sm-badge { padding:8px 16px; background:#f3f4f6; border-radius:8px; font-size:13px; text-decoration:none; color:#374151; font-weight:600; transition:all 0.18s; display:inline-flex; align-items:center; gap:8px; }
+  .sm-badge:hover { background:rgba(185,28,28,0.1); color:#B91C1C; }
 
-  /* Empty */
-  .empty-page { text-align:center; padding:80px 20px; display:none; }
-  .empty-page h3 { font-size:20px; font-weight:700; margin:0 0 8px; }
-  .empty-page p { color:#6b7280; font-size:14px; }
-
-  /* Toast */
-  .toast-overlay{position:fixed;bottom:24px;right:24px;z-index:9999;}
-  .toast-msg{background:#1f2937;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:500;border-left:4px solid #16a34a;box-shadow:0 8px 24px rgba(0,0,0,0.25);transform:translateX(120%);transition:transform 0.35s cubic-bezier(.34,1.56,.64,1);}
-  .toast-msg.show{transform:translateX(0);}
-  @media(max-width:768px){.page-hero h1{font-size:26px;}.form-row{grid-template-columns:1fr;}.two-col-contact,.vm-features,.contact-grid{grid-template-columns:1fr;}.nav-links{display:none;}}
+  @media(max-width:768px){.page-hero h1{font-size:24px;}.form-row{grid-template-columns:1fr;}.vm-features,.contact-grid{grid-template-columns:1fr;}.nav-links{display:none;}}
 
 </style>
 </head>
@@ -187,18 +133,18 @@
   <header>
     <nav class="nav-inner">
       <a href="/" class="nav-logo">
-        <img src="/assets/logo/new-new-logo.svg" alt="Logo" onerror="this.style.display='none'">
-        <div id="ms88LocationBar" class="ms88-location-bar" onclick="GeoMS88.showModal()" style="margin-left:16px;">
-          <span class="geo-pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="geo-pin-svg"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span><span class="geo-placeholder">Deteksi Lokasi</span>
+        <img src="assets/logo/ms88-logo-transparent.png" alt="Mini Soccer 88 Alpha Sport Logo">
+        <div id="ms88LocationBar" class="ms88-location-bar" onclick="GeoMS88.showModal()" style="margin-left:14px;">
+          <span class="geo-pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="geo-pin-svg"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span><span class="geo-placeholder">Pusdikif Kota Cimahi</span>
         </div>
       </a>
       <div class="nav-links">
-        <a href="/sewa-lapangan.html">Sewa Lapangan</a>
-        <a href="/main-bareng.html">Main Bareng</a>
-        <a href="/kompetisi.html">Kompetisi</a>
-        <a href="/blog.html">Blog</a>
-        <a href="/kontak.html">Kontak</a>
-        <a href="/partner.html">Partner</a>
+        <a href="sewa-lapangan.html">Sewa Lapangan</a>
+        <a href="/#pricelist">Tarif Resmi</a>
+        <a href="partner.html">Kemitraan Sekolah</a>
+        <a href="main-bareng.html">Komunitas & Mabar</a>
+        <a href="kompetisi.html">Dokumentasi GERAK</a>
+        <a href="kontak.html">Kontak</a>
       </div>
       <a href="/" class="nav-back">← Kembali ke Beranda</a>
     </nav>
@@ -206,66 +152,78 @@
 
 <section class="page-hero">
   <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"></path><path d="M18 14h-8"></path><path d="M15 18h-5"></path><path d="M10 6h8v4h-8V6Z"></path></svg></div>
-  <h1>Blog & Artikel</h1>
-  <p>Berita terbaru, tips bermain, dan informasi seputar Mini Soccer 88 Alpha Sport Pusdikif.</p>
+  <h1>Berita & Seputar Mini Soccer 88</h1>
+  <p>Informasi terbaru seputar jadwal, tips olahraga, dan event di Mini Soccer 88 Alpha Sport Pusdikif.</p>
 </section>
 <main class="page-content">
 
-        <div id="blogContainer" class="blog-grid"></div>
-        <div id="emptyBlog" class="empty-page">
-          <div class="empty-icon" style="width:48px;height:48px;margin:0 auto 16px;color:#9ca3af;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
-          <h3>Belum ada artikel</h3>
-          <p>Admin belum mempublikasikan artikel. Kembali lagi nanti!</p>
+        <div class="page-grid" id="dynamicBlogGrid"></div>
+        <div class="page-grid">
+          <div class="court-card">
+            <div class="court-img" style="height:180px; overflow:hidden;">
+              <img src="assets/promo/poster-ekskul-sekolah.jpg" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+            <div class="court-info">
+              <h3>Program Kemitraan Sekolah Dibuka!</h3>
+              <p>Mini Soccer 88 membuka kesempatan bagi sekolah-sekolah di Kota Cimahi untuk memanfaatkan fasilitas lapangan.</p>
+              <a href="partner.html" class="btn-book btn-sm">Baca Selengkapnya</a>
+            </div>
+          </div>
+          <div class="court-card">
+            <div class="court-img" style="height:180px; overflow:hidden;">
+              <img src="assets/promo/poster-kommoto.jpg" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+            <div class="court-info">
+              <h3>KOMMOTO 7-8: Jemur Sehat Tiap Pagi</h3>
+              <p>Komunitas Moe Tonggong hadir setiap pagi pukul 07.00 - 08.00 WIB. Badan bugar dan free teh hangat Kantin Sekar!</p>
+              <a href="main-bareng.html" class="btn-book btn-sm">Baca Selengkapnya</a>
+            </div>
+          </div>
+          <div class="court-card">
+            <div class="court-img" style="height:180px; overflow:hidden;">
+              <img src="assets/promo/poster-fotografer.jpg" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+            <div class="court-info">
+              <h3>Jasa Fotografer Pertandingan GERAK</h3>
+              <p>Abadikan setiap momen aksi pertandingan tim kamu dengan foto jernih dan penuh warna bersama partner resmi kami.</p>
+              <a href="kompetisi.html" class="btn-book btn-sm">Baca Selengkapnya</a>
+            </div>
+          </div>
         </div>
-        <script>
-          (function(){
-            const blogs = JSON.parse(localStorage.getItem('ms88_blogs') || '[]');
-            const pub = blogs.filter(b => b.status === 'published');
-            const container = document.getElementById('blogContainer');
-            const empty = document.getElementById('emptyBlog');
-            if (pub.length === 0) { empty.style.display = 'block'; return; }
-            empty.style.display = 'none';
-            container.innerHTML = pub.reverse().map(b => `
-              <div class="blog-card" onclick="openBlog(${b.id})">
-                <div class="blog-card-thumb" style="background-image:url('${b.thumb || ''}');background-color:#f0f0f0;background-size:cover;background-position:center;"></div>
-                <div class="blog-card-body">
-                  <div class="blog-card-cat">${b.category}</div>
-                  <h3>${b.title}</h3>
-                  <p>${b.summary || b.content.substring(0,100) + '...'}</p>
-                  <div class="blog-card-meta">${b.createdAt}</div>
-                </div>
-              </div>
-            `).join('');
-          })();
-          function openBlog(id) {
-            const blogs = JSON.parse(localStorage.getItem('ms88_blogs') || '[]');
-            const b = blogs.find(x => x.id === id);
-            if (!b) return;
-            document.getElementById('blogContainer').innerHTML = `
-              <div class="blog-full">
-                ${b.thumb ? '<img src="'+b.thumb+'" style="width:100%;border-radius:12px;margin-bottom:24px;">' : ''}
-                <div class="blog-full-cat">${b.category}</div>
-                <h1>${b.title}</h1>
-                <div class="blog-full-meta">${b.createdAt}</div>
-                <div class="blog-full-content">${b.content.replace(/\n/g,'<br>')}</div>
-                <button onclick="location.reload()" style="margin-top:32px;padding:10px 20px;background:#9E0620;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;">← Kembali ke Blog</button>
-              </div>
-            `;
-          }
-        </script>
         
 </main>
+
+<script>
+(function() {
+  try {
+    const raw = localStorage.getItem('ms88_blogs');
+    if (!raw) return;
+    const blogs = JSON.parse(raw);
+    const pub = blogs.filter(b => b.status === 'published');
+    if (pub.length === 0) return;
+    const grid = document.getElementById('dynamicBlogGrid');
+    if (!grid) return;
+    grid.innerHTML = pub.map(b => `
+      <div class="court-card">
+        ${b.thumb ? `<div class="court-img" style="height:180px; overflow:hidden;"><img src="${b.thumb}" style="width:100%; height:100%; object-fit:cover;"></div>` : ''}
+        <div class="court-info">
+          <div style="font-size:11px; font-weight:700; color:#B91C1C; text-transform:uppercase; margin-bottom:4px;">${b.category || 'Berita'}</div>
+          <h3>${b.title}</h3>
+          <p>${b.summary || (b.content ? b.content.slice(0, 120) + '...' : '')}</p>
+          <small style="color:#6b7280; font-size:12px; display:block; margin-bottom:12px;">${b.createdAt || ''}</small>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    console.warn('Blog dynamic load error:', e);
+  }
+})();
+</script>
+
 <script>
   function submitBooking(e) {
     e.preventDefault();
-    const t = document.createElement('div');
-    t.className = 'toast-msg';
-    t.textContent = 'Permintaan terkirim! Kami akan menghubungi Anda via WhatsApp.';
-    let c = document.querySelector('.toast-overlay');
-    if (!c) { c = document.createElement('div'); c.className = 'toast-overlay'; document.body.appendChild(c); }
-    c.appendChild(t);
-    setTimeout(() => t.classList.add('show'), 50);
-    setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 4000);
+    alert('Permintaan terkirim! Admin 88 Alpha Sport akan menghubungi Anda via WhatsApp.');
     e.target.reset();
   }
 </script>

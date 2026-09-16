@@ -30,16 +30,29 @@
       const assets = JSON.parse(raw);
       if (!assets || typeof assets !== 'object') return;
 
+      function syncElements(selector, assetKey, val, applyStyles) {
+        if (!val) return;
+        document.querySelectorAll(selector).forEach(el => {
+          el.setAttribute('data-ms88-asset', assetKey);
+          el.src = val;
+          if (applyStyles) applyStyles(el);
+        });
+      }
+
       // 1. Logo
       if (assets.logo) {
-        document.querySelectorAll('img.ayo-logo, img.ms88-brand-logo, img[alt*="Ayo Indonesia Logo"], img[alt*="Mini Soccer 88"], img[alt="Logo"], .navbar-brand img, .nav-logo img').forEach(el => {
-          el.src = assets.logo;
-          el.style.setProperty('max-height', '50px', 'important');
-          el.style.setProperty('max-width', '220px', 'important');
-          el.style.setProperty('width', 'auto', 'important');
-          el.style.setProperty('height', 'auto', 'important');
-          el.style.setProperty('object-fit', 'contain', 'important');
-        });
+        syncElements(
+          '[data-ms88-asset="logo"], img.ayo-logo, img.ms88-brand-logo, img[alt*="Ayo Indonesia Logo"], img[alt*="Mini Soccer 88"], img[alt="Logo"], .navbar-brand img, .nav-logo img',
+          'logo',
+          assets.logo,
+          el => {
+            el.style.setProperty('max-height', '50px', 'important');
+            el.style.setProperty('max-width', '220px', 'important');
+            el.style.setProperty('width', 'auto', 'important');
+            el.style.setProperty('height', 'auto', 'important');
+            el.style.setProperty('object-fit', 'contain', 'important');
+          }
+        );
       }
 
       // 2. Favicon
@@ -56,73 +69,79 @@
       }
 
       // 3. Hero Desktop
-      if (assets.hero_desktop) {
-        document.querySelectorAll('img.hero-img:not(.hero-img-mobile), img[src*="ayoindonesia-padel-1.jpg"]').forEach(el => {
-          el.src = assets.hero_desktop;
-        });
-      }
+      syncElements(
+        '[data-ms88-asset="hero_desktop"], img.hero-img:not(.hero-img-mobile), img[src*="ayoindonesia-padel-1.jpg"], img[src*="field-night-floodlight"]',
+        'hero_desktop',
+        assets.hero_desktop
+      );
 
       // 4. Hero Mobile
-      if (assets.hero_mobile) {
-        document.querySelectorAll('img.hero-img.hero-img-mobile, img[src*="ayoindonesia-padel-mobile-1.jpg"]').forEach(el => {
-          el.src = assets.hero_mobile;
-        });
-      }
+      syncElements(
+        '[data-ms88-asset="hero_mobile"], img.hero-img.hero-img-mobile, img[src*="ayoindonesia-padel-mobile-1.jpg"], img[src*="field-day-center"]',
+        'hero_mobile',
+        assets.hero_mobile
+      );
 
       // 5. Banner CTA
-      if (assets.banner_cta) {
-        document.querySelectorAll('img[src*="baner.png"]').forEach(el => {
-          el.src = assets.banner_cta;
-        });
-      }
+      syncElements(
+        '[data-ms88-asset="banner_cta"], img[src*="baner.png"], img[src*="qris-banner-mascot"]',
+        'banner_cta',
+        assets.banner_cta
+      );
 
       // 6. Slider Banners
-      if (assets.banner_1_desktop) {
-        document.querySelectorAll('img[src*="1-desktop.png"]').forEach(el => {
-          el.src = assets.banner_1_desktop;
-        });
-      }
-      if (assets.banner_2_desktop) {
-        document.querySelectorAll('img[src*="2-desktop.png"]').forEach(el => {
-          el.src = assets.banner_2_desktop;
-        });
-      }
+      syncElements(
+        '[data-ms88-asset="banner_1_desktop"], img[src*="1-desktop.png"], img[src*="poster-ekskul-sekolah"]',
+        'banner_1_desktop',
+        assets.banner_1_desktop
+      );
+      syncElements(
+        '[data-ms88-asset="banner_2_desktop"], img[src*="2-desktop.png"], img[src*="poster-fotografer"]',
+        'banner_2_desktop',
+        assets.banner_2_desktop
+      );
 
       // 7. Phone Mockups
-      if (assets.phone_mockup1) {
-        document.querySelectorAll('img[src*="hp-ayo.png"]').forEach(el => {
-          el.src = assets.phone_mockup1;
-        });
-      }
-      if (assets.phone_mockup2) {
-        document.querySelectorAll('img[src*="hp-ayo2.png"]').forEach(el => {
-          el.src = assets.phone_mockup2;
-        });
-      }
+      syncElements('[data-ms88-asset="phone_mockup1"], img[src*="hp-ayo.png"]', 'phone_mockup1', assets.phone_mockup1);
+      syncElements('[data-ms88-asset="phone_mockup2"], img[src*="hp-ayo2.png"]', 'phone_mockup2', assets.phone_mockup2);
 
       // 8. Venue Preview
-      if (assets.venue_prev) {
-        document.querySelectorAll('img[src*="venue-preview"]').forEach(el => {
-          el.src = assets.venue_prev;
-        });
-      }
+      syncElements(
+        '[data-ms88-asset="venue_prev"], img[src*="venue-preview"], img[src*="field-night-ball-fifa"]',
+        'venue_prev',
+        assets.venue_prev
+      );
 
-      // 9. Kompetisi Cards
-      if (assets.kompetisi1) {
-        document.querySelectorAll('img[src*="new_kompetisi_home1"]').forEach(el => {
-          el.src = assets.kompetisi1;
-        });
-      }
-      if (assets.kompetisi2) {
-        document.querySelectorAll('img[src*="new_kompetisi_home2"]').forEach(el => {
-          el.src = assets.kompetisi2;
-        });
-      }
-      if (assets.kompetisi3) {
-        document.querySelectorAll('img[src*="new_kompetisi_home3"]').forEach(el => {
-          el.src = assets.kompetisi3;
-        });
-      }
+      // 9. Kompetisi / Poster Cards
+      syncElements(
+        '[data-ms88-asset="kompetisi1"], img[src*="new_kompetisi_home1"], img[src*="poster-kommoto"]',
+        'kompetisi1',
+        assets.kompetisi1
+      );
+      syncElements(
+        '[data-ms88-asset="kompetisi2"], img[src*="new_kompetisi_home2"], img[src*="poster-content-creator"]',
+        'kompetisi2',
+        assets.kompetisi2
+      );
+      syncElements(
+        '[data-ms88-asset="kompetisi3"], img[src*="new_kompetisi_home3"], img[src*="poster-pricelist"]',
+        'kompetisi3',
+        assets.kompetisi3
+      );
+
+      // 10. Mascot
+      syncElements(
+        '[data-ms88-asset="mascot"], img.ms88-mascot-img, img[src*="ms88-mascot"]',
+        'mascot',
+        assets.mascot
+      );
+
+      // 11. QRIS
+      syncElements(
+        '[data-ms88-asset="qris"], img.ms88-qris-img, img[src*="qris-alpha-sport"]',
+        'qris',
+        assets.qris
+      );
     } catch (e) {
       console.warn('Assets sync warning:', e);
     }

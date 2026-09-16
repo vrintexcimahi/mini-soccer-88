@@ -1,0 +1,892 @@
+{
+  "07-13_SEP_2026": [
+    {
+      "time": "06.00-07.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "KIRARI SPACE YOGA"
+    },
+    {
+      "time": "07.00-08.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "KIRARI SPACE YOGA"
+    },
+    {
+      "time": "07.00-08.00",
+      "day": "MINGGU",
+      "date": "13",
+      "team": "SANG MANTAN FC"
+    },
+    {
+      "time": "08.00-09.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "KIRARI SPACE YOGA"
+    },
+    {
+      "time": "08.00-09.00",
+      "day": "MINGGU",
+      "date": "13",
+      "team": "SANG MANTAN FC"
+    },
+    {
+      "time": "09.00-10.00",
+      "day": "JUM'AT",
+      "date": "11",
+      "team": "SPARTA FC"
+    },
+    {
+      "time": "09.00-10.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "CIBEUREUM BOY 3 FC"
+    },
+    {
+      "time": "09.00-10.00",
+      "day": "MINGGU",
+      "date": "13",
+      "team": "PESAT ACTIVE FC"
+    },
+    {
+      "time": "10.00-11.00",
+      "day": "JUM'AT",
+      "date": "11",
+      "team": "SPARTA FC"
+    },
+    {
+      "time": "10.00-11.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "10.00-11.00",
+      "day": "MINGGU",
+      "date": "13",
+      "team": "PESAT ACTIVE FC"
+    },
+    {
+      "time": "11.00-12.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "11.00-12.00",
+      "day": "MINGGU",
+      "date": "13",
+      "team": "MAN I KOTA CIMAHI FC"
+    },
+    {
+      "time": "13.00-14.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "SSB ALEXIS FC"
+    },
+    {
+      "time": "15.00-16.00",
+      "day": "SELASA",
+      "date": "08",
+      "team": "LOYOR FC"
+    },
+    {
+      "time": "15.00-16.00",
+      "day": "MINGGU",
+      "date": "13",
+      "team": "BROTHERS FC"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "SENIN",
+      "date": "07",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "SELASA",
+      "date": "08",
+      "team": "LOYOR FC"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "RABU",
+      "date": "09",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "KAMIS",
+      "date": "10",
+      "team": "PT. SIAP"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "JUM'AT",
+      "date": "11",
+      "team": "AJUL GEDANG FC"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "MINGGU",
+      "date": "13",
+      "team": "BROTHERS FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "SENIN",
+      "date": "07",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "SELASA",
+      "date": "08",
+      "team": "PEGADAIAN FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "RABU",
+      "date": "09",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "KAMIS",
+      "date": "10",
+      "team": "CITERS FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "JUM'AT",
+      "date": "11",
+      "team": "PODJOK FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "WOULES FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "MINGGU",
+      "date": "13",
+      "team": "TROFEO CHAMPIONSHIP FC"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "SENIN",
+      "date": "07",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "SELASA",
+      "date": "08",
+      "team": "ASSYAKAB FC"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "RABU",
+      "date": "09",
+      "team": "BIANDA FC"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "KAMIS",
+      "date": "10",
+      "team": "RANCAGE FC"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "JUM'AT",
+      "date": "11",
+      "team": "BRUINS FC"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "WOULES FC"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "MINGGU",
+      "date": "13",
+      "team": "TROFEO CHAMPIONSHIP FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "SELASA",
+      "date": "08",
+      "team": "NOU CAFE FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "RABU",
+      "date": "09",
+      "team": "BIANDA FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "KAMIS",
+      "date": "10",
+      "team": "BALBALAND RS DUSTIRA FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "JUM'AT",
+      "date": "11",
+      "team": "CENTRAL DISTRIBUTION FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "CKP JATAYU FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "MINGGU",
+      "date": "13",
+      "team": "TROFEO CHAMPIONSHIP FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "SELASA",
+      "date": "08",
+      "team": "NOU CAFE FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "RABU",
+      "date": "09",
+      "team": "FARIS07 BARBERSHOP FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "KAMIS",
+      "date": "10",
+      "team": "BALBALAND RS DUSTIRA FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "JUM'AT",
+      "date": "11",
+      "team": "PUSSEN ARHANUD FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "CKP JATAYU FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "MINGGU",
+      "date": "13",
+      "team": "ARANS FC"
+    },
+    {
+      "time": "21.00-22.00",
+      "day": "RABU",
+      "date": "09",
+      "team": "FARIS07 BARBERSHOP FC"
+    },
+    {
+      "time": "21.00-22.00",
+      "day": "KAMIS",
+      "date": "10",
+      "team": "MARBAT FC"
+    },
+    {
+      "time": "21.00-22.00",
+      "day": "JUM'AT",
+      "date": "11",
+      "team": "PUSSEN ARHANUD FC"
+    },
+    {
+      "time": "21.00-22.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "DALAPAN FC"
+    },
+    {
+      "time": "21.00-22.00",
+      "day": "MINGGU",
+      "date": "13",
+      "team": "ARANS FC"
+    },
+    {
+      "time": "22.00-23.00",
+      "day": "JUM'AT",
+      "date": "11",
+      "team": "KESDAM FC"
+    },
+    {
+      "time": "22.00-23.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "DALAPAN FC"
+    }
+  ],
+  "14-20_SEP_2026": [
+    {
+      "time": "06.00-07.00",
+      "day": "SABTU",
+      "date": "19",
+      "team": "CIBEUREUM BOY 3 FC"
+    },
+    {
+      "time": "06.00-07.00",
+      "day": "MINGGU",
+      "date": "20",
+      "team": "SOLIDARITAS SPORT FC"
+    },
+    {
+      "time": "07.00-08.00",
+      "day": "SABTU",
+      "date": "19",
+      "team": "CIBEUREUM BOY 3 FC"
+    },
+    {
+      "time": "07.00-08.00",
+      "day": "MINGGU",
+      "date": "20",
+      "team": "SOLIDARITAS SPORT FC"
+    },
+    {
+      "time": "08.00-09.00",
+      "day": "SABTU",
+      "date": "19",
+      "team": "CEPAT FC"
+    },
+    {
+      "time": "08.00-09.00",
+      "day": "MINGGU",
+      "date": "20",
+      "team": "BUDAG BADUG FC"
+    },
+    {
+      "time": "09.00-10.00",
+      "day": "MINGGU",
+      "date": "20",
+      "team": "BUDAG BADUG FC"
+    },
+    {
+      "time": "15.00-16.00",
+      "day": "KAMIS",
+      "date": "17",
+      "team": "ULTRA JAYA FC"
+    },
+    {
+      "time": "15.00-16.00",
+      "day": "SABTU",
+      "date": "19",
+      "team": "BARCA FC"
+    },
+    {
+      "time": "15.00-16.00",
+      "day": "MINGGU",
+      "date": "20",
+      "team": "GUFI FC"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "SENIN",
+      "date": "14",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "SELASA",
+      "date": "15",
+      "team": "GREEONE FC"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "RABU",
+      "date": "16",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "KAMIS",
+      "date": "17",
+      "team": "ULTRA JAYA FC"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "JUM'AT",
+      "date": "18",
+      "team": "GLADIATOR FC"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "SABTU",
+      "date": "19",
+      "team": "BARCA FC"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "MINGGU",
+      "date": "20",
+      "team": "BROTHERS FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "SENIN",
+      "date": "14",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "SELASA",
+      "date": "15",
+      "team": "LOYOR FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "RABU",
+      "date": "16",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "KAMIS",
+      "date": "17",
+      "team": "CITERS FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "JUM'AT",
+      "date": "18",
+      "team": "GLADIATOR FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "SABTU",
+      "date": "19",
+      "team": "WOULES FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "MINGGU",
+      "date": "20",
+      "team": "BROTHERS FC"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "SENIN",
+      "date": "14",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "SELASA",
+      "date": "15",
+      "team": "LOYOR FC"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "RABU",
+      "date": "16",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "KAMIS",
+      "date": "17",
+      "team": "BIANDA FC"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "JUM'AT",
+      "date": "18",
+      "team": "ENTOG FC"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "SABTU",
+      "date": "19",
+      "team": "WOULES FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "SELASA",
+      "date": "15",
+      "team": "UMUM FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "RABU",
+      "date": "16",
+      "team": "FIF CIMAHI FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "KAMIS",
+      "date": "17",
+      "team": "BIANDA FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "JUM'AT",
+      "date": "18",
+      "team": "ENTOG FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "SABTU",
+      "date": "19",
+      "team": "ALKINDO PUTRA FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "MINGGU",
+      "date": "20",
+      "team": "GAMATEX FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "SENIN",
+      "date": "14",
+      "team": "NW05 FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "SELASA",
+      "date": "15",
+      "team": "PUSDIKBEKANG FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "RABU",
+      "date": "16",
+      "team": "STIKES DUSTIRA FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "KAMIS",
+      "date": "17",
+      "team": "CNS PDL FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "JUM'AT",
+      "date": "18",
+      "team": "PUSSEN ARHANUD FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "SABTU",
+      "date": "19",
+      "team": "ALKINDO PUTRA FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "MINGGU",
+      "date": "20",
+      "team": "GAMATEX FC"
+    },
+    {
+      "time": "21.00-22.00",
+      "day": "SENIN",
+      "date": "14",
+      "team": "NW05 FC"
+    },
+    {
+      "time": "21.00-22.00",
+      "day": "SELASA",
+      "date": "15",
+      "team": "PUSDIKBEKANG FC"
+    },
+    {
+      "time": "21.00-22.00",
+      "day": "RABU",
+      "date": "16",
+      "team": "STIKES DUSTIRA FC"
+    },
+    {
+      "time": "21.00-22.00",
+      "day": "KAMIS",
+      "date": "17",
+      "team": "MARBAT FC"
+    },
+    {
+      "time": "21.00-22.00",
+      "day": "JUM'AT",
+      "date": "18",
+      "team": "PUSSEN ARHANUD FC"
+    },
+    {
+      "time": "21.00-22.00",
+      "day": "SABTU",
+      "date": "19",
+      "team": "DALAPAN FC"
+    }
+  ],
+  "21-27_SEP_2026": [
+    {
+      "time": "06.00-07.00",
+      "day": "SABTU",
+      "date": "26",
+      "team": "CIBEUREUM BOY 3 FC"
+    },
+    {
+      "time": "07.00-08.00",
+      "day": "SABTU",
+      "date": "26",
+      "team": "CIBEUREUM BOY 3 FC"
+    },
+    {
+      "time": "08.00-09.00",
+      "day": "SABTU",
+      "date": "26",
+      "team": "SANBE YOGIE FC"
+    },
+    {
+      "time": "08.00-09.00",
+      "day": "MINGGU",
+      "date": "27",
+      "team": "SANBE YOGIE FC"
+    },
+    {
+      "time": "09.00-10.00",
+      "day": "SABTU",
+      "date": "26",
+      "team": "SANBE YOGIE FC"
+    },
+    {
+      "time": "09.00-10.00",
+      "day": "MINGGU",
+      "date": "27",
+      "team": "SANBE YOGIE FC"
+    },
+    {
+      "time": "10.00-11.00",
+      "day": "SABTU",
+      "date": "26",
+      "team": "SANBE YOGIE FC"
+    },
+    {
+      "time": "10.00-11.00",
+      "day": "MINGGU",
+      "date": "27",
+      "team": "SANBE YOGIE FC"
+    },
+    {
+      "time": "11.00-12.00",
+      "day": "SABTU",
+      "date": "26",
+      "team": "SANBE YOGIE FC"
+    },
+    {
+      "time": "12.00-13.00",
+      "day": "SABTU",
+      "date": "26",
+      "team": "SANBE YOGIE FC"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "SENIN",
+      "date": "21",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "SELASA",
+      "date": "22",
+      "team": "LOYOR FC"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "RABU",
+      "date": "23",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "JUM'AT",
+      "date": "25",
+      "team": "PANGJAYA FC"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "SABTU",
+      "date": "26",
+      "team": "IGO FC"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "MINGGU",
+      "date": "27",
+      "team": "BROTHERS FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "SENIN",
+      "date": "21",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "SELASA",
+      "date": "22",
+      "team": "LOYOR FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "RABU",
+      "date": "23",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "KAMIS",
+      "date": "24",
+      "team": "CITERS FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "JUM'AT",
+      "date": "25",
+      "team": "PANGJAYA FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "SABTU",
+      "date": "26",
+      "team": "WOULES FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "MINGGU",
+      "date": "27",
+      "team": "BROTHERS FC"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "SENIN",
+      "date": "21",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "RABU",
+      "date": "23",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "JUM'AT",
+      "date": "25",
+      "team": "BIANDA FC"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "SABTU",
+      "date": "26",
+      "team": "WOULES FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "SELASA",
+      "date": "22",
+      "team": "NOU CAFE FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "JUM'AT",
+      "date": "25",
+      "team": "CENTRAL DISTRIBUTION FC"
+    },
+    {
+      "time": "19.00-20.00",
+      "day": "SABTU",
+      "date": "26",
+      "team": "DALAPAN FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "SELASA",
+      "date": "22",
+      "team": "NOU CAFE FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "RABU",
+      "date": "23",
+      "team": "KULINER FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "JUM'AT",
+      "date": "25",
+      "team": "CENTRAL DISTRIBUTION FC"
+    },
+    {
+      "time": "20.00-21.00",
+      "day": "SABTU",
+      "date": "26",
+      "team": "DALAPAN FC"
+    },
+    {
+      "time": "21.00-22.00",
+      "day": "RABU",
+      "date": "23",
+      "team": "KULINER FC"
+    }
+  ],
+  "28-30_SEP_2026": [
+    {
+      "time": "16.00-17.00",
+      "day": "SENIN",
+      "date": "28",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "SELASA",
+      "date": "29",
+      "team": "LOYOR FC"
+    },
+    {
+      "time": "16.00-17.00",
+      "day": "RABU",
+      "date": "30",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "SENIN",
+      "date": "28",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "SELASA",
+      "date": "29",
+      "team": "LOYOR FC"
+    },
+    {
+      "time": "17.00-18.00",
+      "day": "RABU",
+      "date": "30",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "SENIN",
+      "date": "28",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    },
+    {
+      "time": "18.00-19.00",
+      "day": "RABU",
+      "date": "30",
+      "team": "CIMAHI FOOTBALL ACADEMY"
+    }
+  ]
+}
