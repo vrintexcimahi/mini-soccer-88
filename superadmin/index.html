@@ -63,6 +63,11 @@
       <span>Sesi Mabar &amp; Sparring</span>
     </button>
 
+    <button class="nav-link-btn" id="tabBtnUsers" onclick="switchTab('users')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      <span>Manajemen User</span>
+    </button>
+
     <div class="nav-section-title">Konten Website</div>
     <button class="nav-link-btn" id="tabBtnBlog" onclick="switchTab('blog')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
@@ -837,6 +842,176 @@
       </div>
     </div>
   </section>
+
+  <!-- === USERS TAB === -->
+  <section class="tab-panel" id="tabUsers">
+    <div class="panel-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h2>Manajemen User &amp; Member</h2>
+        <p>Kelola akun member, level keanggotaan, dan data pelanggan setia</p>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-sm btn-outline" onclick="exportUsersToCSV()" title="Ekspor daftar member ke CSV">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="vertical-align:-2px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Ekspor CSV
+        </button>
+        <button class="btn btn-sm" onclick="openUserModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="vertical-align:-2px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Tambah Member
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid" style="margin-bottom:24px;">
+      <div class="kpi-card kpi-blue">
+        <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+        <div class="kpi-body"><div class="kpi-label">Total Member</div><div class="kpi-value" id="kpiUserTotal">0</div></div>
+      </div>
+      <div class="kpi-card kpi-primary">
+        <div class="kpi-icon" style="color:#D71926;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+        <div class="kpi-body"><div class="kpi-label">Member VIP &amp; Gold</div><div class="kpi-value" id="kpiUserVip">0</div></div>
+      </div>
+      <div class="kpi-card kpi-green">
+        <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div class="kpi-body"><div class="kpi-label">Member Aktif</div><div class="kpi-value" id="kpiUserActive">0</div></div>
+      </div>
+      <div class="kpi-card kpi-orange">
+        <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+        <div class="kpi-body"><div class="kpi-label">Bergabung Bulan Ini</div><div class="kpi-value" id="kpiUserNew">0</div></div>
+      </div>
+    </div>
+
+    <!-- Filter & Table -->
+    <div class="card">
+      <div class="card-head">
+        <h3>Daftar Member</h3>
+        <div class="table-filters" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <input type="text" id="filterUserSearch" class="input-inline" placeholder="Cari nama / telepon..." oninput="renderUsers()" style="min-width:180px;">
+          <select id="filterUserLevel" class="input-inline" onchange="renderUsers()">
+            <option value="">Semua Level</option>
+            <option value="Bronze">🥉 Bronze</option>
+            <option value="Silver">🥈 Silver</option>
+            <option value="Gold">🥇 Gold</option>
+            <option value="VIP">⭐ VIP</option>
+          </select>
+          <select id="filterUserStatus" class="input-inline" onchange="renderUsers()">
+            <option value="">Semua Status</option>
+            <option value="active">Aktif</option>
+            <option value="inactive">Nonaktif</option>
+            <option value="suspended">Ditangguhkan</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-body table-wrap">
+        <table class="data-table" id="usersTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nama</th>
+              <th>Telepon / WA</th>
+              <th>Email</th>
+              <th>Level</th>
+              <th>Total Booking</th>
+              <th>Bergabung</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Level Reference Card -->
+    <div class="card" style="margin-top:20px;">
+      <div class="card-head"><h3>Referensi Level Member</h3></div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+          <div style="background:linear-gradient(135deg,#7c5c3a,#b07a4a);border-radius:12px;padding:16px;color:#fff;">
+            <div style="font-size:22px;margin-bottom:6px;">🥉</div>
+            <div style="font-weight:700;font-size:15px;">Bronze</div>
+            <div style="font-size:12.5px;opacity:0.85;margin-top:4px;">0 – 5 booking<br>Member baru, diskon 0%</div>
+          </div>
+          <div style="background:linear-gradient(135deg,#4a5568,#718096);border-radius:12px;padding:16px;color:#fff;">
+            <div style="font-size:22px;margin-bottom:6px;">🥈</div>
+            <div style="font-weight:700;font-size:15px;">Silver</div>
+            <div style="font-size:12.5px;opacity:0.85;margin-top:4px;">6 – 15 booking<br>Diskon 5% tarif malam</div>
+          </div>
+          <div style="background:linear-gradient(135deg,#b7791f,#d69e2e);border-radius:12px;padding:16px;color:#fff;">
+            <div style="font-size:22px;margin-bottom:6px;">🥇</div>
+            <div style="font-weight:700;font-size:15px;">Gold</div>
+            <div style="font-size:12.5px;opacity:0.85;margin-top:4px;">16 – 30 booking<br>Diskon 10%, prioritas slot</div>
+          </div>
+          <div style="background:linear-gradient(135deg,#553c9a,#805ad5);border-radius:12px;padding:16px;color:#fff;">
+            <div style="font-size:22px;margin-bottom:6px;">⭐</div>
+            <div style="font-weight:700;font-size:15px;">VIP</div>
+            <div style="font-size:12.5px;opacity:0.85;margin-top:4px;">&gt;30 booking<br>Diskon 15%, slot premium</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- User Modal -->
+  <div id="userModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;" onclick="closeUserModal(event)">
+    <div style="background:#1a1d23;border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;width:100%;max-width:520px;box-shadow:0 24px 64px rgba(0,0,0,0.6);position:relative;" onclick="event.stopPropagation()">
+      <button onclick="closeUserModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.5);font-size:22px;line-height:1;">×</button>
+      <h3 id="userModalTitle" style="font-size:17px;font-weight:700;color:#fff;margin:0 0 24px;">Tambah Member Baru</h3>
+      <input type="hidden" id="userEditId">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Nama Lengkap *</label>
+          <input type="text" id="uName" class="form-input" placeholder="Nama member">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">No. Telepon / WA *</label>
+          <input type="tel" id="uPhone" class="form-input" placeholder="08xxxxxxxxxx">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Email</label>
+          <input type="email" id="uEmail" class="form-input" placeholder="email@domain.com">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Nama Tim</label>
+          <input type="text" id="uTeam" class="form-input" placeholder="Nama tim (opsional)">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Level Member</label>
+          <select id="uLevel" class="form-input">
+            <option value="Bronze">🥉 Bronze (0–5 booking)</option>
+            <option value="Silver">🥈 Silver (6–15 booking)</option>
+            <option value="Gold">🥇 Gold (16–30 booking)</option>
+            <option value="VIP">⭐ VIP (&gt;30 booking)</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Status</label>
+          <select id="uStatus" class="form-input">
+            <option value="active">Aktif</option>
+            <option value="inactive">Nonaktif</option>
+            <option value="suspended">Ditangguhkan</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Total Booking</label>
+          <input type="number" id="uBookings" class="form-input" placeholder="0" min="0" value="0">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Tanggal Bergabung</label>
+          <input type="date" id="uJoinDate" class="form-input">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:20px;">
+        <label class="form-label">Catatan Admin</label>
+        <textarea id="uNotes" class="form-input" rows="2" placeholder="Catatan khusus tentang member ini..."></textarea>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-primary" onclick="saveUser()" style="flex:1;">Simpan</button>
+        <button class="btn btn-outline" onclick="closeUserModal()">Batal</button>
+      </div>
+    </div>
+  </div>
 
 </main>
 

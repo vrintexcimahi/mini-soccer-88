@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderPricing();
   loadSettings();
   loadWaGatewaySettings();
+  renderUsers();
 });
 
 // --- Tab Switching ---
@@ -84,7 +85,8 @@ function switchTab(tab) {
 
   const titles = {
     overview:'Dashboard', slots:'Kelola Slot', orders:'Manajemen Booking',
-    payments:'Transaksi & Nota', mabar:'Sesi Mabar', blog:'Blog & Artikel', assets:'Pengaturan Aset',
+    payments:'Transaksi & Nota', mabar:'Sesi Mabar', users:'Manajemen User',
+    blog:'Blog & Artikel', assets:'Pengaturan Aset',
     pricing:'Tarif Lapangan', contact:'Kontak & Sosmed', settings:'Pengaturan Sistem'
   };
   const titleEl = document.getElementById('topbarTitle');
@@ -1751,4 +1753,257 @@ function clearAllData() {
   initDefaultOrdersIfEmpty();
   renderOverview(); renderOrders(); renderSlots(); renderMabar(); renderBlogs(); renderAssets(); renderPricing(); renderContact();
   toast('Semua data telah dihapus', 'warning');
+}
+
+// =========================================================
+//  USER MANAGEMENT MODULE
+// =========================================================
+
+const USER_LEVEL_THRESHOLDS = { Bronze: 0, Silver: 6, Gold: 16, VIP: 31 };
+const USER_LEVEL_BADGES = {
+  Bronze: { emoji: '🥉', color: '#92400e', bg: '#fef3c7' },
+  Silver: { emoji: '🥈', color: '#374151', bg: '#f3f4f6' },
+  Gold:   { emoji: '🥇', color: '#78350f', bg: '#fde68a' },
+  VIP:    { emoji: '⭐', color: '#5b21b6', bg: '#ede9fe' },
+};
+
+function computeLevel(bookingCount) {
+  const n = parseInt(bookingCount) || 0;
+  if (n >= 31) return 'VIP';
+  if (n >= 16) return 'Gold';
+  if (n >= 6)  return 'Silver';
+  return 'Bronze';
+}
+
+function getUserStatusColor(status) {
+  if (status === 'active')    return { color: '#15803d', bg: '#dcfce7' };
+  if (status === 'suspended') return { color: '#b91c1c', bg: '#fee2e2' };
+  return { color: '#6b7280', bg: '#f3f4f6' };
+}
+
+function getLS_users() {
+  try {
+    const raw = localStorage.getItem('ms88_users');
+    if (raw) return JSON.parse(raw);
+  } catch(_) {}
+  // Seed sample members on first load
+  const today = new Date();
+  const fmt = d => d.toISOString().slice(0,10);
+  const daysAgo = n => { const d = new Date(); d.setDate(d.getDate()-n); return fmt(d); };
+  const samples = [
+    { id:'USR-001', name:'Rifqi Pratama',  phone:'081234567890', email:'rifqi@mail.com',  team:'Tim Garuda',    level:'Gold',   bookings:18, status:'active',    joinDate: daysAgo(90),  notes:'' },
+    { id:'USR-002', name:'Coach Dani',     phone:'082198765432', email:'dani@coach.id',   team:'Akademi 88',    level:'VIP',    bookings:45, status:'active',    joinDate: daysAgo(180), notes:'Pelatih resmi' },
+    { id:'USR-003', name:'Kapten Dimas',   phone:'085312345678', email:'',                team:'Spartan FC',    level:'Silver', bookings:9,  status:'active',    joinDate: daysAgo(60),  notes:'' },
+    { id:'USR-004', name:'Budi Santoso',   phone:'087812345678', email:'budi@gmail.com',  team:'',              level:'Bronze', bookings:3,  status:'active',    joinDate: daysAgo(20),  notes:'' },
+    { id:'USR-005', name:'Ade Saputra',    phone:'089623456789', email:'',                team:'Komunitas Pagi',level:'Silver', bookings:12, status:'inactive',  joinDate: daysAgo(120), notes:'' },
+    { id:'USR-006', name:'Yoga Pratama',   phone:'081387654321', email:'yoga@mail.com',   team:'Yoga Warriors', level:'Gold',   bookings:22, status:'active',    joinDate: daysAgo(150), notes:'' },
+    { id:'USR-007', name:'Rendi Kusuma',   phone:'087834567890', email:'',                team:'',              level:'Bronze', bookings:1,  status:'suspended', joinDate: daysAgo(10),  notes:'Pelanggaran aturan' },
+  ];
+  localStorage.setItem('ms88_users', JSON.stringify(samples));
+  return samples;
+}
+
+function saveLS_users(users) {
+  localStorage.setItem('ms88_users', JSON.stringify(users));
+}
+
+function renderUsers() {
+  const users = getLS_users();
+  const search   = (document.getElementById('filterUserSearch')  || {}).value || '';
+  const levelF   = (document.getElementById('filterUserLevel')   || {}).value || '';
+  const statusF  = (document.getElementById('filterUserStatus')  || {}).value || '';
+  const body     = document.getElementById('usersBody');
+  if (!body) return;
+
+  // KPI
+  const thisMonth = new Date().toISOString().slice(0,7);
+  const active = users.filter(u => u.status === 'active').length;
+  const vipGold = users.filter(u => u.level === 'VIP' || u.level === 'Gold').length;
+  const newM    = users.filter(u => (u.joinDate||'').startsWith(thisMonth)).length;
+  const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  setTxt('kpiUserTotal',  users.length);
+  setTxt('kpiUserVip',    vipGold);
+  setTxt('kpiUserActive', active);
+  setTxt('kpiUserNew',    newM);
+
+  // Filter
+  const filtered = users.filter(u => {
+    const q = search.toLowerCase();
+    const matchQ = !q || u.name.toLowerCase().includes(q) || (u.phone||'').includes(q) || (u.team||'').toLowerCase().includes(q);
+    const matchL = !levelF  || u.level  === levelF;
+    const matchS = !statusF || u.status === statusF;
+    return matchQ && matchL && matchS;
+  });
+
+  if (filtered.length === 0) {
+    body.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:24px;color:#888;">Tidak ada member ditemukan.</td></tr>';
+    return;
+  }
+
+  body.innerHTML = filtered.map((u, i) => {
+    const lvl = USER_LEVEL_BADGES[u.level] || USER_LEVEL_BADGES.Bronze;
+    const st  = getUserStatusColor(u.status);
+    const statusLabel = u.status === 'active' ? 'Aktif' : u.status === 'inactive' ? 'Nonaktif' : 'Ditangguhkan';
+    return `
+      <tr>
+        <td><small style="color:#888;">${i+1}</small></td>
+        <td>
+          <strong>${u.name}</strong>
+          ${u.team ? `<br><small style="color:#888;">${u.team}</small>` : ''}
+        </td>
+        <td>
+          <a href="tel:${u.phone}" style="color:inherit;text-decoration:none;">${u.phone||'-'}</a>
+          <button class="btn-icon" title="WA" onclick="window.open('https://wa.me/${(u.phone||'').replace(/^0/,'62')}','_blank')" style="margin-left:4px;">${ICON.wa}</button>
+        </td>
+        <td><small>${u.email||'—'}</small></td>
+        <td>
+          <span style="background:${lvl.bg};color:${lvl.color};font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:100px;white-space:nowrap;">
+            ${lvl.emoji} ${u.level}
+          </span>
+        </td>
+        <td style="text-align:center;font-weight:600;">${u.bookings||0}</td>
+        <td><small>${u.joinDate||'—'}</small></td>
+        <td>
+          <span style="background:${st.bg};color:${st.color};font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:100px;">
+            ${statusLabel}
+          </span>
+        </td>
+        <td style="white-space:nowrap;">
+          <button class="btn-icon" title="Edit" onclick="openUserModal('${u.id}')">${ICON.edit}</button>
+          <button class="btn-icon btn-red" title="Hapus" onclick="deleteUser('${u.id}')">${ICON.trash}</button>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+function openUserModal(userId) {
+  const modal = document.getElementById('userModal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+
+  document.getElementById('userEditId').value   = userId || '';
+  document.getElementById('uName').value        = '';
+  document.getElementById('uPhone').value       = '';
+  document.getElementById('uEmail').value       = '';
+  document.getElementById('uTeam').value        = '';
+  document.getElementById('uLevel').value       = 'Bronze';
+  document.getElementById('uStatus').value      = 'active';
+  document.getElementById('uBookings').value    = '0';
+  document.getElementById('uJoinDate').value    = new Date().toISOString().slice(0,10);
+  document.getElementById('uNotes').value       = '';
+  document.getElementById('userModalTitle').textContent = userId ? 'Edit Data Member' : 'Tambah Member Baru';
+
+  if (userId) {
+    const users = getLS_users();
+    const u = users.find(x => String(x.id) === String(userId));
+    if (u) {
+      document.getElementById('uName').value     = u.name     || '';
+      document.getElementById('uPhone').value    = u.phone    || '';
+      document.getElementById('uEmail').value    = u.email    || '';
+      document.getElementById('uTeam').value     = u.team     || '';
+      document.getElementById('uLevel').value    = u.level    || 'Bronze';
+      document.getElementById('uStatus').value   = u.status   || 'active';
+      document.getElementById('uBookings').value = u.bookings || 0;
+      document.getElementById('uJoinDate').value = u.joinDate || '';
+      document.getElementById('uNotes').value    = u.notes    || '';
+    }
+  }
+}
+
+function closeUserModal(e) {
+  if (e && e.target !== document.getElementById('userModal')) return;
+  const modal = document.getElementById('userModal');
+  if (modal) modal.style.display = 'none';
+}
+
+// Override: allow direct close call without event
+const _origCloseUser = closeUserModal;
+window.closeUserModal = function(e) {
+  if (!e || e.type !== 'click') {
+    const modal = document.getElementById('userModal');
+    if (modal) modal.style.display = 'none';
+    return;
+  }
+  _origCloseUser(e);
+};
+
+function saveUser() {
+  const name  = (document.getElementById('uName').value||'').trim();
+  const phone = (document.getElementById('uPhone').value||'').trim();
+  if (!name || !phone) { toast('Nama dan nomor telepon wajib diisi', 'error'); return; }
+
+  const bookings = parseInt(document.getElementById('uBookings').value) || 0;
+  // Auto-compute level based on booking count (can be overridden by admin)
+  const chosenLevel = document.getElementById('uLevel').value;
+  const autoLevel   = computeLevel(bookings);
+  // Admin-set level takes priority; but if bookings changed significantly, auto-upgrade
+  const finalLevel = bookings >= USER_LEVEL_THRESHOLDS[chosenLevel] ? chosenLevel : autoLevel;
+
+  const users  = getLS_users();
+  const editId = document.getElementById('userEditId').value;
+
+  if (editId) {
+    const idx = users.findIndex(x => String(x.id) === String(editId));
+    if (idx !== -1) {
+      users[idx] = {
+        ...users[idx],
+        name, phone,
+        email:    document.getElementById('uEmail').value.trim(),
+        team:     document.getElementById('uTeam').value.trim(),
+        level:    finalLevel,
+        status:   document.getElementById('uStatus').value,
+        bookings,
+        joinDate: document.getElementById('uJoinDate').value,
+        notes:    document.getElementById('uNotes').value.trim(),
+      };
+      toast(`Member "${name}" berhasil diperbarui (Level: ${finalLevel})`, 'success');
+    }
+  } else {
+    const newId = 'USR-' + Date.now().toString().slice(-6);
+    users.push({
+      id: newId, name, phone,
+      email:    document.getElementById('uEmail').value.trim(),
+      team:     document.getElementById('uTeam').value.trim(),
+      level:    finalLevel,
+      status:   document.getElementById('uStatus').value,
+      bookings,
+      joinDate: document.getElementById('uJoinDate').value || new Date().toISOString().slice(0,10),
+      notes:    document.getElementById('uNotes').value.trim(),
+      createdAt: new Date().toISOString(),
+    });
+    toast(`Member baru "${name}" ditambahkan (Level: ${finalLevel})`, 'success');
+  }
+
+  saveLS_users(users);
+  window.closeUserModal();
+  renderUsers();
+}
+
+function deleteUser(userId) {
+  const users = getLS_users();
+  const u = users.find(x => String(x.id) === String(userId));
+  if (!u) return;
+  if (!confirm(`Hapus member "${u.name}"? Aksi tidak dapat dibatalkan.`)) return;
+  saveLS_users(users.filter(x => String(x.id) !== String(userId)));
+  renderUsers();
+  toast(`Member "${u.name}" telah dihapus`, 'warning');
+}
+
+function exportUsersToCSV() {
+  const users = getLS_users();
+  if (!users.length) { toast('Tidak ada data member untuk diekspor', 'error'); return; }
+  const BOM = '\uFEFF';
+  const headers = ['ID','Nama','Telepon','Email','Tim','Level','Total Booking','Tanggal Bergabung','Status','Catatan'];
+  const rows = users.map(u => [
+    u.id, u.name, u.phone||'', u.email||'', u.team||'',
+    u.level, u.bookings||0, u.joinDate||'', u.status, u.notes||''
+  ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+  const csv = BOM + [headers.join(','), ...rows].join('\r\n');
+  const now = new Date();
+  const ts  = now.getFullYear().toString() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0') + '_' + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
+  const a   = document.createElement('a');
+  a.href    = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download= `Daftar_Member_MS88_${ts}.csv`;
+  a.click();
+  toast(`Ekspor ${users.length} member ke CSV berhasil`, 'success');
 }

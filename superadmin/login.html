@@ -66,18 +66,25 @@
     text-align: center;
     margin-bottom: 32px;
   }
+  .login-logo-img-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
   .login-logo img {
-    height: 64px;
+    display: block;
+    height: 72px;
     width: auto;
     object-fit: contain;
-    margin-bottom: 14px;
-    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.5));
   }
   .login-logo h1 {
     font-size: 16px;
-    font-weight: 500;
-    color: rgba(255,255,255,0.6);
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
     letter-spacing: 0.04em;
+    margin-top: 6px;
   }
   .login-logo h2 {
     font-size: 13px;
@@ -90,14 +97,13 @@
     display: inline-block;
     background: linear-gradient(90deg, #D9A21B, #F3C644);
     color: #08090B;
-    font-weight: 700;
-    font-size: 11px;
     font-weight: 600;
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     padding: 4px 14px;
     border-radius: 100px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
   .form-label {
@@ -234,7 +240,9 @@
 
 <div class="login-card">
   <div class="login-logo">
-    <img src="../assets/logo/ms88-logo-transparent.png" alt="Mini Soccer 88 Alpha Sport Pusdikif Logo">
+    <div class="login-logo-img-wrap">
+      <img src="../assets/logo/ms88-logo-transparent.png" alt="Mini Soccer 88 Alpha Sport Pusdikif Logo">
+    </div>
     <div class="badge-admin">Super Admin</div>
     <h1>Mini Soccer 88 Alpha Sport</h1>
     <h2>Pusdikif Kota Cimahi</h2>
