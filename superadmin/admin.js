@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLogs();
   updateLogErrorBadge();
   initBackupModule();
+  initDevWorkbench();
 });
 
 // --- Tab Switching ---
@@ -98,16 +99,18 @@ function switchTab(tab) {
     roles:'Manajemen Role & Staff',
     blog:'Blog & Artikel', assets:'Pengaturan Aset',
     pricing:'Tarif Lapangan', contact:'Kontak & Sosmed', settings:'Pengaturan Sistem',
-    logs:'Log Sistem & Monitoring', backup:'Backup & Pemulihan Database'
+    logs:'Log Sistem & Monitoring', backup:'Backup & Pemulihan Database',
+    developer:'Developer Mode — Dual View Testing Workbench'
   };
   const titleEl = document.getElementById('topbarTitle');
   if (titleEl) titleEl.textContent = titles[tab] || 'Dashboard';
   currentTab = tab;
-  if (tab === 'payments') renderPayments();
-  if (tab === 'users')    renderUsers();
-  if (tab === 'roles')    { renderStaff(); renderCustomRoles(); }
-  if (tab === 'logs')     renderLogs();
-  if (tab === 'backup')   renderBackupTab();
+  if (tab === 'payments')  renderPayments();
+  if (tab === 'users')     renderUsers();
+  if (tab === 'roles')     { renderStaff(); renderCustomRoles(); }
+  if (tab === 'logs')      renderLogs();
+  if (tab === 'backup')    renderBackupTab();
+  if (tab === 'developer') renderDevTab();
 }
 
 function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
@@ -123,7 +126,7 @@ function doLogout() {
   if (!confirm('Keluar dari dashboard admin?')) return;
   sessionStorage.removeItem('ms88_admin_logged_in');
   sessionStorage.removeItem('ms88_admin_user');
-  location.replace('/superadmin/login.html');
+  location.replace('login.html');
 }
 
 // --- Toast ---
@@ -2035,13 +2038,13 @@ const ROLE_CONFIG = {
     label: 'Superadmin', emoji: '👑',
     color: '#e9d5ff', bg: 'rgba(139,92,246,0.18)', border: 'rgba(139,92,246,0.4)',
     sidebarLabel: 'Super Administrator',
-    allowedTabs: ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings','logs','backup'],
+    allowedTabs: ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings','logs','backup','developer'],
   },
   admin: {
     label: 'Admin', emoji: '🛡️',
     color: '#bfdbfe', bg: 'rgba(59,130,246,0.18)', border: 'rgba(59,130,246,0.4)',
     sidebarLabel: 'Administrator',
-    allowedTabs: ['overview','slots','orders','payments','mabar','users','blog','assets','pricing','contact','logs','backup'],
+    allowedTabs: ['overview','slots','orders','payments','mabar','users','blog','assets','pricing','contact','logs','backup','developer'],
   },
   cashier: {
     label: 'Cashier', emoji: '🧾',
@@ -2320,7 +2323,7 @@ function applyRoleRestrictions() {
   const rc         = getEffectiveRoleConfig(role);
   const allowed    = new Set(rc.allowedTabs || ROLE_CONFIG.superadmin.allowedTabs);
 
-  const allTabs = ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings','logs','backup'];
+  const allTabs = ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings','logs','backup','developer'];
   allTabs.forEach(tab => {
     const btn = document.getElementById('tabBtn' + tab.charAt(0).toUpperCase() + tab.slice(1));
     if (!btn) return;
@@ -2361,6 +2364,7 @@ const ALL_TABS = [
   { id: 'settings',  label: 'Pengaturan Sistem',        icon: '⚙️' },
   { id: 'logs',      label: 'Log & Monitoring',         icon: '⚡' },
   { id: 'backup',    label: 'Backup Database',          icon: '💾' },
+  { id: 'developer', label: 'Developer Mode (Dual View)', icon: '💻' },
 ];
 
 // Badge color palette
@@ -3425,6 +3429,10 @@ function renderBackupTab() {
   renderDatabaseTables();
 }
 
+function getLS_orders() {
+  return getLS('ms88_orders', []);
+}
+
 async function testTelegramBackup(isFullBackup = false) {
   const cfg = getTelegramConfig();
   const token  = (document.getElementById('tgBotToken') ? document.getElementById('tgBotToken').value.trim() : '') || cfg.botToken;
@@ -3440,10 +3448,10 @@ async function testTelegramBackup(isFullBackup = false) {
 
   toast('Menghubungkan ke Bot Telegram API...', 'info');
 
-  const orders = getLS_orders ? getLS_orders() : [];
-  const users  = getLS_users  ? getLS_users()  : [];
-  const staff  = getLS_staff  ? getLS_staff()  : [];
-  const logs   = SysLog.getLogs();
+  const orders = getLS_orders();
+  const users  = typeof getLS_users === 'function' ? getLS_users() : getLS('ms88_users', []);
+  const staff  = typeof getLS_staff === 'function' ? getLS_staff() : getLS('ms88_staff', []);
+  const logs   = typeof SysLog !== 'undefined' ? SysLog.getLogs() : [];
 
   const nowWib = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
   const messageText = `⚽ <b>MINI SOCCER 88 ALPHA SPORT PUSDIKIF</b>\n` +
@@ -3537,6 +3545,7 @@ let backupScheduleInterval = null;
 function initBackupModule() {
   renderDatabaseTables();
   loadTelegramConfig();
+  initBackupDropZone();
 
   if (backupScheduleInterval) clearInterval(backupScheduleInterval);
 
@@ -3557,6 +3566,37 @@ function initBackupModule() {
       }
     }
   }, 30000); // Check every 30 seconds
+}
+
+function initBackupDropZone() {
+  const zone = document.getElementById('dropZoneDb');
+  if (!zone) return;
+
+  zone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    zone.style.borderColor = '#38bdf8';
+    zone.style.background = 'rgba(56,189,248,0.08)';
+  });
+
+  zone.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    zone.style.borderColor = 'rgba(255,255,255,0.15)';
+    zone.style.background = 'rgba(255,255,255,0.02)';
+  });
+
+  zone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    zone.style.borderColor = 'rgba(255,255,255,0.15)';
+    zone.style.background = 'rgba(255,255,255,0.02)';
+
+    const files = e.dataTransfer?.files;
+    if (files && files.length > 0) {
+      handleBackupFileSelect({ target: { files } });
+    }
+  });
 }
 
 // Restore & Import Handlers
@@ -3684,6 +3724,422 @@ function proceedWithRestore() {
     SysLog.error('SYSTEM', 'Gagal memulihkan database: ' + err.message);
     toast('Gagal memulihkan database: ' + err.message, 'error');
   }
+}
+
+// =========================================================
+//  DEVELOPER MODE (DUAL VIEW TESTING WORKBENCH) MODULE
+// =========================================================
+
+const DEV_STATE = {
+  currentRoute: '/index.html',
+  mobileDevice: 'iphone15',
+  isLandscape: false,
+  desktopPreset: 'flex',
+  scale: 1.0,
+  cacheBuster: true,
+  isFullscreen: false,
+  initialized: false,
+};
+
+const DEV_DEVICE_SPECS = {
+  iphone15: { name: 'iPhone 15 Pro', w: 393, h: 852, radius: '48px', dynamicIsland: true, label: 'iPhone 15 Pro (393 × 852)' },
+  pixel7:   { name: 'Google Pixel 7', w: 412, h: 915, radius: '44px', dynamicIsland: false, label: 'Google Pixel 7 (412 × 915)' },
+  iphonese: { name: 'iPhone SE / Compact', w: 375, h: 667, radius: '38px', dynamicIsland: false, label: 'iPhone SE (375 × 667)' },
+  ipadmini: { name: 'iPad Mini / Tablet', w: 768, h: 1024, radius: '28px', dynamicIsland: false, label: 'iPad Mini (768 × 1024)' },
+};
+
+function initDevWorkbench() {
+  if (DEV_STATE.initialized) return;
+  DEV_STATE.initialized = true;
+
+  updateDevClock();
+  setInterval(updateDevClock, 30000);
+
+  // Setup DPR stat
+  const dprEl = document.getElementById('statDpr');
+  if (dprEl) dprEl.textContent = (window.devicePixelRatio || 1).toFixed(1) + 'x';
+
+  // Attach navigation listeners to both iframes so when user clicks link inside iframe, workbench URL displays correctly
+  const mFrame = document.getElementById('devIframeMobile');
+  const dFrame = document.getElementById('devIframeDesktop');
+
+  if (mFrame) {
+    mFrame.addEventListener('load', () => {
+      try {
+        const path = mFrame.contentWindow.location.pathname;
+        const search = mFrame.contentWindow.location.search;
+        if (path && path !== 'about:blank') {
+          syncRouteState(path + search);
+        }
+      } catch (_) {}
+    });
+  }
+
+  if (dFrame) {
+    dFrame.addEventListener('load', () => {
+      try {
+        const path = dFrame.contentWindow.location.pathname;
+        const search = dFrame.contentWindow.location.search;
+        if (path && path !== 'about:blank') {
+          syncRouteState(path + search);
+        }
+      } catch (_) {}
+    });
+  }
+}
+
+function renderDevTab() {
+  initDevWorkbench();
+  applyDevMobileDimensions();
+  applyDevDesktopDimensions();
+  syncRouteState(DEV_STATE.currentRoute, false);
+}
+
+function getCacheBustedUrl(baseUrl) {
+  if (!DEV_STATE.cacheBuster) return baseUrl;
+  const sep = baseUrl.includes('?') ? '&' : '?';
+  return `${baseUrl}${sep}_cb=${Date.now()}`;
+}
+
+function setDevRoute(routePath, reloadBoth = true) {
+  if (!routePath) routePath = '/index.html';
+  if (!routePath.startsWith('/') && !routePath.startsWith('http')) {
+    routePath = '/' + routePath;
+  }
+  DEV_STATE.currentRoute = routePath;
+
+  // Update input
+  const urlInput = document.getElementById('devCustomUrlInput');
+  if (urlInput) urlInput.value = routePath;
+
+  // Update path in desktop browser mockup
+  const pathDisplay = document.getElementById('devDesktopAddressPath');
+  if (pathDisplay) pathDisplay.textContent = routePath;
+
+  // Update route pills active state
+  const pills = document.querySelectorAll('#devRoutePills .dev-route-pill');
+  pills.forEach(p => {
+    const fn = p.getAttribute('onclick') || '';
+    if (fn.includes(`'${routePath}'`) || fn.includes(`"${routePath}"`)) {
+      p.classList.add('active');
+    } else {
+      p.classList.remove('active');
+    }
+  });
+
+  if (reloadBoth) {
+    const fullUrl = getCacheBustedUrl(routePath);
+    const mFrame = document.getElementById('devIframeMobile');
+    const dFrame = document.getElementById('devIframeDesktop');
+    if (mFrame) mFrame.src = fullUrl;
+    if (dFrame) dFrame.src = fullUrl;
+    SysLog.info('DEVELOPER', `Rute workbench diubah ke: ${routePath}`);
+  }
+}
+
+function syncRouteState(routePath, updateInput = true) {
+  if (!routePath) return;
+  DEV_STATE.currentRoute = routePath;
+  const pathDisplay = document.getElementById('devDesktopAddressPath');
+  if (pathDisplay) pathDisplay.textContent = routePath;
+  if (updateInput) {
+    const urlInput = document.getElementById('devCustomUrlInput');
+    if (urlInput) urlInput.value = routePath;
+  }
+
+  // Update active pill
+  const pills = document.querySelectorAll('#devRoutePills .dev-route-pill');
+  pills.forEach(p => {
+    const fn = p.getAttribute('onclick') || '';
+    const cleanRoute = routePath.split('?')[0];
+    if (fn.includes(`'${routePath}'`) || fn.includes(`'${cleanRoute}'`)) {
+      p.classList.add('active');
+    } else {
+      p.classList.remove('active');
+    }
+  });
+}
+
+function applyDevCustomUrl() {
+  const urlInput = document.getElementById('devCustomUrlInput');
+  if (!urlInput) return;
+  let val = urlInput.value.trim();
+  if (!val) val = '/index.html';
+  setDevRoute(val, true);
+  toast(`Memuat rute: ${val}`, 'info');
+}
+
+function openDevInNewTab() {
+  const url = DEV_STATE.currentRoute || '/index.html';
+  window.open(url, '_blank');
+}
+
+function reloadDevFrames() {
+  const fullUrl = getCacheBustedUrl(DEV_STATE.currentRoute);
+  const mFrame = document.getElementById('devIframeMobile');
+  const dFrame = document.getElementById('devIframeDesktop');
+  if (mFrame) mFrame.src = fullUrl;
+  if (dFrame) dFrame.src = fullUrl;
+  toast('Memuat ulang tampilan Ponsel & Desktop...', 'info');
+  SysLog.info('DEVELOPER', 'Reload sinkron kedua viewport berhasil dijalankan.');
+}
+
+function reloadDesktopFrame() {
+  const fullUrl = getCacheBustedUrl(DEV_STATE.currentRoute);
+  const dFrame = document.getElementById('devIframeDesktop');
+  if (dFrame) dFrame.src = fullUrl;
+  toast('Memuat ulang Desktop View', 'info');
+}
+
+function toggleCacheBuster() {
+  DEV_STATE.cacheBuster = !DEV_STATE.cacheBuster;
+  const stateEl = document.getElementById('devCacheBusterState');
+  if (stateEl) {
+    if (DEV_STATE.cacheBuster) {
+      stateEl.textContent = 'ON';
+      stateEl.style.color = '#10b981';
+    } else {
+      stateEl.textContent = 'OFF';
+      stateEl.style.color = '#ef4444';
+    }
+  }
+  toast(`Cache-Buster diubah ke: ${DEV_STATE.cacheBuster ? 'AKTIF (Fresh load)' : 'NONAKTIF'}`);
+}
+
+function setMobileDevicePreset(deviceKey) {
+  if (!DEV_DEVICE_SPECS[deviceKey]) return;
+  DEV_STATE.mobileDevice = deviceKey;
+  applyDevMobileDimensions();
+  toast(`Preset ponsel diatur ke: ${DEV_DEVICE_SPECS[deviceKey].name}`);
+}
+
+function toggleMobileOrientation() {
+  DEV_STATE.isLandscape = !DEV_STATE.isLandscape;
+  const btn = document.getElementById('btnDevMobileOrientation');
+  if (btn) {
+    btn.innerHTML = DEV_STATE.isLandscape ? '↔ Landscape' : '↕ Portrait';
+  }
+  applyDevMobileDimensions();
+  toast(`Orientasi ponsel: ${DEV_STATE.isLandscape ? 'Landscape (Mendatar)' : 'Portrait (Tegak)'}`);
+}
+
+function applyDevMobileDimensions() {
+  const spec = DEV_DEVICE_SPECS[DEV_STATE.mobileDevice] || DEV_DEVICE_SPECS.iphone15;
+  const mFrame = document.getElementById('devIframeMobile');
+  const dIsland = document.getElementById('devMobileDynamicIsland');
+  const chassis = document.getElementById('devMobileDeviceFrame');
+  const labelEl = document.getElementById('devMobilePresetLabel');
+  const dimEl = document.getElementById('devMobileDimBadge');
+  const statMobileW = document.getElementById('statMobileWidth');
+
+  let width = spec.w;
+  let height = spec.h;
+  if (DEV_STATE.isLandscape) {
+    const temp = width;
+    width = height;
+    height = temp;
+  }
+
+  if (mFrame) {
+    mFrame.style.width = width + 'px';
+    mFrame.style.height = height + 'px';
+  }
+
+  if (chassis) {
+    chassis.style.borderRadius = DEV_STATE.isLandscape ? '32px' : spec.radius;
+  }
+
+  if (dIsland) {
+    if (spec.dynamicIsland && !DEV_STATE.isLandscape) {
+      dIsland.style.display = 'flex';
+    } else {
+      dIsland.style.display = 'none';
+    }
+  }
+
+  if (labelEl) labelEl.textContent = spec.name + (DEV_STATE.isLandscape ? ' (Landscape)' : '');
+  if (dimEl) dimEl.textContent = `${width} × ${height} px`;
+  if (statMobileW) statMobileW.textContent = `${width} px`;
+}
+
+function setDesktopDevicePreset(preset) {
+  DEV_STATE.desktopPreset = preset;
+  applyDevDesktopDimensions();
+  toast(`Tampilan Desktop diubah ke: ${preset.toUpperCase()}`);
+}
+
+function applyDevDesktopDimensions() {
+  const wrapper = document.getElementById('devDesktopWrapper');
+  const labelEl = document.getElementById('devDesktopPresetLabel');
+  const dimEl = document.getElementById('devDesktopDimBadge');
+  const statDesktopW = document.getElementById('statDesktopWidth');
+
+  if (!wrapper) return;
+
+  if (DEV_STATE.desktopPreset === 'hd') {
+    wrapper.style.flex = 'none';
+    wrapper.style.width = '1280px';
+    wrapper.style.maxWidth = '1280px';
+    if (labelEl) labelEl.textContent = 'HD Standard (1280 × 800)';
+    if (dimEl) dimEl.textContent = '1280 × 852 px';
+    if (statDesktopW) statDesktopW.textContent = '1280 px';
+  } else if (DEV_STATE.desktopPreset === 'fhd') {
+    wrapper.style.flex = 'none';
+    wrapper.style.width = '1440px';
+    wrapper.style.maxWidth = '1440px';
+    if (labelEl) labelEl.textContent = 'Full HD (1440 × 900)';
+    if (dimEl) dimEl.textContent = '1440 × 852 px';
+    if (statDesktopW) statDesktopW.textContent = '1440 px';
+  } else {
+    // Fluid flex
+    wrapper.style.flex = '1';
+    wrapper.style.width = 'auto';
+    wrapper.style.maxWidth = '1200px';
+    if (labelEl) labelEl.textContent = 'Fluid Responsive Flex';
+    if (dimEl) dimEl.textContent = 'Auto × 852 px';
+    if (statDesktopW) statDesktopW.textContent = '100% Flex';
+  }
+}
+
+function setDevScale(scale) {
+  DEV_STATE.scale = scale;
+  const stage = document.getElementById('devWorkbenchStage');
+  if (stage) {
+    stage.style.transform = `scale(${scale})`;
+  }
+
+  // Update button active state
+  const btns = document.querySelectorAll('.dev-scale-btn');
+  btns.forEach(b => {
+    if (b.textContent.includes(Math.round(scale * 100) + '%')) {
+      b.classList.add('active');
+    } else {
+      b.classList.remove('active');
+    }
+  });
+}
+
+function toggleDevFullscreen() {
+  DEV_STATE.isFullscreen = !DEV_STATE.isFullscreen;
+  const panel = document.getElementById('tabDeveloper');
+  const btn = document.getElementById('btnDevFullscreen');
+  if (!panel) return;
+
+  if (DEV_STATE.isFullscreen) {
+    panel.classList.add('dev-workbench-fullscreen');
+    if (btn) btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" style="vertical-align:-2px;"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg> Keluar Penuh`;
+  } else {
+    panel.classList.remove('dev-workbench-fullscreen');
+    if (btn) btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" style="vertical-align:-2px;"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg> Layar Penuh`;
+  }
+}
+
+function updateDevClock() {
+  const clockEl = document.getElementById('devClockDisplay');
+  if (!clockEl) return;
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  clockEl.textContent = `${hh}:${mm}`;
+}
+
+// Injects test booking form fields into whichever iframe is active or ready
+function injectTestFormFill() {
+  injectTestBookingData();
+}
+
+function injectTestBookingData() {
+  const frames = [document.getElementById('devIframeMobile'), document.getElementById('devIframeDesktop')];
+  let filledCount = 0;
+
+  frames.forEach(frame => {
+    if (!frame) return;
+    try {
+      const doc = frame.contentDocument || frame.contentWindow.document;
+      if (!doc) return;
+
+      // Check if we are on sewa-lapangan.html
+      const nameInput = doc.querySelector('input[name="nama"], input[id*="nama"], input[placeholder*="Nama"]');
+      const phoneInput = doc.querySelector('input[name="telepon"], input[name="phone"], input[id*="phone"], input[placeholder*="08"]');
+      const teamInput = doc.querySelector('input[name="tim"], input[id*="tim"], input[placeholder*="Tim"], input[placeholder*="Komunitas"]');
+      const notesInput = doc.querySelector('textarea[name="catatan"], textarea[id*="catatan"], textarea');
+
+      if (nameInput) {
+        nameInput.value = 'Budi Wicaksono (Test Auto)';
+        nameInput.dispatchEvent(new Event('input', { bubbles: true }));
+        filledCount++;
+      }
+      if (phoneInput) {
+        phoneInput.value = '081298765432';
+        phoneInput.dispatchEvent(new Event('input', { bubbles: true }));
+        filledCount++;
+      }
+      if (teamInput) {
+        teamInput.value = 'FC Bandung Juara';
+        teamInput.dispatchEvent(new Event('input', { bubbles: true }));
+        filledCount++;
+      }
+      if (notesInput) {
+        notesInput.value = 'Pengujian manual developer mode Mini Soccer 88 - Rompi & bola disiapkan';
+        notesInput.dispatchEvent(new Event('input', { bubbles: true }));
+        filledCount++;
+      }
+    } catch (_) {}
+  });
+
+  if (filledCount > 0) {
+    toast(`Berhasil mengisi ${filledCount} field data booking pengujian!`, 'success');
+    SysLog.info('DEVELOPER', 'Auto-fill data pengujian formulir booking dieksekusi.');
+  } else {
+    // If not currently on sewa-lapangan, switch to it and notify
+    setDevRoute('/sewa-lapangan.html');
+    toast('Membuka halaman Sewa Lapangan... Klik tombol Isi Form sekali lagi setelah halaman selesai dimuat.', 'info');
+  }
+}
+
+function injectTestMemberLogin() {
+  const frames = [document.getElementById('devIframeMobile'), document.getElementById('devIframeDesktop')];
+  let filledCount = 0;
+
+  frames.forEach(frame => {
+    if (!frame) return;
+    try {
+      const doc = frame.contentDocument || frame.contentWindow.document;
+      if (!doc) return;
+
+      const userInput = doc.querySelector('input[name="username"], input[id*="username"], input[type="text"]');
+      const passInput = doc.querySelector('input[name="password"], input[id*="password"], input[type="password"]');
+
+      if (userInput && passInput) {
+        userInput.value = 'admin';
+        userInput.dispatchEvent(new Event('input', { bubbles: true }));
+        passInput.value = 'admin88alpha';
+        passInput.dispatchEvent(new Event('input', { bubbles: true }));
+        filledCount++;
+      }
+    } catch (_) {}
+  });
+
+  if (filledCount > 0) {
+    toast('Kredensial login pengujian berhasil diisi!', 'success');
+  } else {
+    setDevRoute('/superadmin/login.html');
+    toast('Membuka halaman Login... Klik sekali lagi untuk mengisi kredensial.', 'info');
+  }
+}
+
+function testScrollSync() {
+  const frames = [document.getElementById('devIframeMobile'), document.getElementById('devIframeDesktop')];
+  frames.forEach(frame => {
+    if (!frame) return;
+    try {
+      const win = frame.contentWindow;
+      if (win) {
+        win.scrollTo({ top: 800, behavior: 'smooth' });
+      }
+    } catch (_) {}
+  });
+  toast('Menggulir kedua viewport ke posisi 800px...', 'info');
 }
 
 
