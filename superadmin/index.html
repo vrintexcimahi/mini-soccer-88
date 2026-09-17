@@ -105,6 +105,11 @@
       <span>Log &amp; Monitoring</span>
       <span id="logErrorBadge" style="display:none;margin-left:auto;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;line-height:1;">0</span>
     </button>
+
+    <button class="nav-link-btn" id="tabBtnBackup" onclick="switchTab('backup')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+      <span>Backup Database</span>
+    </button>
   </nav>
 
   <div class="sidebar-footer">
@@ -1299,6 +1304,245 @@
     </div>
   </section>
 
+  <!-- === BACKUP & RESTORE TAB === -->
+  <section class="tab-panel" id="tabBackup">
+    <div class="panel-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <h2>Backup &amp; Pemulihan Database</h2>
+          <span id="kpiTelegramStatusBadge" style="display:inline-flex;align-items:center;gap:6px;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);color:#93c5fd;font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            AUTO-BACKUP READY
+          </span>
+        </div>
+        <p>Pencadangan data menyeluruh, pengiriman harian otomatis ke bot Telegram, dan ekspor/impor database</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-sm btn-primary" onclick="testTelegramBackup(true)" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);border:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="vertical-align:-2px;"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          Kirim ke Telegram Sekarang
+        </button>
+        <button class="btn btn-sm btn-outline" onclick="downloadFullDatabaseBackup()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="vertical-align:-2px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Unduh Backup (.json)
+        </button>
+        <button class="btn btn-sm btn-outline" onclick="document.getElementById('fileImportDb').click()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="vertical-align:-2px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          Impor Backup
+        </button>
+      </div>
+    </div>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="fileImportDb" accept=".json" style="display:none;" onchange="handleBackupFileSelect(event)">
+
+    <!-- KPI Grid -->
+    <div class="kpi-grid" style="margin-bottom:24px;">
+      <div class="kpi-card kpi-blue">
+        <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Ukuran Database</div>
+          <div class="kpi-value" id="kpiDbSize">0 KB</div>
+        </div>
+      </div>
+      <div class="kpi-card kpi-green">
+        <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Total Entitas / Tabel</div>
+          <div class="kpi-value" id="kpiDbTables">14 Tabel</div>
+        </div>
+      </div>
+      <div class="kpi-card kpi-orange">
+        <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Total Record Data</div>
+          <div class="kpi-value" id="kpiDbRecords">0</div>
+        </div>
+      </div>
+      <div class="kpi-card kpi-primary">
+        <div class="kpi-icon" style="color:#38bdf8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Status Bot Telegram</div>
+          <div class="kpi-value" id="kpiTelegramStatus" style="font-size:15px;line-height:1.3;padding-top:4px;">Belum Diatur</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Telegram Bot Auto-Backup Card -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-head" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="background:rgba(56,189,248,0.15);color:#38bdf8;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          </div>
+          <div>
+            <h3>Integrasi Bot Telegram &amp; Backup Otomatis Harian</h3>
+            <p style="font-size:12.5px;color:#888;margin:2px 0 0;">Otomatisasi pengiriman berkas cadangan database ke Telegram setiap hari pada jam yang ditentukan</p>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;color:#fff;">
+            <input type="checkbox" id="tgAutoBackupEnabled" style="width:18px;height:18px;accent-color:#22c55e;">
+            Aktifkan Backup Otomatis Harian
+          </label>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:1.2fr 1fr 140px;gap:16px;margin-bottom:16px;align-items:end;">
+          <div class="form-group" style="margin:0;">
+            <label class="form-label" style="display:flex;justify-content:space-between;">
+              <span>API Token Bot Telegram *</span>
+              <a href="https://t.me/BotFather" target="_blank" style="color:#58a6ff;font-size:11.5px;text-decoration:none;">Buka @BotFather ↗</a>
+            </label>
+            <div style="position:relative;">
+              <input type="password" id="tgBotToken" class="form-input" placeholder="contoh: 7123456789:AAFlkB..." style="padding-right:40px;">
+              <button type="button" onclick="toggleTgTokenVisibility()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#888;cursor:pointer;padding:4px;" title="Lihat/Sembunyikan Token">👁️</button>
+            </div>
+            <small style="color:#777;font-size:11px;display:block;margin-top:4px;">Dapatkan token dengan mengirim <code>/newbot</code> ke @BotFather di Telegram.</small>
+          </div>
+
+          <div class="form-group" style="margin:0;">
+            <label class="form-label" style="display:flex;justify-content:space-between;">
+              <span>Chat ID / Channel Target *</span>
+              <a href="https://t.me/userinfobot" target="_blank" style="color:#58a6ff;font-size:11.5px;text-decoration:none;">Cek ID via @userinfobot ↗</a>
+            </label>
+            <input type="text" id="tgChatId" class="form-input" placeholder="contoh: 12345678 atau -100123456789">
+            <small style="color:#777;font-size:11px;display:block;margin-top:4px;">Chat ID pribadi atau ID grup/channel (pastikan bot sudah di-add &amp; di-start).</small>
+          </div>
+
+          <div class="form-group" style="margin:0;">
+            <label class="form-label">Jam Backup Harian</label>
+            <input type="time" id="tgScheduleTime" class="form-input" value="23:59">
+            <small style="color:#777;font-size:11px;display:block;margin-top:4px;">Waktu server (WIB)</small>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
+          <div style="display:flex;gap:20px;flex-wrap:wrap;">
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.85);cursor:pointer;">
+              <input type="checkbox" id="tgSendDocument" checked style="accent-color:#38bdf8;">
+              Lampirkan File Dokumen Backup (<code>.json</code>)
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.85);cursor:pointer;">
+              <input type="checkbox" id="tgSendMessage" checked style="accent-color:#38bdf8;">
+              Kirim Ringkasan Teks Statistik Database
+            </label>
+          </div>
+          <div id="tgStatusBadgeInfo" style="font-size:12px;color:#888;">
+            Terakhir dikirim: <strong id="tgLastSentTime" style="color:#fff;">Belum pernah</strong>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button class="btn btn-outline" onclick="testTelegramBackup(false)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="vertical-align:-2px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Uji Coba Kirim Pesan Tes
+          </button>
+          <button class="btn btn-primary" onclick="saveTelegramConfig()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="vertical-align:-2px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+            Simpan Konfigurasi Telegram
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export & Import Two-Column Grid -->
+    <div class="two-col" style="margin-bottom:20px;">
+      <!-- Export Card -->
+      <div class="card">
+        <div class="card-head">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="background:rgba(34,197,94,0.15);color:#4ade80;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </div>
+            <div>
+              <h3>Ekspor Database (Download)</h3>
+              <p style="font-size:12px;color:#888;margin:2px 0 0;">Unduh salinan berkas cadangan lokal ke komputer Anda</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.6;margin-bottom:16px;">
+            Berkas backup berformat <code>.json</code> berisi struktur data lengkap termasuk seluruh 14 koleksi data Mini Soccer 88 (Booking, Member, Staff, Tarif, dan Pengaturan).
+          </p>
+          <div style="margin-bottom:16px;">
+            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.85);cursor:pointer;">
+              <input type="checkbox" id="chkIncludeLogs" checked style="accent-color:#22c55e;">
+              Sertakan riwayat log sistem &amp; audit aktivitas
+            </label>
+          </div>
+          <button class="btn btn-outline" onclick="downloadFullDatabaseBackup()" style="width:100%;padding:12px;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Unduh Berkas Backup (.json)
+          </button>
+        </div>
+      </div>
+
+      <!-- Import / Restore Card -->
+      <div class="card">
+        <div class="card-head">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="background:rgba(239,68,68,0.15);color:#f87171;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            </div>
+            <div>
+              <h3>Impor &amp; Pemulihan Database</h3>
+              <p style="font-size:12px;color:#888;margin:2px 0 0;">Pulihkan seluruh data sistem dari berkas cadangan</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="dropZoneDb" style="border:2px dashed rgba(255,255,255,0.15);border-radius:12px;padding:24px 16px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.02);transition:border-color 0.2s, background 0.2s;" onclick="document.getElementById('fileImportDb').click()">
+            <div style="font-size:26px;margin-bottom:6px;">📂</div>
+            <div style="font-weight:600;font-size:13px;color:#fff;">Klik untuk pilih berkas backup (.json)</div>
+            <div style="font-size:11.5px;color:#888;margin-top:2px;">atau seret dan lepas berkas ke sini</div>
+          </div>
+
+          <div id="restorePreviewArea" style="display:none;margin-top:14px;background:#161b22;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;">
+            <div style="font-size:11.5px;color:#38bdf8;font-weight:700;margin-bottom:6px;">BERKAS TERVERIFIKASI:</div>
+            <div id="restorePreviewMeta" style="font-size:12px;color:#c9d1d9;line-height:1.5;"></div>
+            <div style="display:flex;gap:8px;margin-top:12px;">
+              <button class="btn btn-sm btn-primary" onclick="executeDatabaseRestore()" style="flex:1;">Pulihkan Sekarang</button>
+              <button class="btn btn-sm btn-outline" onclick="cancelRestorePreview()">Batal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Database yang Dibackup Menyeluruh -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-head" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <div>
+          <h3>Rincian Seluruh Database yang Dicakup dalam Backup (14 Entitas)</h3>
+          <p style="font-size:12.5px;color:#888;margin:2px 0 0;">Daftar lengkap seluruh tabel data yang dicadangkan secara otomatis dan terisolasi</p>
+        </div>
+        <button class="btn btn-sm btn-outline" onclick="renderDatabaseTables()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" style="vertical-align:-2px;"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+          Segarkan Analisis
+        </button>
+      </div>
+      <div class="card-body table-wrap">
+        <table class="data-table" id="dbOverviewTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Entitas / Tabel</th>
+              <th>Kunci Sistem</th>
+              <th>Deskripsi Data</th>
+              <th>Jumlah Record</th>
+              <th>Ukuran Data</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="dbOverviewBody">
+            <!-- Rendered dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <!-- Custom Role Modal -->
   <div id="customRoleModal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);align-items:center;justify-content:center;" onclick="closeCustomRoleModal(event)">
     <div style="background:#1a1d23;border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:28px 32px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,0.8);position:relative;" onclick="event.stopPropagation()">
@@ -1498,6 +1742,25 @@
 
       <div style="display:flex;justify-content:flex-end;">
         <button class="btn btn-outline" onclick="closeTestLogModal()">Selesai / Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Restore Confirmation Modal -->
+  <div id="restoreConfirmModal" style="display:none;position:fixed;inset:0;z-index:10002;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);align-items:center;justify-content:center;" onclick="closeRestoreModal(event)">
+    <div style="background:#161b22;border:1px solid rgba(239,68,68,0.4);border-radius:18px;padding:28px 32px;width:100%;max-width:540px;box-shadow:0 24px 80px rgba(0,0,0,0.9);position:relative;color:#c9d1d9;" onclick="event.stopPropagation()">
+      <button onclick="closeRestoreModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.5);font-size:22px;line-height:1;">&times;</button>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <span style="font-size:28px;">⚠️</span>
+        <div>
+          <h3 style="font-size:17px;font-weight:700;color:#fff;margin:0;">Konfirmasi Pemulihan Database</h3>
+          <p style="font-size:12px;color:#f87171;margin:2px 0 0;">Tindakan ini akan memperbarui data sistem dengan isi berkas backup.</p>
+        </div>
+      </div>
+      <div id="restoreModalDetails" style="background:#0d1117;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px;font-size:12.5px;line-height:1.6;margin-bottom:18px;"></div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-primary" id="btnConfirmRestore" onclick="proceedWithRestore()" style="background:#D71926;border:none;flex:1;">Ya, Pulihkan Database Sekarang</button>
+        <button class="btn btn-outline" onclick="closeRestoreModal()">Batal</button>
       </div>
     </div>
   </div>

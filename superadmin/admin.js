@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (crNameEl) crNameEl.addEventListener('input', updateCustomRolePreview);
   initLogs();
   updateLogErrorBadge();
+  initBackupModule();
 });
 
 // --- Tab Switching ---
@@ -97,7 +98,7 @@ function switchTab(tab) {
     roles:'Manajemen Role & Staff',
     blog:'Blog & Artikel', assets:'Pengaturan Aset',
     pricing:'Tarif Lapangan', contact:'Kontak & Sosmed', settings:'Pengaturan Sistem',
-    logs:'Log Sistem & Monitoring'
+    logs:'Log Sistem & Monitoring', backup:'Backup & Pemulihan Database'
   };
   const titleEl = document.getElementById('topbarTitle');
   if (titleEl) titleEl.textContent = titles[tab] || 'Dashboard';
@@ -106,6 +107,7 @@ function switchTab(tab) {
   if (tab === 'users')    renderUsers();
   if (tab === 'roles')    { renderStaff(); renderCustomRoles(); }
   if (tab === 'logs')     renderLogs();
+  if (tab === 'backup')   renderBackupTab();
 }
 
 function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
@@ -2033,13 +2035,13 @@ const ROLE_CONFIG = {
     label: 'Superadmin', emoji: '👑',
     color: '#e9d5ff', bg: 'rgba(139,92,246,0.18)', border: 'rgba(139,92,246,0.4)',
     sidebarLabel: 'Super Administrator',
-    allowedTabs: ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings','logs'],
+    allowedTabs: ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings','logs','backup'],
   },
   admin: {
     label: 'Admin', emoji: '🛡️',
     color: '#bfdbfe', bg: 'rgba(59,130,246,0.18)', border: 'rgba(59,130,246,0.4)',
     sidebarLabel: 'Administrator',
-    allowedTabs: ['overview','slots','orders','payments','mabar','users','blog','assets','pricing','contact','logs'],
+    allowedTabs: ['overview','slots','orders','payments','mabar','users','blog','assets','pricing','contact','logs','backup'],
   },
   cashier: {
     label: 'Cashier', emoji: '🧾',
@@ -2318,7 +2320,7 @@ function applyRoleRestrictions() {
   const rc         = getEffectiveRoleConfig(role);
   const allowed    = new Set(rc.allowedTabs || ROLE_CONFIG.superadmin.allowedTabs);
 
-  const allTabs = ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings','logs'];
+  const allTabs = ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings','logs','backup'];
   allTabs.forEach(tab => {
     const btn = document.getElementById('tabBtn' + tab.charAt(0).toUpperCase() + tab.slice(1));
     if (!btn) return;
@@ -2358,6 +2360,7 @@ const ALL_TABS = [
   { id: 'contact',   label: 'Kontak & Sosmed',          icon: '📍' },
   { id: 'settings',  label: 'Pengaturan Sistem',        icon: '⚙️' },
   { id: 'logs',      label: 'Log & Monitoring',         icon: '⚡' },
+  { id: 'backup',    label: 'Backup Database',          icon: '💾' },
 ];
 
 // Badge color palette
@@ -3169,5 +3172,519 @@ function runTestLog(type) {
     renderLogs();
   }
 }
+
+// =========================================================
+//  DATABASE BACKUP & TELEGRAM BOT AUTO-BACKUP MODULE
+// =========================================================
+
+const TELEGRAM_CONFIG_KEY = 'ms88_telegram_backup_cfg';
+
+const DB_STORES = [
+  { key: 'ms88_orders',              name: 'Manajemen Booking',        desc: 'Seluruh pesanan booking, slot lapangan, status pembayaran & invoice' },
+  { key: 'ms88_users',               name: 'Member & Pelanggan',       desc: 'Data keanggotaan pelanggan, nomor WhatsApp, tim, dan tier level (Bronze-VIP)' },
+  { key: 'ms88_staff',               name: 'Staff & Akun Pengguna',    desc: 'Akun operator kasir, admin, password hash, kontak, dan status akun' },
+  { key: 'ms88_custom_roles',        name: 'Custom Role & Izin',       desc: 'Daftar custom role buatan admin, warna badge, emoji, dan matriks hak akses' },
+  { key: 'ms88_pricing',             name: 'Tarif Lapangan',           desc: 'Struktur harga sewa per jam untuk pagi, siang, malam, weekend, dan promo' },
+  { key: 'ms88_mabar',               name: 'Sesi Mabar & Sparring',    desc: 'Jadwal sesi main bareng, slot terbuka, status kuota, dan pendaftar' },
+  { key: 'ms88_blogs',               name: 'Artikel & Blog',           desc: 'Daftar berita, tips mini soccer, artikel turnamen, dan status publikasi' },
+  { key: 'ms88_assets',              name: 'Pengaturan Aset Media',    desc: 'Konfigurasi banner promo, poster fotografer, logo, dan galeri venue' },
+  { key: 'ms88_contact',             name: 'Kontak & Media Sosial',    desc: 'Nomor resmi customer service, WhatsApp center, link Instagram, TikTok, Maps' },
+  { key: 'ms88_settings',            name: 'Pengaturan Sistem',        desc: 'Identitas venue, jam operasional, dan pengaturan popup izin lokasi' },
+  { key: 'ms88_admin_creds',         name: 'Kredensial Superadmin',    desc: 'Kredensial master login super administrator sistem' },
+  { key: 'ms88_wa_gateway',          name: 'WhatsApp Gateway API',     desc: 'Konfigurasi integrasi WhatsApp gateway Fonnte, Wablas, atau Direct Link' },
+  { key: 'ms88_system_logs',         name: 'Log Sistem & Error',       desc: 'Audit trail operasional, error trace runtime, dan riwayat aktivitas staff' },
+  { key: 'ms88_telegram_backup_cfg', name: 'Konfigurasi Telegram Bot', desc: 'Token bot Telegram, Chat ID tujuan, dan jadwal otomatisasi backup harian' },
+];
+
+function getTelegramConfig() {
+  try {
+    const raw = localStorage.getItem(TELEGRAM_CONFIG_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (_) {}
+  return {
+    enabled: false,
+    botToken: '',
+    chatId: '',
+    scheduleTime: '23:59',
+    sendDocument: true,
+    sendMessage: true,
+    lastSentTime: '',
+    lastStatus: 'Belum Diatur'
+  };
+}
+
+function saveTelegramConfig(silent = false) {
+  const enabled      = !!(document.getElementById('tgAutoBackupEnabled') || {}).checked;
+  const botToken     = ((document.getElementById('tgBotToken')     || {}).value || '').trim();
+  const chatId       = ((document.getElementById('tgChatId')       || {}).value || '').trim();
+  const scheduleTime = ((document.getElementById('tgScheduleTime') || {}).value || '23:59').trim();
+  const sendDocument = !!(document.getElementById('tgSendDocument') || {}).checked;
+  const sendMessage  = !!(document.getElementById('tgSendMessage')  || {}).checked;
+
+  if (enabled && (!botToken || !chatId)) {
+    toast('Token Bot Telegram dan Chat ID wajib diisi jika backup otomatis aktif!', 'error');
+    return;
+  }
+
+  const existing = getTelegramConfig();
+  const updated = {
+    ...existing,
+    enabled,
+    botToken,
+    chatId,
+    scheduleTime,
+    sendDocument,
+    sendMessage
+  };
+
+  localStorage.setItem(TELEGRAM_CONFIG_KEY, JSON.stringify(updated));
+  updateTelegramStatusUI(updated);
+  SysLog.info('SYSTEM', 'Konfigurasi Bot Telegram Backup berhasil disimpan', { enabled, chatId, scheduleTime });
+  if (!silent) toast('Konfigurasi Telegram berhasil disimpan!', 'success');
+}
+
+function loadTelegramConfig() {
+  const cfg = getTelegramConfig();
+  const elEnabled  = document.getElementById('tgAutoBackupEnabled');
+  const elToken    = document.getElementById('tgBotToken');
+  const elChatId   = document.getElementById('tgChatId');
+  const elSchedule = document.getElementById('tgScheduleTime');
+  const elDoc      = document.getElementById('tgSendDocument');
+  const elMsg      = document.getElementById('tgSendMessage');
+
+  if (elEnabled)  elEnabled.checked  = !!cfg.enabled;
+  if (elToken)    elToken.value      = cfg.botToken || '';
+  if (elChatId)   elChatId.value     = cfg.chatId || '';
+  if (elSchedule) elSchedule.value   = cfg.scheduleTime || '23:59';
+  if (elDoc)      elDoc.checked      = cfg.sendDocument !== false;
+  if (elMsg)      elMsg.checked      = cfg.sendMessage !== false;
+
+  updateTelegramStatusUI(cfg);
+}
+
+function updateTelegramStatusUI(cfg) {
+  const kpiEl       = document.getElementById('kpiTelegramStatus');
+  const badgeEl     = document.getElementById('kpiTelegramStatusBadge');
+  const lastTimeEl  = document.getElementById('tgLastSentTime');
+
+  if (lastTimeEl) {
+    if (cfg.lastSentTime) {
+      lastTimeEl.textContent = new Date(cfg.lastSentTime).toLocaleString('id-ID');
+    } else {
+      lastTimeEl.textContent = 'Belum pernah dikirim';
+    }
+  }
+
+  if (cfg.enabled && cfg.botToken && cfg.chatId) {
+    if (kpiEl) {
+      kpiEl.innerHTML = `<span style="color:#4ade80;">🟢 Aktif (${cfg.scheduleTime})</span>`;
+    }
+    if (badgeEl) {
+      badgeEl.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> AUTO-BACKUP AKTIF (${cfg.scheduleTime})`;
+      badgeEl.style.color = '#86efac';
+      badgeEl.style.background = 'rgba(34,197,94,0.15)';
+      badgeEl.style.borderColor = 'rgba(34,197,94,0.3)';
+    }
+  } else {
+    if (kpiEl) {
+      kpiEl.innerHTML = `<span style="color:#94a3b8;">⚪ Belum Aktif</span>`;
+    }
+    if (badgeEl) {
+      badgeEl.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg> NONAKTIF`;
+      badgeEl.style.color = '#94a3b8';
+      badgeEl.style.background = 'rgba(255,255,255,0.05)';
+      badgeEl.style.borderColor = 'rgba(255,255,255,0.1)';
+    }
+  }
+}
+
+function toggleTgTokenVisibility() {
+  const inp = document.getElementById('tgBotToken');
+  if (!inp) return;
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+function generateFullDatabaseBackup(includeLogs = true) {
+  const payload = {
+    meta: {
+      appName: 'Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi',
+      version: '4.2.0-enterprise',
+      exportTimestamp: new Date().toISOString(),
+      exportDateWib: new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }),
+      exportedBy: sessionStorage.getItem('ms88_admin_user') || 'admin',
+      totalStores: DB_STORES.length,
+    },
+    stores: {}
+  };
+
+  let totalRecords = 0;
+
+  DB_STORES.forEach(s => {
+    if (s.key === 'ms88_system_logs' && !includeLogs) return;
+    try {
+      const raw = localStorage.getItem(s.key);
+      if (raw !== null) {
+        try {
+          const parsed = JSON.parse(raw);
+          payload.stores[s.key] = parsed;
+          if (Array.isArray(parsed)) totalRecords += parsed.length;
+          else totalRecords += 1;
+        } catch (_) {
+          payload.stores[s.key] = raw;
+          totalRecords += 1;
+        }
+      } else {
+        payload.stores[s.key] = null;
+      }
+    } catch (_) {
+      payload.stores[s.key] = null;
+    }
+  });
+
+  payload.meta.totalRecords = totalRecords;
+  return payload;
+}
+
+function downloadFullDatabaseBackup() {
+  const includeLogs = !(document.getElementById('chkIncludeLogs') && !document.getElementById('chkIncludeLogs').checked);
+  const data = generateFullDatabaseBackup(includeLogs);
+  const jsonStr = JSON.stringify(data, null, 2);
+
+  const datePart = new Date().toISOString().slice(0, 10);
+  const timePart = new Date().toTimeString().slice(0, 5).replace(':', '');
+  const fileName = `ms88-backup-full-${datePart}-${timePart}.json`;
+
+  const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+
+  SysLog.success('SYSTEM', `Backup database berhasil diunduh: ${fileName} (${(blob.size / 1024).toFixed(1)} KB)`);
+  toast('File backup database berhasil diunduh!', 'success');
+}
+
+function renderDatabaseTables() {
+  let totalBytes = 0;
+  let totalRecords = 0;
+  const tbody = document.getElementById('dbOverviewBody');
+
+  const rows = DB_STORES.map((s, index) => {
+    const raw = localStorage.getItem(s.key);
+    let recordCount = 0;
+    let bytes = 0;
+    let statusBadge = '<span style="background:rgba(255,255,255,0.06);color:#888;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;">KOSONG</span>';
+
+    if (raw !== null) {
+      bytes = new Blob([raw]).size;
+      totalBytes += bytes;
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) recordCount = parsed.length;
+        else if (typeof parsed === 'object') recordCount = Object.keys(parsed).length;
+        else recordCount = 1;
+      } catch (_) {
+        recordCount = 1;
+      }
+      totalRecords += recordCount;
+      statusBadge = '<span style="background:rgba(34,197,94,0.15);color:#4ade80;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;">AKTIF</span>';
+    }
+
+    const sizeFormatted = bytes > 1024 ? `${(bytes / 1024).toFixed(1)} KB` : `${bytes} B`;
+
+    return `
+      <tr>
+        <td style="color:#888;font-size:12px;">${index + 1}</td>
+        <td><strong>${s.name}</strong></td>
+        <td><code style="font-size:12px;color:#38bdf8;">${s.key}</code></td>
+        <td style="font-size:12px;color:#aaa;max-width:320px;">${s.desc}</td>
+        <td style="font-weight:600;text-align:center;">${recordCount}</td>
+        <td style="color:#c9d1d9;font-family:monospace;font-size:12px;">${sizeFormatted}</td>
+        <td>${statusBadge}</td>
+      </tr>
+    `;
+  });
+
+  if (tbody) tbody.innerHTML = rows.join('');
+
+  const elSize    = document.getElementById('kpiDbSize');
+  const elRecords = document.getElementById('kpiDbRecords');
+  const elTables  = document.getElementById('kpiDbTables');
+
+  if (elSize)    elSize.textContent    = (totalBytes / 1024).toFixed(1) + ' KB';
+  if (elRecords) elRecords.textContent = totalRecords.toLocaleString('id-ID');
+  if (elTables)  elTables.textContent  = DB_STORES.length + ' Tabel';
+}
+
+function renderBackupTab() {
+  loadTelegramConfig();
+  renderDatabaseTables();
+}
+
+async function testTelegramBackup(isFullBackup = false) {
+  const cfg = getTelegramConfig();
+  const token  = (document.getElementById('tgBotToken') ? document.getElementById('tgBotToken').value.trim() : '') || cfg.botToken;
+  const chatId = (document.getElementById('tgChatId')   ? document.getElementById('tgChatId').value.trim()   : '') || cfg.chatId;
+
+  if (!token || !chatId) {
+    toast('Token Bot Telegram dan Chat ID belum diisi!', 'error');
+    return;
+  }
+
+  const sendDoc = document.getElementById('tgSendDocument') ? document.getElementById('tgSendDocument').checked : cfg.sendDocument;
+  const sendMsg = document.getElementById('tgSendMessage')  ? document.getElementById('tgSendMessage').checked  : cfg.sendMessage;
+
+  toast('Menghubungkan ke Bot Telegram API...', 'info');
+
+  const orders = getLS_orders ? getLS_orders() : [];
+  const users  = getLS_users  ? getLS_users()  : [];
+  const staff  = getLS_staff  ? getLS_staff()  : [];
+  const logs   = SysLog.getLogs();
+
+  const nowWib = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+  const messageText = `⚽ <b>MINI SOCCER 88 ALPHA SPORT PUSDIKIF</b>\n` +
+    `💾 <b>LAPORAN DATABASE CADANGAN (BACKUP)</b>\n` +
+    `━━━━━━━━━━━━━━━━━━━━\n` +
+    `📅 <b>Waktu:</b> ${nowWib} WIB\n` +
+    `👑 <b>Pengirim:</b> ${sessionStorage.getItem('ms88_admin_user') || 'Admin Sistem'}\n` +
+    `━━━━━━━━━━━━━━━━━━━━\n` +
+    `📊 <b>Ringkasan Database:</b>\n` +
+    `• 📋 Total Pesanan/Booking: <b>${orders.length}</b> data\n` +
+    `• 👥 Member Terdaftar: <b>${users.length}</b> orang\n` +
+    `• 🛡️ Staff & Operator: <b>${staff.length}</b> akun\n` +
+    `• ⚡ Log Aktivitas Sistem: <b>${logs.length}</b> entri\n` +
+    `• 🗄️ Total Tabel Dicakup: <b>14 Entitas Lengkap</b>\n` +
+    `━━━━━━━━━━━━━━━━━━━━\n` +
+    `✅ <i>Status: Database Sehat, Sinkron & Aman.</i>\n` +
+    `📍 <i>Alpha Sport Pusdikif Cimahi</i>`;
+
+  let anySuccess = false;
+
+  // 1. Send text message if requested or if test mode
+  if (sendMsg || !isFullBackup) {
+    try {
+      const resMsg = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: messageText,
+          parse_mode: 'HTML'
+        })
+      });
+      const data = await resMsg.json();
+      if (data.ok) {
+        anySuccess = true;
+      } else {
+        throw new Error(data.description || 'Gagal mengirim pesan');
+      }
+    } catch (err) {
+      SysLog.error('SYSTEM', 'Telegram sendMessage gagal: ' + err.message);
+      if (!isFullBackup) {
+        toast('Gagal kirim pesan: ' + err.message, 'error');
+        return;
+      }
+    }
+  }
+
+  // 2. Send document JSON if full backup requested
+  if (isFullBackup && sendDoc) {
+    try {
+      const backupData = generateFullDatabaseBackup(true);
+      const jsonStr = JSON.stringify(backupData, null, 2);
+      const fileName = `ms88-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+
+      const form = new FormData();
+      form.append('chat_id', chatId);
+      form.append('caption', `📦 Berkas Cadangan Database Mini Soccer 88 (${nowWib} WIB)\nUkuran: ${(blob.size / 1024).toFixed(1)} KB`);
+      form.append('document', blob, fileName);
+
+      const resDoc = await fetch(`https://api.telegram.org/bot${token}/sendDocument`, {
+        method: 'POST',
+        body: form
+      });
+      const docData = await resDoc.json();
+      if (docData.ok) {
+        anySuccess = true;
+      } else {
+        throw new Error(docData.description || 'Gagal mengirim file dokumen');
+      }
+    } catch (err) {
+      SysLog.error('SYSTEM', 'Telegram sendDocument gagal: ' + err.message);
+      toast('Gagal kirim file ke Telegram: ' + err.message, 'error');
+      return;
+    }
+  }
+
+  if (anySuccess) {
+    cfg.lastSentTime = new Date().toISOString();
+    cfg.lastStatus = 'Berhasil';
+    localStorage.setItem(TELEGRAM_CONFIG_KEY, JSON.stringify(cfg));
+    updateTelegramStatusUI(cfg);
+    SysLog.success('SYSTEM', `Backup database berhasil dikirim ke Telegram bot (Chat ID: ${chatId})`);
+    toast('✅ Backup berhasil dikirim ke Bot Telegram Anda!', 'success');
+  }
+}
+
+// Background scheduler checker for Telegram daily backup
+let backupScheduleInterval = null;
+
+function initBackupModule() {
+  renderDatabaseTables();
+  loadTelegramConfig();
+
+  if (backupScheduleInterval) clearInterval(backupScheduleInterval);
+
+  backupScheduleInterval = setInterval(() => {
+    const cfg = getTelegramConfig();
+    if (!cfg.enabled || !cfg.botToken || !cfg.chatId || !cfg.scheduleTime) return;
+
+    const now = new Date();
+    const currentHHMM = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+    if (currentHHMM === cfg.scheduleTime) {
+      const todayStr = now.toISOString().slice(0, 10);
+      const lastDate = (cfg.lastSentTime || '').slice(0, 10);
+
+      // Only run once per day
+      if (lastDate !== todayStr) {
+        testTelegramBackup(true);
+      }
+    }
+  }, 30000); // Check every 30 seconds
+}
+
+// Restore & Import Handlers
+let pendingRestoreData = null;
+
+function handleBackupFileSelect(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (!parsed.stores && !parsed.meta) {
+        toast('Format file tidak valid. Pastikan memilih file backup JSON Mini Soccer 88!', 'error');
+        return;
+      }
+
+      pendingRestoreData = parsed;
+      const previewArea = document.getElementById('restorePreviewArea');
+      const previewMeta = document.getElementById('restorePreviewMeta');
+
+      const appName   = parsed.meta?.appName || 'Mini Soccer 88';
+      const expDate   = parsed.meta?.exportDateWib || parsed.meta?.exportTimestamp || '—';
+      const storeKeys = Object.keys(parsed.stores || parsed);
+      const fileKb    = (file.size / 1024).toFixed(1);
+
+      if (previewMeta) {
+        previewMeta.innerHTML = `
+          <strong>Berkas:</strong> ${file.name} (${fileKb} KB)<br>
+          <strong>Tanggal Ekspor:</strong> ${expDate}<br>
+          <strong>Asal Aplikasi:</strong> ${appName}<br>
+          <strong>Tabel Terdeteksi:</strong> ${storeKeys.length} entitas database
+        `;
+      }
+      if (previewArea) previewArea.style.display = 'block';
+      toast('Berkas backup terverifikasi. Klik "Pulihkan Sekarang" untuk melanjutkan.', 'info');
+    } catch (err) {
+      toast('Gagal membaca file JSON: ' + err.message, 'error');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function cancelRestorePreview() {
+  pendingRestoreData = null;
+  const previewArea = document.getElementById('restorePreviewArea');
+  const fileInput   = document.getElementById('fileImportDb');
+  if (previewArea) previewArea.style.display = 'none';
+  if (fileInput)   fileInput.value = '';
+}
+
+function executeDatabaseRestore() {
+  if (!pendingRestoreData) {
+    toast('Pilih file backup terlebih dahulu!', 'warning');
+    return;
+  }
+
+  const modal = document.getElementById('restoreConfirmModal');
+  const details = document.getElementById('restoreModalDetails');
+  if (details && pendingRestoreData.meta) {
+    details.innerHTML = `
+      <strong>Nama Berkas:</strong> Backup Mini Soccer 88<br>
+      <strong>Waktu Dibuat:</strong> ${pendingRestoreData.meta.exportDateWib || pendingRestoreData.meta.exportTimestamp}<br>
+      <strong>Pembuat:</strong> ${pendingRestoreData.meta.exportedBy || 'Admin'}<br>
+      <strong>Jumlah Tabel:</strong> ${Object.keys(pendingRestoreData.stores || {}).length} tabel<br><br>
+      <span style="color:#f87171;">PERINGATAN: Seluruh data saat ini akan diselaraskan dengan isi berkas backup ini.</span>
+    `;
+  }
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeRestoreModal(e) {
+  if (e && e.target !== document.getElementById('restoreConfirmModal')) return;
+  const modal = document.getElementById('restoreConfirmModal');
+  if (modal) modal.style.display = 'none';
+}
+window.closeRestoreModal = function(e) {
+  if (!e || e.type !== 'click') {
+    const modal = document.getElementById('restoreConfirmModal');
+    if (modal) modal.style.display = 'none';
+    return;
+  }
+  if (e.target === document.getElementById('restoreConfirmModal')) {
+    const modal = document.getElementById('restoreConfirmModal');
+    if (modal) modal.style.display = 'none';
+  }
+};
+
+function proceedWithRestore() {
+  if (!pendingRestoreData) return;
+
+  try {
+    const stores = pendingRestoreData.stores || pendingRestoreData;
+    let count = 0;
+
+    Object.keys(stores).forEach(key => {
+      const val = stores[key];
+      if (val !== null && val !== undefined) {
+        if (typeof val === 'string') localStorage.setItem(key, val);
+        else localStorage.setItem(key, JSON.stringify(val));
+        count++;
+      }
+    });
+
+    SysLog.success('SYSTEM', `Database berhasil dipulihkan dari backup: ${count} entitas disinkronkan.`);
+    toast(`Berhasil memulihkan ${count} tabel database! Memuat ulang sistem...`, 'success');
+
+    closeRestoreModal();
+    cancelRestorePreview();
+
+    setTimeout(() => {
+      // Re-render panels
+      renderOverview();
+      renderSlots();
+      renderOrders();
+      renderPayments();
+      renderUsers();
+      renderStaff();
+      renderCustomRoles();
+      renderDatabaseTables();
+      applyRoleRestrictions();
+    }, 500);
+  } catch (err) {
+    SysLog.error('SYSTEM', 'Gagal memulihkan database: ' + err.message);
+    toast('Gagal memulihkan database: ' + err.message, 'error');
+  }
+}
+
 
 
