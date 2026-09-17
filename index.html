@@ -281,7 +281,7 @@
         }
         .new-stat-bar {
             width: 2px;
-            background: #9E0620;
+            background: #D71926;
             border-radius: 1px;
             align-self: stretch;
             flex-shrink: 0;
@@ -336,7 +336,7 @@
         }
         .new-facility-item:hover,
         .new-facility-item:focus {
-            color: #9E0620;
+            color: #D71926;
             text-decoration: none;
         }
 
@@ -488,20 +488,17 @@
             height: auto; /* Allow growth if needed, but ensure minimum */
         }
 
-        /* Reserve space in main content to prevent shift when header loads */
-        /* Fixed elements don't take space in flow, so we need to account for header height */
-        /* Only apply to pages using this layout (index.blade.php) */
+        /* Seamless hero layout: main content starts at top of viewport */
         main {
-            margin-top: 72px; /* Reserve space for fixed header - prevents content shift */
+            margin-top: 0 !important;
         }
 
         @media (max-width: 991px) {
-            /* On mobile, header might be taller due to collapsed menu, but we reserve space for default state */
             header.navbar.fixed-top {
                 min-height: 72px;
             }
             main {
-                margin-top: 72px;
+                margin-top: 0 !important;
             }
         }
     </style>
@@ -513,15 +510,18 @@
 
 <style id="alpha-sport-88-theme">
   :root {
-    --as88-red: #B91C1C;
-    --as88-red-dark: #991B1B;
-    --as88-gold: #D97706;
-    --as88-gold-light: #F59E0B;
-    --as88-pitch: #047857;
-    --as88-pitch-dark: #064E3B;
-    --as88-dark: #111827;
+    --as88-white: #FFFFFF;
+    --as88-sport-red: #D71926;
+    --as88-sport-red-dark: #B5141F;
+    --as88-sport-red-light: #E82C3A;
+    --as88-metallic-silver: #D9DCE1;
+    --as88-silver-bg: #F4F5F7;
+    --as88-obsidian-black: #08090B;
+    --as88-metallic-gold: #D9A21B;
+    --as88-gold-light: #F3C644;
+    --as88-dark: #08090B;
     --as88-card-bg: #FFFFFF;
-    --as88-border: #E5E7EB;
+    --as88-border: #D9DCE1;
   }
   .ms88-brand-logo {
     height: 52px;
@@ -529,7 +529,7 @@
     max-width: 220px;
     object-fit: contain;
     transition: transform 0.2s ease;
-    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+    filter: drop-shadow(0 2px 6px rgba(8,9,11,0.12));
   }
   .ms88-brand-logo:hover {
     transform: scale(1.03);
@@ -537,17 +537,45 @@
   .hero-as88 {
     position: relative;
     min-height: 740px;
-    background: #0b1320;
+    background: #4a7c59;
     overflow: hidden;
   }
   .hero-as88-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(6, 78, 59, 0.85) 55%, rgba(185, 28, 28, 0.65) 100%);
-    z-index: 1;
+    display: none;
+  }
+  /* Header Menu Seamless With Hero Background */
+  header.ms88-navbar-seamless {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.15) 65%, transparent 100%) !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    transition: background 0.35s ease, box-shadow 0.35s ease, backdrop-filter 0.35s ease !important;
+  }
+  header.ms88-navbar-seamless.scrolled {
+    background: rgba(8, 9, 11, 0.94) !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+  }
+  header.ms88-navbar-seamless .nav-link {
+    color: #FFFFFF !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8) !important;
+  }
+  header.ms88-navbar-seamless .nav-link:hover {
+    color: #FDE68A !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+  }
+  @media (max-width: 1199.98px) {
+    header.ms88-navbar-seamless .navbar-collapse {
+      background: rgba(8, 9, 11, 0.96) !important;
+      backdrop-filter: blur(12px) !important;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-top: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
   }
   .gold-gradient {
-    background: linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #FBBF24 100%);
+    background: linear-gradient(135deg, #D9A21B 0%, #F3C644 50%, #D9A21B 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -555,9 +583,9 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(245, 158, 11, 0.15);
-    border: 1px solid #F59E0B;
-    color: #FDE68A;
+    background: rgba(217, 162, 27, 0.12);
+    border: 1px solid #D9A21B;
+    color: #F3C644;
     padding: 6px 18px;
     border-radius: 9999px;
     font-size: 13px;
@@ -567,8 +595,8 @@
     backdrop-filter: blur(4px);
   }
   .btn-as88-gold {
-    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-    color: #111827 !important;
+    background: linear-gradient(135deg, #D9A21B 0%, #F3C644 100%);
+    color: #08090B !important;
     font-weight: 800;
     padding: 13px 26px;
     border-radius: 9999px;
@@ -577,16 +605,16 @@
     gap: 8px;
     text-decoration: none;
     transition: all 0.25s ease;
-    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+    box-shadow: 0 4px 14px rgba(217, 162, 27, 0.35);
     border: none;
   }
   .btn-as88-gold:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(217, 119, 6, 0.5);
-    color: #000 !important;
+    box-shadow: 0 6px 20px rgba(217, 162, 27, 0.5);
+    color: #08090B !important;
   }
   .btn-as88-red {
-    background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
+    background: linear-gradient(135deg, #D71926 0%, #B5141F 100%);
     color: #FFFFFF !important;
     font-weight: 800;
     padding: 13px 26px;
@@ -596,49 +624,51 @@
     gap: 8px;
     text-decoration: none;
     transition: all 0.25s ease;
-    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+    box-shadow: 0 4px 14px rgba(215, 25, 38, 0.35);
     border: none;
   }
   .btn-as88-red:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
+    box-shadow: 0 6px 20px rgba(215, 25, 38, 0.5);
   }
   .btn-as88-wa {
-    background: #25D366;
+    background: #08090B;
     color: #FFFFFF !important;
     font-weight: 700;
     padding: 13px 24px;
     border-radius: 9999px;
+    border: 1px solid #D9DCE1;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     text-decoration: none;
     transition: all 0.25s ease;
-    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+    box-shadow: 0 4px 14px rgba(8, 9, 11, 0.15);
   }
   .btn-as88-wa:hover {
     transform: translateY(-2px);
-    background: #1EBE5D;
+    background: #181B22;
+    border-color: #D71926;
     color: #FFFFFF !important;
   }
   .as88-card {
     background: #FFFFFF;
     border-radius: 20px;
-    border: 1px solid #E5E7EB;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border: 1px solid #D9DCE1;
+    box-shadow: 0 4px 20px rgba(8, 9, 11, 0.05);
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     overflow: hidden;
   }
   .as88-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.1);
-    border-color: #F59E0B;
+    box-shadow: 0 12px 28px rgba(8, 9, 11, 0.1);
+    border-color: #D71926;
   }
   .pricing-tier-card {
     border-radius: 18px;
     padding: 24px 20px;
     background: #FFFFFF;
-    border: 2px solid #E5E7EB;
+    border: 2px solid #D9DCE1;
     text-align: center;
     transition: all 0.25s ease;
     position: relative;
@@ -649,23 +679,23 @@
   }
   .pricing-tier-card:hover {
     transform: translateY(-5px);
-    border-color: #D97706;
-    box-shadow: 0 10px 25px rgba(217,119,6,0.15);
+    border-color: #D71926;
+    box-shadow: 0 10px 25px rgba(215, 25, 38, 0.15);
   }
   .pricing-tier-card.featured {
-    border-color: #DC2626;
+    border-color: #D71926;
     background: linear-gradient(180deg, #FFF5F5 0%, #FFFFFF 100%);
-    box-shadow: 0 8px 24px rgba(220,38,38,0.12);
+    box-shadow: 0 8px 24px rgba(215, 25, 38, 0.12);
   }
   .pricing-tier-card.night-prime {
-    border-color: #D97706;
-    background: linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%);
-    box-shadow: 0 8px 24px rgba(217,119,6,0.12);
+    border-color: #D9A21B;
+    background: linear-gradient(180deg, #FFFDF5 0%, #FFFFFF 100%);
+    box-shadow: 0 8px 24px rgba(217, 162, 27, 0.12);
   }
   .mascot-hero-badge {
     animation: floatMascot 4s ease-in-out infinite;
     max-height: 480px;
-    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4));
+    filter: drop-shadow(0 15px 25px rgba(8, 9, 11, 0.4));
   }
   @keyframes floatMascot {
     0%, 100% { transform: translateY(0); }
@@ -676,6 +706,7 @@
     overflow: hidden;
     border-radius: 16px;
     position: relative;
+    border: 1px solid #D9DCE1;
   }
   .gallery-img-wrap img {
     width: 100%;
@@ -686,50 +717,994 @@
   .gallery-img-wrap:hover img {
     transform: scale(1.06);
   }
-  .schedule-table-wrap {
-    overflow-x: auto;
-    border-radius: 16px;
-    border: 1px solid #E5E7EB;
+  /* ==========================================================================
+     WEEKLY SCHEDULE MATRIX POSTER (MATCHING JADWAL.JPEG)
+     ========================================================================== */
+  .weekly-poster-container {
+    background: #FFFFFF;
+    border-radius: 18px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.12), 0 2px 10px rgba(0, 0, 0, 0.06);
+    border: 2px solid #06703B;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    font-family: 'Rubik', -apple-system, BlinkMacSystemFont, sans-serif;
   }
-  .schedule-table th {
-    background: #111827;
-    color: #F3F4F6;
-    padding: 12px 14px;
+
+  /* Decorative Corner Stripes */
+  .poster-corner-tl,
+  .poster-corner-tr {
+    display: none !important;
+  }
+  .poster-corner-br {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 95px;
+    height: 95px;
+    pointer-events: none;
+    background: linear-gradient(45deg, transparent 42%, #06703B 42.1%, #06703B 62%, transparent 62.1%, transparent 68%, #E51E2B 68.1%, #E51E2B 100%);
+    z-index: 2;
+  }
+
+  /* Poster Main Header with Dynamic Red & Green Brand Combination */
+  .poster-top-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 32px 20px;
+    position: relative;
+    z-index: 3;
+    border-bottom: 2.5px solid #000000;
+    flex-wrap: wrap;
+    gap: 16px;
+    background: linear-gradient(135deg, #D71926 0%, #B5141F 40%, #FFFFFF 40%, #FFFFFF 42.5%, #06703B 42.5%, #04522B 100%) !important;
+    box-shadow: inset 0 -2px 8px rgba(0, 0, 0, 0.2);
+  }
+  .poster-brand-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    padding-left: 8px;
+  }
+  .poster-brand-logo-img {
+    height: 76px;
+    width: auto;
+    max-width: 150px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+    transition: transform 0.2s ease;
+  }
+  .poster-brand-logo-img:hover {
+    transform: scale(1.04);
+  }
+  .poster-header-divider {
+    width: 3px;
+    height: 56px;
+    background: rgba(255, 255, 255, 0.85) !important;
+    margin: 0 16px;
+    display: inline-block;
+  }
+  .poster-title-block {
+    flex: 1;
+    min-width: 250px;
+  }
+  .poster-sched-title {
+    font-size: 38px;
+    font-weight: 900;
+    font-style: italic;
+    color: #FFFFFF !important;
+    line-height: 1;
+    margin: 0;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  }
+  .poster-sched-subtitle {
+    font-size: 14px;
+    font-weight: 900;
+    color: #FFFFFF !important;
+    margin-top: 5px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  }
+  .poster-sched-subtitle svg {
+    fill: #FDE047 !important;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  }
+  /* Real-Time Live Header Box */
+  .poster-realtime-box {
+    background: rgba(9, 24, 37, 0.94) !important;
+    border: 2px solid rgba(255, 255, 255, 0.45) !important;
+    border-radius: 14px;
+    padding: 7px 18px 8px;
+    text-align: center;
+    min-width: 185px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  }
+
+  /* Navigation controls & Horizon filter (Up to 3 months) */
+  .btn-horizon {
+    color: #374151;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
     font-size: 13px;
+    font-weight: 700;
+    padding: 7px 16px;
+    border-radius: 50px;
+    transition: all 0.2s ease;
+  }
+  .btn-horizon:hover {
+    color: #D71926;
+    border-color: #D71926;
+    background: #FFF1F2;
+  }
+  .btn-horizon.active-horizon {
+    background: #D71926 !important;
+    color: #FFFFFF !important;
+    border-color: #D71926 !important;
+    box-shadow: 0 4px 12px rgba(215, 25, 38, 0.35);
+  }
+  .btn-sched-stepper {
+    padding: 7px 18px;
+    font-size: 13px;
+    font-weight: 800;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+  .btn-sched-stepper:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: #E5E7EB !important;
+    border-color: #D1D5DB !important;
+    color: #9CA3AF !important;
+    box-shadow: none !important;
+  }
+
+  /* Floating Table Side Stepper Buttons */
+  .poster-table-wrap {
+    position: relative;
+    overflow-x: auto;
+  }
+  .table-side-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 25;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #D71926;
+    color: #FFFFFF;
+    border: 2.5px solid #FFFFFF;
+    box-shadow: 0 4px 16px rgba(215, 25, 38, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  }
+  .table-side-nav-btn:hover:not(:disabled) {
+    background: #06703B;
+    transform: translateY(-50%) scale(1.12);
+    box-shadow: 0 6px 20px rgba(6, 112, 59, 0.5);
+  }
+  .table-side-nav-btn:disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+    background: #9CA3AF;
+    box-shadow: none;
+  }
+  .table-nav-next {
+    right: 10px;
+  }
+  .table-nav-prev {
+    left: 10px;
+  }
+  .realtime-live-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(229, 30, 43, 0.18);
+    border: 1px solid rgba(229, 30, 43, 0.6);
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-bottom: 2px;
+  }
+  .realtime-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #E51E2B;
+    box-shadow: 0 0 6px #E51E2B;
+    animation: liveDotPulse 1.2s infinite ease-in-out;
+  }
+  @keyframes liveDotPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.85); }
+  }
+  .realtime-live-text {
+    font-size: 10px;
+    font-weight: 900;
+    color: #FFA4A4;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+  .realtime-clock {
+    font-size: 22px;
+    font-weight: 900;
+    font-family: 'Rubik', monospace, sans-serif;
+    color: #38BDF8;
+    line-height: 1.1;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(56, 189, 248, 0.35);
+  }
+  .realtime-date {
+    font-size: 11px;
+    font-weight: 800;
+    color: #E2E8F0;
+    margin-top: 3px;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+  }
+  .poster-badge-box {
+    border: 3px solid #E51E2B;
+    border-radius: 12px;
+    padding: 5px 14px 7px;
+    text-align: center;
+    background: #FFFFFF;
+    min-width: 145px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  }
+  .poster-badge-pill {
+    background: #000000;
+    color: #FFFFFF;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 900;
+    padding: 2px 14px;
+    display: inline-block;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .poster-badge-dates {
+    font-size: 27px;
+    font-weight: 900;
+    color: #E51E2B;
+    line-height: 1.1;
+    margin-top: 2px;
+    letter-spacing: -0.5px;
+  }
+  .poster-badge-month {
+    font-size: 15px;
+    font-weight: 900;
+    color: #06703B;
+    line-height: 1;
+    letter-spacing: 0.5px;
+  }
+
+  /* Today Column Styling */
+  .poster-th-today {
+    background: linear-gradient(180deg, #058444 0%, #03522A 100%) !important;
+    position: relative;
+    box-shadow: inset 0 3px 0 #FDE047 !important;
+  }
+  .poster-today-tag {
+    display: inline-block;
+    background: #FDE047;
+    color: #0F172A;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 1px 7px;
+    border-radius: 12px;
+    letter-spacing: 0.6px;
+    margin-bottom: 2px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    animation: tagPulse 2s infinite ease-in-out;
+  }
+  @keyframes tagPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+  .today-date-pill {
+    background: #FDE047 !important;
+    color: #064E3B !important;
+    font-weight: 900 !important;
+    border: 1px solid #EAB308 !important;
+    box-shadow: 0 0 10px rgba(253, 224, 71, 0.45) !important;
+  }
+  .live-dot-inline {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #10B981;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #10B981;
+    animation: liveDotPulse 1.2s infinite ease-in-out;
+    vertical-align: 0px;
+  }
+
+  /* Sub-Bar */
+  .poster-subbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 24px;
+    background: #FFFFFF;
+    border-bottom: 2px solid #06703B;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .poster-subbar-left {
+    display: flex;
+    flex-direction: column;
+  }
+  .poster-subbar-title {
+    font-size: 16px;
+    font-weight: 900;
+    font-style: italic;
+    color: #000000;
+    line-height: 1.1;
+  }
+  .poster-subbar-desc {
+    font-size: 12px;
+    font-weight: 800;
+    font-style: italic;
+    color: #111111;
+  }
+  .poster-subbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .slanted-badge {
+    transform: skewX(-16deg);
+    padding: 5px 18px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 900;
+    color: #FFFFFF;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  }
+  .slanted-badge span {
+    display: inline-block;
+    transform: skewX(16deg);
+  }
+  .slanted-badge-red {
+    background: #E51E2B;
+  }
+  .slanted-badge-green {
+    background: #06703B;
+  }
+
+  /* Responsive Table Wrap */
+  .poster-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    background: #FFFFFF;
+    border-top: 1px solid #06703B;
+    border-bottom: none;
+  }
+  .poster-grid-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 930px;
+    table-layout: fixed;
+    font-family: 'Rubik', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  /* Table Headers - Modern Sports Gradient & Clean Separation */
+  .poster-grid-table th {
+    background: linear-gradient(180deg, #077B42 0%, #04572D 100%);
+    color: #FFFFFF;
+    text-align: center;
+    padding: 9px 4px;
+    border: 1px solid #034825;
+    border-right: 1.5px solid rgba(255, 255, 255, 0.3);
+    vertical-align: middle;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+  .poster-grid-table th:last-child {
+    border-right: 1px solid #034825;
+  }
+  .poster-th-jam {
+    width: 116px;
+    background: linear-gradient(180deg, #172D42 0%, #091724 100%) !important;
+    border-color: #06111B !important;
+    border-right: 2px solid rgba(255, 255, 255, 0.25) !important;
+    font-size: 13.5px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: #F8FAFC;
+    text-transform: uppercase;
+  }
+  .poster-th-jam-inner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .poster-th-day {
+    font-size: 12.5px;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.15;
+    letter-spacing: 0.5px;
+    color: #F0FDF4;
+  }
+  .poster-th-date-pill {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 900;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-top: 3px;
+    letter-spacing: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Alternating Row Colors (Tiap Baris Beda Warna / Zebra) */
+  .poster-grid-table tbody tr.poster-grid-row:nth-child(odd) {
+    background-color: #FFFFFF;
+  }
+  .poster-grid-table tbody tr.poster-grid-row:nth-child(even) {
+    background-color: #F1F6F3; /* Soft sport-mint / slate tint */
+  }
+
+  /* Time Cell (Alternating & High-Tech) */
+  .poster-cell-time {
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 800;
+    text-align: center;
+    padding: 8px 4px;
+    font-family: 'Rubik', monospace, sans-serif;
+    vertical-align: middle;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+    border-right: 2px solid #056635;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .poster-grid-table tbody tr:nth-child(odd) .poster-cell-time {
+    background: linear-gradient(90deg, #091825 0%, #0E2235 100%);
+    border-bottom: 1px solid #152A3E;
+    border-top: 1px solid #152A3E;
+  }
+  .poster-grid-table tbody tr:nth-child(even) .poster-cell-time {
+    background: linear-gradient(90deg, #12263A 0%, #17334F 100%);
+    border-bottom: 1px solid #1E3F5F;
+    border-top: 1px solid #1E3F5F;
+  }
+  /* Row Hover Tracking for Time & Empty Cells */
+  .poster-grid-table tbody tr:hover .poster-cell-time {
+    background: linear-gradient(90deg, #1B3856 0%, #23486E 100%);
+    color: #38BDF8;
+  }
+  .poster-grid-table tbody tr:hover .poster-cell-empty {
+    background-color: #E6F5ED !important;
+  }
+
+  /* Grid Cells Base */
+  .poster-cell-slot {
+    border: 1px solid #D5E2DA;
+    vertical-align: middle;
+    text-align: center;
+    height: 44px;
+    padding: 3px 5px;
+    position: relative;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+  }
+  .poster-grid-table tbody tr:nth-child(even) .poster-cell-slot {
+    border-color: #CBDDD2;
+  }
+
+  /* Empty Slot - Alternating background */
+  .poster-grid-table tbody tr:nth-child(odd) .poster-cell-empty {
+    background-color: #FFFFFF;
+  }
+  .poster-grid-table tbody tr:nth-child(even) .poster-cell-empty {
+    background-color: #F1F6F3;
+  }
+  .poster-cell-empty {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* Empty Slot Dynamic Animated Beacon & Badge */
+  .slot-empty-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px dashed rgba(16, 185, 129, 0.45);
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    min-width: 82px;
+  }
+  .slot-beacon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+  }
+  .slot-beacon-wave {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #10B981;
+    opacity: 0.75;
+    animation: beaconPulse 1.8s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+  }
+  .slot-beacon-dot {
+    position: relative;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #059669;
+    box-shadow: 0 0 5px rgba(16, 185, 129, 0.8);
+    transition: background 0.2s ease;
+  }
+  @keyframes beaconPulse {
+    0% {
+      transform: scale(0.9);
+      opacity: 0.85;
+    }
+    70% {
+      transform: scale(2.8);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(2.8);
+      opacity: 0;
+    }
+  }
+
+  .slot-status-text {
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    color: #047857;
+    text-transform: uppercase;
+    transition: all 0.18s ease;
+  }
+  .slot-hover-action {
+    display: none;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.4px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+  }
+
+  /* Empty Slot Hover Interaction */
+  .poster-cell-empty:hover .slot-empty-wrap {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    border: 1px solid #047857;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35), 0 1px 3px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+  }
+  .poster-cell-empty:hover .slot-beacon-wave {
+    background: #FFFFFF;
+    animation-duration: 1s;
+  }
+  .poster-cell-empty:hover .slot-beacon-dot {
+    background: #FFFFFF;
+    box-shadow: 0 0 6px #FFFFFF;
+  }
+  .poster-cell-empty:hover .slot-status-text {
+    display: none;
+  }
+  .poster-cell-empty:hover .slot-hover-action {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Booked Cell (High-End Sports Team Block) */
+  .poster-cell-booked {
+    background: linear-gradient(135deg, #06703B 0%, #04522B 100%);
+    color: #FFFFFF;
+    border-color: #034522;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 -1px 0 rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.1);
+    cursor: default;
+    transition: filter 0.15s ease;
+  }
+  .poster-cell-booked:hover {
+    filter: brightness(1.08);
+  }
+  .booked-team-name {
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    line-height: 1.15;
+    letter-spacing: 0.03em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    padding: 1px 2px;
+  }
+
+  /* =====================================================
+     REAL-TIME ACTIVE ROW & CELL ANIMATIONS (LIVE NOW)
+     ===================================================== */
+  /* Active Time Cell on the Left (Hour Baris Live) */
+  .poster-cell-time.time-cell-live-now {
+    background: linear-gradient(90deg, #991B1B 0%, #DC2626 55%, #EF4444 100%) !important;
+    color: #FFFFFF !important;
+    font-weight: 900 !important;
+    border-top: 2px solid #F87171 !important;
+    border-bottom: 2px solid #F87171 !important;
+    border-left: 3.5px solid #FCA5A5 !important;
+    border-right: 2.5px solid #EF4444 !important;
+    box-shadow: inset 0 0 12px rgba(220, 38, 38, 0.6), 0 0 14px rgba(239, 68, 68, 0.5) !important;
+    position: relative;
+    z-index: 4;
+    animation: liveTimePulse 1.8s infinite ease-in-out;
+  }
+  @keyframes liveTimePulse {
+    0%, 100% {
+      box-shadow: inset 0 0 10px rgba(220, 38, 38, 0.5), 0 0 10px rgba(239, 68, 68, 0.4);
+      filter: brightness(1);
+    }
+    50% {
+      box-shadow: inset 0 0 18px rgba(239, 68, 68, 0.9), 0 0 18px rgba(239, 68, 68, 0.7);
+      filter: brightness(1.12);
+    }
+  }
+  .live-time-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    letter-spacing: 0.3px;
+  }
+  .live-time-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0 0 6px #FFFFFF;
+    animation: liveDotPulse 0.9s infinite ease-in-out;
+  }
+  @keyframes liveDotPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.7); }
+  }
+
+  /* Active Row Background Tone */
+  .poster-grid-table tbody tr.row-live-now {
+    background-color: rgba(239, 68, 68, 0.045) !important;
+  }
+
+  /* Intersection Cell (Kolom Hari Ini x Baris Jam Sekarang) */
+  .poster-cell-slot.cell-live-now {
+    position: relative !important;
+    z-index: 5 !important;
+    border: 2.5px solid #DC2626 !important;
+    animation: liveCellGlow 1.8s infinite ease-in-out !important;
+  }
+  @keyframes liveCellGlow {
+    0%, 100% {
+      border-color: #DC2626;
+      box-shadow: 0 0 14px rgba(220, 38, 38, 0.5), inset 0 0 12px rgba(220, 38, 38, 0.2);
+    }
+    50% {
+      border-color: #EF4444;
+      box-shadow: 0 0 26px rgba(239, 68, 68, 0.85), inset 0 0 18px rgba(239, 68, 68, 0.35);
+    }
+  }
+
+  /* Live Corner Badge */
+  .live-corner-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+    color: #FFFFFF;
+    font-size: 7.5px;
+    font-weight: 900;
+    padding: 1.5px 5.5px;
+    border-bottom-left-radius: 6px;
+    letter-spacing: 0.6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.28);
+    z-index: 6;
+    display: inline-flex;
+    align-items: center;
+    gap: 3.5px;
+    line-height: 1.1;
+  }
+  .live-corner-badge-dot {
+    width: 4.5px;
+    height: 4.5px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    animation: liveDotPulse 0.9s infinite ease-in-out;
+  }
+
+  /* Empty Slot when Live Now */
+  .poster-cell-empty.cell-live-now {
+    background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 50%, #FECACA 100%) !important;
+  }
+  .slot-empty-live-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.14) 0%, rgba(239, 68, 68, 0.26) 100%);
+    border: 1.5px solid #DC2626;
+    box-shadow: 0 2px 10px rgba(220, 38, 38, 0.35);
+    position: relative;
+    transition: all 0.22s ease;
+    min-width: 86px;
+  }
+  .slot-beacon-live {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+  }
+  .live-beacon-wave {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #EF4444;
+    opacity: 0.85;
+    animation: liveBeaconPulse 1.4s infinite cubic-bezier(0.2, 0, 0.35, 1);
+  }
+  @keyframes liveBeaconPulse {
+    0% { transform: scale(0.9); opacity: 0.95; }
+    70% { transform: scale(3.2); opacity: 0; }
+    100% { transform: scale(3.2); opacity: 0; }
+  }
+  .live-beacon-dot {
+    position: relative;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #DC2626;
+    box-shadow: 0 0 6px #EF4444;
+  }
+  .live-slot-label {
+    font-size: 10.5px;
+    font-weight: 900;
+    letter-spacing: 0.6px;
+    color: #B91C1C;
+    text-transform: uppercase;
+  }
+  .poster-cell-empty.cell-live-now:hover .slot-empty-live-wrap {
+    background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+    border-color: #991B1B;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.6);
+    transform: scale(1.05);
+  }
+  .poster-cell-empty.cell-live-now:hover .live-beacon-wave {
+    background: #FFFFFF;
+  }
+  .poster-cell-empty.cell-live-now:hover .live-beacon-dot {
+    background: #FFFFFF;
+    box-shadow: 0 0 6px #FFFFFF;
+  }
+  .poster-cell-empty.cell-live-now:hover .live-slot-label {
+    display: none;
+  }
+  .poster-cell-empty.cell-live-now:hover .slot-hover-action {
+    display: inline-flex;
+    align-items: center;
+    color: #FFFFFF;
+    font-weight: 900;
+  }
+
+  /* Booked Slot when Live Now */
+  .poster-cell-booked.cell-live-now {
+    background: linear-gradient(135deg, #065F46 0%, #044E38 100%) !important;
+  }
+  .live-match-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #DC2626;
+    color: #FFFFFF;
+    font-size: 8px;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    margin-bottom: 3px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    animation: liveDotPulse 1.2s infinite ease-in-out;
+  }
+
+  /* Bottom Bar 1 (Slogans) */
+  .poster-footer-slogans {
+    background: #091825;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    border-top: 2px solid #000000;
+    font-size: 12.5px;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    white-space: nowrap;
   }
-  .schedule-table td {
-    padding: 10px 14px;
-    font-size: 13px;
-    border-bottom: 1px solid #F3F4F6;
-    white-space: nowrap;
+  .slogan-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
-  .schedule-table tr:hover td {
-    background: #F9FAFB;
+  .slogan-sep {
+    color: #E51E2B;
+    font-weight: 900;
+    font-size: 14px;
   }
-  .tag-booked {
-    background: #DC2626;
-    color: #FFF;
-    padding: 4px 10px;
-    border-radius: 6px;
+
+  /* Bottom Bar 2 (WhatsApp & Contact) */
+  .poster-footer-contact {
+    background: #091825;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 28px;
+    position: relative;
+    border-top: 1px solid #1A2F45;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .contact-wa-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease;
+  }
+  .contact-wa-link:hover {
+    transform: translateY(-2px);
+  }
+  .wa-badge-circle {
+    width: 48px;
+    height: 48px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    flex-shrink: 0;
+  }
+  .wa-number-text {
+    font-size: 26px;
+    font-weight: 900;
+    color: #FFFFFF;
+    line-height: 1;
+    letter-spacing: 0.5px;
+  }
+  .wa-admin-label {
+    font-size: 14px;
+    font-weight: 900;
+    color: #E51E2B;
+    letter-spacing: 1px;
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+  .booking-guidelines {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.5;
+    letter-spacing: 0.3px;
+  }
+  .booking-guidelines li::before {
+    content: "• ";
+    color: #FFFFFF;
+    font-weight: 900;
+  }
+
+  /* Mobile Horizontal Scroll Hint */
+  .scroll-hint-bar {
+    display: none;
+    background: #F0FDF4;
+    color: #06703B;
+    font-size: 11.5px;
     font-weight: 700;
-    font-size: 11px;
-    display: inline-block;
+    text-align: center;
+    padding: 5px 12px;
+    border-bottom: 1px solid #D6E4DC;
   }
-  .tag-available {
-    background: #059669;
-    color: #FFF;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-weight: 700;
-    font-size: 11px;
-    display: inline-block;
+
+  /* Nav Pills Red Sporty Style */
+  .sched-tab-pill {
+    transition: all 0.2s ease;
+    border: 1.5px solid #06703B;
+    color: #06703B;
+    background: #FFFFFF;
+  }
+  .sched-tab-pill:hover {
+    background: #F0FDF4;
+    color: #06703B;
+  }
+  .sched-tab-pill.active {
+    background: #D71926 !important;
+    border-color: #D71926 !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 12px rgba(215, 25, 38, 0.3);
+  }
+
+  @media (max-width: 991px) {
+    .scroll-hint-bar {
+      display: block;
+    }
+    .poster-top-header {
+      padding: 16px 20px;
+    }
+    .poster-sched-title {
+      font-size: 28px;
+    }
+    .poster-brand-main {
+      font-size: 26px;
+    }
+    .poster-header-divider {
+      display: none;
+    }
+    .poster-footer-contact {
+      padding: 14px 20px;
+    }
+    .wa-number-text {
+      font-size: 21px;
+    }
   }
 </style>
 
 
+    <!-- PWA Primary Meta Tags & Cache Optimization -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FFFFFF">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mini Soccer 88">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192x192.png">
+    <link rel="stylesheet" href="css/theme-88.css">
+    <link rel="stylesheet" href="css/pwa-install.css">
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -896,100 +1871,369 @@
             padding-top: 0 !important;
         }
     }
+
+    /* Footer Background - View Masjid Pusdikif */
+    footer {
+        position: relative !important;
+        background: linear-gradient(rgba(8, 12, 20, 0.72), rgba(8, 10, 16, 0.88)), url('assets/img/view-masjid.png') center 35% / cover no-repeat !important;
+        color: #FFFFFF !important;
+    }
+    footer h6,
+    footer .text-dark {
+        color: #FFFFFF !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    }
+    footer p,
+    footer .text-secondary {
+        color: rgba(255, 255, 255, 0.88) !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    }
+    footer ul li a.text-secondary {
+        color: rgba(255, 255, 255, 0.78) !important;
+        transition: color 0.2s ease, padding-left 0.2s ease;
+    }
+    footer ul li a.text-secondary:hover {
+        color: #FBBF24 !important;
+        padding-left: 4px;
+    }
+    footer .text-muted {
+        color: rgba(255, 255, 255, 0.70) !important;
+    }
+    footer hr {
+        border-color: rgba(255, 255, 255, 0.20) !important;
+    }
+    footer .btn-outline-dark {
+        border-color: rgba(255, 255, 255, 0.45) !important;
+        color: #FFFFFF !important;
+        background: rgba(0, 0, 0, 0.3) !important;
+        backdrop-filter: blur(4px);
+    }
+    footer .btn-outline-dark:hover {
+        background: #FFFFFF !important;
+        color: #08090B !important;
+    }
+    footer .ms88-location-bar {
+        background: rgba(255, 255, 255, 0.95) !important;
+    }
+    footer .as88-footer-btn-install {
+        background: rgba(255, 255, 255, 0.15) !important;
+        color: #FFFFFF !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+    }
+    footer .as88-footer-btn-install:hover {
+        background: #D71926 !important;
+        color: #FFFFFF !important;
+    }
+
+    /* Seamless Header Menu merged with Hero Background Image */
+    main {
+        margin-top: 0 !important;
+    }
+    header#mainNavbar,
+    header.navbar#mainNavbar,
+    header.ms88-navbar-seamless {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        z-index: 1030 !important;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.08) 70%, transparent 100%) !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+        transition: background 0.35s ease, box-shadow 0.35s ease, backdrop-filter 0.35s ease, padding 0.25s ease !important;
+        padding-top: 14px !important;
+        padding-bottom: 14px !important;
+    }
+    header#mainNavbar.scrolled,
+    header.navbar#mainNavbar.scrolled,
+    header.ms88-navbar-seamless.scrolled {
+        background: rgba(8, 9, 11, 0.94) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45) !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+
+    /* Centered Floating Nav Pill in the Sky Zone */
+    .ms88-nav-pill {
+        background: rgba(10, 15, 20, 0.45) !important;
+        backdrop-filter: blur(14px) !important;
+        -webkit-backdrop-filter: blur(14px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.22) !important;
+        border-radius: 999px !important;
+        padding: 5px 14px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28) !important;
+        list-style: none !important;
+        margin: 0 !important;
+    }
+    .ms88-nav-pill .nav-item {
+        display: inline-block;
+    }
+    .ms88-nav-pill .nav-link {
+        color: rgba(255, 255, 255, 0.95) !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        padding: 7px 18px !important;
+        border-radius: 999px !important;
+        transition: all 0.2s ease !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
+        letter-spacing: 0.2px;
+        background: transparent !important;
+        text-decoration: none !important;
+    }
+    .ms88-nav-pill .nav-link:hover {
+        color: #08090B !important;
+        background: #F6C744 !important;
+        text-shadow: none !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(246, 199, 68, 0.45) !important;
+    }
+
+    /* Floating Auth Pill on Right */
+    .ms88-auth-pill {
+        background: rgba(10, 15, 20, 0.45) !important;
+        backdrop-filter: blur(14px) !important;
+        -webkit-backdrop-filter: blur(14px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.22) !important;
+        border-radius: 999px !important;
+        padding: 4px 12px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28) !important;
+    }
+    .ms88-auth-pill .nav-link {
+        color: #FFFFFF !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
+        border-radius: 999px;
+    }
+    .ms88-auth-pill .nav-link:hover {
+        background: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    /* Scrolled state pill adaptation */
+    header#mainNavbar.scrolled .ms88-nav-pill,
+    header#mainNavbar.scrolled .ms88-auth-pill {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-color: rgba(255, 255, 255, 0.14) !important;
+    }
+
+    header#mainNavbar #user-dropdown svg path {
+        stroke: #FFFFFF !important;
+    }
+    header#mainNavbar #navbar-lang-dropdown {
+        color: #FFFFFF !important;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8) !important;
+    }
+    header#mainNavbar #navbar-lang-dropdown svg path {
+        fill: #FFFFFF !important;
+    }
+    header#mainNavbar #navbar-lang-dropdown img.navbar-lang-globe {
+        filter: brightness(0) invert(1) !important;
+    }
+
+    /* Desktop navigation: perfectly centered floating pill in the sky */
+    @media (min-width: 1200px) {
+        #desktop-nav-wrap {
+            position: absolute !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            margin: 0 !important;
+            z-index: 10;
+        }
+        header#mainNavbar #navbarSupportedContent,
+        header#mainNavbar .navbar-collapse#navbarSupportedContent {
+            display: none !important;
+        }
+    }
+
+    /* Mobile Drawer Custom Styling */
+    @media (max-width: 1199.98px) {
+        header#mainNavbar .navbar-collapse {
+            background: rgba(8, 9, 11, 0.96) !important;
+            backdrop-filter: blur(14px) !important;
+            -webkit-backdrop-filter: blur(14px) !important;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-top: 12px;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+        }
+        header#mainNavbar .navbar-mobile-user-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+        header#mainNavbar .navbar-mobile-user-link-icon {
+            background: rgba(255, 255, 255, 0.15) !important;
+        }
+        header#mainNavbar .navbar-mobile-user-link-icon svg path {
+            stroke: #FFFFFF !important;
+        }
+        header#mainNavbar .navbar-mobile-lang-wrap span,
+        header#mainNavbar .navbar-mobile-lang-item span {
+            color: rgba(255, 255, 255, 0.88) !important;
+        }
+        header#mainNavbar .navbar-mobile-lang-chevron path,
+        header#mainNavbar .navbar-mobile-lang-item svg path {
+            stroke: #FFFFFF !important;
+        }
+    }
+
+    /* Ensure dropdown menu text is clearly visible */
+    header.navbar .dropdown-menu,
+    ul.user-menu {
+        background: #FFFFFF !important;
+        border-radius: 14px !important;
+        border: 1px solid #E5E7EB !important;
+        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18), 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+        padding: 8px 0 !important;
+        min-width: 260px !important;
+    }
+    header.navbar .dropdown-menu a,
+    header.navbar .dropdown-menu .dropdown-item,
+    ul.user-menu a,
+    ul.user-menu .dropdown-item {
+        color: #1F2937 !important;
+        font-size: 13.5px !important;
+        font-weight: 600 !important;
+        padding: 9px 18px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        background: transparent !important;
+    }
+    header.navbar .dropdown-menu a span,
+    header.navbar .dropdown-menu .dropdown-item span,
+    ul.user-menu .dropdown-item span {
+        color: inherit !important;
+    }
+    header.navbar .dropdown-menu a svg,
+    header.navbar .dropdown-menu .dropdown-item svg,
+    ul.user-menu .dropdown-item svg {
+        color: inherit !important;
+        stroke: currentColor !important;
+    }
+    header.navbar .dropdown-menu a:hover,
+    header.navbar .dropdown-menu .dropdown-item:hover,
+    ul.user-menu .dropdown-item:hover {
+        color: #D71926 !important;
+        background: #FEF2F2 !important;
+    }
+    header.navbar .dropdown-menu a.text-danger,
+    header.navbar .dropdown-menu .dropdown-item.text-danger,
+    ul.user-menu .dropdown-item.text-danger {
+        color: #D71926 !important;
+    }
+    header.navbar .dropdown-menu a.text-danger:hover,
+    header.navbar .dropdown-menu .dropdown-item.text-danger:hover,
+    ul.user-menu .dropdown-item.text-danger:hover {
+        color: #B5141F !important;
+        background: #FEE2E2 !important;
+    }
 </style>
-<header class="navbar fixed-top navbar-expand-xl navbar-light w-100 py-3 bg-white">
-    <nav class="container">
-        <div class="navbar-top-row d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <a class="p-0 d-flex align-items-center text-decoration-none" href="/" aria-label="Mini Soccer 88 Homepage">
-                    <img class="mr-3 ms88-brand-logo" src="assets/logo/ms88-logo.svg" alt="Mini Soccer 88 Alpha Sport Pusdikif Logo">
-                </a>
-                <div id="ms88LocationBar" class="ms88-location-bar d-none d-md-flex align-items-center" onclick="GeoMS88.showModal()" style="margin-left:16px;cursor:pointer;background:#F3F4F6;padding:6px 14px;border-radius:20px;font-size:13px;color:#374151;border:1px solid #E5E7EB;">
-                  <span class="geo-pin me-1" style="color:#059669;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
-                  <span class="geo-placeholder" style="font-weight:500;">Pusdikif Kota Cimahi</span>
-                </div>
-            </div>
-            <div class="d-flex flex-row align-items-center cart-mobile-icon d-xl-none">
-             <a href="#" class="cart-icon-mobile venue-cart-view-btn">
-                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                     <path
-                         d="M2.75 3.24991L4.83 3.60991L5.793 15.0829C5.87 16.0199 6.653 16.7389 7.593 16.7359H18.502C19.399 16.7379 20.16 16.0779 20.287 15.1899L21.236 8.63191C21.342 7.89891 20.833 7.21891 20.101 7.11291C20.037 7.10391 5.164 7.09891 5.164 7.09891"
-                         stroke="#25282B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                     <path d="M14.125 10.7948H16.898" stroke="#25282B" stroke-width="1.5" stroke-linecap="round"
-                           stroke-linejoin="round"/>
-                     <path fill-rule="evenodd" clip-rule="evenodd"
-                           d="M7.15435 20.2025C7.45535 20.2025 7.69835 20.4465 7.69835 20.7465C7.69835 21.0475 7.45535 21.2915 7.15435 21.2915C6.85335 21.2915 6.61035 21.0475 6.61035 20.7465C6.61035 20.4465 6.85335 20.2025 7.15435 20.2025Z"
-                           fill="#25282B" stroke="#25282B" stroke-width="1.5" stroke-linecap="round"
-                           stroke-linejoin="round"/>
-                     <path fill-rule="evenodd" clip-rule="evenodd"
-                           d="M18.4346 20.2025C18.7356 20.2025 18.9796 20.4465 18.9796 20.7465C18.9796 21.0475 18.7356 21.2915 18.4346 21.2915C18.1336 21.2915 17.8906 21.0475 17.8906 20.7465C17.8906 20.4465 18.1336 20.2025 18.4346 20.2025Z"
-                           fill="#25282B" stroke="#25282B" stroke-width="1.5" stroke-linecap="round"
-                           stroke-linejoin="round"/>
-                 </svg>
-                 <span class="cart-icon-counter">0</span>
+<header class="navbar fixed-top navbar-expand-xl navbar-light w-100 py-3 ms88-navbar-seamless" id="mainNavbar">
+    <nav class="container d-flex align-items-center justify-content-between position-relative">
+        <!-- Logo (Left) -->
+        <div class="d-flex align-items-center">
+            <a class="p-0 d-flex align-items-center text-decoration-none" href="/" aria-label="Mini Soccer 88 Homepage">
+                <img class="ms88-brand-logo" src="assets/logo/ms88-logo-transparent.png" alt="Mini Soccer 88 Alpha Sport Pusdikif Logo" style="height:48px; width:auto; object-fit:contain;">
             </a>
+        </div>
+
+        <!-- Desktop Navigation Menu (Center) — Positioned right in the sky band indicated by user -->
+        <div class="d-none d-xl-flex align-items-center justify-content-center flex-grow-1 mx-3" id="desktop-nav-wrap">
+            <ul class="navbar-nav flex-row align-items-center gap-1 ms88-nav-pill" id="main-nav-links">
+                <li class="nav-item"><a class="nav-link" href="/sewa-lapangan.html">Sewa</a></li>
+                <li class="nav-item"><a class="nav-link" href="/partner.html">Kemitraan</a></li>
+                <li class="nav-item"><a class="nav-link" href="/main-bareng.html">Komunitas</a></li>
+                <li class="nav-item"><a class="nav-link" href="/kompetisi.html">Dokumentasi</a></li>
+                <li class="nav-item"><a class="nav-link" href="/kontak.html">Kontak</a></li>
+            </ul>
+        </div>
+
+        <!-- Right: Desktop Auth & Language Pill + Mobile Hamburger -->
+        <div class="d-flex align-items-center gap-2">
+            <!-- Desktop User & Language Pill -->
+            <div class="d-none d-xl-flex align-items-center ms88-auth-pill" id="desktop-auth-action">
+                <ul class="navbar-nav flex-row align-items-center gap-2 m-0 p-0" style="list-style:none;">
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link p-1 d-flex align-items-center" id="user-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Akun Member">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end user-menu" aria-labelledby="user-dropdown">
+                            <li class="px-3 py-2 border-bottom">
+                                <div class="fw-bold text-dark" style="font-size:13px;">Akun Mini Soccer 88</div>
+                                <small class="text-secondary" style="font-size:11px;">Masuk untuk kemudahan reservasi</small>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2 fw-bold text-danger" href="/login.html">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                                    <span>Masuk / Daftar Member</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown navbar-lang-dropdown-wrap">
+                        <a class="nav-link navbar-lang-trigger d-flex align-items-center p-1" href="#" id="navbar-lang-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #FFFFFF; font-size: 13.5px; font-weight:600;">
+                            <img src="assets/icon/tabler_world.svg" alt="" class="navbar-lang-globe me-1" width="18" height="18" style="filter: brightness(0) invert(1);">
+                            <span class="text-uppercase">id</span>
+                            <svg class="navbar-lang-chevron ms-1" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.69838 1.91493C9.10048 1.47709 9.1006 0.77757 8.69837 0.339699L8.69838 1.91493ZM8.69838 1.91493L5.25854 5.66046C5.0537 5.8834 4.77888 6 4.50005 6C4.22106 6 3.94622 5.8833 3.74147 5.6604L0.301744 1.91492C-0.100452 1.4771 -0.100684 0.777466 0.301661 0.339603C0.717505 -0.113189 1.403 -0.113215 1.81885 0.339608L4.50003 3.25911L7.18112 0.339706C7.59698 -0.112928 8.28247 -0.113072 8.69837 0.339699" fill="#FFFFFF"/>
+                            </svg>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end navbar-lang-dropdown" aria-labelledby="navbar-lang-dropdown">
+                            <a class="dropdown-item active" href="javascript:void(0)" onclick="setAppLanguage('id')" data-lang="id">Bahasa Indonesia</a>
+                            <hr class="dropdown-divider my-0">
+                            <a class="dropdown-item" href="javascript:void(0)" onclick="setAppLanguage('en')" data-lang="en">English</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Mobile Hamburger Button (Below xl) -->
             <button
-                class="navbar-toggler border-0 px-0 ml-2"
+                class="navbar-toggler border-0 px-0 ml-2 d-xl-none"
                 type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent"
                 aria-expanded="false"
                 aria-label="Toggle navigation"
             >
-                <span class="">
+                <span>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="4" y="4" width="16" height="2" rx="1" fill="#25282B"/>
-                        <rect x="4" y="11" width="16" height="2" rx="1" fill="#25282B"/>
-                        <rect x="4" y="18" width="16" height="2" rx="1" fill="#25282B"/>
+                        <rect x="4" y="4" width="16" height="2" rx="1" fill="#ffffff"/>
+                        <rect x="4" y="11" width="16" height="2" rx="1" fill="#ffffff"/>
+                        <rect x="4" y="18" width="16" height="2" rx="1" fill="#ffffff"/>
                     </svg>
                 </span>
             </button>
         </div>
-        </div>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
-        <li class="nav-item left-menu-item" style="white-space: nowrap;">
-            <a class="nav-link s16-400" href="/sewa-lapangan.html" style="color:#111827;font-weight:700;">
-                Sewa Lapangan
-            </a>
-        </li>
-        <li class="nav-item left-menu-item" style="white-space: nowrap;">
-            <a class="nav-link s16-400" href="/#pricelist" style="color:#374151;font-weight:600;">
-                Tarif Resmi
-            </a>
-        </li>
-        <li class="nav-item left-menu-item" style="white-space: nowrap;">
-            <a class="nav-link s16-400" href="/partner.html" style="color:#374151;font-weight:600;">
-                Kemitraan Sekolah & Event
-            </a>
-        </li>
-        <li class="nav-item left-menu-item" style="white-space: nowrap;">
-            <a class="nav-link s16-400" href="/main-bareng.html" style="color:#374151;font-weight:600;">
-                Komunitas & Mabar
-            </a>
-        </li>
-        <li class="nav-item left-menu-item" style="white-space: nowrap;">
-            <a class="nav-link s16-400" href="/kompetisi.html" style="color:#374151;font-weight:600;">
-                Dokumentasi & Turnamen
-            </a>
-        </li>
-        <li class="nav-item left-menu-item" style="white-space: nowrap;">
-            <a class="nav-link s16-400" href="/kontak.html" style="color:#374151;font-weight:600;">
-                Kontak & Lokasi
-            </a>
-        </li>
-    </ul>
-            
-                        <div class="d-xl-none w-100 navbar-mobile-user-links">
-                <a href="/superadmin/index.html" class="navbar-mobile-user-link d-flex align-items-center py-2 text-decoration-none s16-400" style="color: #25282B;">
+
+        <!-- Mobile Collapse Menu (Below xl only) -->
+        <div class="collapse navbar-collapse d-xl-none w-100" id="navbarSupportedContent">
+            <!-- Mobile nav menu links -->
+            <div class="w-100 py-2" style="border-bottom:1px solid rgba(255,255,255,0.2);margin-bottom:4px;">
+                <div class="d-flex flex-column gap-1">
+                    <a href="/sewa-lapangan.html" class="text-decoration-none fw-semibold py-2" style="color:rgba(255,255,255,0.92);font-size:15px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 10 16 14 16 16 12 12 8"></polygon></svg> Sewa</a>
+                    <a href="/partner.html" class="text-decoration-none fw-semibold py-2" style="color:rgba(255,255,255,0.92);font-size:15px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="m11 17 2 2a1 1 0 0 0 1.4 0l4.3-4.3a1 1 0 0 0 0-1.4l-2-2"></path><path d="m18 10 3.3-3.3a1 1 0 0 0 0-1.4l-2.6-2.6a1 1 0 0 0-1.4 0L14 6"></path><path d="m2 14 6 6"></path><path d="M7 8 2 13"></path><path d="m20 17 2 2"></path><path d="m11 7-7 7 4 4 7-7-4-4Z"></path></svg> Kemitraan</a>
+                    <a href="/main-bareng.html" class="text-decoration-none fw-semibold py-2" style="color:rgba(255,255,255,0.92);font-size:15px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Komunitas</a>
+                    <a href="/kompetisi.html" class="text-decoration-none fw-semibold py-2" style="color:rgba(255,255,255,0.92);font-size:15px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg> Dokumentasi</a>
+                    <a href="/kontak.html" class="text-decoration-none fw-semibold py-2" style="color:rgba(255,255,255,0.92);font-size:15px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Kontak</a>
+                </div>
+            </div>
+            <div class="w-100 navbar-mobile-user-links">
+                <a href="/login.html" class="navbar-mobile-user-link d-flex align-items-center py-2 text-decoration-none s16-400" style="color: #25282B;">
                     <span class="navbar-mobile-user-link-icon rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 24px; height: 24px; background: #E8E8E8; flex-shrink: 0;">
                         <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M9.9873 12.7885C6.76428 12.7885 4.0119 13.2758 4.0119 15.2274C4.0119 17.179 6.74682 17.6838 9.9873 17.6838C13.2103 17.6838 15.9619 17.1957 15.9619 15.2449C15.9619 13.2941 13.2278 12.7885 9.9873 12.7885Z" stroke="#25282B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M9.98729 10.0049C12.1024 10.0049 13.8167 8.28984 13.8167 6.17476C13.8167 4.05968 12.1024 2.3454 9.98729 2.3454C7.87221 2.3454 6.15713 4.05968 6.15713 6.17476C6.14998 8.2827 7.85316 9.99778 9.9603 10.0049H9.98729Z" stroke="#25282B" stroke-width="1.42857" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </span>
-                    Profil
+                    Masuk / Daftar Member
                 </a>
-                <a href="/superadmin/index.html" class="navbar-mobile-user-link d-flex align-items-center py-2 text-decoration-none s16-400" style="color: #25282B; padding-bottom: 0 !important;">
+                <a href="/login.html" class="navbar-mobile-user-link d-flex align-items-center py-2 text-decoration-none s16-400" style="color: #25282B; padding-bottom: 0 !important;">
                     <span class="navbar-mobile-user-link-icon rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 24px; height: 24px; background: #E8E8E8; flex-shrink: 0;">
                         <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M13.0969 13.5194H7.0802" stroke="#25282B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -998,11 +2242,16 @@
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M13.1317 2C13.1317 2 6.73417 2.00333 6.72417 2.00333C4.42417 2.0175 3 3.53083 3 5.83917V13.5025C3 15.8225 4.435 17.3417 6.755 17.3417C6.755 17.3417 13.1517 17.3392 13.1625 17.3392C15.4625 17.325 16.8875 15.8108 16.8875 13.5025V5.83917C16.8875 3.51917 15.4517 2 13.1317 2Z" stroke="#25282B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </span>
-                    Dasbor
+                    Portal Komunitas & Reservasi
+                </a>
+                <a href="javascript:void(0)" onclick="window.MS88PWA && window.MS88PWA.showInstallModal()" class="navbar-mobile-user-link d-flex align-items-center py-2 text-decoration-none s16-400" style="color: #D71926; font-weight: 700;">
+                    <span class="navbar-mobile-user-link-icon rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 24px; height: 24px; background: rgba(215,25,38,0.12); flex-shrink: 0; font-size: 13px;">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg></span>
+                    Install Aplikasi PWA
                 </a>
             </div>
                         
-            <div class="d-xl-none w-100 navbar-mobile-lang-wrap">
+            <div class="w-100 navbar-mobile-lang-wrap">
                 <div class="navbar-mobile-lang-divider"></div>
                 <button class="navbar-mobile-lang-trigger w-100 d-flex align-items-center justify-content-between px-0 bg-transparent border-0 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-lang-collapse" aria-expanded="false" aria-controls="navbar-lang-collapse">
                     <span class="s16-400" style="color: #52575C;">Ubah Bahasa</span>
@@ -1013,129 +2262,15 @@
                 <div class="collapse" id="navbar-lang-collapse">
                     <a class="navbar-mobile-lang-item d-flex align-items-center justify-content-between text-decoration-none" href="javascript:void(0)" onclick="setAppLanguage('id')" data-lang="id" style="color: #52575C; margin-bottom: 20px;">
                         <span class="s16-400">Bahasa Indonesia</span>
-                                                    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#25282B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                                            </a>
+                        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#25282B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
                     <a class="navbar-mobile-lang-item d-flex align-items-center justify-content-between text-decoration-none" href="javascript:void(0)" onclick="setAppLanguage('en')" data-lang="en" style="color: #52575C; margin-bottom: 20px;">
                         <span class="s16-400">English</span>
-                                            </a>
+                    </a>
                 </div>
                 <div class="navbar-mobile-lang-divider"></div>
-            </div>
-            <div class="col px-0"></div>
-            <div class="d-flex flex-column" id="auth-action">
-                <ul class="navbar-nav flex-end align-items-center">
-                    <li class="nav-item cart-icon-desktop d-none d-xl-block">
-                        <a href="#" class="nav-link venue-cart-view-btn" style="padding-right: 16px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M2.75 3.24991L4.83 3.60991L5.793 15.0829C5.87 16.0199 6.653 16.7389 7.593 16.7359H18.502C19.399 16.7379 20.16 16.0779 20.287 15.1899L21.236 8.63191C21.342 7.89891 20.833 7.21891 20.101 7.11291C20.037 7.10391 5.164 7.09891 5.164 7.09891"
-                                    stroke="#25282B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M14.125 10.7948H16.898" stroke="#25282B" stroke-width="1.5"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"/>
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                      d="M7.15435 20.2025C7.45535 20.2025 7.69835 20.4465 7.69835 20.7465C7.69835 21.0475 7.45535 21.2915 7.15435 21.2915C6.85335 21.2915 6.61035 21.0475 6.61035 20.7465C6.61035 20.4465 6.85335 20.2025 7.15435 20.2025Z"
-                                      fill="#25282B" stroke="#25282B" stroke-width="1.5" stroke-linecap="round"
-                                      stroke-linejoin="round"/>
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                      d="M18.4346 20.2025C18.7356 20.2025 18.9796 20.4465 18.9796 20.7465C18.9796 21.0475 18.7356 21.2915 18.4346 21.2915C18.1336 21.2915 17.8906 21.0475 17.8906 20.7465C17.8906 20.4465 18.1336 20.2025 18.4346 20.2025Z"
-                                      fill="#25282B" stroke="#25282B" stroke-width="1.5" stroke-linecap="round"
-                                      stroke-linejoin="round"/>
-                            </svg>
-                            <span class="cart-icon-counter">0</span>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                                            <li class="nav-item dropdown">
-                            <a href="#" class="nav-link ml-2" id="user-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <svg width="16" height="20" viewBox="0 0 16 20" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                          d="M7.98493 13.3462C4.11731 13.3462 0.814453 13.931 0.814453 16.2729C0.814453 18.6148 4.09636 19.2205 7.98493 19.2205C11.8525 19.2205 15.1545 18.6348 15.1545 16.2938C15.1545 13.9529 11.8735 13.3462 7.98493 13.3462Z"
-                                          stroke="#25282B" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                          d="M7.98489 10.0059C10.523 10.0059 12.5801 7.94782 12.5801 5.40972C12.5801 2.87163 10.523 0.814484 7.98489 0.814484C5.44679 0.814484 3.3887 2.87163 3.3887 5.40972C3.38013 7.93925 5.42394 9.99734 7.95251 10.0059H7.98489Z"
-                                          stroke="#25282B" stroke-width="1.42857" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                            <ul class="dropdown-menu w-auto user-menu" aria-labelledby="user-dropdown">
-                                <li class="d-none d-xl-block">
-                                    <a class="dropdown-item" href="/superadmin/index.html">
-                                        <svg class="user-icon-mobile" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                  d="M9.9873 12.7885C6.76428 12.7885 4.0119 13.2758 4.0119 15.2274C4.0119 17.179 6.74682 17.6838 9.9873 17.6838C13.2103 17.6838 15.9619 17.1957 15.9619 15.2449C15.9619 13.2941 13.2278 12.7885 9.9873 12.7885Z"
-                                                  stroke="#25282B" stroke-width="1.5" stroke-linecap="round"
-                                                  stroke-linejoin="round"/>
-                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                  d="M9.98729 10.0049C12.1024 10.0049 13.8167 8.28984 13.8167 6.17476C13.8167 4.05968 12.1024 2.3454 9.98729 2.3454C7.87221 2.3454 6.15713 4.05968 6.15713 6.17476C6.14998 8.2827 7.85316 9.99778 9.9603 10.0049H9.98729Z"
-                                                  stroke="#25282B" stroke-width="1.42857" stroke-linecap="round"
-                                                  stroke-linejoin="round"/>
-                                        </svg>
-
-                                        <svg class="user-icon-desktop" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M9.57699 2.32417H6.46116C3.89866 2.32417 2.29199 4.13833 2.29199 6.70667V13.635C2.29199 16.2033 3.89116 18.0175 6.46116 18.0175H13.8145C16.3853 18.0175 17.9845 16.2033 17.9845 13.635V10.2783"
-                                                stroke="#25282B" stroke-width="1.5" stroke-linecap="round"
-                                                stroke-linejoin="round"/>
-                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                  d="M7.35652 9.10075L13.584 2.87325C14.3599 2.09825 15.6174 2.09825 16.3932 2.87325L17.4074 3.88742C18.1832 4.66325 18.1832 5.92158 17.4074 6.69658L11.1499 12.9541C10.8107 13.2932 10.3507 13.4841 9.87069 13.4841H6.74902L6.82736 10.3341C6.83902 9.87075 7.02819 9.42908 7.35652 9.10075Z"
-                                                  stroke="#25282B" stroke-width="1.5" stroke-linecap="round"
-                                                  stroke-linejoin="round"/>
-                                            <path d="M12.6377 3.83542L16.4427 7.64042" stroke="#25282B"
-                                                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        <span>Profil</span>
-                                    </a>
-                                </li>
-                                <li class="d-none d-xl-block">
-                                    <a class="dropdown-item" href="/superadmin/index.html">
-                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M13.0969 13.5194H7.0802" stroke="#25282B" stroke-width="1.5"
-                                                  stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M13.0969 10.0308H7.0802" stroke="#25282B" stroke-width="1.5"
-                                                  stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M9.37603 6.55009H7.0802" stroke="#25282B" stroke-width="1.5"
-                                                  stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                  d="M13.1317 2C13.1317 2 6.73417 2.00333 6.72417 2.00333C4.42417 2.0175 3 3.53083 3 5.83917V13.5025C3 15.8225 4.435 17.3417 6.755 17.3417C6.755 17.3417 13.1517 17.3392 13.1625 17.3392C15.4625 17.325 16.8875 15.8108 16.8875 13.5025V5.83917C16.8875 3.51917 15.4517 2 13.1317 2Z"
-                                                  stroke="#25282B" stroke-width="1.5" stroke-linecap="round"
-                                                  stroke-linejoin="round"/>
-                                        </svg>
-                                        <span>Dasbor</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.querySelector('#logout-form').submit();">
-                                        <span>Keluar</span>
-                                    </a>
-                                    <form id="logout-form" action="#" method="POST"><input type="hidden" name="_token" value="5ekmDsTS5xG2qSlS3EWUzfw4McxSOOdWvVU6er8O" autocomplete="off"></form>
-                                </li>
-                            </ul>
-                        </li>
-                                        <li class="nav-item dropdown navbar-lang-dropdown-wrap d-none d-xl-block">
-                        <a class="nav-link navbar-lang-trigger d-flex align-items-center p-2" href="#" id="navbar-lang-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #25282B; font-size: 14px; background: transparent; border-radius: 12px;">
-                            <img src="assets/icon/tabler_world.svg" alt="" class="navbar-lang-globe me-1" width="20" height="20" style="flex-shrink: 0;">
-                            <span class="text-uppercase">id</span>
-                            <svg class="navbar-lang-chevron ms-1" width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.69838 1.91493C9.10048 1.47709 9.1006 0.77757 8.69837 0.339699L8.69838 1.91493ZM8.69838 1.91493L5.25854 5.66046C5.0537 5.8834 4.77888 6 4.50005 6C4.22106 6 3.94622 5.8833 3.74147 5.6604L0.301744 1.91492C-0.100452 1.4771 -0.100684 0.777466 0.301661 0.339603C0.717505 -0.113189 1.403 -0.113215 1.81885 0.339608L4.50003 3.25911L7.18112 0.339706C7.59698 -0.112928 8.28247 -0.113072 8.69837 0.339699" fill="#25282B"/>
-                            </svg>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end navbar-lang-dropdown" aria-labelledby="navbar-lang-dropdown" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); min-width: 100%;">
-                            <a class="dropdown-item active" href="javascript:void(0)" onclick="setAppLanguage('id')" data-lang="id">Bahasa Indonesia</a>
-                            <hr class="dropdown-divider my-0">
-                            <a class="dropdown-item " href="javascript:void(0)" onclick="setAppLanguage('en')" data-lang="en">English</a>
-                        </div>
-                    </li>
-                </ul>
-
             </div>
         </div>
     </nav>
@@ -1146,11 +2281,8 @@
         
         <!-- HERO SECTION -->
         <section class="hero-as88 position-relative">
-            <!-- Background Images: Real Pusdikif Night Floodlight & Daylight -->
-            <img src="assets/img/venue/field-night-floodlight.jpg" alt="Mini Soccer 88 Alpha Sport Pusdikif Night Floodlight" class="w-100 h-100 position-absolute d-none d-md-block" style="object-fit:cover; object-position: center 40%; filter: brightness(0.65) contrast(1.15);" fetchpriority="high">
-            <img src="assets/img/venue/field-day-center.jpg" alt="Mini Soccer 88 Alpha Sport Pusdikif Daylight" class="w-100 h-100 position-absolute d-block d-md-none" style="object-fit:cover; object-position: center center; filter: brightness(0.6);" fetchpriority="high">
-            
-            <div class="hero-as88-overlay"></div>
+            <!-- Background Image: Real Pusdikif Field (LAPANGAN.jpeg) Full Natural Without Dark Overlay -->
+            <img src="assets/img/venue/lapangan-hero.jpg" alt="Mini Soccer 88 Alpha Sport Pusdikif" class="w-100 h-100 position-absolute" style="top:0; left:0; object-fit:cover; object-position: center 32%; filter: none;" fetchpriority="high">
 
             <div class="container position-relative" style="z-index: 2; padding-top: 130px; padding-bottom: 110px;">
                 <div class="row align-items-center">
@@ -1159,59 +2291,59 @@
                     <div class="col-lg-7 text-white">
                         
                         <!-- Top Tag Badge -->
-                        <div class="badge-as88-pill mb-3">
+                        <div class="badge-as88-pill mb-3" style="background: rgba(8,9,11,0.72); border: 1.5px solid #D9A21B; color: #F3C644; backdrop-filter: blur(6px); box-shadow: 0 4px 14px rgba(0,0,0,0.35);">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                             STANDAR FIFA • PUSDIKIF KOTA CIMAHI
                         </div>
 
                         <!-- Main Headline -->
-                        <h1 class="mb-3" style="font-size: clamp(34px, 4.4vw, 56px); font-weight: 900; line-height: 1.15; letter-spacing: -0.5px;">
+                        <h1 class="mb-3" style="font-size: clamp(34px, 4.4vw, 56px); font-weight: 900; line-height: 1.15; letter-spacing: -0.5px; text-shadow: 0 3px 18px rgba(0,0,0,0.95), 0 1px 4px rgba(0,0,0,0.9);">
                             MINI SOCCER 88 <br>
-                            <span class="gold-gradient">ALPHA SPORT</span>
+                            <span style="color: #F6C744; text-shadow: 0 3px 18px rgba(0,0,0,0.95), 0 1px 4px rgba(0,0,0,0.9);">ALPHA SPORT</span>
                         </h1>
 
                         <!-- Slogans -->
-                        <p class="lead fw-bold mb-2" style="color: #FDE68A; font-size: clamp(17px, 2vw, 22px); letter-spacing: 0.5px;">
+                        <p class="lead fw-bold mb-2" style="color: #FEF08A; font-size: clamp(17px, 2vw, 22px); letter-spacing: 0.5px; text-shadow: 0 2px 14px rgba(0,0,0,0.95);">
                             "Play Hard, Play Together, Win Together!"
                         </p>
 
                         <!-- Subtitle -->
-                        <p class="mb-4" style="color: rgba(255,255,255,0.9); font-size: 16px; line-height: 1.7; max-width: 580px;">
+                        <p class="mb-4" style="color: #FFFFFF; font-size: 16px; line-height: 1.7; max-width: 580px; text-shadow: 0 2px 12px rgba(0,0,0,0.95); font-weight: 500;">
                             Rasakan pengalaman bermain mini soccer berstandar tinggi di kawasan militer Pusdikif Kota Cimahi. Rumput sintetis berkualitas <strong>30 x 50 Meter</strong>, lampu stadion LED malam super terang, fasilitas komprehensif, dan tarif bersahabat.
                         </p>
 
                         <!-- Action Buttons -->
                         <div class="d-flex flex-wrap gap-3 mt-4">
-                            <a href="/sewa-lapangan.html" class="btn-as88-gold">
+                            <a href="/sewa-lapangan.html" class="btn-as88-gold" style="box-shadow: 0 4px 20px rgba(0,0,0,0.45);">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                                 Booking Sekarang
                             </a>
-                            <a href="#pricelist" class="btn btn-outline-light rounded-pill px-4 py-3 fw-bold" style="border-width:2px;">
-                                Lihat Tarif Resmi
+                            <a href="/sewa-lapangan.html" class="btn rounded-pill px-4 py-3 fw-bold" style="border: 2px solid #FFFFFF; background: rgba(8,9,11,0.72); color: #FFFFFF; backdrop-filter: blur(6px); box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+                                Lihat Sewa &amp; Tarif
                             </a>
-                            <a href="https://wa.me/6281295679799?text=Halo%20Admin%2088%20Alpha%20Sport,%20saya%20mau%20tanya%20jadwal%20booking" target="_blank" class="btn-as88-wa">
+                            <a href="/login.html?redirect=booking" class="btn-as88-wa" style="box-shadow: 0 4px 20px rgba(0,0,0,0.35);">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
                                 WhatsApp Admin
                             </a>
                         </div>
 
                         <!-- Venue Highlights Pills -->
-                        <div class="d-flex flex-wrap gap-3 mt-4 pt-3 text-white-50" style="font-size: 13px;">
-                            <span class="d-inline-flex align-items-center text-white"><span style="color:#10B981;margin-right:6px;">✔</span> Buka 06.00 – 23.00 WIB</span>
-                            <span class="d-inline-flex align-items-center text-white"><span style="color:#10B981;margin-right:6px;">✔</span> Free Bola FIFA & Rompi Tim</span>
-                            <span class="d-inline-flex align-items-center text-white"><span style="color:#10B981;margin-right:6px;">✔</span> Kantin Sekar & Musholla</span>
-                            <span class="d-inline-flex align-items-center text-white"><span style="color:#10B981;margin-right:6px;">✔</span> Keamanan Militer 24 Jam</span>
+                        <div class="d-flex flex-wrap gap-2 mt-4 pt-3" style="font-size: 13px;">
+                            <span class="d-inline-flex align-items-center text-white" style="background: rgba(8,9,11,0.72); padding: 6px 14px; border-radius: 100px; backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 3px 10px rgba(0,0,0,0.4);"><span style="color:#D9A21B;margin-right:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg></span> Buka 06.00 – 23.00 WIB</span>
+                            <span class="d-inline-flex align-items-center text-white" style="background: rgba(8,9,11,0.72); padding: 6px 14px; border-radius: 100px; backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 3px 10px rgba(0,0,0,0.4);"><span style="color:#D9A21B;margin-right:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg></span> Free Bola FIFA & Rompi Tim</span>
+                            <span class="d-inline-flex align-items-center text-white" style="background: rgba(8,9,11,0.72); padding: 6px 14px; border-radius: 100px; backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 3px 10px rgba(0,0,0,0.4);"><span style="color:#D9A21B;margin-right:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg></span> Kantin Sekar & Musholla</span>
+                            <span class="d-inline-flex align-items-center text-white" style="background: rgba(8,9,11,0.72); padding: 6px 14px; border-radius: 100px; backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 3px 10px rgba(0,0,0,0.4);"><span style="color:#D9A21B;margin-right:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg></span> Keamanan Militer 24 Jam</span>
                         </div>
 
                     </div>
 
                     <!-- Right: Official 3D Logo & Mascot Showcase -->
                     <div class="col-lg-5 text-center mt-5 mt-lg-0 d-none d-lg-block position-relative">
-                        <div style="background: radial-gradient(circle, rgba(217,119,6,0.2) 0%, transparent 70%); padding: 30px; border-radius: 50%;">
-                            <img src="assets/logo/ms88-mascot-transparent.png" alt="Maskot Resmi Alpha Commando 88" class="img-fluid mascot-hero-badge ms88-mascot-img">
+                        <div style="background: radial-gradient(circle, rgba(217,162,27,0.4) 0%, rgba(8,9,11,0.2) 50%, transparent 70%); padding: 30px; border-radius: 50%;">
+                            <img src="assets/logo/ms88-mascot-transparent.png" alt="Maskot Resmi Alpha Commando 88" class="img-fluid mascot-hero-badge ms88-mascot-img" style="filter: drop-shadow(0 10px 30px rgba(0,0,0,0.55));">
                         </div>
                         <div class="mt-2 text-center">
-                            <span class="badge bg-dark bg-opacity-75 text-warning border border-warning px-3 py-2 rounded-pill fw-bold">
+                            <span class="badge text-warning px-3 py-2 rounded-pill fw-bold" style="background: rgba(8,9,11,0.85); border: 1.5px solid #D9A21B; backdrop-filter: blur(6px); box-shadow: 0 4px 16px rgba(0,0,0,0.45);">
                                 Official Mascot: Alpha Commando Player 88
                             </span>
                         </div>
@@ -1273,28 +2405,28 @@
             <div class="row g-4 text-center">
                 <div class="col-6 col-lg-3">
                     <div class="as88-card p-4 h-100 d-flex flex-column justify-content-center">
-                        <div class="display-6 fw-bold mb-1" style="color:#B91C1C;">30 x 50 M</div>
+                        <div class="display-6 fw-bold mb-1" style="color:#D71926;">30 x 50 M</div>
                         <div class="fw-bold text-dark mb-1">Ukuran Lapangan Resmi</div>
                         <small class="text-muted">Rumput Sintetis Monofilament Premium</small>
                     </div>
                 </div>
                 <div class="col-6 col-lg-3">
                     <div class="as88-card p-4 h-100 d-flex flex-column justify-content-center">
-                        <div class="display-6 fw-bold mb-1" style="color:#D97706;">800+ Lux</div>
+                        <div class="display-6 fw-bold mb-1" style="color:#D9A21B;">800+ Lux</div>
                         <div class="fw-bold text-dark mb-1">LED Stadium Lights</div>
                         <small class="text-muted">Pencahayaan Malam Hari Terang & Merata</small>
                     </div>
                 </div>
                 <div class="col-6 col-lg-3">
                     <div class="as88-card p-4 h-100 d-flex flex-column justify-content-center">
-                        <div class="display-6 fw-bold mb-1" style="color:#047857;">Mulai 225k</div>
+                        <div class="display-6 fw-bold mb-1" style="color:#D71926;">Mulai 225k</div>
                         <div class="fw-bold text-dark mb-1">Tarif Sangat Terjangkau</div>
                         <small class="text-muted">5 Pilihan Sesi Waktu Fleksibel</small>
                     </div>
                 </div>
                 <div class="col-6 col-lg-3">
                     <div class="as88-card p-4 h-100 d-flex flex-column justify-content-center">
-                        <div class="display-6 fw-bold mb-1" style="color:#111827;">24 Jam</div>
+                        <div class="display-6 fw-bold mb-1" style="color:#08090B;">24 Jam</div>
                         <div class="fw-bold text-dark mb-1">Keamanan Kompleks Militer</div>
                         <small class="text-muted">Parkir Aman & Nyaman di Pusdikif</small>
                     </div>
@@ -1302,22 +2434,500 @@
             </div>
         </section>
 
+        <!-- LIVE SCHEDULE & REAL BOOKINGS SEPTEMBER 2026 -->
+        <section class="container col-xl-11 col-12 my-5 py-4" id="jadwal">
+            <div class="text-center mb-4">
+                <span class="badge px-3 py-2 rounded-pill fw-bold mb-2" style="background:#06703B; color:#ffffff; letter-spacing:0.5px;">STATUS LAPANGAN REAL-TIME</span>
+                <h2 class="display-6 fw-bold" id="schedSectionTitle" style="color:#111827;">Jadwal Pertandingan Lapangan Pusdikif</h2>
+                <p class="text-secondary mx-auto mb-3" style="max-width: 650px;">
+                    Format matriks jadwal resmi klub dan akademi yang telah terkonfirmasi bermain di Lapangan Pusdikif Kota Cimahi.
+                </p>
+
+                      <!-- Schedule Horizon Navigation (Rentang 3 Bulan ke Depan) -->
+                <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 mb-3" id="schedNavigationWrapper">
+                    <div class="d-flex flex-wrap justify-content-center gap-1 p-1 bg-white rounded-pill shadow-sm border" id="horizonPillsGroup">
+                        <button class="btn btn-sm rounded-pill fw-bold px-3 btn-horizon active-horizon" id="pill-h-0" type="button" onclick="jumpToOffset(0)">
+                            <span class="live-dot-inline me-1"></span>Hari Ini (17-23 Sep)
+                        </button>
+                        <button class="btn btn-sm rounded-pill fw-bold px-3 btn-horizon" id="pill-h-7" type="button" onclick="jumpToOffset(7)">
+                            Minggu Depan (24-30 Sep)
+                        </button>
+                        <button class="btn btn-sm rounded-pill fw-bold px-3 btn-horizon" id="pill-h-okt" type="button" onclick="jumpToMonth(9)">
+                            Oktober 2026
+                        </button>
+                        <button class="btn btn-sm rounded-pill fw-bold px-3 btn-horizon" id="pill-h-nov" type="button" onclick="jumpToMonth(10)">
+                            November 2026
+                        </button>
+                        <button class="btn btn-sm rounded-pill fw-bold px-3 btn-horizon" id="pill-h-des" type="button" onclick="jumpToMonth(11)">
+                            Desember 2026
+                        </button>
+                    </div>
+
+                    <!-- Stepper Buttons -->
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-sm btn-outline-danger btn-sched-stepper" id="btnSchedStepperPrev" type="button" onclick="navigateSchedule(-7)" disabled title="7 Hari Sebelumnya">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            <span>7 Hari Sebelumnya</span>
+                        </button>
+                        <button class="btn btn-sm btn-danger btn-sched-stepper" id="btnSchedStepperNext" type="button" onclick="navigateSchedule(7)" title="7 Hari Berikutnya (Hingga 3 Bulan ke Depan)">
+                            <span>7 Hari Berikutnya</span>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WEEKLY SCHEDULE MATRIX POSTER CONTAINER -->
+            <div class="weekly-poster-container">
+                <!-- Decorative Corner Stripes -->
+                <div class="poster-corner-tl"></div>
+                <div class="poster-corner-tr"></div>
+
+                <!-- Poster Top Header -->
+                <div class="poster-top-header">
+                    <div class="poster-brand-block">
+                        <img src="assets/logo/logo-88.png" alt="Mini Soccer 88 Alpha Sport Logo" class="poster-brand-logo-img">
+                    </div>
+
+                    <div class="poster-header-divider d-none d-md-block"></div>
+
+                    <div class="poster-title-block">
+                        <h2 class="poster-sched-title">WEEKLY SCHEDULE</h2>
+                        <div class="poster-sched-subtitle">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#E51E2B"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            LAPANGAN PUSDIKIF KOTA CIMAHI
+                        </div>
+                    </div>
+
+                    <!-- Realtime Live Clock & Date Box -->
+                    <div class="poster-realtime-box">
+                        <div class="realtime-live-indicator">
+                            <span class="realtime-dot"></span>
+                            <span class="realtime-live-text">LIVE REAL-TIME</span>
+                        </div>
+                        <div class="realtime-clock" id="schedRealtimeClock">--:--:-- WIB</div>
+                        <div class="realtime-date" id="schedRealtimeDate">Memuat waktu...</div>
+                    </div>
+                </div>
+
+                <!-- Sub-bar -->
+                <div class="poster-subbar">
+                    <div class="poster-subbar-left">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <span class="poster-subbar-title">WEEKLY SCHEDULE</span>
+                            <span class="poster-subbar-desc d-none d-md-inline">LAPANGAN PUSDIKIF KOTA CIMAHI</span>
+                            <span class="badge px-2 py-1 rounded-pill fw-bold" id="schedActiveRangeBadge" style="font-size:11px; color:#D71926 !important; background:rgba(215,25,38,0.08) !important; border:1px solid rgba(215,25,38,0.3) !important;">17 - 23 SEP 2026</span>
+                        </div>
+                    </div>
+                    <div class="poster-subbar-right d-flex align-items-center gap-2">
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill py-0 px-2 fw-bold" id="btnSubbarPrev" onclick="navigateSchedule(-7)" title="7 Hari Sebelumnya" disabled style="height:28px;line-height:26px;">❮</button>
+                        <div class="slanted-badge slanted-badge-red" id="posterSlantedWeek"><span>HARI INI 17-23</span></div>
+                        <div class="slanted-badge slanted-badge-green" id="posterSlantedMonth"><span>SEP 2026</span></div>
+                        <button class="btn btn-sm btn-outline-danger rounded-pill py-0 px-2 fw-bold" id="btnSubbarNext" onclick="navigateSchedule(7)" title="7 Hari Berikutnya (Hingga 3 Bulan ke Depan)" style="height:28px;line-height:26px;">❯</button>
+                    </div>
+                </div>
+
+                <!-- Mobile Scroll Hint -->
+                <div class="scroll-hint-bar">
+                    ↔ Geser tabel ke samping untuk melihat seluruh jadwal hari Senin - Minggu
+                </div>
+
+                <!-- Grid Table Wrapper -->
+                <div class="poster-table-wrap">
+                    <!-- Floating Side Nav Arrows (Next 7 days up to 3 months) -->
+                    <button type="button" class="table-side-nav-btn table-nav-prev" id="btnSidePrev" onclick="navigateSchedule(-7)" title="7 Hari Sebelumnya" disabled>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                    <button type="button" class="table-side-nav-btn table-nav-next" id="btnSideNext" onclick="navigateSchedule(7)" title="7 Hari Berikutnya (Hingga 3 Bulan ke Depan)">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+
+                    <table class="poster-grid-table">
+                        <thead>
+                            <tr id="posterGridHead">
+                                <!-- Populated dynamically: JAM, SENIN 07, SELASA 08, etc. -->
+                            </tr>
+                        </thead>
+                        <tbody id="scheduleTableBody">
+                            <!-- Populated dynamically: 16 time rows x 7 days -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <script>
+        (function() {
+            var schedData = null;
+            var currentOffset = 0; // 0 = starts today (17 Sep 2026)
+            var MAX_OFFSET_DAYS = 91; // Rentang 3 bulan ke depan (~13 minggu)
+            var MIN_OFFSET_DAYS = 0;
+
+            var INDO_DAYS = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', "JUM'AT", 'SABTU'];
+            var INDO_MONTHS = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+            var INDO_MONTHS_SHORT = [
+                'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+                'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'
+            ];
+
+            // Build dynamic 7-day configuration for any day offset from today
+            function getOffsetConfig(offset) {
+                var now = new Date();
+                var curDateNum = now.getDate();
+                var curMonth = now.getMonth();
+                var curYear = now.getFullYear();
+
+                var days = [];
+                var monthSet = {};
+                for (var i = 0; i < 7; i++) {
+                    var d = new Date(curYear, curMonth, curDateNum + offset + i);
+                    var dayName = INDO_DAYS[d.getDay()];
+                    var dateNum = String(d.getDate()).padStart(2, '0');
+                    var mShort = INDO_MONTHS_SHORT[d.getMonth()];
+                    monthSet[mShort + ' ' + d.getFullYear()] = true;
+                    var isToday = (d.getDate() === curDateNum && d.getMonth() === curMonth && d.getFullYear() === curYear);
+                    days.push({
+                        name: dayName,
+                        date: dateNum,
+                        monthShort: mShort,
+                        monthIndex: d.getMonth(),
+                        year: d.getFullYear(),
+                        isToday: isToday,
+                        fullDate: d,
+                        isoDate: d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + dateNum
+                    });
+                }
+                var first = days[0];
+                var last = days[6];
+                var monthsStr = Object.keys(monthSet).join(' / ');
+                var rangeBadgeText = first.date + ' ' + first.monthShort + ' – ' + last.date + ' ' + last.monthShort + ' ' + last.year;
+
+                return {
+                    offset: offset,
+                    title: offset === 0 ? 'HARI INI' : (first.date + '-' + last.date),
+                    datesStr: first.date + '-' + last.date,
+                    monthStr: monthsStr,
+                    slantedWeek: (offset === 0 ? 'HARI INI ' : 'TGL ') + first.date + '-' + last.date,
+                    slantedMonth: monthsStr.toUpperCase(),
+                    rangeBadge: rangeBadgeText,
+                    days: days
+                };
+            }
+
+            // Real-time live clock
+            function updateRealtimeClock() {
+                var now = new Date();
+                var dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', "Jum'at", 'Sabtu'];
+                var dayName = dayNames[now.getDay()];
+                var dateNum = now.getDate();
+                var monthName = INDO_MONTHS[now.getMonth()];
+                var year = now.getFullYear();
+
+                var h = String(now.getHours()).padStart(2, '0');
+                var m = String(now.getMinutes()).padStart(2, '0');
+                var s = String(now.getSeconds()).padStart(2, '0');
+
+                var clockEl = document.getElementById('schedRealtimeClock');
+                var dateEl = document.getElementById('schedRealtimeDate');
+
+                if (clockEl) {
+                    clockEl.textContent = h + ':' + m + ':' + s + ' WIB';
+                }
+                if (dateEl) {
+                    dateEl.textContent = dayName + ', ' + dateNum + ' ' + monthName + ' ' + year;
+                }
+
+                // Continuous rollover tracking
+                var curHourVal = now.getHours();
+                if (window._schedLastTrackedHour === undefined) {
+                    window._schedLastTrackedHour = curHourVal;
+                    window._schedLastTrackedDate = dateNum;
+                } else if (window._schedLastTrackedHour !== curHourVal || window._schedLastTrackedDate !== dateNum) {
+                    window._schedLastTrackedHour = curHourVal;
+                    window._schedLastTrackedDate = dateNum;
+                    renderSchedule();
+                }
+            }
+            setInterval(updateRealtimeClock, 1000);
+            updateRealtimeClock();
+
+            // Navigation functions (Up to 3 months ahead)
+            window.navigateSchedule = function(delta) {
+                var target = currentOffset + delta;
+                if (target < MIN_OFFSET_DAYS) target = MIN_OFFSET_DAYS;
+                if (target > MAX_OFFSET_DAYS) target = MAX_OFFSET_DAYS;
+                window.jumpToOffset(target);
+            };
+
+            window.jumpToOffset = function(offset) {
+                currentOffset = Math.max(MIN_OFFSET_DAYS, Math.min(MAX_OFFSET_DAYS, offset));
+                renderSchedule();
+            };
+
+            window.jumpToMonth = function(targetMonthIndex) {
+                var now = new Date();
+                var curYear = now.getFullYear();
+                var targetDate = new Date(curYear, targetMonthIndex, 1);
+                var todayDate = new Date(curYear, now.getMonth(), now.getDate());
+                if (targetDate < todayDate) targetDate = todayDate;
+                var diffDays = Math.round((targetDate - todayDate) / (1000 * 60 * 60 * 24));
+                window.jumpToOffset(diffDays);
+            };
+
+            function renderSchedule() {
+                var conf = getOffsetConfig(currentOffset);
+
+                // Update slanted badges & subbar text
+                var slantedWeek = document.getElementById('posterSlantedWeek');
+                var slantedMonth = document.getElementById('posterSlantedMonth');
+                var rangeBadge = document.getElementById('schedActiveRangeBadge');
+                var sectionTitle = document.getElementById('schedSectionTitle');
+                if (slantedWeek) slantedWeek.innerHTML = '<span>' + conf.slantedWeek + '</span>';
+                if (slantedMonth) slantedMonth.innerHTML = '<span>' + conf.slantedMonth + '</span>';
+                if (rangeBadge) rangeBadge.textContent = conf.rangeBadge;
+                if (sectionTitle) sectionTitle.textContent = 'Jadwal Pertandingan ' + conf.monthStr;
+
+                // Update button disabled states
+                var isAtStart = (currentOffset <= MIN_OFFSET_DAYS);
+                var isAtEnd = (currentOffset >= MAX_OFFSET_DAYS);
+
+                var prevBtns = ['btnSchedStepperPrev', 'btnSubbarPrev', 'btnSidePrev'];
+                prevBtns.forEach(function(id) {
+                    var el = document.getElementById(id);
+                    if (el) el.disabled = isAtStart;
+                });
+
+                var nextBtns = ['btnSchedStepperNext', 'btnSubbarNext', 'btnSideNext'];
+                nextBtns.forEach(function(id) {
+                    var el = document.getElementById(id);
+                    if (el) el.disabled = isAtEnd;
+                });
+
+                // Update active horizon pill
+                var pill0 = document.getElementById('pill-h-0');
+                var pill7 = document.getElementById('pill-h-7');
+                var pillOkt = document.getElementById('pill-h-okt');
+                var pillNov = document.getElementById('pill-h-nov');
+                var pillDes = document.getElementById('pill-h-des');
+
+                [pill0, pill7, pillOkt, pillNov, pillDes].forEach(function(el) {
+                    if (el) el.classList.remove('active-horizon');
+                });
+
+                var firstDayMonth = conf.days[0].monthIndex;
+                if (currentOffset === 0) {
+                    if (pill0) pill0.classList.add('active-horizon');
+                } else if (currentOffset === 7 && firstDayMonth === 8) {
+                    if (pill7) pill7.classList.add('active-horizon');
+                } else if (firstDayMonth === 9) {
+                    if (pillOkt) pillOkt.classList.add('active-horizon');
+                } else if (firstDayMonth === 10) {
+                    if (pillNov) pillNov.classList.add('active-horizon');
+                } else if (firstDayMonth === 11) {
+                    if (pillDes) pillDes.classList.add('active-horizon');
+                }
+
+                function doRender(data) {
+                    // Extract all booked slots across available keys
+                    var allItems = [];
+                    Object.keys(data || {}).forEach(function(k) {
+                        if (Array.isArray(data[k])) {
+                            allItems = allItems.concat(data[k]);
+                        }
+                    });
+                    renderMatrix(conf, allItems);
+                }
+
+                if (schedData) {
+                    doRender(schedData);
+                } else {
+                    fetch('assets/data/bookings_september_2026.json')
+                        .then(function(res) {
+                            if (!res.ok) throw new Error('HTTP ' + res.status);
+                            return res.json();
+                        })
+                        .then(function(data) {
+                            schedData = data;
+                            doRender(schedData);
+                        })
+                        .catch(function(err) {
+                            console.warn('Jadwal fetch fallback:', err);
+                            renderMatrix(conf, []);
+                        });
+                }
+            }
+
+            // Compatibility wrapper for any external calls to switchSchedTab
+            window.switchSchedTab = function(weekKey) {
+                if (weekKey === 'REALTIME_TODAY') window.jumpToOffset(0);
+                else if (weekKey === '07-13_SEP_2026') window.jumpToOffset(0);
+                else if (weekKey === '14-20_SEP_2026') window.jumpToOffset(0);
+                else if (weekKey === '21-27_SEP_2026') window.jumpToOffset(4);
+                else if (weekKey === '28-30_SEP_2026') window.jumpToOffset(11);
+                else window.jumpToOffset(0);
+            };
+
+            var TIME_SLOTS = [
+                '06.00-07.00', '07.00-08.00', '08.00-09.00', '09.00-10.00',
+                '10.00-11.00', '11.00-12.00', '12.00-13.00', '13.00-14.00',
+                '14.00-15.00', '15.00-16.00', '16.00-17.00', '17.00-18.00',
+                '18.00-19.00', '19.00-20.00', '20.00-21.00', '21.00-22.00'
+            ];
+
+            function renderMatrix(conf, items) {
+                var headRow = document.getElementById('posterGridHead');
+                var tbody = document.getElementById('scheduleTableBody');
+                if (!headRow || !tbody) return;
+
+                var now = new Date();
+                var curHour = now.getHours();
+                var curDateNum = now.getDate();
+                var curDateStr = String(curDateNum).padStart(2, '0');
+                var curDayName = INDO_DAYS[now.getDay()];
+
+                // Build header with modern clean layout & clock icon
+                var headHtml = '<th class="poster-th-jam"><span class="poster-th-jam-inner"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="opacity:0.85;vertical-align:-1px;"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7-.8 1.3z"/></svg>JAM</span></th>';
+                conf.days.forEach(function(d) {
+                    var isColToday = d.isToday || (parseInt(d.date, 10) === curDateNum && d.name === curDayName);
+                    if (isColToday) {
+                        headHtml += '<th class="poster-th-day poster-th-today">' +
+                            '<span class="poster-today-tag">HARI INI</span><br>' +
+                            d.name + '<br><span class="poster-th-date-pill today-date-pill">' + d.date + '</span>' +
+                            '</th>';
+                    } else {
+                        headHtml += '<th class="poster-th-day">' + d.name + '<br><span class="poster-th-date-pill">' + d.date + '</span></th>';
+                    }
+                });
+                headRow.innerHTML = headHtml;
+
+                // Map items by:
+                // 1. time + '_' + normDate (e.g. "17.00-18.00_17")
+                // 2. time + '_' + normDay + '_' + normDate
+                // 3. time + '_' + normDay (fallback)
+                var map = {};
+                (items || []).forEach(function(it) {
+                    if (it && it.time) {
+                        var normTime = (it.time || '').trim();
+                        var normDay = (it.day || '').trim().toUpperCase();
+                        var normDate = it.date ? String(parseInt(it.date, 10)).padStart(2, '0') : '';
+                        if (normDate) {
+                            map[normTime + '_' + normDate] = it;
+                            map[normTime + '_' + normDay + '_' + normDate] = it;
+                        }
+                        if (!map[normTime + '_' + normDay]) {
+                            map[normTime + '_' + normDay] = it;
+                        }
+                    }
+                });
+
+                // Check if there are any slots for 22.00-23.00
+                var slots = TIME_SLOTS.slice();
+                var hasLateSlot = (items || []).some(function(it) {
+                    return (it.time || '').indexOf('22.00') > -1;
+                });
+                if (hasLateSlot) {
+                    slots.push('22.00-23.00');
+                }
+
+                // Build tbody rows
+                var bodyHtml = '';
+                slots.forEach(function(time) {
+                    var parts = time.split('-');
+                    var startHour = parseInt(parts[0].split('.')[0], 10);
+                    var endHour = parseInt(parts[1].split('.')[0], 10);
+                    var isCurrentHour = (curHour >= startHour && curHour < endHour);
+
+                    var rowClass = 'poster-grid-row' + (isCurrentHour ? ' row-live-now' : '');
+                    bodyHtml += '<tr class="' + rowClass + '">';
+
+                    if (isCurrentHour) {
+                        bodyHtml += '<td class="poster-cell-time time-cell-live-now" title="Slot Jam Ini Sedang Berlangsung">' +
+                            '<span class="live-time-pill"><span class="live-time-dot"></span>' + time + '</span>' +
+                            '</td>';
+                    } else {
+                        bodyHtml += '<td class="poster-cell-time">' + time + '</td>';
+                    }
+
+                    conf.days.forEach(function(d) {
+                        var keyDate = time + '_' + d.date;
+                        var keyDayDate = time + '_' + d.name + '_' + d.date;
+                        var keyDay = time + '_' + d.name;
+                        var b = map[keyDate] || map[keyDayDate] || map[keyDay];
+
+                        var isTodayCol = d.isToday || (parseInt(d.date, 10) === curDateNum && d.name === curDayName);
+                        var isLiveNow = isCurrentHour && isTodayCol;
+
+                        var cellExtraClasses = (isTodayCol ? ' poster-cell-today' : '') + (isLiveNow ? ' cell-live-now' : '');
+
+                        if (b && b.team) {
+                            bodyHtml += '<td class="poster-cell-slot poster-cell-booked' + cellExtraClasses + '" title="' + (isLiveNow ? '🔴 SEDANG MAIN: ' : '') + escapeAttr(b.team) + ' (' + time + ')">' +
+                                (isLiveNow ? '<div class="live-corner-badge"><span class="live-corner-badge-dot"></span>LIVE</div>' : '') +
+                                (isLiveNow ? '<div class="live-match-pill"><span class="live-corner-badge-dot"></span>SEDANG TANDING</div>' : '') +
+                                '<div class="booked-team-name">' + escapeHtml(b.team) + '</div>' +
+                                '</td>';
+                        } else {
+                            if (isLiveNow) {
+                                bodyHtml += '<td class="poster-cell-slot poster-cell-empty' + cellExtraClasses + '" title="Slot Sedang Berlangsung Sekarang (KOSONG) - Klik untuk Booking!" onclick="window.location.href=\'/login.html?redirect=booking\'">' +
+                                    '<div class="live-corner-badge"><span class="live-corner-badge-dot"></span>LIVE</div>' +
+                                    '<div class="slot-empty-live-wrap">' +
+                                        '<span class="slot-beacon-live"><span class="live-beacon-wave"></span><span class="live-beacon-dot"></span></span>' +
+                                        '<span class="live-slot-label">KOSONG</span>' +
+                                        '<span class="slot-hover-action">' +
+                                            '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style="margin-right:3px;vertical-align:-1px;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>PESAN' +
+                                        '</span>' +
+                                    '</div>' +
+                                    '</td>';
+                            } else {
+                                bodyHtml += '<td class="poster-cell-slot poster-cell-empty' + cellExtraClasses + '" title="Slot Kosong (' + d.name + ' ' + d.date + ' ' + time + ' - Klik untuk Booking)" onclick="window.location.href=\'/login.html?redirect=booking\'">' +
+                                    '<div class="slot-empty-wrap">' +
+                                        '<span class="slot-beacon"><span class="slot-beacon-wave"></span><span class="slot-beacon-dot"></span></span>' +
+                                        '<span class="slot-status-text">KOSONG</span>' +
+                                        '<span class="slot-hover-action">' +
+                                            '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style="margin-right:3px;vertical-align:-1px;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>PESAN' +
+                                        '</span>' +
+                                    '</div>' +
+                                    '</td>';
+                            }
+                        }
+                    });
+
+                    bodyHtml += '</tr>';
+                });
+
+                tbody.innerHTML = bodyHtml;
+            }
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            }
+            function escapeAttr(str) {
+                if (!str) return '';
+                return str.replace(/"/g, '&quot;');
+            }
+
+            // Auto-load on ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    window.switchSchedTab('REALTIME_TODAY');
+                });
+            } else {
+                window.switchSchedTab('REALTIME_TODAY');
+            }
+        })();
+        </script>
+
         <!-- PRICELIST SECTION (BULAN SEPTEMBER 2026) -->
         <section id="pricelist" class="container col-xl-10 col-11 my-5 py-4">
             <div class="text-center mb-5">
                 <span class="badge bg-danger text-white px-3 py-2 rounded-pill fw-bold mb-2">HARGA SEWA PER JAM</span>
                 <h2 class="display-6 fw-bold" style="color:#111827;">Tarif Resmi Mini Soccer 88 Alpha Sport</h2>
-                <p class="text-secondary mx-auto mb-3" style="max-width: 650px;">
+                <p class="text-secondary mx-auto mb-0" style="max-width: 650px;">
                     Jadwal fleksibel, harga bersahabat, fasilitas kelas satu. Main seru, harga pas, kualitas kelas!
                 </p>
-                <div class="d-flex justify-content-center gap-2 mb-2">
-                    <a href="assets/promo/poster-pricelist.jpg" target="_blank" class="btn btn-sm btn-outline-danger rounded-pill px-4 py-2 fw-bold shadow-sm">
-                        📄 Buka Poster Brosur Tarif Resmi ↗
-                    </a>
-                    <a href="assets/docs/Quotation_Alpha_Sport_Pusdikif.pdf" download class="btn btn-sm btn-outline-secondary rounded-pill px-4 py-2 fw-bold shadow-sm">
-                        📥 Unduh Proposal Resmi PDF
-                    </a>
-                </div>
             </div>
 
             <div class="row g-3">
@@ -1329,12 +2939,12 @@
                             <span class="badge bg-light text-dark border mb-2">06.00 – 08.00 WIB</span>
                             <h5 class="fw-bold text-dark mb-1">Prime Morning</h5>
                             <div class="my-3">
-                                <span class="fs-4 fw-bold" style="color:#B91C1C;">Rp 250.000</span>
+                                <span class="fs-4 fw-bold" style="color:#D71926;">Rp 250.000</span>
                                 <small class="text-muted d-block">/ jam</small>
                             </div>
                             <p class="small text-muted mb-3">Udara sejuk pagi hari Cimahi, ideal untuk latihan fisik & komunitas sehat.</p>
                         </div>
-                        <a href="https://wa.me/6281295679799?text=Halo%20Admin,%20saya%20mau%20booking%20sesi%20Prime%20Morning%20(06.00-08.00)" target="_blank" class="btn btn-outline-danger w-100 rounded-pill fw-bold btn-sm py-2">Pesan Pagi</a>
+                        <a href="/login.html?redirect=booking&sesi=prime-morning" class="btn btn-outline-danger w-100 rounded-pill fw-bold btn-sm py-2">Pesan Pagi</a>
                     </div>
                 </div>
 
@@ -1345,12 +2955,12 @@
                             <span class="badge bg-light text-dark border mb-2">08.00 – 10.00 WIB</span>
                             <h5 class="fw-bold text-dark mb-1">Morning</h5>
                             <div class="my-3">
-                                <span class="fs-4 fw-bold" style="color:#B91C1C;">Rp 275.000</span>
+                                <span class="fs-4 fw-bold" style="color:#D71926;">Rp 275.000</span>
                                 <small class="text-muted d-block">/ jam</small>
                             </div>
                             <p class="small text-muted mb-3">Sinar matahari pagi optimal, pas untuk match akhir pekan & sparring santai.</p>
                         </div>
-                        <a href="https://wa.me/6281295679799?text=Halo%20Admin,%20saya%20mau%20booking%20sesi%20Morning%20(08.00-10.00)" target="_blank" class="btn btn-outline-danger w-100 rounded-pill fw-bold btn-sm py-2">Pesan Morning</a>
+                        <a href="/login.html?redirect=booking&sesi=morning" class="btn btn-outline-danger w-100 rounded-pill fw-bold btn-sm py-2">Pesan Morning</a>
                     </div>
                 </div>
 
@@ -1367,7 +2977,7 @@
                             </div>
                             <p class="small text-muted mb-3">Tarif paling hemat! Spesial untuk pelajar, mahasiswa, dan ekskul sekolah.</p>
                         </div>
-                        <a href="https://wa.me/6281295679799?text=Halo%20Admin,%20saya%20mau%20booking%20sesi%20Happy%20Hours%20(10.00-15.00)" target="_blank" class="btn btn-danger w-100 rounded-pill fw-bold btn-sm py-2">Pesan Happy Hour</a>
+                        <a href="/login.html?redirect=booking&sesi=happy-hours" class="btn btn-danger w-100 rounded-pill fw-bold btn-sm py-2">Pesan Happy Hour</a>
                     </div>
                 </div>
 
@@ -1378,12 +2988,12 @@
                             <span class="badge bg-light text-dark border mb-2">15.00 – 18.00 WIB</span>
                             <h5 class="fw-bold text-dark mb-1">Prime Time</h5>
                             <div class="my-3">
-                                <span class="fs-4 fw-bold" style="color:#B91C1C;">Rp 300.000</span>
+                                <span class="fs-4 fw-bold" style="color:#D71926;">Rp 300.000</span>
                                 <small class="text-muted d-block">/ jam</small>
                             </div>
                             <p class="small text-muted mb-3">Sore hari favorit pulang sekolah & kantor dengan angin sejuk Cimahi.</p>
                         </div>
-                        <a href="https://wa.me/6281295679799?text=Halo%20Admin,%20saya%20mau%20booking%20sesi%20Prime%20Time%20(15.00-18.00)" target="_blank" class="btn btn-outline-danger w-100 rounded-pill fw-bold btn-sm py-2">Pesan Sore</a>
+                        <a href="/login.html?redirect=booking&sesi=prime-time" class="btn btn-outline-danger w-100 rounded-pill fw-bold btn-sm py-2">Pesan Sore</a>
                     </div>
                 </div>
 
@@ -1400,7 +3010,7 @@
                             </div>
                             <p class="small text-muted mb-3">Atmosfer stadion profesional di bawah lampu sorot LED benderang.</p>
                         </div>
-                        <a href="https://wa.me/6281295679799?text=Halo%20Admin,%20saya%20mau%20booking%20sesi%20Premium%20Night%20(18.00-22.00)" target="_blank" class="btn btn-warning text-dark w-100 rounded-pill fw-bold btn-sm py-2">Pesan Malam</a>
+                        <a href="/login.html?redirect=booking&sesi=premium-night" class="btn btn-warning text-dark w-100 rounded-pill fw-bold btn-sm py-2">Pesan Malam</a>
                     </div>
                 </div>
 
@@ -1409,11 +3019,11 @@
             <!-- Free Facilities Note -->
             <div class="mt-4 p-3 bg-light rounded-4 text-center text-muted small d-flex flex-wrap justify-content-center gap-4">
                 <span><strong class="text-dark">Sudah Termasuk:</strong></span>
-                <span>⚽ Bola Resmi Standar FIFA</span>
-                <span>🎽 Rompi Tim 2 Warna</span>
-                <span>🚿 Ruang Ganti & Toilet Bersih</span>
-                <span>🕌 Akses Musholla Pusdikif</span>
-                <span>🅿 Parkir Militer Terjaga</span>
+                <span class="d-inline-flex align-items-center gap-1"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 10 16 14 16 16 12 12 8"></polygon></svg> Bola Resmi Standar FIFA</span>
+                <span class="d-inline-flex align-items-center gap-1"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg> Rompi Tim 2 Warna</span>
+                <span class="d-inline-flex align-items-center gap-1"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><path d="M6 9h.01M6 12h.01M15 9h.01M15 12h.01"></path></svg> Ruang Ganti & Toilet Bersih</span>
+                <span class="d-inline-flex align-items-center gap-1"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg> Akses Musholla Pusdikif</span>
+                <span class="d-inline-flex align-items-center gap-1"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><rect x="3" y="3" width="18" height="18" rx="4"></rect><path d="M9 17V7h4a3 3 0 0 1 0 6H9"></path></svg> Parkir Militer Terjaga</span>
             </div>
         </section>
 
@@ -1519,24 +3129,29 @@
                 <!-- 1. Proposal Kerjasama Sekolah -->
                 <div class="col-lg-6">
                     <div class="as88-card h-100 overflow-hidden" style="border-left: 6px solid #DC2626;">
-                        <div style="height: 200px; overflow: hidden; position: relative;">
-                            <img src="assets/promo/poster-ekskul-sekolah.jpg" alt="Partner Terbaik Sekolah Mini Soccer 88" class="w-100 h-100" style="object-fit: cover; object-position: center 20%;">
-                            <span class="badge bg-danger position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill fw-bold">PARTNER SEKOLAH</span>
+                        <div class="overflow-hidden border-bottom">
+                            <a href="assets/promo/poster-ekskul-sekolah.png" target="_blank" title="Klik untuk memperbesar poster sekolah" class="d-block w-100">
+                                <img src="assets/promo/poster-ekskul-sekolah.png" alt="Poster Resmi Partner Sekolah Mini Soccer 88" class="w-100 d-block" style="aspect-ratio:1/1; object-fit:cover; display:block;">
+                            </a>
+                            <div class="py-1 px-3 text-center bg-light border-top">
+                                <small class="text-muted d-block" style="font-size:11px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> Klik poster untuk melihat resolusi penuh</small>
+                            </div>
                         </div>
-                        <div class="p-4 p-md-5">
+                        <div class="p-4 p-md-4">
+                            <span class="badge bg-danger px-3 py-2 rounded-pill fw-bold mb-3 d-inline-block">PARTNER SEKOLAH</span>
                             <h3 class="fw-bold text-dark mb-3">Kerjasama Sekolah & Ekstrakurikuler</h3>
                             <p class="text-secondary mb-3" style="line-height:1.7;">
                                 Mini Soccer 88 Alpha Sport menyediakan lapangan rumput sintetis <strong>30 x 50 meter</strong> untuk kegiatan siswa SD, SMP, SMA/SMK, dan Madrasah di Kota Cimahi:
                             </p>
                             <ul class="list-unstyled small text-muted mb-4">
-                                <li class="mb-2">⚽ <strong>Ekstrakurikuler:</strong> Mini Soccer, PJOK, Senam, Dance, Atletik Ringan.</li>
-                                <li class="mb-2">🥋 <strong>Bela Diri:</strong> Silat, Karate, Taekwondo (tersedia area dengan matras).</li>
-                                <li class="mb-2">🎓 <strong>Event Spesial:</strong> Wisuda Outdoor Play Group, PAUD, TK, Acara Ulang Tahun & Gathering.</li>
-                                <li class="mb-2">⏰ <strong>Waktu Pemanfaatan:</strong> Senin – Jumat: 07.00 – 15.00 WIB (Fleksibel).</li>
-                                <li class="mb-2">📅 <strong>Skema Kerjasama:</strong> Harian, Mingguan, Paket Semester, dan Paket Tahunan.</li>
+                                <li class="mb-2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 10 16 14 16 16 12 12 8"></polygon></svg> <strong>Ekstrakurikuler:</strong> Mini Soccer, PJOK, Senam, Dance, Atletik Ringan.</li>
+                                <li class="mb-2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> <strong>Bela Diri:</strong> Silat, Karate, Taekwondo (tersedia area dengan matras).</li>
+                                <li class="mb-2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg> <strong>Event Spesial:</strong> Wisuda Outdoor Play Group, PAUD, TK, Acara Ulang Tahun & Gathering.</li>
+                                <li class="mb-2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <strong>Waktu Pemanfaatan:</strong> Senin – Jumat: 07.00 – 15.00 WIB (Fleksibel).</li>
+                                <li class="mb-2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> <strong>Skema Kerjasama:</strong> Harian, Mingguan, Paket Semester, dan Paket Tahunan.</li>
                             </ul>
                             <div class="d-flex flex-wrap gap-2">
-                                <a href="https://wa.me/6281295679799?text=Halo%20Admin,%20saya%20ingin%20mengajukan%20Proposal%20Kerjasama%20Sekolah%20Mini%20Soccer%2088" target="_blank" class="btn btn-danger rounded-pill px-4 fw-bold">
+                                <a href="/login.html?redirect=partner" class="btn btn-danger rounded-pill px-4 fw-bold">
                                     Ajukan Kerjasama Sekolah
                                 </a>
                                 <a href="assets/docs/Quotation_Alpha_Sport_Pusdikif.pdf" download class="btn btn-outline-danger rounded-pill px-3 fw-bold">
@@ -1552,12 +3167,17 @@
 
                 <!-- 2. Jasa Fotografer GERAK -->
                 <div class="col-lg-6">
-                    <div class="as88-card h-100 overflow-hidden" style="border-left: 6px solid #F59E0B;">
-                        <div style="height: 200px; overflow: hidden; position: relative;">
-                            <img src="assets/promo/poster-fotografer.jpg" alt="Jasa Fotografer GERAK Mini Soccer 88" class="w-100 h-100" style="object-fit: cover; object-position: center 15%;">
-                            <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill fw-bold">OFFICIAL FOTOGRAFER</span>
+                    <div class="as88-card h-100 overflow-hidden" style="border-left: 6px solid #D9A21B;">
+                        <div class="overflow-hidden border-bottom">
+                            <a href="assets/promo/poster-fotografer.png" target="_blank" title="Klik untuk memperbesar poster fotografer" class="d-block w-100">
+                                <img src="assets/promo/poster-fotografer.png" alt="Poster Resmi Jasa Fotografer GERAK" class="w-100 d-block" style="aspect-ratio:1/1; object-fit:cover; display:block;">
+                            </a>
+                            <div class="py-1 px-3 text-center bg-light border-top">
+                                <small class="text-muted d-block" style="font-size:11px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> Klik poster untuk melihat resolusi penuh</small>
+                            </div>
                         </div>
-                        <div class="p-4 p-md-5">
+                        <div class="p-4 p-md-4">
+                            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3 d-inline-block">OFFICIAL FOTOGRAFER</span>
                             <h3 class="fw-bold text-dark mb-3">Jasa Fotografer — GERAK Content Creator</h3>
                             <p class="text-secondary mb-3" style="line-height:1.7;">
                                 Abadikan momen aksi terbaik tim kamu bersama partner resmi kami <strong>GERAK</strong> (@gerak.tangkap.abadikan). Foto jernih, tajam, penuh warna, dan dikirim cepat via Google Drive:
@@ -1586,10 +3206,10 @@
                                 </div>
                             </div>
                             <div class="d-flex flex-wrap gap-2">
-                                <a href="https://wa.me/6281295679799?text=Halo%20Admin,%20saya%20mau%20booking%20Paket%20Fotografer%20GERAK%20untuk%20pertandingan" target="_blank" class="btn btn-warning text-dark rounded-pill px-4 fw-bold">
+                                <a href="/login.html?redirect=foto" class="btn btn-warning text-dark rounded-pill px-4 fw-bold">
                                     Pesan Fotografer GERAK
                                 </a>
-                                <a href="assets/promo/poster-fotografer.jpg" target="_blank" class="btn btn-outline-secondary rounded-pill px-3 fw-bold">
+                                <a href="assets/promo/poster-fotografer.png" target="_blank" class="btn btn-outline-secondary rounded-pill px-3 fw-bold">
                                     Lihat Poster ↗
                                 </a>
                             </div>
@@ -1599,29 +3219,34 @@
 
                 <!-- 3. Komunitas Moe Tonggong (KOMMOTO 7-8) -->
                 <div class="col-lg-6">
-                    <div class="as88-card h-100 overflow-hidden" style="border-left: 6px solid #059669;">
-                        <div style="height: 200px; overflow: hidden; position: relative;">
-                            <img src="assets/promo/poster-kommoto.jpg" alt="Poster KOMMOTO 7-8" class="w-100 h-100" style="object-fit: cover; object-position: center 20%;">
-                            <span class="badge bg-success position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill fw-bold">JEMUR SEHAT PAGI</span>
+                    <div class="as88-card h-100 overflow-hidden" style="border-left: 6px solid #D71926;">
+                        <div class="overflow-hidden border-bottom">
+                            <a href="assets/promo/poster-kommoto.png" target="_blank" title="Klik untuk memperbesar poster KOMMOTO" class="d-block w-100">
+                                <img src="assets/promo/poster-kommoto.png" alt="Poster Resmi KOMMOTO 7-8" class="w-100 d-block" style="aspect-ratio:1/1; object-fit:cover; display:block;">
+                            </a>
+                            <div class="py-1 px-3 text-center bg-light border-top">
+                                <small class="text-muted d-block" style="font-size:11px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> Klik poster untuk melihat resolusi penuh</small>
+                            </div>
                         </div>
-                        <div class="p-4 p-md-5">
+                        <div class="p-4 p-md-4">
+                            <span class="badge bg-danger px-3 py-2 rounded-pill fw-bold mb-3 d-inline-block">JEMUR SEHAT PAGI</span>
                             <h3 class="fw-bold text-dark mb-3">KOMMOTO 7-8: Komunitas Moe Tonggong</h3>
                             <p class="text-secondary mb-3" style="line-height:1.7;">
                                 <em>"Jemur Sehat Badan Nikmat — Tonggong Bareng Bahagia Terus!"</em><br>
                                 Sesi jalan pagi, peregangan sendi, dan jemur matahari pagi di rumput hijau Pusdikif setiap pukul <strong>07.00 – 08.00 WIB</strong>.
                             </p>
                             <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-4 mb-4">
-                                <div class="fs-2">☕</div>
+                                <div class="fs-2 text-danger"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg></div>
                                 <div>
-                                    <strong class="text-success d-block">HTM Hanya Rp 15.000</strong>
+                                    <strong class="text-danger d-block">HTM Hanya Rp 15.000</strong>
                                     <small class="text-muted">Sudah termasuk <strong>FREE TEH HANGAT</strong> dari Kantin Sekar Pusdikif!</small>
                                 </div>
                             </div>
                             <div class="d-flex flex-wrap gap-2">
-                                <a href="https://wa.me/6281295679799?text=Halo%20Admin,%20saya%20mau%20gabung%20sesi%20Kommoto%207-8%20Jemur%20Pagi" target="_blank" class="btn btn-success rounded-pill px-4 fw-bold">
+                                <a href="/login.html?redirect=mabar" class="btn btn-success rounded-pill px-4 fw-bold">
                                     Gabung Komunitas KOMMOTO
                                 </a>
-                                <a href="assets/promo/poster-kommoto.jpg" target="_blank" class="btn btn-outline-secondary rounded-pill px-3 fw-bold">
+                                <a href="assets/promo/poster-kommoto.png" target="_blank" class="btn btn-outline-secondary rounded-pill px-3 fw-bold">
                                     Lihat Poster ↗
                                 </a>
                             </div>
@@ -1632,25 +3257,30 @@
                 <!-- 4. Content Creator Collaboration -->
                 <div class="col-lg-6">
                     <div class="as88-card h-100 overflow-hidden" style="border-left: 6px solid #111827;">
-                        <div style="height: 200px; overflow: hidden; position: relative;">
-                            <img src="assets/promo/poster-content-creator.jpg" alt="Poster Kerjasama Kreator Konten" class="w-100 h-100" style="object-fit: cover; object-position: center 25%;">
-                            <span class="badge bg-dark text-white position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill fw-bold">KOLABORASI DIGITAL</span>
+                        <div class="overflow-hidden border-bottom">
+                            <a href="assets/promo/poster-content-creator.png" target="_blank" title="Klik untuk memperbesar poster kreator" class="d-block w-100">
+                                <img src="assets/promo/poster-content-creator.png" alt="Poster Kerjasama Kreator Konten" class="w-100 d-block" style="aspect-ratio:1/1; object-fit:cover; display:block;">
+                            </a>
+                            <div class="py-1 px-3 text-center bg-light border-top">
+                                <small class="text-muted d-block" style="font-size:11px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> Klik poster untuk melihat resolusi penuh</small>
+                            </div>
                         </div>
-                        <div class="p-4 p-md-5">
+                        <div class="p-4 p-md-4">
+                            <span class="badge bg-dark text-white px-3 py-2 rounded-pill fw-bold mb-3 d-inline-block">KOLABORASI DIGITAL</span>
                             <h3 class="fw-bold text-dark mb-3">Kolaborasi Content Creator & Tim</h3>
                             <p class="text-secondary mb-3" style="line-height:1.7;">
                                 Terbuka untuk semua konten kreator, selebgram, youtuber, tiktoker, dan komunitas sepak bola untuk membuat konten kreatif, gameplay challenge, tutorial, maupun review venue di 88 Alpha Sport.
                             </p>
                             <p class="small text-muted mb-4">
-                                ✔ Gratis penggunaan lapangan sesuai kesepakatan<br>
-                                ✔ Akses lighting, ruang ganti, dan area tunggu<br>
-                                ✔ Tag akun resmi Instagram & TikTok @88alphasport
+                                <span style="color:#D71926;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg></span> Gratis penggunaan lapangan sesuai kesepakatan<br>
+                                <span style="color:#D71926;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg></span> Akses lighting, ruang ganti, dan area tunggu<br>
+                                <span style="color:#D71926;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg></span> Tag akun resmi Instagram & TikTok @88alphasport
                             </p>
                             <div class="d-flex flex-wrap gap-2">
-                                <a href="https://wa.me/6281295679799?text=Halo%20Admin%2088%20Alpha%20Sport,%20saya%20kreator%20mau%20kolaborasi%20konten" target="_blank" class="btn btn-dark rounded-pill px-4 fw-bold">
-                                    Hubungi Admin Kreator (@88alphasport)
+                                <a href="/login.html?redirect=partner" class="btn btn-dark rounded-pill px-4 fw-bold">
+                                    Daftar Kolaborasi Kreator
                                 </a>
-                                <a href="assets/promo/poster-content-creator.jpg" target="_blank" class="btn btn-outline-secondary rounded-pill px-3 fw-bold">
+                                <a href="assets/promo/poster-content-creator.png" target="_blank" class="btn btn-outline-secondary rounded-pill px-3 fw-bold">
                                     Lihat Ketentuan ↗
                                 </a>
                             </div>
@@ -1661,128 +3291,7 @@
             </div>
         </section>
 
-        <!-- LIVE SCHEDULE & REAL BOOKINGS SEPTEMBER 2026 -->
-        <section class="container col-xl-10 col-11 my-5 py-4">
-            <div class="text-center mb-5">
-                <span class="badge bg-secondary text-white px-3 py-2 rounded-pill fw-bold mb-2">STATUS LAPANGAN REAL-TIME</span>
-                <h2 class="display-6 fw-bold" style="color:#111827;">Jadwal Pertandingan September 2026</h2>
-                <p class="text-secondary mx-auto" style="max-width: 650px;">
-                    Jadwal resmi klub dan akademi yang telah terkonfirmasi bermain di Lapangan Pusdikif Kota Cimahi.
-                </p>
-            </div>
 
-            <!-- Schedule Tabs -->
-            <ul class="nav nav-pills justify-content-center mb-4 gap-2" id="schedTabs" role="tablist">
-                <li class="nav-item">
-                    <button class="nav-link active rounded-pill fw-bold px-4" id="tab-w2-btn" type="button" onclick="switchSchedTab('07-13_SEP_2026')">Minggu II (07 - 13 Sep)</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link rounded-pill fw-bold px-4" id="tab-w3-btn" type="button" onclick="switchSchedTab('14-20_SEP_2026')">Minggu III (14 - 20 Sep)</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link rounded-pill fw-bold px-4" id="tab-w4-btn" type="button" onclick="switchSchedTab('21-27_SEP_2026')">Minggu IV (21 - 27 Sep)</button>
-                </li>
-            </ul>
-
-            <div class="schedule-table-wrap bg-white shadow-sm p-2">
-                <table class="table schedule-table mb-0 text-center align-middle">
-                    <thead>
-                        <tr>
-                            <th>Waktu (WIB)</th>
-                            <th>Hari</th>
-                            <th>Tanggal</th>
-                            <th>Nama Klub / Sesi</th>
-                            <th>Status Slot</th>
-                        </tr>
-                    </thead>
-                    <tbody id="scheduleTableBody">
-                        <!-- Populated by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="text-center mt-4">
-                <a href="https://wa.me/6281295679799?text=Halo%20Admin%2088%20Alpha%20Sport,%20saya%20mau%20tanya%20slot%20kosong%20minggu%20ini" target="_blank" class="btn btn-as88-red">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                    Booking Slot Kosong Sekarang
-                </a>
-            </div>
-        </section>
-
-        <script>
-        (function() {
-            var schedData = null;
-            var currentWeek = '07-13_SEP_2026';
-
-            window.switchSchedTab = function(weekKey) {
-                currentWeek = weekKey;
-                
-                // Update tab buttons
-                var btn2 = document.getElementById('tab-w2-btn');
-                var btn3 = document.getElementById('tab-w3-btn');
-                var btn4 = document.getElementById('tab-w4-btn');
-                if (btn2) btn2.classList.toggle('active', weekKey === '07-13_SEP_2026');
-                if (btn3) btn3.classList.toggle('active', weekKey === '14-20_SEP_2026');
-                if (btn4) btn4.classList.toggle('active', weekKey === '21-27_SEP_2026');
-
-                if (schedData) {
-                    renderTable(schedData[weekKey] || []);
-                } else {
-                    fetch('assets/data/bookings_september_2026.json')
-                        .then(function(res) {
-                            if (!res.ok) throw new Error('HTTP ' + res.status);
-                            return res.json();
-                        })
-                        .then(function(data) {
-                            schedData = data;
-                            renderTable(schedData[weekKey] || []);
-                        })
-                        .catch(function(err) {
-                            console.warn('Jadwal fetch fallback:', err);
-                            var tbody = document.getElementById('scheduleTableBody');
-                            if (tbody) {
-                                tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-muted">Jadwal dapat dilihat dan dikonfirmasi langsung ke WhatsApp Admin (0812-9567-9799).</td></tr>';
-                            }
-                        });
-                }
-            };
-
-            function renderTable(items) {
-                var tbody = document.getElementById('scheduleTableBody');
-                if (!tbody) return;
-                if (!items || items.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-muted">Belum ada pertandingan terjadwal untuk periode ini.</td></tr>';
-                    return;
-                }
-
-                var html = '';
-                items.forEach(function(item) {
-                    var timeStr = (item.time || '').replace(/\./g, ':');
-                    if (timeStr.indexOf('-') > -1) {
-                        var parts = timeStr.split('-');
-                        timeStr = parts[0].trim() + ' – ' + parts[1].trim();
-                    }
-                    html += '<tr>' +
-                        '<td class="fw-bold text-danger">' + timeStr + '</td>' +
-                        '<td class="fw-semibold">' + (item.day || '-') + '</td>' +
-                        '<td>' + (item.date ? item.date + ' Sep 2026' : '-') + '</td>' +
-                        '<td class="text-start ps-3"><strong class="text-dark">' + (item.team || 'Booking Lapangan') + '</strong></td>' +
-                        '<td><span class="tag-booked">Terpesan</span></td>' +
-                        '</tr>';
-                });
-                tbody.innerHTML = html;
-            }
-
-            // Auto-load on ready
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', function() {
-                    window.switchSchedTab('07-13_SEP_2026');
-                });
-            } else {
-                window.switchSchedTab('07-13_SEP_2026');
-            }
-        })();
-        </script>
 
         <!-- OFFICIAL QRIS PAYMENT SECTION -->
         <section class="container col-xl-10 col-11 my-5 py-4">
@@ -1816,14 +3325,14 @@
                         </div>
 
                         <div class="d-flex flex-wrap gap-2 text-white-50 small">
-                            <span>✔ BCA Mobile</span>
-                            <span>✔ Livin' Mandiri</span>
-                            <span>✔ BRImo</span>
-                            <span>✔ BNI Mobile</span>
-                            <span>✔ GoPay</span>
-                            <span>✔ OVO</span>
-                            <span>✔ DANA</span>
-                            <span>✔ ShopeePay</span>
+                            <span class="d-inline-flex align-items-center gap-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> BCA Mobile</span>
+                            <span class="d-inline-flex align-items-center gap-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> Livin' Mandiri</span>
+                            <span class="d-inline-flex align-items-center gap-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> BRImo</span>
+                            <span class="d-inline-flex align-items-center gap-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> BNI Mobile</span>
+                            <span class="d-inline-flex align-items-center gap-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> GoPay</span>
+                            <span class="d-inline-flex align-items-center gap-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> OVO</span>
+                            <span class="d-inline-flex align-items-center gap-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> DANA</span>
+                            <span class="d-inline-flex align-items-center gap-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> ShopeePay</span>
                         </div>
                     </div>
 
@@ -1848,41 +3357,24 @@
                 <h4 class="fw-bold mb-3 text-dark text-center">Tata Tertib Pemanfaatan Fasilitas Mini Soccer 88</h4>
                 <div class="row g-3 small text-secondary mt-2">
                     <div class="col-md-6">
-                        <div class="p-2">✔ Gunakan sepatu khusus futsal / turf training (non-stud).</div>
-                        <div class="p-2">❌ Dilarang menggunakan sepatu pul besi.</div>
-                        <div class="p-2">❌ Dilarang membawa kendaraan, api, rokok, dan benda tajam ke lapangan.</div>
-                        <div class="p-2">❌ Dilarang menyeret meja, kursi, atau alat berat di atas rumput.</div>
-                        <div class="p-2">❌ Dilarang menumpahkan bahan kimia atau cairan perusak rumput.</div>
+                        <div class="p-2"><span style="color:#10B981;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg></span> Gunakan sepatu khusus futsal / turf training (non-stud).</div>
+                        <div class="p-2"><span style="color:#D71926;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span> Dilarang menggunakan sepatu pul besi.</div>
+                        <div class="p-2"><span style="color:#D71926;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span> Dilarang membawa kendaraan, api, rokok, dan benda tajam ke lapangan.</div>
+                        <div class="p-2"><span style="color:#D71926;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span> Dilarang menyeret meja, kursi, atau alat berat di atas rumput.</div>
+                        <div class="p-2"><span style="color:#D71926;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span> Dilarang menumpahkan bahan kimia atau cairan perusak rumput.</div>
                     </div>
                     <div class="col-md-6">
-                        <div class="p-2">❌ Dilarang memaku tenda di area lapangan sintetis.</div>
-                        <div class="p-2">❌ Dilarang membawa makanan berat dan permen karet ke lapangan.</div>
-                        <div class="p-2">❌ Dilarang membawa hewan peliharaan ke dalam venue.</div>
-                        <div class="p-2">🥋 Kegiatan olahraga bela diri wajib menggunakan matras pelindung.</div>
-                        <div class="p-2">⚠ Kerusakan akibat kelalaian menjadi tanggung jawab penyewa.</div>
+                        <div class="p-2"><span style="color:#D71926;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span> Dilarang memaku tenda di area lapangan sintetis.</div>
+                        <div class="p-2"><span style="color:#D71926;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span> Dilarang membawa makanan berat dan permen karet ke lapangan.</div>
+                        <div class="p-2"><span style="color:#D71926;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span> Dilarang membawa hewan peliharaan ke dalam venue.</div>
+                        <div class="p-2"><span style="color:#25282B;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span> Kegiatan olahraga bela diri wajib menggunakan matras pelindung.</div>
+                        <div class="p-2"><span style="color:#D9A21B;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></span> Kerusakan akibat kelalaian menjadi tanggung jawab penyewa.</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- FINAL CTA BANNER -->
-        <section class="container col-xl-10 col-11 my-5">
-            <div class="as88-card p-5 text-center text-white" style="background: linear-gradient(135deg, #991B1B 0%, #B91C1C 60%, #D97706 100%); border:none; box-shadow: 0 16px 36px rgba(185,28,28,0.35);">
-                <h2 class="display-6 fw-bold mb-3">Siap Menguasai Lapangan Hijau?</h2>
-                <p class="lead mb-4 mx-auto" style="max-width: 680px; opacity: 0.95;">
-                    Pesan slot main tim kamu sekarang sebelum kehabisan jam favorit! Booking online mudah dan konfirmasi instan via WhatsApp Admin kami.
-                </p>
-                <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <a href="/sewa-lapangan.html" class="btn btn-light rounded-pill px-4 py-3 fw-bold text-danger">
-                        Pilih Jam & Lapangan
-                    </a>
-                    <a href="https://wa.me/6281295679799?text=Halo%20Admin%20Mini%20Soccer%2088,%20saya%20mau%20booking%20lapangan" target="_blank" class="btn-as88-wa">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                        WhatsApp Admin: 0812-9567-9799
-                    </a>
-                </div>
-            </div>
-        </section>
+
 
     </div>
 </main>
@@ -1904,6 +3396,16 @@
                     Lapangan Pusdikif (Pusat Pendidikan Infanteri) Kodiklatad<br>
                     Jalan Gatot Subroto, Kec. Cimahi Tengah, Kota Cimahi, Jawa Barat 40523
                 </div>
+                <!-- Fitur Lokasi & Install App di footer -->
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                    <div id="ms88LocationBar" class="ms88-location-bar d-inline-flex align-items-center" onclick="GeoMS88.showModal()" title="Klik untuk info lokasi & peta" style="cursor:pointer;background:#F4F5F7;padding:6px 14px;border-radius:20px;font-size:13px;color:#08090B;border:1px solid #D9DCE1;">
+                        <span class="geo-pin me-1" style="color:#D71926;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+                        <span class="geo-placeholder" style="font-weight:600;">Pusdikif Kota Cimahi</span>
+                    </div>
+                    <a href="javascript:void(0)" onclick="window.MS88PWA && window.MS88PWA.showInstallModal()" class="as88-footer-btn-install" title="Pasang Aplikasi Web">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> <span>Install App</span>
+                    </a>
+                </div>
                 <div class="d-flex gap-2 text-secondary">
                     <a href="https://instagram.com/88alphasport" target="_blank" class="btn btn-sm btn-light rounded-circle p-2 text-danger" title="Instagram @88alphasport">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
@@ -1921,8 +3423,7 @@
             <div class="col-lg-2 col-6">
                 <h6 class="fw-bold text-dark mb-3">Layanan Kami</h6>
                 <ul class="list-unstyled small">
-                    <li class="py-1"><a class="text-secondary text-decoration-none" href="/sewa-lapangan.html">Sewa Lapangan</a></li>
-                    <li class="py-1"><a class="text-secondary text-decoration-none" href="#pricelist">Pricelist Resmi</a></li>
+                    <li class="py-1"><a class="text-secondary text-decoration-none" href="/sewa-lapangan.html">Sewa &amp; Tarif Lapangan</a></li>
                     <li class="py-1"><a class="text-secondary text-decoration-none" href="/partner.html">Kerjasama Sekolah</a></li>
                     <li class="py-1"><a class="text-secondary text-decoration-none" href="/kompetisi.html">Dokumentasi GERAK</a></li>
                     <li class="py-1"><a class="text-secondary text-decoration-none" href="/main-bareng.html">Komunitas KOMMOTO</a></li>
@@ -1937,7 +3438,7 @@
                     <li class="py-1"><a class="text-secondary text-decoration-none" href="/blog.html">Berita & Informasi</a></li>
                     <li class="py-1"><span class="text-secondary">Jam Operasional:</span></li>
                     <li class="py-1"><span class="text-danger fw-bold">Setiap Hari 06:00 – 23:00 WIB</span></li>
-                    <li class="py-1"><a class="text-secondary text-decoration-none" href="/superadmin/index.html">Superadmin Portal</a></li>
+                    <li class="py-1"><a class="text-secondary text-decoration-none" href="/kontak.html">Bantuan & FAQ</a></li>
                 </ul>
             </div>
 
@@ -1945,12 +3446,12 @@
             <div class="col-lg-3 col-md-6">
                 <h6 class="fw-bold text-dark mb-3">Kontak Reservasi</h6>
                 <p class="small text-secondary mb-2">Booking cepat via WhatsApp resmi kami:</p>
-                <a href="https://wa.me/6281295679799?text=Halo%20Admin%2088%20Alpha%20Sport,%20saya%20mau%20booking%20jadwal" target="_blank" class="btn btn-sm btn-success w-100 rounded-pill py-2 font-weight-bold mb-2">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                    Admin 1: 0812-9567-9799
+                <a href="/login.html?redirect=booking" class="btn btn-sm btn-danger w-100 rounded-pill py-2 font-weight-bold mb-2">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    Booking via Portal Member
                 </a>
-                <a href="https://wa.me/628882133345?text=Halo%20Admin%20Giefran,%20saya%20mau%20booking%20jadwal" target="_blank" class="btn btn-sm btn-outline-dark w-100 rounded-pill py-2 font-weight-bold mb-2">
-                    Admin 2 (Giefran): 0888-2133-345
+                <a href="/kontak.html" class="btn btn-sm btn-outline-dark w-100 rounded-pill py-2 font-weight-bold mb-2">
+                    Kontak Admin Langsung
                 </a>
                 <small class="text-muted d-block text-center mt-1">Instagram: @88alphasport</small>
             </div>
@@ -1988,32 +3489,6 @@
         }
     });
 </script>
-
-    <script nonce="pLpgJOiDHTai4ii/O9m7/Q==">
-        const getUserCart = () => {
-            const url = '/sewa-lapangan.html';
-
-            $.ajax({
-                url: url,
-                method: 'GET',
-                success: (response, textStatus, xhr) => {
-                    if (xhr.status === 200) {
-                        if (response.data !== null) {
-                            let totalSlot = 0;
-                            response.data.forEach(data => {
-                                totalSlot += data.slots.length;
-                            });
-                            incrementCartItem(totalSlot);
-                        }
-                    }
-                },
-                error: (err) => console.error(err),
-            });
-        }
-        let totalCartItem = 0;
-
-        getUserCart();
-    </script>
 
 <script src="js/custom.js"></script>
 
@@ -2183,6 +3658,7 @@
      */
     function showOverlayCartIcon(show = true) {
         const cartIconDesktop = document.querySelector('li.cart-icon-desktop');
+        if (!cartIconDesktop) return;
 
         let offsetLeftCartIconDesktop = cartIconDesktop.offsetLeft;
         let clientWidthCartIconDesktop = cartIconDesktop.clientWidth;
@@ -2775,8 +4251,8 @@ var pilihan_mabar=0;
             $("#sparring-content3").slideUp("slow");
 			$(".kanan-panah").attr('fill-opacity', '0.25');
 			$(".kiri-panah").attr('fill-opacity', '1');
-			$(".kanan-angka").css('color', '#9E0620');
-			$(".kiri-angka").css('color', 'rgba(158, 6, 32, 0.25)');
+			$(".kanan-angka").css('color', '#D71926');
+			$(".kiri-angka").css('color', 'rgba(215, 25, 38, 0.25)');
 			$(".mabar-img").css('display', 'block');
 			$(".sparring-img").css('display', 'none');
 
@@ -2788,8 +4264,8 @@ var pilihan_mabar=0;
 			e.preventDefault();
 			$(".kiri-panah").attr('fill-opacity', '0.25');
 			$(".kanan-panah").attr('fill-opacity', '1');
-			$(".kiri-angka").css('color', '#9E0620');
-			$(".kanan-angka").css('color', 'rgba(158, 6, 32, 0.25)');
+			$(".kiri-angka").css('color', '#D71926');
+			$(".kanan-angka").css('color', 'rgba(215, 25, 38, 0.25)');
             sparring_counter=0;
             $(".sparring-title").fadeOut(10,function(){
                 $(".sparring-title").html(sparring_title[sparring_counter]);
@@ -2827,7 +4303,7 @@ var pilihan_mabar=0;
 		$('.pemilik').click(function(e){
 			e.preventDefault();
             venue_counter=0;
-			$(".pemilik").css('background-color', '#9E0620');
+			$(".pemilik").css('background-color', '#D71926');
 			$(".pemilik").css('color', '#FFFFFF');
 			$(".penyewa").css('background-color', 'rgb(241, 241, 241)');
 			$(".penyewa").css('color', '#A0A4A8');
@@ -2859,7 +4335,7 @@ var pilihan_mabar=0;
 
 			$(".penyewa").css('color', '#FFFFFF');
 			$(".pemilik").css('color', '#A0A4A8');
-			$(".penyewa").css('background-color', '#9E0620');
+			$(".penyewa").css('background-color', '#D71926');
 			$(".pemilik").css('background-color', 'rgb(241, 241, 241)');
             $(".venue-link").attr('href', "/sewa-lapangan.html");
 		});
@@ -2893,8 +4369,8 @@ var pilihan_mabar=0;
 			$(".penyewa-kompetisi").css('color', '#A0A4A8');
 			$(".penyewa-kompetisi").css('background-color', '#FFFFFF');
 			$(".penyewa-kompetisi").css('border-color', '#A0A4A8');
-			$(".pemilik-kompetisi").css('border-color', '#059669');
-			$(".pemilik-kompetisi").css('background-color', '#059669');
+			$(".pemilik-kompetisi").css('border-color', '#D71926');
+			$(".pemilik-kompetisi").css('background-color', '#D71926');
 			$(".pemilik-kompetisi").css('color', '#FFFFFF');
 
 		});
@@ -2922,8 +4398,8 @@ var pilihan_mabar=0;
 			$(".pemilik-kompetisi").css('color', '#A0A4A8');
 			$(".pemilik-kompetisi").css('background-color', '#FFFFFF');
 			$(".pemilik-kompetisi").css('border-color', '#A0A4A8');
-			$(".penyewa-kompetisi").css('border-color', '#059669');
-			$(".penyewa-kompetisi").css('background-color', '#059669');
+			$(".penyewa-kompetisi").css('border-color', '#D71926');
+			$(".penyewa-kompetisi").css('background-color', '#D71926');
 			$(".penyewa-kompetisi").css('color', '#FFFFFF');
 
 		});
@@ -2966,7 +4442,7 @@ var pilihan_mabar=0;
             if (testi_counter>=2) {
                 testi_counter=2;
                 $(".kanan-komen").attr('fill-opacity', '0.25');
-                $(".batas-komen").css('color', '#9E0620');
+                $(".batas-komen").css('color', '#D71926');
 
             }
 
@@ -3001,13 +4477,13 @@ var pilihan_mabar=0;
             if (testi_counter==1) {
 
                 $(".kanan-komen").attr('fill-opacity', '1');
-                $(".batas-komen").css('color', 'rgba(158, 6, 32, 0.25)');
+                $(".batas-komen").css('color', 'rgba(215, 25, 38, 0.25)');
 
 
             }
             if (testi_counter<=0) {
                 testi_counter=0;
-                $(".kiri-komen").attr('fill', '#9E0620');
+                $(".kiri-komen").attr('fill', '#D71926');
                 $(".kiri-komen").attr('fill-opacity', '0.25');
             }
 
@@ -3016,7 +4492,7 @@ var pilihan_mabar=0;
 		});
     $(".oprator-kompetisi-card-1").click(function(e){
 			e.preventDefault();
-        $(".oprator-kompetisi-card-1").attr('style', 'background-color: #9E0620; color:white; border-radius:15px; ');
+        $(".oprator-kompetisi-card-1").attr('style', 'background-color: #D71926; color:white; border-radius:15px; ');
         $(".oprator-kompetisi-number-1").attr('style', 'opacity: 0.6;color:white;');
         $(".oprator-kompetisi-card-2").attr('style', '');
         $(".oprator-kompetisi-number-2").attr('style', 'color: #CACCCF;');
@@ -3030,7 +4506,7 @@ var pilihan_mabar=0;
 			e.preventDefault();
         $(".oprator-kompetisi-card-1").attr('style', '');
         $(".oprator-kompetisi-number-1").attr('style', 'color: #CACCCF;');
-        $(".oprator-kompetisi-card-2").attr('style', 'background-color: #9E0620; color:white; border-radius:15px; ');
+        $(".oprator-kompetisi-card-2").attr('style', 'background-color: #D71926; color:white; border-radius:15px; ');
         $(".oprator-kompetisi-number-2").attr('style', 'opacity: 0.6;color:white;');
         $(".oprator-kompetisi-card-3").attr('style', '');
         $(".oprator-kompetisi-number-3").attr('style', 'color: #CACCCF;');
@@ -3044,7 +4520,7 @@ var pilihan_mabar=0;
         $(".oprator-kompetisi-number-1").attr('style', 'color: #CACCCF;');
         $(".oprator-kompetisi-card-2").attr('style', '');
         $(".oprator-kompetisi-number-2").attr('style', 'color: #CACCCF;');
-        $(".oprator-kompetisi-card-3").attr('style', 'background-color: #9E0620; color:white; border-radius:15px; ');
+        $(".oprator-kompetisi-card-3").attr('style', 'background-color: #D71926; color:white; border-radius:15px; ');
         $(".oprator-kompetisi-number-3").attr('style', 'opacity: 0.6;color:white;');
         $(".oprator-kompetisi-text-1").attr('style', 'color:#25282B;');
         $(".oprator-kompetisi-text-2").attr('style', 'color:#25282B;');
@@ -3377,7 +4853,7 @@ function setAppLanguage(lang) {
         toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1a202c;color:#fff;padding:12px 20px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.25);z-index:9999;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;transition:opacity 0.3s ease;';
         document.body.appendChild(toast);
     }
-    toast.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> ' + 
+    toast.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9A21B" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> ' + 
         (lang === 'en' ? 'Bahasa berhasil diubah ke English' : 'Bahasa berhasil diubah ke Bahasa Indonesia');
     toast.style.opacity = '1';
     clearTimeout(window._langToastTimer);
@@ -3393,6 +4869,19 @@ document.addEventListener('DOMContentLoaded', function() {
         setAppLanguage(savedLang);
     }
 });
+
+// Navbar scroll seamless effect
+window.addEventListener('scroll', function() {
+    var nb = document.getElementById('mainNavbar');
+    if (nb) {
+        if (window.scrollY > 40) {
+            nb.classList.add('scrolled');
+        } else {
+            nb.classList.remove('scrolled');
+        }
+    }
+}, { passive: true });
 </script>
+<script src="js/pwa.js"></script>
 </body>
 </html>

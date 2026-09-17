@@ -7,6 +7,7 @@
 
   const LS_KEY  = 'ms88_location';
   const LS_DENY = 'ms88_location_denied';
+  const LS_AUTO_POPUP = 'ms88_geo_popup_enabled';
 
   // Venue coordinates (Pusdikif Cimahi)
   const VENUE_LAT = -6.8854;
@@ -19,7 +20,17 @@
     getDistance,
     showModal,
     clearLocation,
+    isAutoPopupEnabled,
+    setAutoPopup,
   };
+
+  function isAutoPopupEnabled() {
+    return localStorage.getItem(LS_AUTO_POPUP) === '1';
+  }
+
+  function setAutoPopup(enabled) {
+    localStorage.setItem(LS_AUTO_POPUP, enabled ? '1' : '0');
+  }
 
   /* ---- Init: inject modal + run auto-detect if already granted ---- */
   function init(opts) {
@@ -34,8 +45,13 @@
       return;
     }
 
-    // Auto-show modal after short delay (unless previously denied)
-    if (!localStorage.getItem(LS_DENY)) {
+    // Auto-show modal: DEFAULT IS OFF (0).
+    // Only auto-show if explicitly enabled via admin setting or opts.autoPopup === true
+    const autoPopupEnabled = (opts.autoPopup !== undefined)
+      ? !!opts.autoPopup
+      : (localStorage.getItem(LS_AUTO_POPUP) === '1');
+
+    if (autoPopupEnabled && !localStorage.getItem(LS_DENY)) {
       setTimeout(() => showModal(opts), 1200);
     }
   }
@@ -197,7 +213,7 @@
     const pinSvg = '<svg class="geo-pin-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>';
     if (locBar) {
       locBar.innerHTML = data
-        ? `<span class="geo-pin">${pinSvg}</span><span class="geo-city">${data.city}</span><button class="geo-clear" onclick="GeoMS88.clearLocation()" title="Hapus Lokasi">✕</button>`
+        ? `<span class="geo-pin">${pinSvg}</span><span class="geo-city">${data.city}</span><button class="geo-clear" onclick="GeoMS88.clearLocation()" title="Hapus Lokasi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>`
         : `<span class="geo-pin">${pinSvg}</span><span class="geo-placeholder">Pilih Lokasi</span><button class="geo-detect-btn" onclick="GeoMS88.showModal()">Deteksi Otomatis</button>`;
     }
 
@@ -220,7 +236,7 @@
     el.className = 'ms88-geo-overlay';
     el.innerHTML = `
       <div class="ms88-geo-modal" role="dialog" aria-modal="true" aria-labelledby="ms88GeoTitle">
-        <button class="ms88-geo-close" id="ms88GeoClose" aria-label="Tutup">✕</button>
+        <button class="ms88-geo-close" id="ms88GeoClose" aria-label="Tutup"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         <div class="ms88-geo-icon-wrap">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path>
@@ -257,7 +273,7 @@
       c.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);z-index:99999;transition:transform 0.4s cubic-bezier(.34,1.56,.64,1);';
       document.body.appendChild(c);
     }
-    c.innerHTML = `<div style="background:#1f2937;color:#fff;padding:12px 24px;border-radius:100px;font-size:14px;font-weight:500;border-left:4px solid ${type === 'warning' ? '#f59e0b' : '#16a34a'};box-shadow:0 8px 24px rgba(0,0,0,0.25);white-space:nowrap;">${msg}</div>`;
+    c.innerHTML = `<div style="background:#08090B;color:#fff;padding:12px 24px;border-radius:100px;font-size:14px;font-weight:500;border-left:4px solid ${type === 'warning' ? '#D9A21B' : '#D71926'};box-shadow:0 8px 24px rgba(0,0,0,0.25);white-space:nowrap;">${msg}</div>`;
     c.style.transform = 'translateX(-50%) translateY(0)';
     setTimeout(() => { c.style.transform = 'translateX(-50%) translateY(80px)'; }, 3500);
   }
@@ -270,81 +286,82 @@
     style.textContent = `
       .ms88-geo-overlay {
         position: fixed; inset: 0; z-index: 99998;
-        background: rgba(0,0,0,0.55);
+        background: rgba(8,9,11,0.6);
         display: flex; align-items: center; justify-content: center;
         padding: 20px;
         opacity: 0; pointer-events: none;
         transition: opacity 0.25s ease;
-        backdrop-filter: blur(4px);
+        backdrop-filter: blur(6px);
       }
       .ms88-geo-overlay.active { opacity: 1; pointer-events: all; }
       .ms88-geo-modal {
-        background: #fff;
+        background: #FFFFFF;
+        border: 1.5px solid #D9DCE1;
         border-radius: 20px;
         padding: 36px 32px 28px;
         max-width: 400px;
         width: 100%;
         text-align: center;
         position: relative;
-        box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+        box-shadow: 0 24px 80px rgba(8,9,11,0.2);
         transform: scale(0.9) translateY(20px);
         transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
       }
       .ms88-geo-overlay.active .ms88-geo-modal { transform: scale(1) translateY(0); }
       .ms88-geo-close {
         position: absolute; top: 16px; right: 16px;
-        background: #f3f4f6; border: none; border-radius: 50%;
+        background: #F4F5F7; border: 1px solid #D9DCE1; border-radius: 50%;
         width: 32px; height: 32px; font-size: 14px;
-        cursor: pointer; color: #6b7280;
+        cursor: pointer; color: #5A606A;
         display: flex; align-items: center; justify-content: center;
         transition: background 0.18s;
       }
-      .ms88-geo-close:hover { background: #e5e7eb; }
+      .ms88-geo-close:hover { background: rgba(215,25,38,0.08); color: #D71926; }
       .ms88-geo-icon-wrap {
         width: 64px; height: 64px;
-        background: rgba(158, 6, 32, 0.08);
+        background: rgba(215, 25, 38, 0.08);
         border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
         margin: 0 auto 20px;
-        color: #9E0620;
+        color: #D71926;
       }
       .ms88-geo-icon-wrap svg {
         width: 32px; height: 32px;
       }
       .ms88-geo-title {
         font-size: 20px; font-weight: 700;
-        color: #111827; margin: 0 0 12px;
+        color: #08090B; margin: 0 0 12px;
         font-family: 'Rubik', sans-serif;
       }
       .ms88-geo-desc {
-        font-size: 14px; color: #6b7280;
+        font-size: 14px; color: #5A606A;
         line-height: 1.6; margin: 0 0 24px;
         font-family: 'Rubik', sans-serif;
       }
       .ms88-geo-btn-primary {
         display: block; width: 100%;
         padding: 14px;
-        background: #9E0620;
+        background: linear-gradient(135deg, #D71926, #B5141F);
         color: #fff; border: none; border-radius: 12px;
         font-family: 'Rubik', sans-serif; font-size: 15px; font-weight: 600;
         cursor: pointer; margin-bottom: 10px;
         transition: background 0.18s, transform 0.18s;
-        box-shadow: 0 4px 14px rgba(158,6,32,0.3);
+        box-shadow: 0 4px 14px rgba(215,25,38,0.35);
       }
-      .ms88-geo-btn-primary:hover { background: #b70826; transform: translateY(-1px); }
+      .ms88-geo-btn-primary:hover { background: #B5141F; transform: translateY(-1px); }
       .ms88-geo-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
       .ms88-geo-btn-secondary {
         display: block; width: 100%;
         padding: 13px;
-        background: #fff; color: #374151;
-        border: 1.5px solid #e5e7eb; border-radius: 12px;
+        background: #FFFFFF; color: #08090B;
+        border: 1.5px solid #D9DCE1; border-radius: 12px;
         font-family: 'Rubik', sans-serif; font-size: 15px; font-weight: 500;
         cursor: pointer; margin-bottom: 16px;
         transition: background 0.18s;
       }
-      .ms88-geo-btn-secondary:hover { background: #f9fafb; }
+      .ms88-geo-btn-secondary:hover { background: #F4F5F7; border-color: #D71926; }
       .ms88-geo-hint {
-        font-size: 12px; color: #9ca3af;
+        font-size: 12px; color: #5A606A;
         margin: 0; line-height: 1.5;
         font-family: 'Rubik', sans-serif;
       }
@@ -352,37 +369,37 @@
       /* Location bar widget */
       .ms88-location-bar {
         display: inline-flex; align-items: center; gap: 8px;
-        background: #fff; border: 1.5px solid #e5e7eb;
+        background: #F4F5F7; border: 1.5px solid #D9DCE1;
         border-radius: 100px; padding: 7px 14px;
-        font-size: 13.5px; color: #374151; font-weight: 500;
+        font-size: 13.5px; color: #08090B; font-weight: 500;
         cursor: pointer; transition: border-color 0.18s, box-shadow 0.18s;
         font-family: 'Rubik', sans-serif;
       }
-      .ms88-location-bar:hover { border-color: #9E0620; box-shadow: 0 0 0 3px rgba(158,6,32,0.08); }
-      .geo-pin { display: inline-flex; align-items: center; color: #9E0620; }
-      .geo-pin-svg { flex-shrink: 0; color: #9E0620; }
-      .geo-city { font-weight: 600; color: #9E0620; }
-      .geo-placeholder { color: #6b7280; font-size: 13px; }
+      .ms88-location-bar:hover { border-color: #D71926; box-shadow: 0 0 0 3px rgba(215,25,38,0.1); }
+      .geo-pin { display: inline-flex; align-items: center; color: #D71926; }
+      .geo-pin-svg { flex-shrink: 0; color: #D71926; }
+      .geo-city { font-weight: 600; color: #D71926; }
+      .geo-placeholder { color: #5A606A; font-size: 13px; }
       .geo-clear {
         background: none; border: none; cursor: pointer;
-        color: #9ca3af; font-size: 13px; padding: 0 0 0 4px;
+        color: #5A606A; font-size: 13px; padding: 0 0 0 4px;
         transition: color 0.18s;
         display: inline-flex; align-items: center;
       }
-      .geo-clear:hover { color: #ef4444; }
+      .geo-clear:hover { color: #D71926; }
       .geo-detect-btn {
-        background: rgba(158, 6, 32, 0.08); color: #9E0620; border: none;
+        background: rgba(215, 25, 38, 0.08); color: #D71926; border: none;
         border-radius: 100px; padding: 4px 10px; font-size: 12px;
         font-weight: 600; cursor: pointer; font-family: 'Rubik', sans-serif;
         transition: background 0.18s;
       }
-      .geo-detect-btn:hover { background: rgba(158, 6, 32, 0.15); }
+      .geo-detect-btn:hover { background: rgba(215, 25, 38, 0.15); }
 
       /* Venue distance badge */
       #ms88VenueDistance {
         display: none;
         align-items: center; gap: 6px;
-        background: rgba(158, 6, 32, 0.08); color: #9E0620;
+        background: rgba(215, 25, 38, 0.08); color: #D71926;
         border-radius: 100px; padding: 6px 14px;
         font-size: 13px; font-weight: 600;
         font-family: 'Rubik', sans-serif;

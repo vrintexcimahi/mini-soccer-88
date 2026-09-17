@@ -4,91 +4,61 @@
       "time": "06.00-07.00",
       "day": "SABTU",
       "date": "12",
-      "team": "KIRARI SPACE YOGA"
-    },
-    {
-      "time": "07.00-08.00",
-      "day": "SABTU",
-      "date": "12",
-      "team": "KIRARI SPACE YOGA"
-    },
-    {
-      "time": "07.00-08.00",
-      "day": "MINGGU",
-      "date": "13",
-      "team": "SANG MANTAN FC"
-    },
-    {
-      "time": "08.00-09.00",
-      "day": "SABTU",
-      "date": "12",
-      "team": "KIRARI SPACE YOGA"
-    },
-    {
-      "time": "08.00-09.00",
-      "day": "MINGGU",
-      "date": "13",
-      "team": "SANG MANTAN FC"
-    },
-    {
-      "time": "09.00-10.00",
-      "day": "JUM'AT",
-      "date": "11",
-      "team": "SPARTA FC"
-    },
-    {
-      "time": "09.00-10.00",
-      "day": "SABTU",
-      "date": "12",
       "team": "CIBEUREUM BOY 3 FC"
     },
     {
-      "time": "09.00-10.00",
+      "time": "07.00-08.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "KIRARI SPACE YOGA"
+    },
+    {
+      "time": "07.00-08.00",
       "day": "MINGGU",
       "date": "13",
-      "team": "PESAT ACTIVE FC"
+      "team": "SANG MANTAN FC"
+    },
+    {
+      "time": "08.00-09.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "KIRARI SPACE YOGA"
+    },
+    {
+      "time": "08.00-09.00",
+      "day": "MINGGU",
+      "date": "13",
+      "team": "SANG MANTAN FC"
+    },
+    {
+      "time": "09.00-10.00",
+      "day": "JUM'AT",
+      "date": "11",
+      "team": "SPARTA FC"
+    },
+    {
+      "time": "09.00-10.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "KIRARI SPACE YOGA"
     },
     {
       "time": "10.00-11.00",
       "day": "JUM'AT",
       "date": "11",
       "team": "SPARTA FC"
-    },
-    {
-      "time": "10.00-11.00",
-      "day": "SABTU",
-      "date": "12",
-      "team": "CIMAHI FOOTBALL ACADEMY"
-    },
-    {
-      "time": "10.00-11.00",
-      "day": "MINGGU",
-      "date": "13",
-      "team": "PESAT ACTIVE FC"
-    },
-    {
-      "time": "11.00-12.00",
-      "day": "SABTU",
-      "date": "12",
-      "team": "CIMAHI FOOTBALL ACADEMY"
-    },
-    {
-      "time": "11.00-12.00",
-      "day": "MINGGU",
-      "date": "13",
-      "team": "MAN I KOTA CIMAHI FC"
-    },
-    {
-      "time": "13.00-14.00",
-      "day": "SABTU",
-      "date": "12",
-      "team": "SSB ALEXIS FC"
     },
     {
       "time": "15.00-16.00",
       "day": "SELASA",
       "date": "08",
       "team": "LOYOR FC"
+    },
+    {
+      "time": "15.00-16.00",
+      "day": "SABTU",
+      "date": "12",
+      "team": "GNOZ FC"
     },
     {
       "time": "15.00-16.00",
@@ -116,15 +86,9 @@
     },
     {
       "time": "16.00-17.00",
-      "day": "KAMIS",
-      "date": "10",
-      "team": "PT. SIAP"
-    },
-    {
-      "time": "16.00-17.00",
-      "day": "JUM'AT",
-      "date": "11",
-      "team": "AJUL GEDANG FC"
+      "day": "SABTU",
+      "date": "12",
+      "team": "GNOZ FC"
     },
     {
       "time": "16.00-17.00",
@@ -154,7 +118,7 @@
       "time": "17.00-18.00",
       "day": "KAMIS",
       "date": "10",
-      "team": "CITERS FC"
+      "team": "PT. SIAP"
     },
     {
       "time": "17.00-18.00",
@@ -191,12 +155,6 @@
       "day": "RABU",
       "date": "09",
       "team": "BIANDA FC"
-    },
-    {
-      "time": "18.00-19.00",
-      "day": "KAMIS",
-      "date": "10",
-      "team": "RANCAGE FC"
     },
     {
       "time": "18.00-19.00",
@@ -317,18 +275,6 @@
       "day": "MINGGU",
       "date": "13",
       "team": "ARANS FC"
-    },
-    {
-      "time": "22.00-23.00",
-      "day": "JUM'AT",
-      "date": "11",
-      "team": "KESDAM FC"
-    },
-    {
-      "time": "22.00-23.00",
-      "day": "SABTU",
-      "date": "12",
-      "team": "DALAPAN FC"
     }
   ],
   "14-20_SEP_2026": [

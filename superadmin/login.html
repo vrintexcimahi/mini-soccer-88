@@ -16,7 +16,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #0d0d0d 0%, #1a0008 50%, #2d0010 100%);
+    background: linear-gradient(135deg, #08090B 0%, #140004 50%, #1F0008 100%);
     position: relative;
     overflow: hidden;
   }
@@ -27,7 +27,7 @@
     position: fixed;
     top: -200px; left: -200px;
     width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(158,6,32,0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(215,25,38,0.3) 0%, transparent 70%);
     border-radius: 50%;
     animation: float1 8s ease-in-out infinite;
   }
@@ -36,7 +36,7 @@
     position: fixed;
     bottom: -150px; right: -150px;
     width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(220,38,67,0.2) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(217,162,27,0.2) 0%, transparent 70%);
     border-radius: 50%;
     animation: float2 10s ease-in-out infinite;
   }
@@ -54,7 +54,7 @@
     padding: 48px 40px;
     width: 100%;
     max-width: 420px;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(158,6,32,0.15);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(215,25,38,0.15);
     animation: slideUp 0.5s ease;
   }
   @keyframes slideUp {
@@ -88,8 +88,9 @@
 
   .badge-admin {
     display: inline-block;
-    background: linear-gradient(90deg, #9E0620, #dc2643);
-    color: #fff;
+    background: linear-gradient(90deg, #D9A21B, #F3C644);
+    color: #08090B;
+    font-weight: 700;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -138,9 +139,9 @@
   }
   .form-input::placeholder { color: rgba(255,255,255,0.25); }
   .form-input:focus {
-    border-color: rgba(158,6,32,0.7);
+    border-color: rgba(215,25,38,0.7);
     background: rgba(255,255,255,0.09);
-    box-shadow: 0 0 0 3px rgba(158,6,32,0.15);
+    box-shadow: 0 0 0 3px rgba(215,25,38,0.15);
   }
 
   .toggle-pass {
@@ -165,7 +166,7 @@
   .btn-login {
     width: 100%;
     padding: 15px;
-    background: linear-gradient(135deg, #9E0620 0%, #dc2643 100%);
+    background: linear-gradient(135deg, #D71926 0%, #E82C3A 100%);
     border: none;
     border-radius: 12px;
     color: #fff;
@@ -174,21 +175,21 @@
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
-    box-shadow: 0 4px 20px rgba(158,6,32,0.4);
+    box-shadow: 0 4px 20px rgba(215,25,38,0.4);
     margin-top: 8px;
     letter-spacing: 0.02em;
   }
   .btn-login:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(158,6,32,0.55);
+    box-shadow: 0 8px 28px rgba(215,25,38,0.55);
   }
   .btn-login:active { transform: translateY(0); }
   .btn-login:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
   .error-msg {
     display: none;
-    background: rgba(220,38,67,0.15);
-    border: 1px solid rgba(220,38,67,0.35);
+    background: rgba(217,162,27,0.15);
+    border: 1px solid rgba(217,162,27,0.35);
     border-radius: 10px;
     padding: 12px 16px;
     color: #ff6b82;
@@ -315,7 +316,7 @@
       if (user === creds.username && pass === creds.password) {
         sessionStorage.setItem('ms88_admin_logged_in', '1');
         sessionStorage.setItem('ms88_admin_user', user);
-        btn.innerHTML = '✓ Berhasil! Mengalihkan...';
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> Berhasil! Mengalihkan...';
         btn.style.background = 'linear-gradient(135deg,#1a6e3d,#22a05b)';
         setTimeout(() => location.replace('/superadmin/'), 800);
       } else {

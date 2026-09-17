@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nota Transaksi — Mini Soccer 88 Alpha Sport</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="assets/logo/favicon.png">
+<link rel="stylesheet" href="css/theme-88.css">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ SCREEN STYLES ============ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Rubik', sans-serif;
+  background: #f3f4f6;
+  min-height: 100vh;
+  padding: 24px 16px;
+  color: #08090B;
+}
+
+.screen-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.topbar a {
+  color: #D71926;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.topbar-title { font-size: 18px; font-weight: 800; color: #08090B; }
+
+/* Action buttons (screen only) */
+.action-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.18s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-red    { background: #D71926; color: #fff; }
+.btn-red:hover { background: #B5141F; transform: translateY(-1px); }
+.btn-dark   { background: #08090B; color: #fff; }
+.btn-dark:hover { background: #181B22; transform: translateY(-1px); }
+.btn-outline { background: transparent; border: 1.5px solid #D9DCE1; color: #374151; }
+.btn-outline:hover { border-color: #9ca3af; }
+.btn-wa { background: #25D366; color: #fff; border: 1px solid #22c55e; }
+.btn-wa:hover { background: #20BA5A; color: #fff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,211,102,0.3); }
+
+/* Loading / Error screen */
+.state-screen {
+  text-align: center;
+  padding: 80px 20px;
+}
+.state-screen .icon { font-size: 48px; margin-bottom: 16px; }
+.state-screen h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.state-screen p  { font-size: 14px; color: #6b7280; }
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid #D9DCE1;
+  border-top-color: #D71926;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============ NOTA / RECEIPT ============ */
+.receipt {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+/* --- Header Note --- */
+.receipt-header {
+  background: linear-gradient(135deg, #08090B 0%, #181B22 55%, #D71926 100%);
+  color: #fff;
+  padding: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+.receipt-logo img {
+  height: 56px;
+  margin-bottom: 8px;
+}
+.receipt-logo h2 {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+.receipt-logo p {
+  font-size: 12px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.6;
+}
+
+.receipt-meta {
+  text-align: right;
+}
+.receipt-no {
+  font-size: 22px;
+  font-weight: 800;
+  font-family: monospace;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.status-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.badge-lunas { background: #D9A21B; color: #08090B; border: 1px solid rgba(8,9,11,0.2); }
+.badge-pending { background: #F4F5F7; color: #08090B; border: 1px solid #D9DCE1; }
+
+/* --- Body --- */
+.receipt-body { padding: 32px; }
+
+.receipt-section { margin-bottom: 28px; }
+.receipt-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #9ca3af;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.info-item {}
+.info-item .ilabel { font-size: 12px; color: #9ca3af; margin-bottom: 3px; }
+.info-item .ivalue { font-size: 14.5px; font-weight: 600; color: #08090B; }
+
+/* --- Item table --- */
+.item-table { width: 100%; border-collapse: collapse; }
+.item-table th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6b7280;
+  font-weight: 600;
+  padding: 8px 12px;
+  text-align: left;
+  background: #f9fafb;
+  border-bottom: 1px solid #D9DCE1;
+}
+.item-table th:last-child { text-align: right; }
+.item-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+  vertical-align: middle;
+}
+.item-table td:last-child { text-align: right; font-weight: 600; }
+.item-table .item-name { font-weight: 600; color: #08090B; }
+.item-table .item-desc { font-size: 12.5px; color: #6b7280; margin-top: 2px; }
+
+/* --- Total section --- */
+.totals-section { padding: 20px 32px; background: #f9fafb; border-top: 1px solid #D9DCE1; }
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 6px 0;
+  color: #4b5563;
+}
+.total-row.grand {
+  border-top: 2px solid #08090B;
+  margin-top: 10px;
+  padding-top: 14px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #08090B;
+}
+.total-row.grand .amount-val { color: #D71926; }
+
+/* --- Payment info --- */
+.payment-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 32px;
+  border-top: 1px solid #D9DCE1;
+  background: #fff;
+  flex-wrap: wrap;
+}
+.payment-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.payment-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #D9A21B; }
+.payment-note { font-size: 12px; color: #9ca3af; line-height: 1.6; flex: 1; min-width: 200px; }
+
+/* --- Footer receipt --- */
+.receipt-footer {
+  background: #08090B;
+  color: rgba(255,255,255,0.7);
+  padding: 20px 32px;
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.8;
+}
+.receipt-footer strong { color: rgba(255,255,255,0.9); }
+
+/* ============ PRINT STYLES ============ */
+@media print {
+  body { background: #fff; padding: 0; }
+  .topbar, .action-bar, .state-screen { display: none !important; }
+  .screen-wrapper { max-width: 100%; margin: 0; }
+  .receipt {
+    border-radius: 0;
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+  .receipt-header {
+    background: #08090B !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .btn { display: none !important; }
+}
+
+@media (max-width: 600px) {
+  .receipt-header { flex-direction: column; }
+  .receipt-meta { text-align: left; }
+  .info-grid { grid-template-columns: 1fr; }
+  .receipt-body, .totals-section, .payment-info { padding: 20px; }
+}
+</style>
+    <!-- PWA Primary Meta Tags & Cache Optimization -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FFFFFF">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mini Soccer 88">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192x192.png">
+    <link rel="stylesheet" href="css/pwa-install.css">
+</head>
+<body>
+
+<div class="screen-wrapper">
+  <!-- Topbar (screen only) -->
+  <div class="topbar">
+    <a href="sewa-lapangan.html">← Kembali</a>
+    <span class="topbar-title">Nota Pembayaran</span>
+    <a href="/"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Beranda</a>
+  </div>
+
+  <!-- Loading State -->
+  <div class="state-screen" id="stateLoading">
+    <div class="spinner"></div>
+    <h2>Memuat Nota...</h2>
+    <p>Sedang mengambil data transaksi Anda.</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="state-screen" id="stateError" style="display:none;">
+    <div class="icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#D71926" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
+    <h2 id="errTitle">Nota Tidak Dapat Dimuat</h2>
+    <p id="errDesc">Token akses tidak valid atau transaksi tidak ditemukan.</p>
+    <a href="sewa-lapangan.html" class="btn btn-red" style="margin-top:20px;display:inline-flex;">← Buat Booking Baru</a>
+  </div>
+
+  <!-- Pending State (paid_at tidak ada) -->
+  <div class="state-screen" id="statePending" style="display:none;">
+    <div class="icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#D9A21B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+    <h2>Pembayaran Belum Terverifikasi</h2>
+    <p>Nota akan tersedia setelah pembayaran dikonfirmasi secara otomatis.</p>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap;">
+      <button class="btn btn-red" onclick="reloadStatus()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg> Cek Ulang Status</button>
+      <a href="sewa-lapangan.html" class="btn btn-outline">← Kembali ke Booking</a>
+    </div>
+  </div>
+
+  <!-- Action Bar (screen only) -->
+  <div class="action-bar" id="actionBar" style="display:none;">
+    <button class="btn btn-red" onclick="window.print()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> Cetak Nota</button>
+    <button class="btn btn-dark" onclick="downloadPDF()">⬇️ Unduh PDF</button>
+    <button class="btn btn-wa" id="btnShareWa" onclick="shareReceiptWhatsApp()"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;"><path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.978-.276-.101-.477-.15-.678.15-.201.3-.778.978-.954 1.179-.176.2-.351.226-.652.076-.301-.15-1.27-.468-2.42-1.493-.895-.798-1.5-1.784-1.676-2.085-.176-.3-.019-.462.132-.612.136-.135.301-.351.452-.527.15-.176.201-.3.301-.502.101-.201.05-.376-.025-.527-.075-.15-.678-1.632-.929-2.235-.244-.588-.493-.508-.678-.518-.176-.01-.376-.01-.577-.01-.201 0-.527.075-.803.376s-1.054 1.029-1.054 2.511 1.079 2.913 1.23 3.114c.15.201 2.122 3.24 5.141 4.544.718.31 1.278.496 1.716.635.722.23 1.378.198 1.901.12.583-.087 1.78-.727 2.032-1.43.252-.703.252-1.305.176-1.43-.076-.126-.277-.201-.578-.352zM12 21.848a9.81 9.81 0 0 1-5.004-1.373l-.359-.213-3.722.976.993-3.627-.234-.372A9.82 9.82 0 1 1 12 21.848zM12 2C6.477 2 2 6.477 2 12c0 1.767.46 3.427 1.265 4.873L2 22l5.247-1.236A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg> Kirim ke WhatsApp</button>
+    <a href="sewa-lapangan.html" class="btn btn-outline">← Booking Lagi</a>
+  </div>
+
+  <!-- Receipt (hidden until loaded) -->
+  <article class="receipt" id="receiptEl" style="display:none;" aria-label="Nota Transaksi">
+
+    <!-- Header -->
+    <div class="receipt-header">
+      <div class="receipt-logo">
+        <img src="assets/logo/ms88-logo-transparent.png" alt="Mini Soccer 88 Alpha Sport">
+        <h2 id="rVenueName">Mini Soccer 88 Alpha Sport</h2>
+        <p id="rVenueAddress">Lapangan Pusdikif, Kota Cimahi</p>
+        <p id="rVenuePhone"></p>
+      </div>
+      <div class="receipt-meta">
+        <div class="receipt-no" id="rReceiptNo">NOTA-—</div>
+        <div><span class="status-badge badge-lunas" id="rStatusBadge">LUNAS</span></div>
+        <p style="font-size:12px;margin-top:10px;color:rgba(255,255,255,0.55);" id="rGeneratedAt"></p>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="receipt-body">
+
+      <!-- Pembeli -->
+      <div class="receipt-section">
+        <div class="receipt-section-title">Informasi Pelanggan</div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="ilabel">Nama / Nama Tim</div>
+            <div class="ivalue" id="rCustomerName">—</div>
+          </div>
+          <div class="info-item">
+            <div class="ilabel">Nomor WhatsApp</div>
+            <div class="ivalue" id="rCustomerPhone">—</div>
+          </div>
+          <div class="info-item">
+            <div class="ilabel">Nomor Pesanan</div>
+            <div class="ivalue" style="font-family:monospace;" id="rOrderId">—</div>
+          </div>
+          <div class="info-item">
+            <div class="ilabel">Tanggal Bayar</div>
+            <div class="ivalue" id="rPaidAt">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail Booking -->
+      <div class="receipt-section">
+        <div class="receipt-section-title">Detail Booking Lapangan</div>
+        <table class="item-table">
+          <thead>
+            <tr>
+              <th>Layanan</th>
+              <th style="text-align:center;">Durasi</th>
+              <th style="text-align:right;">Harga/Jam</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="rItemsBody">
+            <tr>
+              <td><div class="item-name">—</div></td>
+              <td style="text-align:center;">—</td>
+              <td style="text-align:right;">—</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Totals -->
+    <div class="totals-section">
+      <div class="total-row">
+        <span>Subtotal</span>
+        <span id="rSubtotal">—</span>
+      </div>
+      <div class="total-row">
+        <span>Diskon</span>
+        <span>Rp 0</span>
+      </div>
+      <div class="total-row">
+        <span>Biaya Layanan</span>
+        <span>Rp 0</span>
+      </div>
+      <div class="total-row grand">
+        <span>Total Dibayar</span>
+        <span class="amount-val" id="rTotal">—</span>
+      </div>
+    </div>
+
+    <!-- Payment Info -->
+    <div class="payment-info">
+      <div class="payment-badge">
+        <span class="dot"></span>
+        <span id="rMethodLabel">QRIS via Midtrans</span>
+      </div>
+      <div class="payment-note">
+        Ref. Transaksi: <strong id="rTxId">—</strong><br>
+        NMID QRIS: <strong id="rNMID">ID1026529171542</strong> • 88 ALPHA MINI SOCCER
+      </div>
+    </div>
+
+    <!-- Footer Receipt -->
+    <div class="receipt-footer">
+      <p><strong id="rFooterVenue">Mini Soccer 88 Alpha Sport · Lapangan Pusdikif Kodiklatad</strong></p>
+      <p id="rFooterAddress">Jl. Gatot Subroto, Kota Cimahi · WA: <strong>081295679799</strong> · IG: @88alphasport</p>
+      <p style="margin-top:8px;color:rgba(255,255,255,0.4);">
+        Nota ini diterbitkan secara otomatis. Bukti pembayaran ini <em>bukan</em> faktur pajak.
+        Simpan dokumen ini sebagai bukti booking Anda.
+      </p>
+    </div>
+
+  </article>
+
+</div><!-- /screen-wrapper -->
+
+<script>
+// =========================================================
+//  Receipt Page JS
+// =========================================================
+
+const params   = new URLSearchParams(location.search);
+const ORDER_ID = params.get('order_id') || params.get('orderId') || params.get('id');
+const TOKEN    = params.get('token');
+
+async function loadReceipt() {
+  if (!ORDER_ID) {
+    showError('Parameter tidak valid.', 'Pastikan Anda mengakses halaman ini dengan nomor pesanan yang valid.');
+    return;
+  }
+
+  // Coba fetch ke API Serverless jika token tersedia
+  if (TOKEN) {
+    try {
+      const resp = await fetch(`/api/get-receipt?order_id=${encodeURIComponent(ORDER_ID)}&token=${encodeURIComponent(TOKEN)}`);
+
+      if (resp.status === 403) {
+        showError('Akses Ditolak', 'Token tidak valid. Gunakan link yang dikirimkan setelah pembayaran berhasil.');
+        return;
+      }
+      if (resp.ok) {
+        const data = await resp.json();
+        if (!data.is_paid) {
+          document.getElementById('stateLoading').style.display = 'none';
+          document.getElementById('statePending').style.display = 'block';
+          return;
+        }
+        renderReceipt(data);
+        return;
+      }
+    } catch (err) {
+      console.warn('[receipt] Fetch API failed, attempting local fallback:', err.message);
+    }
+  }
+
+  // Fallback membaca dari localStorage (untuk dev lokal / offline / akses dari superadmin / portal member)
+  try {
+    const orders = JSON.parse(localStorage.getItem('ms88_orders') || '[]');
+    const o = orders.find(item => String(item.id).toLowerCase() === String(ORDER_ID).toLowerCase());
+    if (o) {
+      const isPaid = (o.status === 'paid' || o.status === 'confirmed' || o.status === 'completed' || o.status === 'success');
+      const durMatch = (o.time || '').match(/\((\d+)\s*Jam\)/);
+      const dur = durMatch ? parseInt(durMatch[1], 10) : 1;
+      renderReceipt({
+        receipt_no: 'NOTA-' + (o.id.replace(/\D/g,'').slice(-6) || '260901'),
+        order_id: o.id,
+        is_paid: isPaid,
+        status: o.status,
+        status_label: isPaid ? 'LUNAS' : 'BELUM DIBAYAR',
+        customer_name: o.name || 'Pelanggan',
+        customer_phone: o.phone || '-',
+        session_name: o.field || 'Sewa Lapangan Mini Soccer Pusdikif',
+        date: o.date || '',
+        date_formatted: o.date || 'September 2026',
+        time_start: (o.time || '08:00').split(' ')[0],
+        duration_hours: dur,
+        amount: o.total || 350000,
+        paid_at: o.paid_at || new Date().toISOString(),
+        paid_at_formatted: o.timestamp || 'Hari Ini',
+        provider: o.payment || 'midtrans',
+        transaction_id: 'TRX-' + o.id,
+        generated_at: new Date().toISOString(),
+        venue: {
+          name: 'Mini Soccer 88 Alpha Sport',
+          tagline: 'Lapangan Pusdikif Kodiklatad',
+          address: 'Jl. Gatot Subroto, Pusdikif Kota Cimahi',
+          phone: '081295679799',
+          instagram: '@88alphasport',
+          qris_nmid: 'ID1026529171542'
+        }
+      });
+      return;
+    }
+  } catch(e) {
+    console.warn('[receipt] Local fallback error:', e);
+  }
+
+  showError('Transaksi Tidak Ditemukan', 'Nomor pesanan tidak ditemukan di sistem kami.');
+}
+
+let currentReceiptData = null;
+
+function renderReceipt(d) {
+  currentReceiptData = d;
+  // Venue info
+  const v = d.venue || {};
+  setText('rVenueName',    v.name    || 'Mini Soccer 88 Alpha Sport');
+  setText('rVenueAddress', v.address || 'Lapangan Pusdikif, Kota Cimahi');
+  setText('rVenuePhone',   'WA: ' + (v.phone || '081295679799') + ' · IG: ' + (v.instagram || '@88alphasport'));
+
+  // Nota meta
+  setText('rReceiptNo',    d.receipt_no || '—');
+  setText('rGeneratedAt',  d.generated_at ? 'Diterbitkan: ' + fmtLocal(d.generated_at) : '');
+
+  // Status badge
+  const badge = document.getElementById('rStatusBadge');
+  if (d.is_paid) {
+    badge.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="20 6 9 17 4 12"></polyline></svg> LUNAS';
+    badge.className = 'status-badge badge-lunas';
+  } else {
+    badge.textContent = 'BELUM DIBAYAR';
+    badge.className = 'status-badge badge-pending';
+  }
+
+  // Customer
+  setText('rCustomerName',  d.customer_name  || '—');
+  setText('rCustomerPhone', d.customer_phone || '—');
+  setText('rOrderId',       d.order_id       || '—');
+  setText('rPaidAt',        d.paid_at_formatted || '—');
+
+  // Items
+  const pricePerHour = d.duration_hours > 0 ? Math.round(d.amount / d.duration_hours) : d.amount;
+  document.getElementById('rItemsBody').innerHTML = `
+    <tr>
+      <td>
+        <div class="item-name">Sewa Lapangan Mini Soccer Pusdikif</div>
+        <div class="item-desc">${escHtml(d.session_name)} · ${escHtml(d.date_formatted)} · ${escHtml(d.time_start)} WIB</div>
+      </td>
+      <td style="text-align:center;">${d.duration_hours} Jam</td>
+      <td style="text-align:right;">${fmtRp(pricePerHour)}</td>
+      <td>${fmtRp(d.amount)}</td>
+    </tr>`;
+
+  // Totals
+  setText('rSubtotal', fmtRp(d.amount));
+  setText('rTotal',    fmtRp(d.amount));
+
+  // Payment method
+  const method = d.provider === 'midtrans' ? 'QRIS via Midtrans' :
+                 d.provider === 'midtrans-demo' ? 'QRIS (Demo Mode)' : 'Transfer Bank';
+  setText('rMethodLabel', method);
+  setText('rTxId',        d.transaction_id || 'DEMO-' + d.order_id);
+  setText('rNMID',        (v.qris_nmid || 'ID1026529171542'));
+
+  // Footer
+  setText('rFooterVenue',   (v.name || 'Mini Soccer 88 Alpha Sport') + ' · ' + (v.tagline || 'Lapangan Pusdikif'));
+  setText('rFooterAddress', (v.address || 'Jl. Gatot Subroto, Kota Cimahi') + ' · WA: ' + (v.phone || '081295679799'));
+
+  // Tampilkan receipt
+  document.getElementById('stateLoading').style.display = 'none';
+  document.getElementById('receiptEl').style.display = 'block';
+  document.getElementById('actionBar').style.display  = 'flex';
+
+  // Update title
+  document.title = `Nota ${d.receipt_no || d.order_id} — Mini Soccer 88 Alpha Sport`;
+}
+
+// ---- Download PDF via print dialog ----
+function downloadPDF() {
+  // Sembunyikan topbar & action bar sementara untuk print
+  const els = document.querySelectorAll('.topbar,.action-bar');
+  els.forEach(e => e.style.setProperty('display','none','important'));
+  window.print();
+  setTimeout(() => els.forEach(e => e.style.removeProperty('display')), 500);
+}
+
+// ---- Kirim / Bagikan Nota ke WhatsApp ----
+function shareReceiptWhatsApp() {
+  if (!currentReceiptData) return;
+  const d = currentReceiptData;
+  const origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+  const receiptUrl = `${origin}/receipt.html?order_id=${encodeURIComponent(d.order_id || '')}`;
+  const statusStr = d.is_paid ? 'LUNAS' : 'MENUNGGU PEMBAYARAN';
+  const providerStr = d.provider === 'midtrans' ? 'QRIS Midtrans' : (d.provider === 'midtrans-demo' ? 'QRIS (Demo)' : (d.provider || 'Transfer Bank'));
+
+  const msg = 
+`*NOTA RESMI — MINI SOCCER 88 ALPHA SPORT*
+--------------------------------------------------
+📄 *No. Nota:* ${d.receipt_no || d.order_id}
+👤 *Nama Pemesan:* ${d.customer_name || 'Pelanggan'}
+🏟️ *Layanan:* ${d.session_name || 'Sewa Lapangan Mini Soccer Pusdikif'}
+📅 *Jadwal Main:* ${d.date_formatted || d.date || ''} (${d.time_start || '08:00'} WIB)
+⏱️ *Durasi:* ${d.duration_hours || 1} Jam
+💰 *Total Biaya:* ${fmtRp(d.amount)}
+✅ *Status:* ${statusStr} (${providerStr})
+--------------------------------------------------
+🔗 *Lihat Bukti Nota Digital Resmi:*
+${receiptUrl}
+
+_Harap simpan nota ini atau tunjukkan kepada pengawas lapangan Mini Soccer 88 Alpha Sport saat tiba di venue (Pusdikif Cimahi). Selamat berolahraga!_`;
+
+  let cleanPhone = (d.customer_phone || '').replace(/\D/g, '');
+  if (cleanPhone.startsWith('0')) {
+    cleanPhone = '62' + cleanPhone.slice(1);
+  } else if (cleanPhone.startsWith('8')) {
+    cleanPhone = '62' + cleanPhone;
+  }
+
+  let waUrl = '';
+  if (cleanPhone.length >= 9) {
+    waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
+  } else {
+    waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+  }
+  window.open(waUrl, '_blank');
+}
+
+// ---- Reload status (untuk pending state) ----
+function reloadStatus() {
+  document.getElementById('statePending').style.display = 'none';
+  document.getElementById('stateLoading').style.display = 'block';
+  loadReceipt();
+}
+
+// ---- Show error state ----
+function showError(title, desc) {
+  document.getElementById('stateLoading').style.display = 'none';
+  document.getElementById('stateError').style.display = 'block';
+  if (title) document.getElementById('errTitle').textContent = title;
+  if (desc)  document.getElementById('errDesc').textContent  = desc;
+}
+
+// ---- Helpers ----
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function escHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function fmtRp(n) {
+  return 'Rp ' + Number(n).toLocaleString('id-ID');
+}
+
+function fmtLocal(iso) {
+  try {
+    return new Date(iso).toLocaleString('id-ID', {
+      day:'numeric', month:'long', year:'numeric',
+      hour:'2-digit', minute:'2-digit', timeZone:'Asia/Jakarta'
+    }) + ' WIB';
+  } catch { return iso; }
+}
+
+// ---- Init ----
+document.addEventListener('DOMContentLoaded', loadReceipt);
+</script>
+
+<script src="js/pwa.js"></script>
+</body>
+</html>

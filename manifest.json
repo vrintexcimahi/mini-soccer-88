@@ -1,0 +1,102 @@
+{
+  "name": "Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi",
+  "short_name": "Mini Soccer 88",
+  "description": "Aplikasi Booking Lapangan & Komunitas Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi. Cek jadwal, sparring, mabar, dan booking online instan.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "id": "ms88-alpha-sport-pwa",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#071c14",
+  "theme_color": "#0b2e21",
+  "lang": "id-ID",
+  "dir": "ltr",
+  "categories": ["sports", "fitness", "lifestyle"],
+  "icons": [
+    {
+      "src": "assets/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-maskable-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/icons/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Booking Lapangan",
+      "short_name": "Booking",
+      "description": "Booking slot lapangan online",
+      "url": "./sewa-lapangan.html",
+      "icons": [{ "src": "assets/icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Jadwal Kompetisi",
+      "short_name": "Kompetisi",
+      "description": "Lihat turnamen & agenda kompetisi",
+      "url": "./kompetisi.html",
+      "icons": [{ "src": "assets/icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Main Bareng (Mabar)",
+      "short_name": "Mabar",
+      "description": "Gabung sparring dan mabar komunitas",
+      "url": "./main-bareng.html",
+      "icons": [{ "src": "assets/icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Hubungi Admin",
+      "short_name": "Kontak",
+      "description": "WhatsApp & Lokasi Pusdikif Cimahi",
+      "url": "./kontak.html",
+      "icons": [{ "src": "assets/icons/icon-96x96.png", "sizes": "96x96" }]
+    }
+  ]
+}

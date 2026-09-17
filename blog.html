@@ -9,32 +9,49 @@
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
+  header.as88-subpage-header, header { background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), #D71926 !important; border-bottom: none !important; position: sticky !important; top: 0 !important; z-index: 1050 !important; width: 100% !important; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.35) !important; }
+  .nav-inner { max-width: 1320px; margin: 0 auto; padding: 0 20px; height: 72px; display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; box-sizing: border-box; }
+  .nav-left { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+  .nav-logo { display: flex; align-items: center; text-decoration: none !important; flex-shrink: 0; }
+  .nav-logo img { height: 48px; width: auto; object-fit: contain; display: block; }
+  .nav-left .ms88-location-bar { display: inline-flex; align-items: center; gap: 6px; background: #F4F5F7; border: 1px solid #D9DCE1; border-radius: 20px; padding: 6px 14px; font-size: 13px; color: #08090B; cursor: pointer; }
+  .nav-links { display: none; align-items: center; gap: 4px; margin: 0 12px; padding: 0; list-style: none; }
+  @media (min-width: 1100px) { .nav-links { display: flex !important; } }
+  .nav-links a, .nav-link-item { font-size: 14px !important; font-weight: 600 !important; color: rgba(255,255,255,0.92) !important; padding: 8px 16px !important; border-radius: 8px !important; text-decoration: none !important; white-space: nowrap !important; transition: all 0.18s ease !important; display: inline-block; line-height: 1.4; }
+  .nav-links a:hover, .nav-link-item:hover { color: #fff !important; background: rgba(255,255,255,0.15) !important; }
+  .nav-links a.active, .nav-link-item.active { color: #fff !important; background: rgba(255,255,255,0.2) !important; font-weight: 700 !important; }
+  .nav-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nav-btn-install { display: inline-flex; align-items: center; gap: 6px; background: rgba(215, 25, 38, 0.08) !important; color: #D71926 !important; border: 1px solid rgba(215, 25, 38, 0.28) !important; padding: 6px 14px !important; border-radius: 100px !important; font-size: 13.5px !important; font-weight: 700 !important; text-decoration: none !important; white-space: nowrap !important; }
+  .nav-btn-back, .nav-back { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15) !important; color: #fff !important; border: 1px solid rgba(255,255,255,0.3) !important; padding: 6px 14px !important; border-radius: 100px !important; font-size: 13.5px !important; font-weight: 600 !important; text-decoration: none !important; white-space: nowrap !important; }
+  .nav-hamburger-btn { display: none; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; padding: 8px 10px; cursor: pointer; align-items: center; justify-content: center; color: #fff; }
+  @media (max-width: 1099px) { .nav-hamburger-btn { display: inline-flex !important; } }
+  .as88-mobile-drawer { display: none; background: #B5141F; border-top: 1px solid rgba(255,255,255,0.15); box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); padding: 16px 20px 24px; }
+  .as88-mobile-drawer.show { display: block !important; }
+  .as88-mobile-links { display: flex; flex-direction: column; gap: 4px; max-width: 600px; margin: 0 auto; }
+  .as88-mobile-links a { display: flex; align-items: center; gap: 10px; padding: 10px 14px; font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.92); text-decoration: none; border-radius: 8px; }
+  .as88-mobile-links a:hover, .as88-mobile-links a.active { color: #fff; background: rgba(255,255,255,0.15); }
 
-  body { font-family: 'Rubik', sans-serif; background: #f8f9fa; color: #1a1d23; margin: 0; }
+
+  body { font-family: 'Rubik', sans-serif; color: #1a1d23; margin: 0; }
   *,*::before,*::after{box-sizing:border-box;}
-  header { background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.08); position: sticky; top:0; z-index:100; }
-  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display:flex; align-items:center; justify-content:space-between; height:70px; }
-  .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
-  .nav-logo img { height:48px; width:auto; object-fit:contain; }
-  .nav-links { display:flex; gap:20px; align-items:center; }
-  .nav-links a { text-decoration:none; color:#374151; font-size:14px; font-weight:600; transition:color 0.18s; }
-  .nav-links a:hover { color:#B91C1C; }
-  .nav-back { font-size:13.5px; color:#B91C1C; font-weight:700; text-decoration:none; display:flex; align-items:center; gap:6px; background:rgba(185,28,28,0.08); padding:6px 14px; border-radius:100px; }
+  
+  
+  
+  
+  
+  @media(min-width:992px){  }
+  
+  
+  
   
   /* Location Bar */
-  .ms88-location-bar {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: #fff; border: 1.5px solid #e5e7eb;
-    border-radius: 100px; padding: 6px 14px;
-    font-size: 13.5px; color: #374151; font-weight: 500;
-    cursor: pointer; transition: border-color 0.18s, box-shadow 0.18s;
-  }
-  .ms88-location-bar:hover { border-color: #B91C1C; box-shadow: 0 0 0 3px rgba(185,28,28,0.08); }
-  .geo-pin { display: inline-flex; align-items: center; color: #B91C1C; }
-  .geo-pin svg { width: 15px; height: 15px; }
+  
+  
+  
+  
 
   /* Hero Section */
-  .page-hero { background: linear-gradient(135deg, #111827 0%, #1F2937 60%, #991B1B 100%); color:#fff; padding:60px 24px; text-align:center; }
+  .page-hero { background: linear-gradient(135deg, #08090B 0%, #181B22 55%, #D71926 100%); color:#fff; padding:60px 24px; text-align:center; }
   .page-hero .icon {
     width: 60px; height: 60px;
     background: rgba(255,255,255,0.1);
@@ -44,7 +61,7 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
-    color: #F59E0B;
+    color: #D9A21B;
   }
   .page-hero .icon svg { width: 30px; height: 30px; }
   .page-hero h1 { font-size:32px; font-weight:800; margin:0 0 10px; }
@@ -53,101 +70,133 @@
 
   /* Cards / Grid */
   .page-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:24px; margin-bottom:48px; }
-  .court-card,.comp-card { background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.07); border:1px solid #E5E7EB; }
+  .court-card,.comp-card { background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.07); border:1px solid #D9DCE1; }
   .court-info,.comp-info { padding:22px; }
-  .court-info h3,.comp-info h3 { font-size:19px; font-weight:700; margin:0 0 8px; color:#111827; }
+  .court-info h3,.comp-info h3 { font-size:19px; font-weight:700; margin:0 0 8px; color:#08090B; }
   .court-info p,.comp-info p { font-size:13.5px; color:#6b7280; margin:0 0 14px; line-height:1.6; }
   .court-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
-  .court-tags span { background:rgba(185,28,28,0.08); color:#B91C1C; padding:4px 10px; border-radius:100px; font-size:12px; font-weight:600; }
-  .comp-badge { display:inline-block; background:rgba(185,28,28,0.08); color:#B91C1C; padding:4px 10px; border-radius:100px; font-size:11px; font-weight:700; margin-bottom:8px; }
-  .comp-badge-open { background:#d1fae5; color:#065f46; }
+  .court-tags span { background:rgba(215,25,38,0.08); color:#D71926; padding:4px 10px; border-radius:100px; font-size:12px; font-weight:600; }
+  .comp-badge { display:inline-block; background:rgba(215,25,38,0.08); color:#D71926; padding:4px 10px; border-radius:100px; font-size:11px; font-weight:700; margin-bottom:8px; }
+  .comp-badge-open { background:#F4F5F7; color:#08090B; border: 1px solid #D9DCE1; }
   .comp-detail { font-size:13px; color:#4b5563; margin-bottom:16px; line-height:1.7; }
-  .btn-book { display:inline-block; background:#B91C1C; color:#fff; padding:10px 20px; border-radius:8px; font-size:14px; font-weight:700; text-decoration:none; transition:all 0.18s; }
-  .btn-book:hover { background:#991B1B; color:#fff; transform:translateY(-1px); }
+  .btn-book { display:inline-block; background:#D71926; color:#fff; padding:10px 20px; border-radius:8px; font-size:14px; font-weight:700; text-decoration:none; transition:all 0.18s; }
+  .btn-book:hover { background:#B5141F; color:#fff; transform:translateY(-1px); }
 
   /* Forms */
-  .booking-form-section { background:#fff; border-radius:16px; padding:36px; box-shadow:0 2px 12px rgba(0,0,0,0.07); border:1px solid #E5E7EB; }
-  .booking-form-section h2 { font-size:22px; font-weight:700; margin:0 0 8px; color:#111827; }
+  .booking-form-section { background:#fff; border-radius:16px; padding:36px; box-shadow:0 2px 12px rgba(0,0,0,0.07); border:1px solid #D9DCE1; }
+  .booking-form-section h2 { font-size:22px; font-weight:700; margin:0 0 8px; color:#08090B; }
   .booking-form-section > p { font-size:14px; color:#6b7280; margin:0 0 24px; }
   .booking-form { display:flex; flex-direction:column; gap:16px; }
   .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
   .form-group { display:flex; flex-direction:column; gap:6px; }
   .form-group label { font-size:13px; font-weight:600; color:#374151; }
-  .form-group input,.form-group select,.form-group textarea { padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; font-family:inherit; font-size:14px; outline:none; transition:border-color 0.18s; }
-  .form-group input:focus,.form-group select:focus,.form-group textarea:focus { border-color:#B91C1C; box-shadow:0 0 0 3px rgba(185,28,28,0.1); }
-  .btn-submit { background:#B91C1C; color:#fff; border:none; padding:13px 26px; border-radius:10px; font-family:inherit; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.18s; box-shadow:0 4px 14px rgba(185,28,28,0.3); align-self:flex-start; }
-  .btn-submit:hover { background:#991B1B; transform:translateY(-2px); }
+  .form-group input,.form-group select,.form-group textarea { padding:10px 12px; border:1px solid #D9DCE1; border-radius:8px; font-family:inherit; font-size:14px; outline:none; transition:border-color 0.18s; }
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus { border-color:#D71926; box-shadow:0 0 0 3px rgba(215,25,38,0.1); }
+  .btn-submit { background:#D71926; color:#fff; border:none; padding:13px 26px; border-radius:10px; font-family:inherit; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.18s; box-shadow:0 4px 14px rgba(215,25,38,0.3); align-self:flex-start; }
+  .btn-submit:hover { background:#B5141F; transform:translateY(-2px); }
 
   /* Mabar */
   .mabar-steps { display:flex; flex-direction:column; gap:18px; margin-bottom:36px; }
   .step { display:flex; gap:14px; align-items:flex-start; }
-  .step-num { width:34px; height:34px; border-radius:50%; background:#B91C1C; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; flex-shrink:0; }
-  .step strong { display:block; font-size:15px; margin-bottom:2px; color:#111827; }
+  .step-num { width:34px; height:34px; border-radius:50%; background:#D71926; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; flex-shrink:0; }
+  .step strong { display:block; font-size:15px; margin-bottom:2px; color:#08090B; }
   .step p { font-size:13.5px; color:#6b7280; margin:0; }
   .sessions-section { margin-bottom:40px; }
   .sessions-section h2 { font-size:22px; font-weight:700; margin:0 0 20px; }
   .sessions-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; }
-  .session-card { background:#fff; border-radius:14px; padding:22px; box-shadow:0 2px 10px rgba(0,0,0,0.07); border:1px solid #E5E7EB; }
-  .session-time { font-size:12.5px; color:#B91C1C; margin-bottom:6px; font-weight:700; }
-  .session-card h3 { font-size:17px; font-weight:700; margin:0 0 8px; color:#111827; }
+  .session-card { background:#fff; border-radius:14px; padding:22px; box-shadow:0 2px 10px rgba(0,0,0,0.07); border:1px solid #D9DCE1; }
+  .session-time { font-size:12.5px; color:#D71926; margin-bottom:6px; font-weight:700; }
+  .session-card h3 { font-size:17px; font-weight:700; margin:0 0 8px; color:#08090B; }
   .session-card p { font-size:13.5px; color:#6b7280; margin:0 0 12px; line-height:1.5; }
-  .session-slots { font-size:12px; color:#065f46; background:#d1fae5; padding:4px 10px; border-radius:100px; display:inline-block; margin-bottom:14px; font-weight:700; }
+  .session-slots { font-size:12px; color:#08090B; background:#F4F5F7; border:1px solid #D9DCE1; padding:4px 10px; border-radius:100px; display:inline-block; margin-bottom:14px; font-weight:700; }
 
   /* Partner */
   .partner-benefits { margin-bottom:40px; }
   .partner-benefits h2 { font-size:22px; font-weight:700; margin:0 0 20px; }
   .benefit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px; }
-  .benefit-card { background:#fff; border-radius:14px; padding:22px; box-shadow:0 2px 10px rgba(0,0,0,0.07); border:1px solid #E5E7EB; }
-  .benefit-icon { width: 44px; height: 44px; background: rgba(185,28,28,0.08); border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; color: #B91C1C; margin-bottom: 12px; }
+  .benefit-card { background:#fff; border-radius:14px; padding:22px; box-shadow:0 2px 10px rgba(0,0,0,0.07); border:1px solid #D9DCE1; }
+  .benefit-icon { width: 44px; height: 44px; background: rgba(215,25,38,0.08); border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; color: #D71926; margin-bottom: 12px; }
   .benefit-icon svg { width: 22px; height: 22px; }
-  .benefit-card h3 { font-size:16px; font-weight:700; margin:0 0 8px; color:#111827; }
+  .benefit-card h3 { font-size:16px; font-weight:700; margin:0 0 8px; color:#08090B; }
   .benefit-card p { font-size:13px; color:#6b7280; margin:0; line-height:1.5; }
 
   /* Venue Mgmt */
   .vm-features { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; margin-bottom:40px; }
-  .vm-list h2 { font-size:22px; font-weight:700; margin:0 0 20px; color:#111827; }
+  .vm-list h2 { font-size:22px; font-weight:700; margin:0 0 20px; color:#08090B; }
   .vm-item { display:flex; gap:14px; margin-bottom:20px; align-items:flex-start; }
-  .vm-icon { width: 40px; height: 40px; background: rgba(185,28,28,0.08); border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; color: #B91C1C; flex-shrink: 0; }
+  .vm-icon { width: 40px; height: 40px; background: rgba(215,25,38,0.08); border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; color: #D71926; flex-shrink: 0; }
   .vm-icon svg { width: 20px; height: 20px; }
-  .vm-item strong { display:block; font-size:15px; font-weight:700; margin-bottom:4px; color:#111827; }
+  .vm-item strong { display:block; font-size:15px; font-weight:700; margin-bottom:4px; color:#08090B; }
   .vm-item p { font-size:13.5px; color:#6b7280; margin:0; }
 
   /* Contact */
   .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; }
-  .contact-info-col h2,.contact-form-col h2 { font-size:22px; font-weight:700; margin:0 0 20px; color:#111827; }
+  .contact-info-col h2,.contact-form-col h2 { font-size:22px; font-weight:700; margin:0 0 20px; color:#08090B; }
   .contact-item { display:flex; gap:14px; margin-bottom:18px; align-items:flex-start; }
-  .contact-icon { width: 36px; height: 36px; background: rgba(185,28,28,0.08); border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; color: #B91C1C; flex-shrink: 0; }
+  .contact-icon { width: 36px; height: 36px; background: rgba(215,25,38,0.08); border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; color: #D71926; flex-shrink: 0; }
   .contact-icon svg { width: 18px; height: 18px; }
-  .contact-item strong { display:block; font-size:14px; font-weight:700; margin-bottom:2px; color:#111827; }
+  .contact-item strong { display:block; font-size:14px; font-weight:700; margin-bottom:2px; color:#08090B; }
   .contact-item p { font-size:13.5px; color:#4b5563; margin:0; }
   .sosmed-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
   .sm-badge { padding:8px 16px; background:#f3f4f6; border-radius:8px; font-size:13px; text-decoration:none; color:#374151; font-weight:600; transition:all 0.18s; display:inline-flex; align-items:center; gap:8px; }
-  .sm-badge:hover { background:rgba(185,28,28,0.1); color:#B91C1C; }
+  .sm-badge:hover { background:rgba(215,25,38,0.1); color:#D71926; }
 
-  @media(max-width:768px){.page-hero h1{font-size:24px;}.form-row{grid-template-columns:1fr;}.vm-features,.contact-grid{grid-template-columns:1fr;}.nav-links{display:none;}}
+  @media(max-width:768px){.page-hero h1{font-size:24px;}.form-row{grid-template-columns:1fr;}.vm-features,.contact-grid{grid-template-columns:1fr;}}
 
 </style>
+    <!-- PWA Primary Meta Tags & Cache Optimization -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FFFFFF">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mini Soccer 88">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192x192.png">
+    <link rel="stylesheet" href="css/theme-88.css">
+    <link rel="stylesheet" href="css/pwa-install.css">
 </head>
 <body>
 
-  <header>
-    <nav class="nav-inner">
-      <a href="/" class="nav-logo">
-        <img src="assets/logo/ms88-logo-transparent.png" alt="Mini Soccer 88 Alpha Sport Logo">
-        <div id="ms88LocationBar" class="ms88-location-bar" onclick="GeoMS88.showModal()" style="margin-left:14px;">
-          <span class="geo-pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="geo-pin-svg"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span><span class="geo-placeholder">Pusdikif Kota Cimahi</span>
-        </div>
-      </a>
-      <div class="nav-links">
-        <a href="sewa-lapangan.html">Sewa Lapangan</a>
-        <a href="/#pricelist">Tarif Resmi</a>
-        <a href="partner.html">Kemitraan Sekolah</a>
-        <a href="main-bareng.html">Komunitas & Mabar</a>
-        <a href="kompetisi.html">Dokumentasi GERAK</a>
-        <a href="kontak.html">Kontak</a>
+    <header class="as88-subpage-header">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a href="/" class="nav-logo" aria-label="Mini Soccer 88 Alpha Sport Pusdikif">
+          <img src="assets/logo/ms88-logo-transparent.png" alt="Mini Soccer 88 Alpha Sport Pusdikif Logo">
+        </a>
       </div>
-      <a href="/" class="nav-back">← Kembali ke Beranda</a>
-    </nav>
+
+      <nav class="nav-links" aria-label="Menu Utama">
+        <a href="/sewa-lapangan.html" class="nav-link-item ">Sewa</a>
+        <a href="/partner.html" class="nav-link-item ">Kemitraan</a>
+        <a href="/main-bareng.html" class="nav-link-item ">Komunitas</a>
+        <a href="/kompetisi.html" class="nav-link-item ">Dokumentasi</a>
+        <a href="/kontak.html" class="nav-link-item ">Kontak</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/" class="nav-btn-back">
+          ← Beranda
+        </a>
+        <button class="nav-hamburger-btn" type="button" aria-label="Buka Menu Navigasi" onclick="var m=document.getElementById('subpageMobileDrawer');if(m)m.classList.toggle('show');">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="as88-mobile-drawer" id="subpageMobileDrawer">
+      <div class="as88-mobile-links">
+        <a href="/sewa-lapangan.html" class=""><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 10 16 14 16 16 12 12 8"></polygon></svg> <span>Sewa Lapangan</span></a>
+        <a href="/partner.html" class=""><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="m11 17 2 2a1 1 0 0 0 1.4 0l4.3-4.3a1 1 0 0 0 0-1.4l-2-2"></path><path d="m18 10 3.3-3.3a1 1 0 0 0 0-1.4l-2.6-2.6a1 1 0 0 0-1.4 0L14 6"></path><path d="m2 14 6 6"></path><path d="M7 8 2 13"></path><path d="m20 17 2 2"></path><path d="m11 7-7 7 4 4 7-7-4-4Z"></path></svg> <span>Kemitraan Sekolah & Event</span></a>
+        <a href="/main-bareng.html" class=""><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> <span>Komunitas & Mabar</span></a>
+        <a href="/kompetisi.html" class=""><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg> <span>Dokumentasi Turnamen</span></a>
+        <a href="/kontak.html" class=""><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> <span>Kontak & Lokasi</span></a>
+        <hr style="margin: 8px 0; border: none; border-top: 1px solid #E8EBEF;">
+        <a href="javascript:void(0)" onclick="window.MS88PWA && window.MS88PWA.showInstallModal()" style="color:#D71926; font-weight:700;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> <span>Install Aplikasi PWA</span></a>
+        <a href="/"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> <span>Kembali ke Beranda Utama</span></a>
+      </div>
+    </div>
   </header>
 
 <section class="page-hero">
@@ -160,8 +209,8 @@
         <div class="page-grid" id="dynamicBlogGrid"></div>
         <div class="page-grid">
           <div class="court-card">
-            <div class="court-img" style="height:180px; overflow:hidden;">
-              <img src="assets/promo/poster-ekskul-sekolah.jpg" style="width:100%; height:100%; object-fit:cover;">
+            <div class="court-img text-center p-2" style="height:260px; background:#f8fafc; overflow:hidden;">
+              <img src="assets/promo/poster-ekskul-sekolah.png" alt="Poster Sekolah" style="width:100%; height:100%; object-fit:contain;">
             </div>
             <div class="court-info">
               <h3>Program Kemitraan Sekolah Dibuka!</h3>
@@ -170,8 +219,8 @@
             </div>
           </div>
           <div class="court-card">
-            <div class="court-img" style="height:180px; overflow:hidden;">
-              <img src="assets/promo/poster-kommoto.jpg" style="width:100%; height:100%; object-fit:cover;">
+            <div class="court-img text-center p-2" style="height:260px; background:#f8fafc; overflow:hidden;">
+              <img src="assets/promo/poster-kommoto.png" alt="Poster KOMMOTO" style="width:100%; height:100%; object-fit:contain;">
             </div>
             <div class="court-info">
               <h3>KOMMOTO 7-8: Jemur Sehat Tiap Pagi</h3>
@@ -180,8 +229,8 @@
             </div>
           </div>
           <div class="court-card">
-            <div class="court-img" style="height:180px; overflow:hidden;">
-              <img src="assets/promo/poster-fotografer.jpg" style="width:100%; height:100%; object-fit:cover;">
+            <div class="court-img text-center p-2" style="height:260px; background:#f8fafc; overflow:hidden;">
+              <img src="assets/promo/poster-fotografer.png" alt="Poster Fotografer" style="width:100%; height:100%; object-fit:contain;">
             </div>
             <div class="court-info">
               <h3>Jasa Fotografer Pertandingan GERAK</h3>
@@ -192,6 +241,42 @@
         </div>
         
 </main>
+<footer class="as88-subpage-footer mt-5 py-5 border-top">
+  <div class="container" style="max-width: 1320px;">
+    <div class="row g-4 justify-content-between align-items-center">
+      <div class="col-lg-6">
+        <a href="/" class="d-inline-flex align-items-center mb-2 text-decoration-none">
+          <img src="assets/logo/ms88-logo-transparent.png" alt="Mini Soccer 88 Alpha Sport Pusdikif Logo" style="height:44px; width:auto;">
+        </a>
+        <p class="text-secondary small mb-3" style="max-width:480px; line-height:1.6;">
+          Venue mini soccer rumput sintetis standar FIFA terbaik di Lapangan Pusdikif Kodiklatad Kota Cimahi.
+        </p>
+        <!-- Fitur Lokasi & Install App di footer -->
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <div id="ms88LocationBar" class="ms88-location-bar d-inline-flex align-items-center" onclick="GeoMS88.showModal()" title="Klik untuk info lokasi & peta" style="cursor:pointer; background:#F4F5F7; padding:6px 14px; border-radius:20px; font-size:13px; color:#08090B; border:1px solid #D9DCE1;">
+            <span class="geo-pin me-1" style="color:#D71926;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+            <span class="geo-placeholder" style="font-weight:600;">Pusdikif Kota Cimahi</span>
+          </div>
+          <a href="javascript:void(0)" onclick="window.MS88PWA && window.MS88PWA.showInstallModal()" class="as88-footer-btn-install" title="Pasang Aplikasi Web">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> <span>Install App</span>
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-5 text-lg-end">
+        <div class="d-flex flex-wrap justify-content-lg-end gap-3 small fw-semibold mb-3">
+          <a href="/sewa-lapangan.html" class="text-decoration-none">Sewa</a>
+          <a href="/partner.html" class="text-decoration-none">Kemitraan</a>
+          <a href="/main-bareng.html" class="text-decoration-none">Komunitas</a>
+          <a href="/kompetisi.html" class="text-decoration-none">Dokumentasi</a>
+          <a href="/kontak.html" class="text-decoration-none">Kontak</a>
+        </div>
+        <div class="text-muted small">
+          © 2026 Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi. Hak Cipta Dilindungi.
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <script>
 (function() {
@@ -207,7 +292,7 @@
       <div class="court-card">
         ${b.thumb ? `<div class="court-img" style="height:180px; overflow:hidden;"><img src="${b.thumb}" style="width:100%; height:100%; object-fit:cover;"></div>` : ''}
         <div class="court-info">
-          <div style="font-size:11px; font-weight:700; color:#B91C1C; text-transform:uppercase; margin-bottom:4px;">${b.category || 'Berita'}</div>
+          <div style="font-size:11px; font-weight:700; color:#D71926; text-transform:uppercase; margin-bottom:4px;">${b.category || 'Berita'}</div>
           <h3>${b.title}</h3>
           <p>${b.summary || (b.content ? b.content.slice(0, 120) + '...' : '')}</p>
           <small style="color:#6b7280; font-size:12px; display:block; margin-bottom:12px;">${b.createdAt || ''}</small>
@@ -230,5 +315,6 @@
 <script src="js/assets-sync.js"></script>
 <script src="js/geo.js"></script>
 <script>GeoMS88.init();</script>
+<script src="js/pwa.js"></script>
 </body>
 </html>

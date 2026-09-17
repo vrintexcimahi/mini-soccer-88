@@ -1,0 +1,341 @@
+/* ==========================================================================
+   MINI SOCCER 88 ALPHA SPORT — PWA INSTALL MODAL & LIGHT THEME STYLES
+   Brand Palette: White (40%), Sport Red (25%), Silver (15%), Black (15%), Gold (5%)
+   ========================================================================== */
+
+:root {
+  --ms88-pwa-bg: #FFFFFF;
+  --ms88-pwa-card: #FFFFFF;
+  --ms88-pwa-red: #D71926;
+  --ms88-pwa-red-dark: #B5141F;
+  --ms88-pwa-silver: #D9DCE1;
+  --ms88-pwa-silver-bg: #F4F5F7;
+  --ms88-pwa-black: #08090B;
+  --ms88-pwa-black-text: #08090B;
+  --ms88-pwa-gold: #D9A21B;
+  --ms88-pwa-gold-glow: rgba(217, 162, 27, 0.4);
+}
+
+/* Modal Overlay Backdrop */
+.ms88-pwa-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 9, 11, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ms88-pwa-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Modal Card (Light Glassmorphism) */
+.ms88-pwa-modal {
+  background: #FFFFFF;
+  border: 1.5px solid var(--ms88-pwa-silver);
+  box-shadow: 0 25px 60px rgba(8, 9, 11, 0.25),
+              0 0 35px rgba(217, 162, 27, 0.12);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 440px;
+  padding: 30px 24px 26px;
+  position: relative;
+  text-align: center;
+  transform: translateY(24px) scale(0.96);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--ms88-pwa-black-text);
+  overflow: hidden;
+}
+
+.ms88-pwa-overlay.active .ms88-pwa-modal {
+  transform: translateY(0) scale(1);
+}
+
+/* Close Button */
+.ms88-pwa-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--ms88-pwa-silver-bg);
+  border: 1px solid var(--ms88-pwa-silver);
+  color: #4A505A;
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.ms88-pwa-close:hover {
+  background: rgba(215, 25, 38, 0.1);
+  color: var(--ms88-pwa-red);
+  border-color: var(--ms88-pwa-red);
+}
+
+/* Top App Badge Icon */
+.ms88-pwa-badge {
+  width: 78px;
+  height: 78px;
+  margin: 0 auto 18px;
+  position: relative;
+}
+
+.ms88-pwa-badge img {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(8, 9, 11, 0.15);
+  border: 2px solid var(--ms88-pwa-gold);
+  display: block;
+  background: #FFFFFF;
+}
+
+.ms88-pwa-badge::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 26px;
+  background: radial-gradient(circle, var(--ms88-pwa-gold-glow) 0%, transparent 70%);
+  z-index: -1;
+  animation: pwa-pulse 2.4s infinite ease-in-out;
+}
+
+@keyframes pwa-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+/* Verified Pill */
+.ms88-pwa-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(217, 162, 27, 0.12);
+  border: 1px solid var(--ms88-pwa-gold);
+  color: #B88512;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 12px;
+}
+
+/* Titles */
+.ms88-pwa-title {
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 6px;
+  color: var(--ms88-pwa-black-text);
+}
+
+.ms88-pwa-title span {
+  color: var(--ms88-pwa-red);
+}
+
+.ms88-pwa-subtitle {
+  font-size: 13.5px;
+  color: #4A505A;
+  line-height: 1.45;
+  margin-bottom: 20px;
+  padding: 0 8px;
+}
+
+/* Benefits Checklist */
+.ms88-pwa-features {
+  background: var(--ms88-pwa-silver-bg);
+  border: 1px solid var(--ms88-pwa-silver);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 22px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ms88-pwa-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #181B22;
+}
+
+.ms88-pwa-feature-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(215, 25, 38, 0.1);
+  color: var(--ms88-pwa-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.ms88-pwa-feature-text strong {
+  color: var(--ms88-pwa-black-text);
+}
+
+/* iOS Instruction Box */
+.ms88-pwa-ios-instructions {
+  display: none;
+  background: rgba(217, 162, 27, 0.08);
+  border: 1px dashed var(--ms88-pwa-gold);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 18px;
+  text-align: left;
+  font-size: 12.5px;
+  color: #8C6508;
+  line-height: 1.5;
+}
+
+.ms88-pwa-ios-instructions ol {
+  margin: 6px 0 0 18px;
+  padding: 0;
+}
+
+.ms88-pwa-ios-instructions li {
+  margin-bottom: 4px;
+}
+
+/* Action Buttons */
+.ms88-pwa-btn-install {
+  width: 100%;
+  background: linear-gradient(135deg, var(--ms88-pwa-red) 0%, var(--ms88-pwa-red-dark) 100%);
+  color: #ffffff;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 6px 20px rgba(215, 25, 38, 0.35);
+  margin-bottom: 10px;
+}
+
+.ms88-pwa-btn-install:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(215, 25, 38, 0.45);
+  background: linear-gradient(135deg, #E82C3A 0%, var(--ms88-pwa-red) 100%);
+}
+
+.ms88-pwa-btn-install:active {
+  transform: translateY(0);
+}
+
+.ms88-pwa-btn-dismiss {
+  width: 100%;
+  background: transparent;
+  color: #6E7582;
+  border: 1px solid var(--ms88-pwa-silver);
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ms88-pwa-btn-dismiss:hover {
+  background: var(--ms88-pwa-silver-bg);
+  color: var(--ms88-pwa-black-text);
+  border-color: #B8BCC4;
+}
+
+/* Floating Offline Indicator Bar */
+.ms88-offline-bar {
+  position: fixed;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ms88-pwa-black);
+  border: 1.5px solid var(--ms88-pwa-gold);
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 30px rgba(8, 9, 11, 0.3);
+  z-index: 99999;
+  transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.ms88-offline-bar.show {
+  bottom: 24px;
+}
+
+.ms88-offline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ms88-pwa-red);
+  box-shadow: 0 0 10px var(--ms88-pwa-red);
+  animation: pwa-blink 1.2s infinite ease-in-out;
+}
+
+@keyframes pwa-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Performance Cache Indicator (Toast) */
+.ms88-cache-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #FFFFFF;
+  border: 1px solid var(--ms88-pwa-silver);
+  box-shadow: 0 8px 24px rgba(8, 9, 11, 0.12);
+  color: var(--ms88-pwa-black-text);
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 99999;
+  transform: translateX(120%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ms88-cache-toast.show {
+  transform: translateX(0);
+}
+
+.ms88-cache-toast-icon {
+  color: var(--ms88-pwa-gold);
+}

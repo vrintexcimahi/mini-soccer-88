@@ -17,3 +17,10 @@ Desktop.ini
 .idea/
 
 .vercel
+
+# Temporary, scratch & cache files
+*.tmp
+*.bak
+*.pyc
+__pycache__/
+.DS_Store

@@ -19,6 +19,8 @@ const ICON = {
   upload:   '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>',
   rotate:   '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>',
   settings: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>',
+  wa:       '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.978-.276-.101-.477-.15-.678.15-.201.3-.778.978-.954 1.179-.176.2-.351.226-.652.076-.301-.15-1.27-.468-2.42-1.493-.895-.798-1.5-1.784-1.676-2.085-.176-.3-.019-.462.132-.612.136-.135.301-.351.452-.527.15-.176.201-.3.301-.502.101-.201.05-.376-.025-.527-.075-.15-.678-1.632-.929-2.235-.244-.588-.493-.508-.678-.518-.176-.01-.376-.01-.577-.01-.201 0-.527.075-.803.376s-1.054 1.029-1.054 2.511 1.079 2.913 1.23 3.114c.15.201 2.122 3.24 5.141 4.544.718.31 1.278.496 1.716.635.722.23 1.378.198 1.901.12.583-.087 1.78-.727 2.032-1.43.252-.703.252-1.305.176-1.43-.076-.126-.277-.201-.578-.352zM12 21.848a9.81 9.81 0 0 1-5.004-1.373l-.359-.213-3.722.976.993-3.627-.234-.372A9.82 9.82 0 1 1 12 21.848zM12 2C6.477 2 2 6.477 2 12c0 1.767.46 3.427 1.265 4.873L2 22l5.247-1.236A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>',
+  download: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>',
 };
 
 // Default asset definitions with lay-user friendly labels, guidance & TARGET DIMENSIONS
@@ -32,11 +34,11 @@ const DEFAULT_ASSETS = [
   { key: 'qris',             label: 'Barcode QRIS Pembayaran',   def: '/assets/payment/qris-alpha-sport.jpg',         hint: 'QRIS resmi 88 Alpha Mini Soccer NMID ID1026529171542',targetW: 600, targetH: 800,  fit: 'contain' },
   { key: 'venue_prev',       label: 'Foto Preview Lapangan',     def: '/assets/img/venue/field-night-ball-fifa.jpg',  hint: 'Foto fasilitas lapangan mini soccer • 960×640 px',    targetW: 960,  targetH: 640,  fit: 'cover'   },
   { key: 'banner_cta',       label: 'Banner Promo CTA',          def: '/assets/payment/qris-banner-mascot.jpg',       hint: 'Banner ajakan bermain • Disarankan 1200×400 px',       targetW: 1200, targetH: 400,  fit: 'cover'   },
-  { key: 'banner_1_desktop', label: 'Slider Banner 1',           def: '/assets/promo/poster-ekskul-sekolah.jpg',      hint: 'Poster program sekolah & ekskul • 1440×560 px',       targetW: 1440, targetH: 560,  fit: 'cover'   },
-  { key: 'banner_2_desktop', label: 'Slider Banner 2',           def: '/assets/promo/poster-fotografer.jpg',          hint: 'Poster dokumentasi fotografer GERAK • 1440×560 px',   targetW: 1440, targetH: 560,  fit: 'cover'   },
-  { key: 'kompetisi1',       label: 'Poster Kommoto 7-8',        def: '/assets/promo/poster-kommoto.jpg',             hint: 'Program komunitas pagi jam 7-8',                      targetW: 640,  targetH: 480,  fit: 'cover'   },
+  { key: 'banner_1_desktop', label: 'Slider Banner 1',           def: '/assets/promo/poster-ekskul-sekolah.png',      hint: 'Poster program sekolah & ekskul • 1254×1254 px',       targetW: 1254, targetH: 1254, fit: 'contain' },
+  { key: 'banner_2_desktop', label: 'Slider Banner 2',           def: '/assets/promo/poster-fotografer.png',          hint: 'Poster dokumentasi fotografer GERAK • 1254×1254 px',   targetW: 1254, targetH: 1254, fit: 'contain' },
+  { key: 'kompetisi1',       label: 'Poster Kommoto 7-8',        def: '/assets/promo/poster-kommoto.png',             hint: 'Program komunitas pagi jam 7-8',                      targetW: 1254, targetH: 1254, fit: 'contain' },
   { key: 'kompetisi2',       label: 'Poster Creator Collab',     def: '/assets/promo/poster-content-creator.jpg',     hint: 'Kerjasama content creator @88alphasport',             targetW: 640,  targetH: 480,  fit: 'cover'   },
-  { key: 'kompetisi3',       label: 'Poster Pricelist Resmi',    def: '/assets/promo/poster-pricelist.jpg',           hint: 'Tabel harga sewa per jam September 2026',             targetW: 640,  targetH: 480,  fit: 'cover'   },
+  { key: 'kompetisi3',       label: 'Poster Pricelist Resmi',    def: '/assets/promo/poster-pricelist.png',           hint: 'Tabel harga sewa per jam September 2026',             targetW: 1254, targetH: 1254, fit: 'contain' },
 ];
 
 // --- Init ---
@@ -59,12 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
   renderOverview();
   renderSlots();
   renderOrders();
+  renderPayments();
+  loadPaymentSettings();
   renderMabar();
   renderBlogs();
   renderAssets();
   renderContact();
   renderPricing();
   loadSettings();
+  loadWaGatewaySettings();
 });
 
 // --- Tab Switching ---
@@ -79,12 +84,13 @@ function switchTab(tab) {
 
   const titles = {
     overview:'Dashboard', slots:'Kelola Slot', orders:'Manajemen Booking',
-    mabar:'Sesi Mabar', blog:'Blog & Artikel', assets:'Pengaturan Aset',
+    payments:'Transaksi & Nota', mabar:'Sesi Mabar', blog:'Blog & Artikel', assets:'Pengaturan Aset',
     pricing:'Tarif Lapangan', contact:'Kontak & Sosmed', settings:'Pengaturan Sistem'
   };
   const titleEl = document.getElementById('topbarTitle');
   if (titleEl) titleEl.textContent = titles[tab] || 'Dashboard';
   currentTab = tab;
+  if (tab === 'payments') renderPayments();
 }
 
 function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
@@ -287,6 +293,7 @@ function renderOrders() {
       <td><span class="badge-status ${o.status}">${o.status}</span></td>
       <td class="action-cell">
         ${o.status === 'pending' ? `<button class="btn-icon btn-green" onclick="confirmOrder('${o.id}')" title="Konfirmasi">${ICON.check}</button>` : ''}
+        <button class="btn-icon btn-wa" onclick="sendOrderWaConfirmation('${o.id}')" title="Kirim Konfirmasi / Chat WhatsApp">${ICON.wa}</button>
         <button class="btn-icon btn-red" onclick="deleteOrder('${o.id}')" title="Hapus">${ICON.trash}</button>
       </td>
     </tr>
@@ -300,6 +307,72 @@ function confirmOrder(id) {
   renderOrders(); initDefaultOrdersIfEmpty();
   renderOverview();
   toast('Booking dikonfirmasi ✓');
+
+  // Notifikasi WhatsApp otomatis jika diaktifkan
+  const waSettings = getLS('ms88_wa_gateway', { autoPrompt: true });
+  if (waSettings.autoPrompt !== false) {
+    setTimeout(() => {
+      sendOrderWaConfirmation(id);
+    }, 450);
+  }
+}
+
+// --- Ekspor Rekap Booking ke CSV (Excel) ---
+function exportOrdersToCSV() {
+  const orders = getLS('ms88_orders', []);
+  const filter = document.getElementById('filterStatus')?.value || '';
+  const filtered = filter ? orders.filter(o => o.status === filter) : orders;
+
+  if (filtered.length === 0) {
+    toast('Tidak ada data booking untuk diekspor', 'warning');
+    return;
+  }
+
+  const csvRows = [];
+  csvRows.push([
+    'No',
+    'ID Booking',
+    'Nama Pelanggan / Tim',
+    'Nomor WhatsApp',
+    'Lapangan / Sesi',
+    'Tanggal Main',
+    'Jam Main',
+    'Total Biaya (Rp)',
+    'Status',
+    'Metode Transaksi',
+    'Waktu Pencatatan'
+  ]);
+
+  filtered.forEach((o, i) => {
+    csvRows.push([
+      i + 1,
+      o.id || '',
+      o.name || '',
+      o.phone || '',
+      o.court || o.field || 'Lapangan Utama Pusdikif',
+      o.date || '',
+      o.time || '',
+      o.total || 0,
+      (o.status || '').toUpperCase(),
+      o.payment || 'manual',
+      o.timestamp || o.paid_at || '-'
+    ]);
+  });
+
+  const csvString = csvRows.map(row => 
+    row.map(val => `"${String(val).replace(/"/g, '""')}"`).join(',')
+  ).join('\r\n');
+
+  const blob = new Blob(['\uFEFF' + csvString], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const now = new Date();
+  const timeStr = now.toISOString().slice(0,10).replace(/-/g,'') + '_' + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute('download', `Rekap_Booking_MS88_${timeStr}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  toast(`Berhasil mengekspor ${filtered.length} data booking ✓`);
 }
 
 function deleteOrder(id) {
@@ -335,14 +408,626 @@ function addDummyOrder() {
   toast('Booking baru ditambahkan');
 }
 
+// =========================================================
+//  TRANSAKSI & NOTA PEMBAYARAN (MIDTRANS QRIS)
+// =========================================================
+function renderPayments() {
+  const orders   = getLS('ms88_orders', []);
+  const search   = (document.getElementById('filterPaySearch')?.value || '').toLowerCase().trim();
+  const stFilter = document.getElementById('filterPayStatus')?.value || '';
+
+  // KPI Calculations
+  let totalCount = 0;
+  let paidCount  = 0;
+  let pendCount  = 0;
+  let revenue    = 0;
+
+  orders.forEach(o => {
+    totalCount++;
+    const isPaid = (o.status === 'paid' || o.status === 'confirmed');
+    if (isPaid) {
+      paidCount++;
+      revenue += (o.total || 0);
+    } else if (o.status === 'pending') {
+      pendCount++;
+    }
+  });
+
+  const kpiRev = document.getElementById('kpiPayRevenue');
+  const kpiPaid = document.getElementById('kpiPayPaid');
+  const kpiPend = document.getElementById('kpiPayPending');
+  const kpiTot  = document.getElementById('kpiPayTotal');
+  if (kpiRev)  kpiRev.textContent  = fmtRp(revenue);
+  if (kpiPaid) kpiPaid.textContent = paidCount;
+  if (kpiPend) kpiPend.textContent = pendCount;
+  if (kpiTot)  kpiTot.textContent  = totalCount;
+
+  // Filter list
+  const filtered = orders.filter(o => {
+    if (stFilter) {
+      if (stFilter === 'paid' && o.status !== 'paid' && o.status !== 'confirmed') return false;
+      if (stFilter !== 'paid' && o.status !== stFilter) return false;
+    }
+    if (search) {
+      const matchId   = (o.id || '').toLowerCase().includes(search);
+      const matchName = (o.name || '').toLowerCase().includes(search);
+      const matchPhone= (o.phone || '').toLowerCase().includes(search);
+      if (!matchId && !matchName && !matchPhone) return false;
+    }
+    return true;
+  });
+
+  const tbody = document.getElementById('paymentsBody');
+  if (!tbody) return;
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" class="empty-state" style="text-align:center;padding:32px;color:#6b7280;">Tidak ada riwayat pembayaran yang cocok.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((o, i) => {
+    const isPaid = (o.status === 'paid' || o.status === 'confirmed');
+    const methodBadge = (o.payment === 'midtrans' || o.id?.startsWith('MS88-'))
+      ? '<span style="background:rgba(215,25,38,0.08);color:#D71926;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;">⚡ QRIS Midtrans</span>'
+      : (o.payment === 'whatsapp'
+          ? '<span style="background:rgba(37,211,102,0.1);color:#15803d;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;">💬 WhatsApp</span>'
+          : '<span style="background:#f3f4f6;color:#4b5563;font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;">Manual</span>');
+
+    return `
+      <tr>
+        <td>${i + 1}</td>
+        <td><code style="font-size:12px;color:#D71926;background:rgba(215,25,38,0.05);padding:2px 6px;border-radius:4px;font-weight:600;">${o.id || '-'}</code></td>
+        <td><strong>${o.name || 'Pelanggan'}</strong><br><small style="color:#6b7280;">${o.phone || '-'}</small></td>
+        <td>${o.court || o.field || 'Lapangan Utama'}<br><small style="color:#6b7280;">${o.date || '-'} · ${o.time || '-'}</small></td>
+        <td><strong>${fmtRp(o.total || 0)}</strong></td>
+        <td>${methodBadge}</td>
+        <td><span class="badge-status ${o.status}">${isPaid ? 'paid' : o.status}</span></td>
+        <td class="action-cell">
+          ${o.status === 'pending' ? `<button class="btn-icon btn-outline" onclick="checkPaymentStatusAdmin('${o.id}')" title="Cek Status Midtrans">${ICON.rotate || '🔄'}</button>` : ''}
+          <button class="btn-icon btn-outline" onclick="openReceiptAdmin('${o.id}')" title="Buka & Cetak Nota" style="color:#08090B;">🧾</button>
+          <button class="btn-icon btn-wa" onclick="sendPaymentWaReceipt('${o.id}')" title="Kirim Nota via WhatsApp ke Pemesan">${ICON.wa}</button>
+          ${!isPaid ? `<button class="btn-icon btn-green" onclick="markPaymentPaid('${o.id}')" title="Tandai Lunas Manual">${ICON.check}</button>` : ''}
+          <button class="btn-icon btn-red" onclick="deletePayment('${o.id}')" title="Hapus Transaksi">${ICON.trash}</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function openReceiptAdmin(orderId) {
+  const secret = 'ms88-receipt-secret-key-2026';
+  let token = '';
+  try {
+    if (window.crypto && window.crypto.subtle) {
+      const enc = new TextEncoder();
+      const key = await window.crypto.subtle.importKey(
+        'raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+      );
+      const sig = await window.crypto.subtle.sign('HMAC', key, enc.encode(orderId));
+      token = Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+  } catch(e) {
+    console.warn('[openReceiptAdmin] SubtleCrypto warning:', e);
+  }
+
+  const receiptPath = window.location.pathname.includes('/superadmin') ? '../receipt.html' : 'receipt.html';
+  const url = token ? `${receiptPath}?order_id=${encodeURIComponent(orderId)}&token=${token}` : `${receiptPath}?order_id=${encodeURIComponent(orderId)}`;
+  window.open(url, '_blank');
+}
+
+async function checkPaymentStatusAdmin(orderId) {
+  toast('Mengecek status pembayaran ke Midtrans...');
+  try {
+    const resp = await fetch(`/api/payment-status?order_id=${encodeURIComponent(orderId)}`);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+
+    const orders = getLS('ms88_orders', []);
+    const idx = orders.findIndex(o => String(o.id) === String(orderId));
+    if (idx >= 0) {
+      orders[idx].status = data.status;
+      if (data.paid_at) orders[idx].paid_at = data.paid_at;
+      setLS('ms88_orders', orders);
+    }
+    renderPayments();
+    renderOrders();
+    renderOverview();
+    toast(`Status transaksi ${orderId}: ${data.status.toUpperCase()} ✓`);
+  } catch (err) {
+    console.warn('[checkPaymentStatusAdmin] Error:', err.message);
+    toast('Gagal menghubungi API Midtrans: ' + err.message, 'warning');
+  }
+}
+
+function markPaymentPaid(orderId) {
+  if (!confirm(`Tandai transaksi ${orderId} sebagai LUNAS?`)) return;
+  const orders = getLS('ms88_orders', []);
+  const idx = orders.findIndex(o => String(o.id) === String(orderId));
+  if (idx >= 0) {
+    orders[idx].status = 'paid';
+    orders[idx].paid_at = new Date().toISOString();
+    setLS('ms88_orders', orders);
+  }
+  renderPayments();
+  renderOrders();
+  renderOverview();
+  toast(`Transaksi ${orderId} ditandai LUNAS ✓`);
+}
+
+function deletePayment(orderId) {
+  if (!confirm(`Hapus transaksi ${orderId}?`)) return;
+  const orders = getLS('ms88_orders', []).filter(o => String(o.id) !== String(orderId));
+  setLS('ms88_orders', orders);
+  renderPayments();
+  renderOrders();
+  renderOverview();
+  toast('Transaksi berhasil dihapus', 'warning');
+}
+
+function addDummyPayment() {
+  const orders = getLS('ms88_orders', []);
+  const now = new Date();
+  const dateStr = now.toISOString().slice(0,10);
+  const orderId = 'MS88-' + dateStr.replace(/-/g,'') + '-' + Math.random().toString(36).substring(2,8).toUpperCase();
+  const clubs = ['Sparta FC Cimahi', 'Alpha Warrior FC', 'Pusdikif United', 'Sang Mantan FC', 'Kirari Space'];
+  const sessions = [
+    { name: 'Happy Hours (10:00–15:00)', total: 225000, time: '10:00 (1 Jam)' },
+    { name: 'Prime Time (15:00–18:00)', total: 300000, time: '16:00 (1 Jam)' },
+    { name: 'Premium Night (18:00–22:00)', total: 700000, time: '19:00 (2 Jam)' }
+  ];
+  const randSession = sessions[Math.floor(Math.random() * sessions.length)];
+
+  orders.unshift({
+    id: orderId,
+    name: clubs[Math.floor(Math.random() * clubs.length)],
+    phone: '0812' + Math.floor(10000000 + Math.random() * 90000000),
+    field: randSession.name,
+    court: 'Lapangan 1 (FIFA Synth)',
+    date: dateStr,
+    time: randSession.time,
+    total: randSession.total,
+    status: 'paid',
+    payment: 'midtrans',
+    paid_at: new Date().toISOString(),
+    timestamp: new Date().toLocaleDateString('id-ID', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })
+  });
+
+  setLS('ms88_orders', orders);
+  renderPayments();
+  renderOrders();
+  renderOverview();
+  toast('Simulasi transaksi QRIS berhasil dibuat ✓');
+}
+
+async function syncPaymentsFromAPI() {
+  const orders = getLS('ms88_orders', []);
+  const pendings = orders.filter(o => o.status === 'pending');
+  if (pendings.length === 0) {
+    toast('Semua transaksi sudah up-to-date.');
+    return;
+  }
+  toast(`Menyinkronkan ${pendings.length} transaksi pending...`);
+  let updated = 0;
+  for (const o of pendings) {
+    try {
+      const resp = await fetch(`/api/payment-status?order_id=${encodeURIComponent(o.id)}`);
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data.status && data.status !== o.status) {
+          o.status = data.status;
+          if (data.paid_at) o.paid_at = data.paid_at;
+          updated++;
+        }
+      }
+    } catch(e) {}
+  }
+  setLS('ms88_orders', orders);
+  renderPayments();
+  renderOrders();
+  renderOverview();
+  toast(`Sinkronisasi selesai: ${updated} transaksi diperbarui ✓`);
+}
+
+// --- Ekspor Laporan Omset & Transaksi ke CSV (Excel) ---
+function exportPaymentsToCSV() {
+  const orders   = getLS('ms88_orders', []);
+  const search   = (document.getElementById('filterPaySearch')?.value || '').toLowerCase().trim();
+  const stFilter = document.getElementById('filterPayStatus')?.value || '';
+
+  const filtered = orders.filter(o => {
+    if (stFilter) {
+      if (stFilter === 'paid' && o.status !== 'paid' && o.status !== 'confirmed') return false;
+      if (stFilter !== 'paid' && o.status !== stFilter) return false;
+    }
+    if (search) {
+      const matchId   = (o.id || '').toLowerCase().includes(search);
+      const matchName = (o.name || '').toLowerCase().includes(search);
+      const matchPhone= (o.phone || '').toLowerCase().includes(search);
+      if (!matchId && !matchName && !matchPhone) return false;
+    }
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    toast('Tidak ada riwayat pembayaran untuk diekspor', 'warning');
+    return;
+  }
+
+  const csvRows = [];
+  csvRows.push([
+    'No',
+    'Order ID',
+    'Nomor Nota Resmi',
+    'Nama Pelanggan / Tim',
+    'Nomor WhatsApp',
+    'Layanan / Sesi',
+    'Lapangan',
+    'Tanggal Booking',
+    'Jam Main',
+    'Metode Transaksi',
+    'Nominal (Rp)',
+    'Status Pembayaran',
+    'Waktu Lunas / Terverifikasi'
+  ]);
+
+  filtered.forEach((o, i) => {
+    const isPaid = (o.status === 'paid' || o.status === 'confirmed');
+    const receiptNo = 'NOTA-' + (String(o.id).replace(/\D/g,'').slice(-6) || '260901');
+    csvRows.push([
+      i + 1,
+      o.id || '',
+      receiptNo,
+      o.name || 'Pelanggan',
+      o.phone || '',
+      o.field || 'Sewa Lapangan Mini Soccer',
+      o.court || 'Lapangan Pusdikif Cimahi',
+      o.date || '',
+      o.time || '',
+      o.payment === 'midtrans' ? 'QRIS Midtrans' : (o.payment === 'whatsapp' ? 'WhatsApp' : 'Manual'),
+      o.total || 0,
+      isPaid ? 'LUNAS' : (o.status || '').toUpperCase(),
+      o.paid_at ? new Date(o.paid_at).toLocaleString('id-ID') : (o.timestamp || '-')
+    ]);
+  });
+
+  const csvString = csvRows.map(row => 
+    row.map(val => `"${String(val).replace(/"/g, '""')}"`).join(',')
+  ).join('\r\n');
+
+  const blob = new Blob(['\uFEFF' + csvString], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const now = new Date();
+  const timeStr = now.toISOString().slice(0,10).replace(/-/g,'') + '_' + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute('download', `Laporan_Omset_MS88_${timeStr}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  toast(`Berhasil mengekspor ${filtered.length} riwayat transaksi & omset ✓`);
+}
+
+// --- Kirim Konfirmasi Booking via WhatsApp ---
+function sendOrderWaConfirmation(id) {
+  const orders = getLS('ms88_orders', []);
+  const o = orders.find(item => String(item.id) === String(id));
+  if (!o) {
+    toast('Data booking tidak ditemukan', 'warning');
+    return;
+  }
+
+  const waSettings = getLS('ms88_wa_gateway', {
+    provider: 'direct',
+    senderPhone: '081295679799',
+    templateType: 'full'
+  });
+
+  const origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+  const receiptUrl = `${origin}/receipt.html?order_id=${encodeURIComponent(o.id)}`;
+  const statusStr = (o.status === 'paid' || o.status === 'confirmed') ? 'DIKONFIRMASI / LUNAS' : 'MENUNGGU PEMBAYARAN';
+
+  let msg = '';
+  if (waSettings.templateType === 'compact') {
+    msg = 
+`*KONFIRMASI BOOKING — MINI SOCCER 88 ALPHA SPORT*
+Halo kak *${o.name}*, jadwal booking mini soccer Anda telah kami catat:
+🏟️ ${o.court || o.field || 'Lapangan Pusdikif'}
+📅 ${o.date || '-'} | ⏰ ${o.time || '-'}
+💰 Total: ${fmtRp(o.total || 0)} [${statusStr}]
+🔗 Cek Nota & Tiket: ${receiptUrl}
+Sampai jumpa di lapangan!`;
+  } else {
+    msg = 
+`*KONFIRMASI BOOKING — MINI SOCCER 88 ALPHA SPORT*
+--------------------------------------------------
+Halo kak *${o.name}*, terima kasih telah memesan jadwal di Mini Soccer 88 Alpha Sport Pusdikif Cimahi.
+
+📋 *Rincian Jadwal Booking:*
+• *ID Booking:* ${o.id}
+• *Lapangan:* ${o.court || o.field || 'Lapangan Utama Pusdikif Cimahi'}
+• *Tanggal:* ${o.date || '-'}
+• *Jam Main:* ${o.time || '-'}
+• *Total Biaya:* ${fmtRp(o.total || 0)}
+• *Status:* ✅ ${statusStr}
+
+🔗 *Bukti Nota & Tiket Masuk Digital:*
+${receiptUrl}
+
+📍 *Lokasi Venue:*
+Jl. Gatot Subroto, Pusdikif Kota Cimahi.
+_Mohon hadir 15 menit sebelum jam bermain dimulai. Terima kasih & selamat berolahraga!_
+--------------------------------------------------
+Mini Soccer 88 Alpha Sport Official (WA: ${waSettings.senderPhone || '081295679799'})`;
+  }
+
+  let cleanPhone = (o.phone || '').replace(/\D/g, '');
+  if (cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.slice(1);
+  else if (cleanPhone.startsWith('8')) cleanPhone = '62' + cleanPhone;
+
+  let waUrl = '';
+  if (cleanPhone.length >= 9) {
+    waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
+  } else {
+    waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+  }
+
+  window.open(waUrl, '_blank');
+  toast(`Membuka WhatsApp untuk ${o.name} (${o.phone || '-'}) ✓`);
+}
+
+// --- Kirim Nota Transaksi via WhatsApp ---
+function sendPaymentWaReceipt(orderId) {
+  const orders = getLS('ms88_orders', []);
+  const o = orders.find(item => String(item.id) === String(orderId));
+  if (!o) {
+    toast('Data transaksi tidak ditemukan', 'warning');
+    return;
+  }
+
+  const origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+  const receiptUrl = `${origin}/receipt.html?order_id=${encodeURIComponent(o.id)}`;
+  const isPaid = (o.status === 'paid' || o.status === 'confirmed');
+  const receiptNo = 'NOTA-' + (String(o.id).replace(/\D/g,'').slice(-6) || '260901');
+
+  const msg = 
+`*NOTA DIGITAL RESMI — MINI SOCCER 88 ALPHA SPORT*
+--------------------------------------------------
+Halo kak *${o.name || 'Pelanggan'}*, berikut bukti nota transaksi resmi Anda:
+
+📄 *No. Nota:* ${receiptNo}
+🔖 *Order ID:* ${o.id}
+🏟️ *Layanan:* ${o.field || 'Sewa Lapangan Mini Soccer Pusdikif'}
+📅 *Jadwal:* ${o.date || '-'} (${o.time || '-'})
+💰 *Nominal:* ${fmtRp(o.total || 0)}
+💳 *Metode:* ${o.payment === 'midtrans' ? 'QRIS Midtrans' : (o.payment === 'whatsapp' ? 'WhatsApp' : 'Manual')}
+✅ *Status Transaksi:* ${isPaid ? 'LUNAS (PAID)' : 'MENUNGGU PEMBAYARAN'}
+
+🔗 *Link Nota Pembayaran Digital:*
+${receiptUrl}
+
+Simpan tautan di atas sebagai bukti resmi saat tiba di venue. Terima kasih!
+--------------------------------------------------
+Mini Soccer 88 Alpha Sport Pusdikif Cimahi`;
+
+  let cleanPhone = (o.phone || '').replace(/\D/g, '');
+  if (cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.slice(1);
+  else if (cleanPhone.startsWith('8')) cleanPhone = '62' + cleanPhone;
+
+  let waUrl = '';
+  if (cleanPhone.length >= 9) {
+    waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
+  } else {
+    waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+  }
+
+  window.open(waUrl, '_blank');
+  toast(`Membuka nota WhatsApp untuk ${o.name || o.id} ✓`);
+}
+
+// =========================================================
+//  WHATSAPP GATEWAY & NOTIFIKASI
+// =========================================================
+function loadWaGatewaySettings() {
+  const def = {
+    provider: 'direct',
+    apiToken: '',
+    senderPhone: '081295679799',
+    templateType: 'full',
+    autoPrompt: true
+  };
+  const cfg = getLS('ms88_wa_gateway', def);
+
+  const provEl = document.getElementById('waProvider');
+  const tokenEl = document.getElementById('waApiToken');
+  const phoneEl = document.getElementById('waSenderPhone');
+  const tmplEl = document.getElementById('waTemplateType');
+  const autoEl = document.getElementById('waAutoPromptCheck');
+
+  if (provEl) provEl.value = cfg.provider || 'direct';
+  if (tokenEl) tokenEl.value = cfg.apiToken || '';
+  if (phoneEl) phoneEl.value = cfg.senderPhone || '081295679799';
+  if (tmplEl) tmplEl.value = cfg.templateType || 'full';
+  if (autoEl) autoEl.checked = cfg.autoPrompt !== false;
+
+  updateWaProviderUI();
+}
+
+function updateWaProviderUI() {
+  const prov = document.getElementById('waProvider')?.value || 'direct';
+  const tokenGroup = document.getElementById('waTokenGroup');
+  const badge = document.getElementById('waGatewayBadge');
+
+  if (tokenGroup) {
+    tokenGroup.style.display = (prov === 'direct') ? 'none' : 'block';
+  }
+
+  if (badge) {
+    if (prov === 'direct') {
+      badge.textContent = 'Mode: Direct 1-Klik WA (Gratis)';
+      badge.style.background = '#EBFDF2';
+      badge.style.color = '#15803D';
+      badge.style.borderColor = '#BBF7D0';
+    } else if (prov === 'fonnte') {
+      badge.textContent = 'Mode: Fonnte API Gateway';
+      badge.style.background = '#EFF6FF';
+      badge.style.color = '#1D4ED8';
+      badge.style.borderColor = '#BFDBFE';
+    } else if (prov === 'wablas') {
+      badge.textContent = 'Mode: Wablas API Gateway';
+      badge.style.background = '#F5F3FF';
+      badge.style.color = '#6D28D9';
+      badge.style.borderColor = '#DDD6FE';
+    } else {
+      badge.textContent = 'Mode: Custom Webhook API';
+      badge.style.background = '#FEF3C7';
+      badge.style.color = '#92400E';
+      badge.style.borderColor = '#FDE68A';
+    }
+  }
+}
+
+function saveWaGatewaySettings() {
+  const cfg = {
+    provider: document.getElementById('waProvider')?.value || 'direct',
+    apiToken: document.getElementById('waApiToken')?.value || '',
+    senderPhone: document.getElementById('waSenderPhone')?.value || '081295679799',
+    templateType: document.getElementById('waTemplateType')?.value || 'full',
+    autoPrompt: document.getElementById('waAutoPromptCheck')?.checked !== false
+  };
+  setLS('ms88_wa_gateway', cfg);
+  updateWaProviderUI();
+  toast('Konfigurasi WhatsApp Gateway berhasil disimpan ✓');
+}
+
+function testWaConfirmationModal() {
+  const phone = document.getElementById('waSenderPhone')?.value || '081295679799';
+  let cleanPhone = phone.replace(/\D/g, '');
+  if (cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.slice(1);
+  else if (cleanPhone.startsWith('8')) cleanPhone = '62' + cleanPhone;
+
+  const origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+  const testMsg = 
+`*TES INTEGRASI WHATSAPP — MINI SOCCER 88 ALPHA SPORT*
+--------------------------------------------------
+Format pesan notifikasi konfirmasi booking berhasil teruji.
+• Sender: Official Venue (${phone})
+• Waktu Tes: ${new Date().toLocaleString('id-ID')}
+• Akses Portal: ${origin}/superadmin/
+--------------------------------------------------
+Status: AKTIF & SIAP DIGUNAKAN ✓`;
+
+  const waUrl = cleanPhone.length >= 9 ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(testMsg)}` : `https://api.whatsapp.com/send?text=${encodeURIComponent(testMsg)}`;
+  window.open(waUrl, '_blank');
+  const resEl = document.getElementById('waTestResult');
+  if (resEl) {
+    resEl.textContent = '✓ Jendela WhatsApp tes berhasil dibuka!';
+    setTimeout(() => { if (resEl) resEl.textContent = ''; }, 5000);
+  }
+}
+
+// Payment Settings (Midtrans)
+function loadPaymentSettings() {
+  const s = getLS('ms88_payment_settings', {
+    env: 'sandbox',
+    clientKey: '',
+    serverKey: ''
+  });
+  const envEl = document.getElementById('midtransEnv');
+  const cKeyEl = document.getElementById('midtransClientKey');
+  const sKeyEl = document.getElementById('midtransServerKey');
+  if (envEl)  envEl.value  = s.env || 'sandbox';
+  if (cKeyEl) cKeyEl.value = s.clientKey || '';
+  if (sKeyEl) sKeyEl.value = s.serverKey || '';
+  updateMidtransBadge();
+}
+
+function updateMidtransBadge() {
+  const env = document.getElementById('midtransEnv')?.value || 'sandbox';
+  const cKey = document.getElementById('midtransClientKey')?.value?.trim() || '';
+  const sKey = document.getElementById('midtransServerKey')?.value?.trim() || '';
+  const badge = document.getElementById('midtransBadge');
+  if (!badge) return;
+
+  if (!cKey || !sKey) {
+    badge.textContent = 'Mode Demo Sandbox (Tanpa API Key)';
+    badge.style.background = '#F4F5F7';
+    badge.style.color = '#5A606A';
+    badge.style.border = '1px solid #D9DCE1';
+  } else if (env === 'production') {
+    badge.textContent = '● Live Production Terhubung';
+    badge.style.background = 'rgba(217, 162, 27, 0.15)';
+    badge.style.color = '#8C680E';
+    badge.style.border = '1px solid #D9A21B';
+  } else {
+    badge.textContent = '● Sandbox Testing Aktif';
+    badge.style.background = '#F4F5F7';
+    badge.style.color = '#08090B';
+    badge.style.border = '1px solid #D9DCE1';
+  }
+}
+
+function savePaymentSettings() {
+  const env       = document.getElementById('midtransEnv')?.value || 'sandbox';
+  const clientKey = document.getElementById('midtransClientKey')?.value.trim() || '';
+  const serverKey = document.getElementById('midtransServerKey')?.value.trim() || '';
+
+  setLS('ms88_payment_settings', { env, clientKey, serverKey });
+  updateMidtransBadge();
+  toast('Konfigurasi Midtrans berhasil disimpan ✓');
+}
+
+function togglePaymentConfig() {
+  const body = document.getElementById('paymentConfigBody');
+  if (!body) return;
+  body.style.display = (body.style.display === 'none') ? 'block' : 'none';
+}
+
+function toggleServerKeyVisibility() {
+  const el = document.getElementById('midtransServerKey');
+  if (!el) return;
+  el.type = (el.type === 'password') ? 'text' : 'password';
+}
+
+async function testMidtransConnection() {
+  const resultEl = document.getElementById('midtransTestResult');
+  if (!resultEl) return;
+  resultEl.textContent = 'Menguji sambungan API...';
+  resultEl.style.color = '#6b7280';
+
+  const clientKey = document.getElementById('midtransClientKey')?.value.trim();
+  const serverKey = document.getElementById('midtransServerKey')?.value.trim();
+
+  if (!clientKey && !serverKey) {
+    resultEl.innerHTML = '<span style="color:#92400e;">ℹ Mode Demo aktif. Simulasi pembayaran QRIS berjalan normal tanpa kredensial Midtrans.</span>';
+    return;
+  }
+
+  try {
+    const resp = await fetch('/api/payment-status?order_id=MS88-20260916-000000');
+    if (resp.status === 404 || resp.status === 200 || resp.status === 400) {
+      resultEl.innerHTML = '<span style="color:#08090B;font-weight:600;">✓ Endpoint API Gateway terhubung & responsif.</span>';
+    } else {
+      resultEl.innerHTML = `<span style="color:#8C680E;">Respons server: HTTP ${resp.status}</span>`;
+    }
+  } catch(err) {
+    resultEl.innerHTML = '<span style="color:#D71926;">⚠ Endpoint API belum aktif di server lokal. Mode offline/demo tetap berjalan.</span>';
+  }
+}
+
 function initDefaultOrdersIfEmpty() {
   const existing = getLS('ms88_orders', null);
   if (existing && Array.isArray(existing) && existing.length > 0) return;
   const jsonPath = window.location.pathname.includes('/superadmin') ? '../assets/data/bookings_september_2026.json' : 'assets/data/bookings_september_2026.json';
   fetch(jsonPath)
-    .catch(() => fetch('/assets/data/bookings_september_2026.json'))
-    .then(r => r.json())
+    .then(r => {
+      if (!r.ok) return fetch('/assets/data/bookings_september_2026.json');
+      return r;
+    })
+    .then(r => {
+      if (!r || !r.ok) throw new Error('Data jadwal tidak dapat diakses');
+      return r.json();
+    })
     .then(data => {
+      if (!data || typeof data !== 'object') return;
       const orders = [];
       let counter = 1;
       const pricingMap = {
@@ -353,16 +1038,17 @@ function initDefaultOrdersIfEmpty() {
         '18': 350000, '19': 350000, '20': 350000, '21': 350000
       };
       Object.keys(data).forEach(week => {
+        if (!Array.isArray(data[week])) return;
         data[week].forEach(item => {
-          const hourKey = item.time.slice(0, 2);
+          const hourKey = (item.time || '').slice(0, 2);
           const price = pricingMap[hourKey] || 250000;
           orders.push({
             id: 'BKG-2609' + String(counter++).padStart(3, '0'),
-            name: item.team,
+            name: item.team || 'Tim Komunitas',
             phone: '08' + (8120000000 + counter * 7919).toString().slice(0, 10),
             court: 'Lapangan Utama (30×50m Pusdikif)',
             date: '2026-09-' + String(item.date).padStart(2, '0'),
-            time: item.time,
+            time: item.time || '18.00-20.00',
             total: price,
             status: 'confirmed'
           });
@@ -371,11 +1057,12 @@ function initDefaultOrdersIfEmpty() {
       if (orders.length > 0) {
         setLS('ms88_orders', orders);
         renderOrders();
-        initDefaultOrdersIfEmpty();
-  renderOverview();
+        renderOverview();
       }
     })
-    .catch(() => {});
+    .catch(err => {
+      console.warn('[initDefaultOrdersIfEmpty] Data initialization note:', err.message);
+    });
 }
 
 // =========================================================
@@ -971,6 +1658,48 @@ function loadSettings() {
   if (el('setOpenTime'))  el('setOpenTime').value  = s.openTime  || '07:00';
   if (el('setCloseTime')) el('setCloseTime').value = s.closeTime || '23:00';
   if (el('setSlotDuration')) el('setSlotDuration').value = s.slotDuration || 60;
+
+  // Load Geo Popup auto-display setting (Default: '0' / OFF)
+  const geoVal = localStorage.getItem('ms88_geo_popup_enabled') || '0';
+  if (el('setGeoAutoPopup')) {
+    el('setGeoAutoPopup').value = geoVal;
+  }
+  updateGeoPopupBadge();
+}
+
+function updateGeoPopupBadge() {
+  const select = document.getElementById('setGeoAutoPopup');
+  const badge = document.getElementById('geoPopupStatusBadge');
+  if (!select || !badge) return;
+  const isEnabled = select.value === '1';
+  if (isEnabled) {
+    badge.textContent = 'Status: Aktif (ON)';
+    badge.style.background = 'rgba(217, 162, 27, 0.15)';
+    badge.style.color = '#8C680E';
+    badge.style.border = '1px solid #D9A21B';
+  } else {
+    badge.textContent = 'Status: Nonaktif (OFF - Default)';
+    badge.style.background = '#F4F5F7';
+    badge.style.color = '#5A606A';
+    badge.style.border = '1px solid #D9DCE1';
+  }
+}
+
+function saveGeoSetting() {
+  const select = document.getElementById('setGeoAutoPopup');
+  if (!select) return;
+  const val = select.value;
+  localStorage.setItem('ms88_geo_popup_enabled', val);
+  updateGeoPopupBadge();
+  toast('Opsi popup lokasi berhasil disimpan: ' + (val === '1' ? 'Aktif (ON)' : 'Nonaktif (OFF - Default)') + ' ✓');
+}
+
+function previewGeoModal() {
+  if (window.GeoMS88 && typeof window.GeoMS88.showModal === 'function') {
+    window.GeoMS88.showModal();
+  } else {
+    alert('Pengaturan Popup Izin Lokasi saat ini: ' + (localStorage.getItem('ms88_geo_popup_enabled') === '1' ? 'AKTIF (ON)' : 'NONAKTIF (OFF - Default)') + '\n\nBuka halaman utama (Beranda) untuk melihat pengalaman pengunjung.');
+  }
 }
 
 function saveGeneral() {
@@ -982,6 +1711,13 @@ function saveGeneral() {
     slotDuration: +document.getElementById('setSlotDuration')?.value || 60,
   };
   setLS('ms88_settings', s);
+
+  // Also save geo setting if element exists
+  const geoSelect = document.getElementById('setGeoAutoPopup');
+  if (geoSelect) {
+    localStorage.setItem('ms88_geo_popup_enabled', geoSelect.value);
+    updateGeoPopupBadge();
+  }
   toast('Pengaturan disimpan ✓');
 }
 

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pembayaran QRIS — Mini Soccer 88 Alpha Sport</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="assets/logo/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Midtrans Snap.js -->
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="__MIDTRANS_CLIENT_KEY__" id="snapScript"></script>
+<link rel="stylesheet" href="css/theme-88.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Rubik', sans-serif;
+  background: radial-gradient(circle at 50% 10%, #FFFFFF 0%, #F4F5F7 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  color: #08090B;
+}
+
+/* ---------- Header ---------- */
+.pay-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.pay-header img { height: 60px; margin-bottom: 12px; filter: drop-shadow(0 2px 8px rgba(8,9,11,0.1)); }
+.pay-header h1 { font-size: 24px; font-weight: 800; margin-bottom: 4px; color: #08090B; }
+.pay-header p { font-size: 14px; color: #5A606A; }
+
+/* ---------- Card ---------- */
+.pay-card {
+  background: #FFFFFF;
+  border: 1.5px solid #D9DCE1;
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 16px 40px rgba(8,9,11,0.08), 0 0 20px rgba(217,162,27,0.08);
+}
+
+/* ---------- Summary Row ---------- */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid #E8EBEF;
+  font-size: 14px;
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-row .label { color: #5A606A; }
+.summary-row .value { font-weight: 600; color: #08090B; }
+.summary-row.total .value { font-size: 22px; font-weight: 800; color: #D71926; }
+
+/* ---------- Status Section ---------- */
+.status-section {
+  text-align: center;
+  padding: 24px 0;
+  display: none;
+}
+.status-icon {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 32px;
+}
+.status-icon.pending  { background: #FFFBEB; border: 2px solid #D9A21B; color: #D9A21B; }
+.status-icon.paid     { background: rgba(217,162,27,0.12); border: 2px solid #D9A21B; color: #B88512; }
+.status-icon.expired  { background: #F4F5F7; border: 2px solid #D9DCE1; color: #5A606A; }
+.status-icon.failed   { background: #FEF2F2; border: 2px solid #D71926; color: #D71926; }
+.status-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #08090B; }
+.status-desc  { font-size: 13.5px; color: #5A606A; line-height: 1.6; }
+
+/* ---------- Countdown ---------- */
+.countdown-box {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 12px;
+  padding: 12px 16px;
+  text-align: center;
+  margin: 16px 0;
+  display: none;
+}
+.countdown-label { font-size: 12px; color: #92400E; margin-bottom: 4px; font-weight: 600; }
+.countdown-time  { font-size: 28px; font-weight: 800; color: #D9A21B; letter-spacing: 2px; font-variant-numeric: tabular-nums; }
+.countdown-time.urgent { color: #D71926; animation: pulse 1s infinite; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ---------- Buttons ---------- */
+.btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+.btn {
+  display: block;
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.18s;
+  text-align: center;
+  text-decoration: none;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #D71926, #B5141F);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(215,25,38,0.35);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(215,25,38,0.45); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-gold {
+  background: linear-gradient(135deg, #D9A21B, #B88512);
+  color: #08090B;
+  box-shadow: 0 4px 16px rgba(217,162,27,0.35);
+}
+.btn-gold:hover { transform: translateY(-2px); }
+.btn-outline {
+  background: #FFFFFF;
+  border: 1.5px solid #D9DCE1;
+  color: #08090B;
+}
+.btn-outline:hover { border-color: #D71926; color: #D71926; }
+.btn-receipt {
+  background: linear-gradient(135deg, #D71926, #B5141F);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(215,25,38,0.35);
+}
+.btn-receipt:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(215,25,38,0.45); }
+
+/* ---------- Loading Spinner ---------- */
+.spinner {
+  width: 20px; height: 20px;
+  border: 2.5px solid #D9DCE1;
+  border-top-color: #D71926;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- Alert ---------- */
+.alert {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  margin-bottom: 16px;
+  display: none;
+}
+.alert-error { background: #FEF2F2; border: 1px solid #FECACA; color: #D71926; }
+.alert-info  { background: #F4F5F7; border: 1px solid #D9DCE1; color: #08090B; }
+
+/* ---------- QRIS Hint ---------- */
+.qris-hint {
+  background: #F4F5F7;
+  border: 1px solid #D9DCE1;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: #5A606A;
+  line-height: 1.7;
+  margin-top: 16px;
+}
+.qris-hint strong { color: #08090B; }
+
+/* ---------- Footer ---------- */
+.pay-footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 12.5px;
+  color: #5A606A;
+}
+.pay-footer a { color: #D71926; text-decoration: none; font-weight: 600; }
+.pay-footer a:hover { text-decoration: underline; }
+
+@media (max-width: 520px) {
+  .pay-card { padding: 24px 18px; border-radius: 16px; }
+}
+</style>
+    <!-- PWA Primary Meta Tags & Cache Optimization -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FFFFFF">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mini Soccer 88">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192x192.png">
+    <link rel="stylesheet" href="css/pwa-install.css">
+</head>
+<body>
+
+<div class="pay-header">
+  <img src="assets/logo/ms88-logo-transparent.png" alt="Mini Soccer 88 Alpha Sport">
+  <h1>Pembayaran Sewa Lapangan</h1>
+  <p>Proses aman melalui Midtrans QRIS</p>
+</div>
+
+<div class="pay-card">
+  <!-- Error / Info alert -->
+  <div class="alert alert-error" id="alertError"></div>
+  <div class="alert alert-info"  id="alertInfo"></div>
+
+  <!-- Order Summary -->
+  <div id="orderSummary">
+    <div class="summary-row">
+      <span class="label">Nomor Pesanan</span>
+      <span class="value" id="sumOrderId" style="font-family:monospace;font-size:13px;">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="label">Nama / Tim</span>
+      <span class="value" id="sumName">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="label">Paket Sesi</span>
+      <span class="value" id="sumSession">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="label">Tanggal &amp; Jam</span>
+      <span class="value" id="sumDateTime">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="label">Durasi</span>
+      <span class="value" id="sumDuration">—</span>
+    </div>
+    <div class="summary-row total">
+      <span class="label" style="font-size:15px;font-weight:700;color:#08090B;">Total Bayar</span>
+      <span class="value" id="sumAmount">—</span>
+    </div>
+  </div>
+
+  <!-- Countdown -->
+  <div class="countdown-box" id="countdownBox">
+    <div class="countdown-label">Selesaikan pembayaran dalam</div>
+    <div class="countdown-time" id="countdownDisplay">00:00</div>
+  </div>
+
+  <!-- Status Section (shown after payment attempt) -->
+  <div class="status-section" id="statusSection">
+    <div class="status-icon" id="statusIcon">⏳</div>
+    <div class="status-title" id="statusTitle">Menunggu Pembayaran</div>
+    <div class="status-desc"  id="statusDesc">Selesaikan pembayaran QRIS di aplikasi mobile banking atau dompet digital Anda.</div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="btn-group" id="btnGroup">
+    <button class="btn btn-primary" id="btnPay" onclick="startPayment()">
+      Bayar Sekarang via QRIS
+    </button>
+    <button class="btn btn-outline" id="btnCheck" onclick="checkStatus()" style="display:none;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg> Cek Status Pembayaran
+    </button>
+    <a href="receipt.html" class="btn btn-receipt" id="btnReceipt" style="display:none;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> Lihat &amp; Unduh Nota
+    </a>
+    <a href="sewa-lapangan.html" class="btn btn-outline" id="btnBack">
+      ← Kembali ke Booking
+    </a>
+  </div>
+
+  <!-- QRIS Hint -->
+  <div class="qris-hint" id="qrisHint">
+    <strong>Cara Bayar QRIS:</strong><br>
+    Scan QR code yang muncul dengan aplikasi GoPay, OVO, Dana, ShopeePay, atau m-banking manapun yang mendukung QRIS.
+    Pembayaran terverifikasi otomatis — tidak perlu kirim bukti transfer.
+  </div>
+</div>
+
+<div class="pay-footer">
+  <p>Transaksi aman melalui <strong>Midtrans</strong> — Terdaftar &amp; diawasi oleh Bank Indonesia</p>
+  <p style="margin-top:6px;"><a href="/">Mini Soccer 88 Alpha Sport</a> · Lapangan Pusdikif, Kota Cimahi</p>
+</div>
+
+<script>
+// =========================================================
+//  Payment Page JS
+// =========================================================
+
+const API_BASE = '/api';
+
+// Ambil params dari URL
+const params    = new URLSearchParams(location.search);
+const ORDER_ID  = params.get('order_id');
+const SNAP_TOK  = params.get('snap_token');
+const AMOUNT    = parseInt(params.get('amount') || '0', 10);
+const SESSION   = params.get('session') || '';
+const DATE      = params.get('date')    || '';
+const TIME      = params.get('time')    || '';
+const DURATION  = params.get('duration') || '1';
+const NAME      = params.get('name')    || '';
+const EXPIRES   = params.get('expires') || '';
+const DEMO      = params.get('demo') === '1';
+const REC_URL   = params.get('receipt_url') || '';
+
+let countdownInterval = null;
+let pollInterval      = null;
+let isPolling         = false;
+
+// ---- Inisialisasi UI ----
+function init() {
+  if (!ORDER_ID || !SNAP_TOK) {
+    showError('Data transaksi tidak valid. Silakan ulangi booking.');
+    document.getElementById('btnPay').disabled = true;
+    return;
+  }
+
+  // Isi summary
+  document.getElementById('sumOrderId').textContent  = ORDER_ID;
+  document.getElementById('sumName').textContent      = NAME || '—';
+  document.getElementById('sumSession').textContent   = decodeURIComponent(SESSION) || '—';
+  document.getElementById('sumDateTime').textContent  = DATE + ' · ' + TIME + ' WIB';
+  document.getElementById('sumDuration').textContent  = DURATION + ' Jam';
+  document.getElementById('sumAmount').textContent    = 'Rp ' + AMOUNT.toLocaleString('id-ID');
+
+  // Set snap.js client key dari meta (di-inject saat build)
+  const snapEl = document.getElementById('snapScript');
+  const clientKey = snapEl ? snapEl.getAttribute('data-client-key') : '';
+  if (!clientKey || clientKey === '__MIDTRANS_CLIENT_KEY__') {
+    if (DEMO) {
+      showInfo('Mode DEMO: Midtrans client key belum dikonfigurasi. Gunakan tombol "Simulasi Bayar" untuk testing.');
+      document.getElementById('btnPay').innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Simulasi Bayar (Demo)';
+    }
+  }
+
+  // Mulai countdown jika expires ada
+  if (EXPIRES) startCountdown(new Date(EXPIRES));
+
+  // Cek apakah sudah paid sebelumnya (misal setelah refresh)
+  checkStatus(true); // silent check
+}
+
+// ---- Countdown Timer ----
+function startCountdown(expiresAt) {
+  const box = document.getElementById('countdownBox');
+  box.style.display = 'block';
+  const el = document.getElementById('countdownDisplay');
+
+  function tick() {
+    const remaining = Math.max(0, expiresAt - Date.now());
+    const mins = Math.floor(remaining / 60000);
+    const secs = Math.floor((remaining % 60000) / 1000);
+    el.textContent = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    if (remaining < 120000) el.classList.add('urgent');
+    if (remaining === 0) {
+      clearInterval(countdownInterval);
+      setStatus('expired');
+    }
+  }
+  tick();
+  countdownInterval = setInterval(tick, 1000);
+}
+
+// ---- Buka Snap.js ----
+function startPayment() {
+  const btn = document.getElementById('btnPay');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Memuat QRIS...';
+
+  // Mode demo: simulasi tanpa Snap.js
+  if (DEMO || SNAP_TOK.startsWith('DEMO-TOKEN-')) {
+    setTimeout(() => {
+      btn.style.display = 'none';
+      document.getElementById('btnCheck').style.display = 'block';
+      showInfo('Mode DEMO aktif. Klik "Cek Status" untuk simulasi pembayaran berhasil.');
+      setStatus('pending');
+      startPolling();
+    }, 800);
+    return;
+  }
+
+  // Pastikan Snap.js loaded
+  if (typeof window.snap === 'undefined') {
+    showError('Layanan QRIS belum siap. Refresh halaman atau coba lagi.');
+    btn.disabled = false;
+    btn.innerHTML = 'Bayar Sekarang via QRIS';
+    return;
+  }
+
+  window.snap.pay(SNAP_TOK, {
+    onSuccess: function(result) {
+      console.log('[snap] onSuccess', result);
+      setStatus('paid');
+      clearCountdown();
+      stopPolling();
+      showReceiptButton(REC_URL || buildReceiptUrl());
+    },
+    onPending: function(result) {
+      console.log('[snap] onPending', result);
+      setStatus('pending');
+      btn.style.display = 'none';
+      document.getElementById('btnCheck').style.display = 'block';
+      startPolling();
+    },
+    onError: function(result) {
+      console.error('[snap] onError', result);
+      setStatus('failed');
+      btn.disabled = false;
+      btn.innerHTML = 'Coba Lagi';
+    },
+    onClose: function() {
+      console.log('[snap] onClose');
+      btn.disabled = false;
+      btn.innerHTML = 'Lanjutkan Pembayaran';
+      // Jangan ubah status — user mungkin menutup popup sementara
+      document.getElementById('btnCheck').style.display = 'block';
+      startPolling();
+    }
+  });
+}
+
+// ---- Cek Status (dipanggil tombol + polling) ----
+async function checkStatus(silent = false) {
+  if (!ORDER_ID) return;
+  if (!silent) {
+    const btn = document.getElementById('btnCheck');
+    btn.innerHTML = '<span class="spinner"></span>Mengecek...';
+    btn.disabled = true;
+  }
+
+  try {
+    const resp = await fetch(`${API_BASE}/payment-status?order_id=${encodeURIComponent(ORDER_ID)}`);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+
+    if (data.status === 'paid') {
+      try {
+        const orders = JSON.parse(localStorage.getItem('ms88_orders') || '[]');
+        const idx = orders.findIndex(o => String(o.id) === String(ORDER_ID));
+        if (idx >= 0) {
+          orders[idx].status = 'paid';
+          orders[idx].paid_at = data.paid_at || new Date().toISOString();
+          localStorage.setItem('ms88_orders', JSON.stringify(orders));
+        }
+      } catch(_) {}
+      setStatus('paid');
+      clearCountdown();
+      stopPolling();
+      const rUrl = data.receipt_url || buildReceiptUrl();
+      showReceiptButton(rUrl);
+    } else if (data.status === 'expired') {
+      setStatus('expired');
+      clearCountdown();
+      stopPolling();
+    } else if (data.status === 'failed' || data.status === 'cancelled') {
+      setStatus('failed');
+      stopPolling();
+    } else {
+      if (!silent) setStatus('pending');
+    }
+  } catch (err) {
+    if (DEMO || (SNAP_TOK && SNAP_TOK.startsWith('DEMO-TOKEN-'))) {
+      try {
+        const orders = JSON.parse(localStorage.getItem('ms88_orders') || '[]');
+        const idx = orders.findIndex(o => String(o.id) === String(ORDER_ID));
+        if (idx >= 0) {
+          orders[idx].status = 'paid';
+          orders[idx].paid_at = new Date().toISOString();
+          localStorage.setItem('ms88_orders', JSON.stringify(orders));
+        }
+      } catch(_) {}
+      setStatus('paid');
+      clearCountdown();
+      stopPolling();
+      showReceiptButton(buildReceiptUrl());
+      return;
+    }
+    if (!silent) showError('Tidak dapat terhubung ke server. Coba beberapa saat lagi.');
+    console.warn('[check-status] Error:', err.message);
+  } finally {
+    if (!silent) {
+      const btn = document.getElementById('btnCheck');
+      btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg> Cek Status Pembayaran';
+      btn.disabled = false;
+    }
+  }
+}
+
+// ---- Polling Otomatis (setiap 5 detik) ----
+function startPolling() {
+  if (isPolling) return;
+  isPolling = true;
+  pollInterval = setInterval(() => checkStatus(true), 5000);
+}
+
+function stopPolling() {
+  clearInterval(pollInterval);
+  isPolling = false;
+}
+
+function clearCountdown() {
+  clearInterval(countdownInterval);
+  document.getElementById('countdownBox').style.display = 'none';
+}
+
+// ---- Update Status UI ----
+function setStatus(status) {
+  const section   = document.getElementById('statusSection');
+  const iconEl    = document.getElementById('statusIcon');
+  const titleEl   = document.getElementById('statusTitle');
+  const descEl    = document.getElementById('statusDesc');
+  const hint      = document.getElementById('qrisHint');
+
+  section.style.display = 'block';
+
+  const map = {
+    pending: {
+      cls:   'pending',
+      icon:  '⏳',
+      title: 'Menunggu Pembayaran',
+      desc:  'Scan QR code di popup pembayaran. Konfirmasi otomatis setelah pembayaran terverifikasi.',
+    },
+    paid: {
+      cls:   'paid',
+      icon:  'OK',
+      title: 'Pembayaran Berhasil!',
+      desc:  'Booking lapangan Anda telah dikonfirmasi. Nota resmi tersedia untuk diunduh.',
+    },
+    expired: {
+      cls:   'expired',
+      icon:  '⌛',
+      title: 'Waktu Pembayaran Habis',
+      desc:  'Sesi pembayaran telah kedaluwarsa. Silakan buat booking baru untuk melanjutkan.',
+    },
+    failed: {
+      cls:   'failed',
+      icon:  'X',
+      title: 'Pembayaran Gagal',
+      desc:  'Terjadi kesalahan dalam proses pembayaran. Coba lagi atau hubungi admin 088 Alpha Sport.',
+    },
+  };
+
+  const s = map[status] || map.pending;
+  iconEl.className = 'status-icon ' + s.cls;
+  iconEl.textContent = s.icon;
+  titleEl.textContent = s.title;
+  descEl.textContent  = s.desc;
+
+  if (status === 'paid' || status === 'expired' || status === 'failed') {
+    hint.style.display = 'none';
+    document.getElementById('btnPay').style.display = 'none';
+    document.getElementById('btnCheck').style.display = 'none';
+  }
+}
+
+// ---- Tampilkan tombol nota ----
+function showReceiptButton(url) {
+  const btn = document.getElementById('btnReceipt');
+  btn.href = url;
+  btn.style.display = 'block';
+}
+
+function buildReceiptUrl() {
+  return REC_URL || `receipt.html?order_id=${ORDER_ID}&_pending=1`;
+}
+
+// ---- Alert helpers ----
+function showError(msg) {
+  const el = document.getElementById('alertError');
+  el.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#D71926" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>' + msg;
+  el.style.display = 'block';
+}
+
+function showInfo(msg) {
+  const el = document.getElementById('alertInfo');
+  el.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#08090B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>' + msg;
+  el.style.display = 'block';
+}
+
+// ---- Run ----
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+<script src="js/pwa.js"></script>
+</body>
+</html>

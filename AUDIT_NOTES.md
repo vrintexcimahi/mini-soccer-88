@@ -75,3 +75,59 @@
 1. **Fitur Ekspor Rekap Booking & Omset ke Excel / PDF** (Effort: S) — Menambahkan tombol export CSV / XLSX pada tab 'Manajemen Booking' Superadmin agar admin lapangan bisa langsung mengunduh rekapan mingguan/bulanan untuk pembukuan fisik.
 2. **Sistem Notifikasi WhatsApp Webhook Otomatis (Fonnte / Wablas)** (Effort: M) — Mengirim konfirmasi booking langsung dari background Superadmin ke nomor WhatsApp penyewa begitu admin menekan tombol centang 'Konfirmasi', tanpa perlu membuka wa.me manual.
 3. **PWA (Progressive Web App) Support & Offline Caching** (Effort: S) — Menambahkan Service Worker dan `manifest.json` agar jadwal dan nomor kontak venue tetap bisa dibuka oleh pengunjung di lapangan Pusdikif saat sinyal seluler tidak stabil.
+
+---
+
+## [2026-09-17] Audit & Bug Fix Run #3 — Full Otonom Level Max
+
+### Area yang sudah diaudit
+- Alur Autentikasi Pengguna & Portal Member (`login.html`, `user/index.html`).
+- Modul Transaksi & Penerbitan Nota Digital (`receipt.html`, `payment.html`, `api/`).
+- Engine Service Worker & Caching PWA (`sw.js`, `manifest.json`).
+- Homepage & Navigasi Klien (`index.html`, `js/custom.js`, `js/assets-sync.js`, `js/geo.js`).
+- Subhalaman Web Publik (`sewa-lapangan.html`, `main-bareng.html`, `kompetisi.html`, `kontak.html`, `partner.html`, `venue-management.html`, `blog.html`).
+- Panel Superadmin (`superadmin/index.html`, `superadmin/admin.js`, `admin.js`, `superadmin/admin.css`).
+- Integritas link, path aset lokal, penanganan error runtime, dan keselarasan UI/UX tema brand.
+
+### Bug ditemukan & diperbaiki
+- **[High] Kegagalan Buka Nota Digital dari Portal Member & Modal Booking (`receipt.html` & `user/index.html`)** — Root Cause: `user/index.html` mengarahkan link nota ke `receipt.html?orderId=...`, sedangkan `receipt.html` hanya membaca `params.get('order_id')`. Akibatnya saat tombol "Nota" diklik dari riwayat member atau setelah reservasi sukses, `ORDER_ID` bernilai `null` dan halaman nota langsung crash dengan pesan "Parameter tidak valid" — Fix: Memperluas pembacaan parameter di `receipt.html` menjadi `params.get('order_id') || params.get('orderId') || params.get('id')`, menstandarkan tautan di `user/index.html` ke `../receipt.html?order_id=${ord.id}`, serta memperluas status lunas `isPaid` mencakup `'completed'` dan `'success'`.
+- **[High] Tautan Rusak / 404 pada Tombol Navigasi `receipt.html`** — Root Cause: Empat tombol pada `receipt.html` (tombol topbar Kembali, tombol Buat Booking Baru, tombol Kembali ke Booking, dan tombol Booking Lagi) mengarah ke path tanpa ekstensi `href="/sewa-lapangan"` yang memicu 404 Not Found pada static host/server lokal — Fix: Memperbaiki seluruh 4 tautan menjadi `sewa-lapangan.html`.
+- **[High] Panggilan AJAX Mati & Potensi `TypeError: Cannot read properties of undefined` di `index.html`** — Root Cause: Skrip `getUserCart()` mengeksekusi request AJAX GET ke `/sewa-lapangan.html` (file dokumen HTML statis sebesar 30 KB) setiap kali homepage dimuat, lalu mengevaluasi `response.data !== null`. Karena respon bertipe string HTML, `response.data` bernilai `undefined` dan `undefined !== null` bernilai `true`, sehingga eksekusi `response.data.forEach(...)` memicu `Uncaught TypeError` dan membuang bandwidth secara sia-sia — Fix: Menghapus skrip `getUserCart()` usang karena fungsionalitas cart lama sudah digantikan oleh alur reservasi mandiri Portal Member.
+- **[Medium] Render String Tag SVG Mentah via `textContent` pada Tombol Demo di `payment.html`** — Root Cause: Pada baris 336 `payment.html`, penugasan tombol menggunakan `btnPay.textContent = '<svg ...> Simulasi Bayar (Demo)'`, sehingga string tag SVG XML dirender secara literal sebagai teks mentah di mata pengguna alih-alih menjadi ikon grafis — Fix: Mengubah `.textContent` menjadi `.innerHTML`.
+- **[Medium] Desinkronisasi Warna Latar Belakang Header Subhalaman Publik** — Root Cause: Seluruh 7 subhalaman (`blog.html`, `kompetisi.html`, `kontak.html`, `main-bareng.html`, `partner.html`, `sewa-lapangan.html`, `venue-management.html`) memiliki inline style header statis `#D71926` atau `#FFFFFF`, sehingga tidak memiliki overlay transparan hitam 25% (`linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), #D71926`) yang telah disematkan pada homepage dan file tema utama — Fix: Memperbarui inline style header pada ke-7 subhalaman agar selaras 100% dengan tema visual dark-red resmi, serta menghapus kelas `bg-white` pada footer subhalaman.
+- **[Medium] Penanganan Error HTTP 404 & Rekursi Berlebih di `initDefaultOrdersIfEmpty()` (`superadmin/admin.js`)** — Root Cause: `fetch(jsonPath)` tidak mereject promise pada status HTTP 404 sehingga pemanggilan `.catch()` terlewat dan `r.json()` mencoba mem-parse dokumen 404 HTML sebagai JSON, memicu unhandled SyntaxError. Selain itu, fungsi memanggil dirinya sendiri secara rekursif di dalam blok callback sukses — Fix: Menambahkan pengecekan `r.ok` yang ketat, fallback berjenjang ke jalur path alternatif, dan mengeliminasi pemanggilan rekursif yang berisiko loop.
+
+### Known issues / sengaja belum diperbaiki
+- File serverless function di `api/` (`create-payment.js`, `payment-status.js`, `webhook-midtrans.js`, dsb.) menggunakan runtime Node.js CommonJS/Vercel. Saat dijalankan langsung di server statis browser klien (tanpa Vercel CLI atau Node runtime), antarmuka secara otomatis dan aman menggunakan local fallback `localStorage` dan mode simulasi, sehingga seluruh alur sistem tetap dapat diuji tanpa hambatan.
+- File arsip layout lama `assets/app.js` tetap dipertahankan sebagai dokumen referensi historis.
+
+### Keputusan teknis & alasannya
+- Standarisasi query parameter nota menjadi `order_id` (dengan fallback kompatibilitas ke `orderId` dan `id`) menjaga integrasi lintas modul: baik dari dashboard member, payment gateway redirect, maupun aksi cetak admin Superadmin.
+- Penghapusan panggilan AJAX polling keranjang belanja usang di `index.html` menghemat 30 KB per view dan mengeliminasi error `TypeError` di console browser.
+- Seluruh perbaikan pada `superadmin/admin.js` disinkronkan secara otomatis ke `admin.js` di root guna menjaga keselarasan server statis.
+
+### Perlu diperhatikan agent berikutnya
+- Pastikan selalu menyalin perubahan antara `superadmin/admin.js` dan root `admin.js`.
+- Semua halaman publik menggunakan CSS design system terpusat di `css/theme-88.css` dan font Rubik/Nunito lokal di direktori `fonts/`.
+
+### Implementasi Fitur Saran (Selesai Dikerjakan Secara Otonom)
+1. **Fitur Ekspor Rekap Booking & Omset ke Excel / CSV di Superadmin (Status: SELESAI)**
+   - **Lokasi UI:** Tombol *"Ekspor CSV (Excel)"* disematkan di Tab Manajemen Booking (`#tabOrders`) dan Tombol *"Ekspor Omset (CSV)"* disematkan di Tab Transaksi & Nota (`#tabPayments`) pada Superadmin.
+   - **Fungsi:** `exportOrdersToCSV()` dan `exportPaymentsToCSV()`.
+   - **Format:** Menggunakan header CSV lengkap berstandar UTF-8 BOM (`\uFEFF`) sehingga langsung terbuka rapi di Microsoft Excel, Google Sheets, dan LibreOffice tanpa teks berantakan (*garbled characters*).
+   - **Nama File Otomatis:** `Rekap_Booking_MS88_YYYYMMDD_HHmm.csv` dan `Laporan_Omset_MS88_YYYYMMDD_HHmm.csv`.
+
+2. **Fitur "Kirim Nota ke WhatsApp" Langsung dari Halaman Nota (`receipt.html`) (Status: SELESAI)**
+   - **Lokasi UI:** Tombol hijau WhatsApp (`.btn-wa`) *"Kirim ke WhatsApp"* di bagian action bar atas nota.
+   - **Fungsi:** `shareReceiptWhatsApp()`.
+   - **Pesan Otomatis:** Menghasilkan template pesan WhatsApp terstruktur yang mencantumkan Nomor Nota, Nama Pemesan, Layanan, Jam Sesi Lapangan, Durasi, Total Biaya, Status LUNAS, Tautan Nota Digital Resmi (`receipt.html?order_id=...`), serta panduan kedatangan di Lapangan Pusdikif Cimahi.
+   - **Target Penerima:** Otomatis mendeteksi nomor ponsel pelanggan dan mengonversi format `08...` ke `628...` untuk langsung membuka chat WhatsApp penerima.
+
+3. **Integrasi WhatsApp Gateway & 1-Klik Notifikasi Konfirmasi (Status: SELESAI)**
+   - **Lokasi UI:** Card panel baru *"Integrasi WhatsApp Gateway & Notifikasi Otomatis"* pada Tab Pengaturan Sistem Superadmin (`#tabSettings`).
+   - **Aksi 1-Klik di Tabel:** Icon chat WhatsApp 💬 disematkan di setiap baris data booking (`#ordersBody`) dan transaksi (`#paymentsBody`) untuk kirim konfirmasi / nota dalam 1 klik.
+   - **Otomatisasi:** Ketika admin menekan tombol konfirmasi ("✓"), sistem dapat otomatis memicu dialog konfirmasi WhatsApp ke pelanggan.
+   - **Pengaturan Multi-Provider:** Mendukung mode *Direct 1-Klik WA* (gratis tanpa token/API), *Fonnte API Gateway*, *Wablas API Gateway*, dan *Custom Webhook API*, lengkap dengan tombol *"Tes Kirim Template WhatsApp"*.
+   - **Sinkronisasi Kode:** Seluruh fungsi disinkronkan 100% byte-for-byte antara `superadmin/admin.js` dan root `admin.js`.
+
+

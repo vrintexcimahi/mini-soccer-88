@@ -1,0 +1,1686 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#D71926">
+  <title>Portal Member — Mini Soccer 88 Alpha Sport Pusdikif</title>
+  <link rel="icon" href="../assets/logo/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/theme-88.css">
+  <link rel="stylesheet" href="../superadmin/admin.css">
+  <style>
+    /* Custom Member Dashboard Enhancements */
+    :root {
+      --member-gold: #D9A21B;
+      --member-gold-light: #F3C644;
+    }
+
+    /* 3D Holographic Member Card */
+    .member-card-3d {
+      background: linear-gradient(135deg, #0A0C0F 0%, #171A21 50%, #2E0508 100%);
+      border: 1.5px solid rgba(217, 162, 27, 0.45);
+      border-radius: 18px;
+      padding: 24px;
+      color: #FFFFFF;
+      box-shadow: 0 16px 36px rgba(8, 9, 11, 0.25), 0 0 0 1px rgba(215, 25, 38, 0.2);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .member-card-3d:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 45px rgba(8, 9, 11, 0.35), 0 0 20px rgba(217, 162, 27, 0.25);
+    }
+    .member-card-3d::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(215,25,38,0.32) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+    .card-chip {
+      width: 38px; height: 26px;
+      background: linear-gradient(135deg, #D9A21B 0%, #F3C644 100%);
+      border-radius: 5px;
+      border: 1px solid rgba(255,255,255,0.4);
+      box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+    }
+    .card-badge {
+      background: rgba(217, 162, 27, 0.2);
+      border: 1px solid #D9A21B;
+      color: #F3C644;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+    .card-num {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #FFFFFF;
+      margin-bottom: 18px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .card-label {
+      font-size: 9.5px;
+      color: #8C929C;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 2px;
+    }
+    .card-val {
+      font-size: 14px;
+      font-weight: 600;
+      color: #FFFFFF;
+    }
+    .card-qr {
+      background: #FFFFFF;
+      padding: 5px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Action Tiles Grid */
+    .action-tile-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .action-tile {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.18s ease;
+      cursor: pointer;
+    }
+    .action-tile:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      color: var(--primary);
+    }
+    .action-tile-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(215,25,38,0.08);
+      color: var(--primary);
+    }
+    .action-tile-title {
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .action-tile-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Upcoming match card */
+    .match-banner {
+      background: linear-gradient(135deg, rgba(215,25,38,0.08) 0%, rgba(8,9,11,0.02) 100%);
+      border: 1px solid rgba(215,25,38,0.25);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    /* Modal Styling */
+    .modal-backdrop-custom {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-backdrop-custom.show {
+      display: flex;
+    }
+    .modal-box-custom {
+      background: #FFFFFF;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 500px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+      animation: fadeIn 0.2s ease;
+    }
+    .modal-header-custom {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #FAFAFA;
+    }
+    .modal-header-custom h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .modal-body-custom {
+      padding: 22px;
+    }
+    .modal-footer-custom {
+      padding: 14px 22px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      background: #FAFAFA;
+    }
+
+    @media (max-width: 992px) {
+      .two-col { grid-template-columns: 1fr; }
+      .action-tile-grid { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 576px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Auth Guard: Ensure Member session exists -->
+<script>
+  (function() {
+    const role = sessionStorage.getItem('ms88_auth_role');
+    const user = sessionStorage.getItem('ms88_auth_user');
+    // If not logged in as user or admin, redirect to public member login
+    if (!user && role !== 'admin') {
+      location.replace('/login.html');
+    }
+  })();
+</script>
+
+<!-- Toast Notifications Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- SIDEBAR PORTAL (Matches Super Admin Style) -->
+<aside class="admin-sidebar" id="memberSidebar">
+  <div class="sidebar-header">
+    <img src="../assets/logo/ms88-logo-transparent.png" alt="88 Alpha Sport" style="width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));">
+    <div class="brand-info">
+      <h1>88 ALPHA SPORT</h1>
+      <span>PORTAL MEMBER PUSDIKIF</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">Aktivitas Member</div>
+    <button class="nav-link-btn active" id="tabBtnOverview" onclick="switchTab('overview')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+      <span>Ringkasan &amp; Profil</span>
+    </button>
+
+    <button class="nav-link-btn" id="tabBtnCard" onclick="switchTab('card')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="7" y1="8" x2="17" y2="8"></line><line x1="7" y1="12" x2="13" y2="12"></line></svg>
+      <span>Kartu Member Digital</span>
+    </button>
+
+    <button class="nav-link-btn" id="tabBtnBookings" onclick="switchTab('bookings')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+      <span>Riwayat Booking Saya</span>
+    </button>
+
+    <div class="nav-section-title">Reservasi &amp; Transaksi</div>
+    <button class="nav-link-btn" id="tabBtnBooking" onclick="switchTab('booking')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 10 16 14 16 16 12 12 8"></polygon></svg>
+      <span>Booking Lapangan Baru</span>
+    </button>
+
+    <button class="nav-link-btn" id="tabBtnMabar" onclick="switchTab('mabar')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      <span>Sesi Mabar &amp; Komunitas</span>
+    </button>
+
+    <button class="nav-link-btn" id="tabBtnPartner" onclick="switchTab('partner')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
+      <span>Pengajuan Kemitraan</span>
+    </button>
+
+    <button class="nav-link-btn" id="tabBtnFoto" onclick="switchTab('foto')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+      <span>Dokumentasi Fotografer</span>
+    </button>
+
+    <div class="nav-section-title">Akun &amp; Bantuan</div>
+    <button class="nav-link-btn" id="tabBtnProfile" onclick="switchTab('profile')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      <span>Pengaturan Akun</span>
+    </button>
+
+    <a href="https://wa.me/6281295679799?text=Halo%20Admin%2088%20Alpha%20Sport,%20saya%20member%20ingin%20tanya%20jadwal" target="_blank" class="nav-link-btn" style="text-decoration:none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+      <span>Hotline CS Lapangan</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar" id="memberSidebarAvatar">R</div>
+      <div class="user-details">
+        <span class="user-name" id="memberSidebarName">Reza Pratama</span>
+        <span class="user-role" id="memberSidebarTeam">Member Resmi Pusdikif</span>
+      </div>
+    </div>
+    <button class="btn-logout" onclick="doLogout()" title="Keluar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN PORTAL WRAPPER (Matches Super Admin Layout) -->
+<main class="admin-main" id="memberMain">
+
+  <!-- Topbar -->
+  <header class="admin-topbar">
+    <button class="hamburger-btn" onclick="toggleSidebar()" title="Buka menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="topbar-title" id="topbarTitle">Ringkasan Member</div>
+    <div class="topbar-right">
+      <button type="button" onclick="switchTab('booking')" class="btn btn-primary btn-sm" style="display:inline-flex;align-items:center;gap:6px;border:none;cursor:pointer;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>+ Booking Lapangan</span>
+      </button>
+      <a href="/" target="_blank" class="btn-view-site">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        Lihat Website
+      </a>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       TAB 1: OVERVIEW (RINGKASAN & STATISTIK)
+       ========================================== -->
+  <section class="tab-panel active" id="tabOverview">
+    <div class="panel-header">
+      <h2 id="greetHeading">Halo, Reza Pratama! 👋</h2>
+      <p>Portal Resmi Pemain &amp; Tim Komunitas — Mini Soccer 88 Alpha Sport Pusdikif Kota Cimahi</p>
+    </div>
+
+    <!-- Match Reminder Banner -->
+    <div class="match-banner">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:44px;height:44px;border-radius:10px;background:rgba(215,25,38,0.12);color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 10 16 14 16 16 12 12 8"></polygon></svg>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--primary);letter-spacing:0.06em;text-transform:uppercase;">Jadwal Bermain Terdekat</div>
+          <strong style="font-size:15px;color:var(--text);display:block;">Sabtu, 19 Sep 2026 • 20:00 – 22:00 WIB</strong>
+          <span style="font-size:12.5px;color:var(--text-muted);">Lapangan 1 (FIFA Synth) • Kode Booking: <code style="color:var(--primary);font-weight:700;">MS88-847291</code></span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="badge-status confirmed">Terkonfirmasi (Lunas)</span>
+        <a href="../receipt.html?order_id=MS88-847291" class="btn btn-outline btn-sm" style="text-decoration:none;">Nota</a>
+      </div>
+    </div>
+
+    <!-- 4 KPI Cards (Admin Style) -->
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-primary">
+        <div class="kpi-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        </div>
+        <div>
+          <div class="kpi-label">Total Booking Lapangan</div>
+          <div class="kpi-value" id="kpiBookings">6 Sesi</div>
+        </div>
+      </div>
+
+      <div class="kpi-card kpi-orange">
+        <div class="kpi-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+        <div>
+          <div class="kpi-label">Jam Bermain di Venue</div>
+          <div class="kpi-value" id="kpiHours">11 Jam</div>
+        </div>
+      </div>
+
+      <div class="kpi-card kpi-green">
+        <div class="kpi-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        </div>
+        <div>
+          <div class="kpi-label">Poin Reward Member</div>
+          <div class="kpi-value" id="kpiPoints">140 Poin</div>
+        </div>
+      </div>
+
+      <div class="kpi-card kpi-blue">
+        <div class="kpi-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <div>
+          <div class="kpi-label">Status Keanggotaan</div>
+          <div class="kpi-value" style="font-size:18px;" id="kpiStatus">Member Aktif</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two-Column Layout: Digital Member Card & Fast Action -->
+    <div class="two-col" style="margin-bottom:24px;">
+      
+      <!-- Card 1: 3D Holographic Member Card -->
+      <div class="card">
+        <div class="card-head">
+          <h3>Kartu Member Digital 88</h3>
+          <button class="btn btn-outline btn-sm" onclick="switchTab('card')">Lihat Penuh</button>
+        </div>
+        <div class="card-body" style="background:#FAFAFA;">
+          <div class="member-card-3d">
+            <div class="card-top">
+              <div class="card-chip"></div>
+              <div class="card-badge">MEMBER RESMI 88</div>
+            </div>
+            <div class="card-num" id="cardMemberId">MS88-MBR-8801</div>
+            <div class="card-bottom">
+              <div>
+                <div class="card-label">NAMA PEMAIN / KAPTEN</div>
+                <div class="card-val" id="cardHolderName">Reza Pratama</div>
+                <div class="card-label" style="margin-top:6px;">TIM / KLUB</div>
+                <div class="card-val" style="font-size:12.5px;color:#F3C644;" id="cardHolderTeam">Cimahi United FC</div>
+              </div>
+              <div class="card-qr" title="Scan di resepsionis turnstile Pusdikif">
+                <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#08090B" stroke-width="2">
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                  <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                  <line x1="17" y1="7" x2="17.01" y2="7"></line>
+                  <line x1="7" y1="17" x2="7.01" y2="17"></line>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:14px;">
+            <button class="btn btn-outline btn-sm w-100" onclick="showToast('Kartu member siap di-scan saat memasuki turnstile venue Pusdikif.', 'info')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Simpan Kartu
+            </button>
+            <button class="btn btn-outline btn-sm w-100" onclick="openEditProfileModal()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              Edit Profil
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Akses Cepat & Fasilitas Member -->
+      <div class="card">
+        <div class="card-head">
+          <h3>Aksi Cepat &amp; Fasilitas Eksklusif</h3>
+          <span class="badge-status confirmed">Aktif</span>
+        </div>
+        <div class="card-body">
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">
+            Sebagai member resmi Pusdikif, Anda berhak menikmati fasilitas prioritas dan diskon reservasi:
+          </p>
+          <div class="action-tile-grid" style="grid-template-columns:repeat(4, 1fr);">
+            <div class="action-tile" onclick="switchTab('booking')">
+              <div class="action-tile-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 10 16 14 16 16 12 12 8"></polygon></svg>
+              </div>
+              <div class="action-tile-title">Booking Baru</div>
+              <div class="action-tile-desc">Diskon 10% Member</div>
+            </div>
+
+            <div class="action-tile" onclick="switchTab('mabar')">
+              <div class="action-tile-icon" style="background:rgba(217,162,27,0.12);color:var(--member-gold);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <div class="action-tile-title">Sesi Mabar</div>
+              <div class="action-tile-desc">Cari lawan &amp; sparring</div>
+            </div>
+
+            <div class="action-tile" onclick="switchTab('foto')">
+              <div class="action-tile-icon" style="background:rgba(217,162,27,0.12);color:#D97706;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+              </div>
+              <div class="action-tile-title">Dokumentasi</div>
+              <div class="action-tile-desc">Fotografer GERAK</div>
+            </div>
+
+            <div class="action-tile" onclick="switchTab('partner')">
+              <div class="action-tile-icon" style="background:rgba(37,99,235,0.1);color:#2563EB;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
+              </div>
+              <div class="action-tile-title">Kemitraan</div>
+              <div class="action-tile-desc">Ekskul &amp; Event</div>
+            </div>
+          </div>
+
+          <div style="margin-top:20px;padding:12px 14px;background:#F8F9FA;border-radius:10px;border-left:3px solid var(--member-gold);font-size:12.5px;color:var(--text-muted);">
+            💡 <strong>Benefit Aktif:</strong> Poin reward dapat ditukarkan dengan potongan biaya sewa lapangan malam atau air mineral tim gratis saat mabar.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Recent Bookings Table -->
+    <div class="card">
+      <div class="card-head">
+        <h3>Riwayat Reservasi Lapangan Terakhir</h3>
+        <button class="btn btn-outline btn-sm" onclick="switchTab('bookings')">Lihat Semua</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID Booking</th>
+              <th>Lapangan</th>
+              <th>Tanggal &amp; Jam</th>
+              <th>Total Biaya</th>
+              <th>Status</th>
+              <th style="text-align:right;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tableOverviewOrders">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       TAB: BOOKING LAPANGAN BARU (TRANSAKSI MANDIRI)
+       ========================================== -->
+  <section class="tab-panel" id="tabBooking">
+    <div class="panel-header">
+      <h2>Booking Lapangan Baru Pusdikif</h2>
+      <p>Reservasi jadwal pertandingan resmi standar FIFA langsung dari akun member Anda. Diskon 10% otomatis diterapkan.</p>
+    </div>
+
+    <div class="two-col">
+      <!-- Form Pemesanan -->
+      <div class="card">
+        <div class="card-head">
+          <h3>Formulir Reservasi Lapangan</h3>
+          <span class="badge-status confirmed">Diskon Member 10%</span>
+        </div>
+        <div class="card-body">
+          <form id="formNewBooking" onsubmit="handleNewBookingSubmit(event)">
+            <div class="form-group">
+              <label class="form-label">Pilih Venue / Lapangan</label>
+              <select class="form-input" id="bookCourt" required>
+                <option value="Lapangan 1 (FIFA Synth 30x50M)">Lapangan Utama Pusdikif (30 × 50 M) — Rumput Sintetis FIFA Quality</option>
+              </select>
+            </div>
+
+            <div class="two-col" style="gap:14px;margin-bottom:14px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Tanggal Main</label>
+                <input type="date" class="form-input" id="bookDate" required onchange="calculateBookingPrice()">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Durasi Main</label>
+                <select class="form-input" id="bookDuration" onchange="calculateBookingPrice()" required>
+                  <option value="1">1 Jam</option>
+                  <option value="2" selected>2 Jam (Standar Match)</option>
+                  <option value="3">3 Jam</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="two-col" style="gap:14px;margin-bottom:14px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Paket Sesi Waktu</label>
+                <select class="form-input" id="bookSession" onchange="calculateBookingPrice()" required>
+                  <option value="Happy Hours|225000">Happy Hours (10.00 – 15.00) — Rp 225.000 / jam</option>
+                  <option value="Prime Morning|250000">Prime Morning (06.00 – 08.00) — Rp 250.000 / jam</option>
+                  <option value="Morning|275000">Morning (08.00 – 10.00) — Rp 275.000 / jam</option>
+                  <option value="Prime Time|300000">Prime Time (15.00 – 18.00) — Rp 300.000 / jam</option>
+                  <option value="Premium Night|350000" selected>Premium Night (18.00 – 22.00) — Rp 350.000 / jam (Full LED)</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Jam Mulai</label>
+                <select class="form-input" id="bookTime" required>
+                  <option>06:00 WIB</option><option>07:00 WIB</option><option>08:00 WIB</option><option>09:00 WIB</option>
+                  <option>10:00 WIB</option><option>13:00 WIB</option><option>15:00 WIB</option><option>16:00 WIB</option>
+                  <option>17:00 WIB</option><option>18:00 WIB</option><option>19:00 WIB</option><option selected>20:00 WIB</option><option>21:00 WIB</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Add-ons Khusus Member -->
+            <div style="margin:16px 0;padding:14px;background:#F8F9FA;border-radius:12px;border:1px solid var(--border);">
+              <label class="form-label" style="margin-bottom:8px;">Fasilitas &amp; Layanan Tambahan (Add-ons)</label>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer;">
+                  <input type="checkbox" id="addonBibs" checked disabled>
+                  <span>Rompi Tim 2 Warna (20 pcs) — <strong style="color:#16A34A;">GRATIS Member</strong></span>
+                </label>
+                <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer;">
+                  <input type="checkbox" id="addonBall" checked disabled>
+                  <span>Bola Resmi Standar FIFA Quality — <strong style="color:#16A34A;">GRATIS Member</strong></span>
+                </label>
+                <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer;">
+                  <input type="checkbox" id="addonFoto" onchange="calculateBookingPrice()">
+                  <span>Jasa Fotografer Match GERAK (+ Rp 300.000 / match)</span>
+                </label>
+                <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer;">
+                  <input type="checkbox" id="addonRef" onchange="calculateBookingPrice()">
+                  <span>Wasit Pertandingan Berlisensi (+ Rp 100.000 / match)</span>
+                </label>
+                <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer;">
+                  <input type="checkbox" id="addonWater" onchange="calculateBookingPrice()">
+                  <span>1 Karton Air Mineral Dingin (+ Rp 35.000)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Catatan Tambahan / Tim Lawan (Opsional)</label>
+              <input type="text" class="form-input" id="bookNotes" placeholder="Contoh: Friendly match vs Bandung Raya FC">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold" id="btnConfirmBooking" style="font-size:15px;justify-content:center;border:none;cursor:pointer;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <span>Konfirmasi Reservasi &amp; Terbitkan Nota</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Rincian Tagihan & Metode Pembayaran -->
+      <div class="card">
+        <div class="card-head">
+          <h3>Ringkasan Pembayaran</h3>
+          <span class="badge-status pending">Invoice Instan</span>
+        </div>
+        <div class="card-body">
+          <div style="background:#08090B;border-radius:14px;padding:20px;color:#FFFFFF;margin-bottom:20px;border:1px solid rgba(215,25,38,0.25);">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;color:#A0A4A8;">
+              <span>Paket Sesi</span>
+              <strong style="color:#FFF;" id="sumSessionName">Premium Night</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;color:#A0A4A8;">
+              <span>Tarif Normal</span>
+              <span id="sumBaseRate">Rp 700.000 (2 Jam)</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;color:#A0A4A8;">
+              <span>Biaya Add-ons</span>
+              <span id="sumAddons">Rp 0</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:14px;font-size:13px;color:#4ADE80;">
+              <span>Diskon Member Resmi (10%)</span>
+              <strong id="sumDiscount">- Rp 70.000</strong>
+            </div>
+            <div style="border-top:1px dashed rgba(255,255,255,0.2);padding-top:14px;display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <span style="font-size:11px;text-transform:uppercase;color:#8C929C;letter-spacing:0.08em;display:block;">TOTAL PEMBAYARAN</span>
+                <strong style="font-size:24px;color:#F3C644;" id="sumFinalTotal">Rp 630.000</strong>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge-status confirmed">+20 Poin Reward</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Options -->
+          <div class="p-3 rounded-3 border bg-light mb-3" style="padding:14px;border:1px solid var(--border);border-radius:10px;background:#F8F9FA;margin-bottom:16px;">
+            <strong style="display:block;margin-bottom:6px;font-size:13px;color:var(--text);">Pilihan Cara Pembayaran:</strong>
+            <div style="font-size:12px;color:var(--text-muted);display:flex;flex-direction:column;gap:6px;">
+              <div>📱 <strong>QRIS Nasional 88 Alpha Sport:</strong> NMID ID1026529171542 (Bebas Biaya Admin)</div>
+              <div>🏦 <strong>Transfer Bank Mandiri:</strong> 13000-23009007 a.n PT Sarana Digital Retail</div>
+              <div>💵 <strong>Kasir Pusdikif:</strong> Pembayaran langsung di resepsionis sebelum kick-off</div>
+            </div>
+          </div>
+
+          <div style="text-align:center;padding:12px;background:rgba(215,25,38,0.06);border-radius:10px;border:1px solid rgba(215,25,38,0.2);font-size:12px;color:var(--text-muted);">
+            Setiap reservasi langsung menghasilkan <strong>Nota Digital Resmi</strong> yang dapat diunduh atau ditunjukkan ke turnstile venue Pusdikif.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       TAB 2: BOOKINGS (MANAJEMEN RIWAYAT BOOKING)
+       ========================================== -->
+  <section class="tab-panel" id="tabBookings">
+    <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h2>Riwayat &amp; Jadwal Booking Saya</h2>
+        <p>Seluruh reservasi sesi bermain yang tercatat atas akun member Anda.</p>
+      </div>
+      <button type="button" onclick="switchTab('booking')" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:6px;border:none;cursor:pointer;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>+ Booking Lapangan Baru</span>
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div style="display:flex;gap:10px;align-items:center;flex:1;max-width:400px;">
+          <input type="text" class="input-inline w-100" id="searchBookings" placeholder="Cari Kode Booking atau Tanggal..." oninput="filterBookings()">
+        </div>
+        <div class="table-filters">
+          <select class="input-inline" id="filterStatus" onchange="filterBookings()">
+            <option value="all">Semua Status</option>
+            <option value="confirmed">Lunas / Terkonfirmasi</option>
+            <option value="completed">Selesai</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Kode Booking</th>
+              <th>Venue / Lapangan</th>
+              <th>Jadwal Bermain</th>
+              <th>Total Biaya</th>
+              <th>Status</th>
+              <th style="text-align:right;">Bukti / Nota</th>
+            </tr>
+          </thead>
+          <tbody id="tableFullOrders">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       TAB 3: DIGITAL CARD (KARTU MEMBER DIGITAL)
+       ========================================== -->
+  <section class="tab-panel" id="tabCard">
+    <div class="panel-header">
+      <h2>Kartu Member Digital 88 Alpha Sport</h2>
+      <p>Gunakan kartu digital ini untuk identitas resmi dan pemindaian di pintu masuk venue Pusdikif.</p>
+    </div>
+
+    <div class="two-col">
+      <!-- Full Size Member Card -->
+      <div class="card">
+        <div class="card-body" style="padding:28px;background:#FAFAFA;">
+          <div class="member-card-3d" style="padding:32px;min-height:220px;">
+            <div class="card-top">
+              <div class="card-chip" style="width:46px;height:32px;"></div>
+              <div class="card-badge" style="font-size:12px;padding:4px 14px;">MEMBER RESMI 88</div>
+            </div>
+            <div class="card-num" style="font-size:24px;margin-bottom:28px;" id="fullCardId">MS88-MBR-8801</div>
+            <div class="card-bottom">
+              <div>
+                <div class="card-label">NAMA PEMAIN / KAPTEN</div>
+                <div class="card-val" style="font-size:16px;" id="fullCardName">Reza Pratama</div>
+                <div class="card-label" style="margin-top:8px;">TIM / KOMUNITAS</div>
+                <div class="card-val" style="font-size:14px;color:#F3C644;" id="fullCardTeam">Cimahi United FC</div>
+              </div>
+              <div class="card-qr" style="padding:8px;border-radius:10px;">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#08090B" stroke-width="2">
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                  <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                  <line x1="17" y1="7" x2="17.01" y2="7"></line>
+                  <line x1="7" y1="17" x2="7.01" y2="17"></line>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px;margin-top:20px;">
+            <button class="btn btn-primary w-100" onclick="window.print()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              Cetak / Simpan Kartu PDF
+            </button>
+            <button class="btn btn-outline w-100" onclick="openEditProfileModal()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              Perbarui Data Kartu
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Privileges & Guidelines -->
+      <div class="card">
+        <div class="card-head">
+          <h3>Hak Istimewa &amp; Ketentuan Member</h3>
+        </div>
+        <div class="card-body">
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:14px;">
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="color:#16A34A;font-weight:700;">✔</span>
+              <div>
+                <strong style="color:var(--text);font-size:13.5px;">Diskon Sewa Lapangan 10%</strong>
+                <p style="color:var(--text-muted);font-size:12px;margin-top:2px;">Otomatis berlaku untuk booking sesi malam reguler (18:00–23:00 WIB).</p>
+              </div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="color:#16A34A;font-weight:700;">✔</span>
+              <div>
+                <strong style="color:var(--text);font-size:13.5px;">Gratis Rompi Latihan &amp; Bola FIFA</strong>
+                <p style="color:var(--text-muted);font-size:12px;margin-top:2px;">Setiap sesi bermain mendapatkan 2 set rompi 2 warna dan bola pertandingan.</p>
+              </div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="color:#16A34A;font-weight:700;">✔</span>
+              <div>
+                <strong style="color:var(--text);font-size:13.5px;">Prioritas Booking Jadwal Weekend</strong>
+                <p style="color:var(--text-muted);font-size:12px;margin-top:2px;">Member dapat melakukan reservasi hingga 30 hari ke depan sebelum dibuka ke umum.</p>
+              </div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="color:#16A34A;font-weight:700;">✔</span>
+              <div>
+                <strong style="color:var(--text);font-size:13.5px;">Akses Loker &amp; Shower Room VIP</strong>
+                <p style="color:var(--text-muted);font-size:12px;margin-top:2px;">Cukup tunjukkan kartu ini kepada staf lapangan di meja resepsionis.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       TAB 4: MABAR & KOMUNITAS
+       ========================================== -->
+  <section class="tab-panel" id="tabMabar">
+    <div class="panel-header">
+      <h2>Sesi Mabar &amp; Komunitas Pusdikif</h2>
+      <p>Jadwal bermain bersama, cari lawan tanding, dan sparring komunitas sepak bola Cimahi &amp; Bandung.</p>
+    </div>
+
+    <div class="two-col">
+      <!-- Sesi Mabar 1 -->
+      <div class="mabar-card">
+        <div class="mabar-head">
+          <strong>⚽ Mabar Selasa Malam (Kommoto 88)</strong>
+          <span class="badge-status confirmed">Buka Pendaftaran</span>
+        </div>
+        <div class="mabar-meta">
+          <div class="meta-row">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>Setiap Selasa • 20:00 – 22:00 WIB</span>
+          </div><br>
+          <div class="meta-row">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span>Lapangan 1 Mini Soccer Pusdikif Cimahi</span>
+          </div><br>
+          <div class="meta-row">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <span>HTM: Rp 35.000 / Pemain (Free Rompi + Air Mineral)</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          <a href="https://wa.me/6281295679799?text=Halo%20Admin,%20saya%20member%20ingin%20gabung%20Mabar%20Selasa%20Malam" target="_blank" class="btn btn-primary btn-sm w-100" style="text-decoration:none;justify-content:center;">
+            Daftar Ikut Sesi Ini via WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <!-- Sesi Mabar 2 -->
+      <div class="mabar-card">
+        <div class="mabar-head">
+          <strong>🔥 Sparring Akhir Pekan (Weekend War)</strong>
+          <span class="badge-status pending">Slot Terbatas (2 Tim)</span>
+        </div>
+        <div class="mabar-meta">
+          <div class="meta-row">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>Setiap Minggu • 16:00 – 18:00 WIB</span>
+          </div><br>
+          <div class="meta-row">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span>Lapangan Standar FIFA Pusdikif</span>
+          </div><br>
+          <div class="meta-row">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <span>Format: 7 vs 7 (2 Jam Full Game)</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          <a href="https://wa.me/628882133345?text=Halo%20Admin%20Giefran,%20tim%20saya%20ingin%20daftar%20Sparring%20Weekend" target="_blank" class="btn btn-outline btn-sm w-100" style="text-decoration:none;justify-content:center;">
+            Tantang Tim / Daftar Sparring
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       TAB: PENGAJUAN KEMITRAAN SEKOLAH & EVENT
+       ========================================== -->
+  <section class="tab-panel" id="tabPartner">
+    <div class="panel-header">
+      <h2>Pengajuan Kemitraan Sekolah &amp; Event</h2>
+      <p>Skema kerjasama resmi untuk SD, SMP, SMA/SMK, Lembaga Pendidikan, dan Komunitas di Kota Cimahi.</p>
+    </div>
+
+    <div class="two-col">
+      <!-- Formulir Kemitraan -->
+      <div class="card">
+        <div class="card-head">
+          <h3>Formulir Kerjasama Resmi</h3>
+          <span class="badge-status confirmed">Pusdikif Partnership</span>
+        </div>
+        <div class="card-body">
+          <form id="formNewPartner" onsubmit="handleNewPartnerSubmit(event)">
+            <div class="form-group">
+              <label class="form-label">Nama Lembaga / Sekolah / Instansi</label>
+              <input type="text" class="form-input" id="partnerInstansi" placeholder="Contoh: SMA Negeri 2 Cimahi" required>
+            </div>
+            <div class="two-col" style="gap:14px;margin-bottom:14px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Nama PIC / Penanggung Jawab</label>
+                <input type="text" class="form-input" id="partnerPic" placeholder="Contoh: Bpk. Haryanto (Guru PJOK)" required>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Nomor WhatsApp PIC</label>
+                <input type="tel" class="form-input" id="partnerWa" placeholder="0812xxxxxxxx" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Bentuk Kegiatan yang Diajukan</label>
+              <select class="form-input" id="partnerType" required>
+                <option value="Ekskul Olahraga / PJOK Rutin">Ekskul Rutin Sekolah (Mini Soccer / Futsal / PJOK)</option>
+                <option value="Bela Diri (Silat / Karate / Taekwondo)">Kegiatan Bela Diri (Silat / Karate / Taekwondo)</option>
+                <option value="Event Wisuda Outdoor / Pentas Seni">Event Spesial (Wisuda Outdoor / Pentas Seni / Perpisahan)</option>
+                <option value="Turnamen Antar Pelajar / Komunitas">Penyelenggaraan Turnamen / Cup</option>
+                <option value="Gathering / Olahraga Guru & Karyawan">Gathering / Olahraga Guru &amp; Staf</option>
+              </select>
+            </div>
+            <div class="two-col" style="gap:14px;margin-bottom:14px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Estimasi Tanggal / Periode Mulai</label>
+                <input type="date" class="form-input" id="partnerDate" required>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Alokasi Waktu yang Diinginkan</label>
+                <select class="form-input" id="partnerSlot" required>
+                  <option value="Senin - Jumat (07.00 - 15.00 WIB)">Senin – Jumat: 07.00 – 15.00 WIB (Tarif Kemitraan Khusus)</option>
+                  <option value="Sore Hari (15.00 - 18.00 WIB)">Sore Hari: 15.00 – 18.00 WIB</option>
+                  <option value="Weekend Pagi (06.00 - 10.00 WIB)">Weekend Pagi: 06.00 – 10.00 WIB</option>
+                  <option value="Full Day Event (07.00 - 17.00 WIB)">Full Day Event (Khusus Wisuda / Turnamen)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Keterangan / Kebutuhan Fasilitas Tambahan</label>
+              <textarea class="form-input" id="partnerNotes" rows="3" placeholder="Contoh: Membutuhkan area tribun teduh untuk 150 siswa & sound system"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold" style="font-size:15px;justify-content:center;border:none;cursor:pointer;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
+              <span>Kirim Pengajuan Kemitraan Resmi</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Informasi Kemitraan & Proposal -->
+      <div class="card">
+        <div class="card-head">
+          <h3>Benefit &amp; Fasilitas Sekolah</h3>
+          <span class="badge-status confirmed">Resmi TNI AD</span>
+        </div>
+        <div class="card-body">
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:14px;padding:0;margin-bottom:20px;">
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="color:#16A34A;font-weight:700;">✔</span>
+              <div>
+                <strong style="color:var(--text);font-size:13.5px;">Rumput Sintetis Standar FIFA (30 × 50 M)</strong>
+                <p style="color:var(--text-muted);font-size:12px;margin-top:2px;">Aman bagi sendi anak dan remaja dengan bantalan silica &amp; infill standar internasional.</p>
+              </div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="color:#16A34A;font-weight:700;">✔</span>
+              <div>
+                <strong style="color:var(--text);font-size:13.5px;">Keamanan Militer Terjaga 24 Jam</strong>
+                <p style="color:var(--text-muted);font-size:12px;margin-top:2px;">Lingkungan asrama militer Pusdikif yang disiplin, aman dari gangguan luar dan lalu lintas ramai.</p>
+              </div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="color:#16A34A;font-weight:700;">✔</span>
+              <div>
+                <strong style="color:var(--text);font-size:13.5px;">Musholla, Parkir Bus Luas &amp; Kantin Sekar</strong>
+                <p style="color:var(--text-muted);font-size:12px;margin-top:2px;">Kapasitas parkir mampu menampung puluhan kendaraan roda 4, bus pariwisata sekolah, dan ratusan motor.</p>
+              </div>
+            </li>
+          </ul>
+
+          <div style="padding:16px;background:#F8F9FA;border-radius:12px;border:1px solid var(--border);text-align:center;">
+            <a href="/assets/docs/Quotation_Alpha_Sport_Pusdikif.pdf" download class="btn btn-outline btn-sm w-100 mb-2" style="justify-content:center;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Unduh Proposal Resmi Kerjasama (PDF)
+            </a>
+            <small style="color:var(--text-muted);font-size:11.5px;">Dokumen lengkap surat penawaran &amp; spesifikasi legalitas venue.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       TAB: LAYANAN FOTOGRAFER GERAK
+       ========================================== -->
+  <section class="tab-panel" id="tabFoto">
+    <div class="panel-header">
+      <h2>Pemesanan Jasa Fotografer Match (GERAK)</h2>
+      <p>Abadikan setiap momen selebrasi, tackling, dan aksi terbaik tim Anda bersama partner resmi GERAK Content Creator.</p>
+    </div>
+
+    <div class="two-col">
+      <!-- Form Order Foto -->
+      <div class="card">
+        <div class="card-head">
+          <h3>Formulir Order Dokumentasi</h3>
+          <span class="badge-status pending">Official Partner</span>
+        </div>
+        <div class="card-body">
+          <form id="formNewFoto" onsubmit="handleNewFotoSubmit(event)">
+            <div class="form-group">
+              <label class="form-label">Pilih Paket Dokumentasi</label>
+              <select class="form-input" id="fotoPackage" onchange="updateFotoSummary()" required>
+                <option value="Paket Basic|300000">Paket Basic — Rp 300.000 (100+ Foto Match &amp; Pemain)</option>
+                <option value="Paket Best Choice|450000" selected>Best Choice (Rekomendasi) — Rp 450.000 (150+ Foto + Tim Profile)</option>
+                <option value="Paket Premium|600000">Paket Premium — Rp 600.000 (200+ Foto + Highlight Reel Video)</option>
+              </select>
+            </div>
+            <div class="two-col" style="gap:14px;margin-bottom:14px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Tanggal Pertandingan</label>
+                <input type="date" class="form-input" id="fotoDate" required>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Jam Match</label>
+                <select class="form-input" id="fotoTime" required>
+                  <option>06:00 - 08:00 WIB</option><option>08:00 - 10:00 WIB</option>
+                  <option>10:00 - 12:00 WIB</option><option>15:00 - 17:00 WIB</option>
+                  <option>16:00 - 18:00 WIB</option><option selected>18:00 - 20:00 WIB</option>
+                  <option>20:00 - 22:00 WIB</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nama Tim / Pertandingan</label>
+              <input type="text" class="form-input" id="fotoMatchName" placeholder="Contoh: Cimahi United vs Pusdikif Oldstars" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Akun Instagram Tim / Pemain (Untuk Tag &amp; Pengiriman Drive)</label>
+              <input type="text" class="form-input" id="fotoIg" placeholder="Contoh: @cimahiunitedfc">
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold" style="font-size:15px;justify-content:center;border:none;cursor:pointer;background:#D97706;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+              <span>Konfirmasi Order Fotografer GERAK</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Paket Rincian -->
+      <div class="card">
+        <div class="card-head">
+          <h3>Keunggulan Dokumentasi GERAK</h3>
+          <span class="badge-status confirmed">High Res Drive</span>
+        </div>
+        <div class="card-body">
+          <div style="background:#08090B;border-radius:14px;padding:20px;color:#FFFFFF;margin-bottom:16px;border:1px solid rgba(217,162,27,0.3);">
+            <div style="font-size:12px;color:#D9A21B;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Paket Terpilih</div>
+            <h4 style="font-size:20px;color:#FFF;margin:4px 0 8px;" id="fotoSelectedName">Best Choice ⭐</h4>
+            <div style="font-size:24px;font-weight:800;color:#F3C644;margin-bottom:12px;" id="fotoSelectedPrice">Rp 450.000</div>
+            <div style="font-size:12.5px;color:#D1D5DB;line-height:1.5;">
+              • Kamera mirrorless full frame resolusi tinggi<br>
+              • Pengiriman cepat via Google Drive (Maksimal 24 jam)<br>
+              • Color grading profesional siap upload Instagram
+            </div>
+          </div>
+
+          <div style="padding:14px;background:#F8F9FA;border-radius:10px;border:1px solid var(--border);font-size:12px;color:var(--text-muted);">
+            📷 Kontak Partner: <strong>@gerak.tangkap.abadikan</strong> / 0812-9567-9799
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       TAB 5: PROFILE (PENGATURAN AKUN)
+       ========================================== -->
+  <section class="tab-panel" id="tabProfile">
+    <div class="panel-header">
+      <h2>Pengaturan Akun &amp; Profil Pemain</h2>
+      <p>Perbarui informasi biodata, nomor kontak WhatsApp, dan nama tim Anda.</p>
+    </div>
+
+    <div class="card" style="max-width:640px;">
+      <div class="card-head">
+        <h3>Biodata Member</h3>
+      </div>
+      <div class="card-body">
+        <form onsubmit="handleProfileSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">ID Member Resmi</label>
+            <input type="text" class="form-input" id="profileIdInput" readonly style="background:#F8F9FA;color:var(--text-muted);font-weight:700;font-family:monospace;">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nama Lengkap Pemain / Kapten</label>
+            <input type="text" class="form-input" id="profileNameInput" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nomor WhatsApp Aktif</label>
+            <input type="tel" class="form-input" id="profilePhoneInput" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nama Tim / Klub</label>
+            <input type="text" class="form-input" id="profileTeamInput" placeholder="Contoh: Cimahi United FC" required>
+          </div>
+
+          <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:24px;">
+            <button type="submit" class="btn btn-primary" style="padding:10px 24px;">Simpan Perubahan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Modal Edit Profile (Quick) -->
+<div class="modal-backdrop-custom" id="modalEditProfile">
+  <div class="modal-box-custom">
+    <div class="modal-header-custom">
+      <h3>Edit Profil Member</h3>
+      <button class="btn-icon" onclick="closeEditProfileModal()">&times;</button>
+    </div>
+    <form onsubmit="handleQuickProfileSubmit(event)">
+      <div class="modal-body-custom">
+        <div class="form-group">
+          <label class="form-label">Nama Lengkap</label>
+          <input type="text" class="form-input" id="quickEditName" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nomor WhatsApp</label>
+          <input type="tel" class="form-input" id="quickEditPhone" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nama Tim / Klub</label>
+          <input type="text" class="form-input" id="quickEditTeam" required>
+        </div>
+      </div>
+      <div class="modal-footer-custom">
+        <button type="button" class="btn btn-outline" onclick="closeEditProfileModal()">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Sukses Booking -->
+<div class="modal-backdrop-custom" id="modalBookingSuccess">
+  <div class="modal-box-custom" style="max-width:520px;text-align:center;">
+    <div class="modal-header-custom" style="background:#16A34A;color:#FFFFFF;border-top-left-radius:16px;border-top-right-radius:16px;">
+      <h3 style="color:#FFFFFF;display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        Reservasi Berhasil Terkonfirmasi!
+      </h3>
+    </div>
+    <div class="modal-body-custom" style="padding:28px 24px;">
+      <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">KODE RESERVASI RESMI</div>
+      <div style="font-size:26px;font-weight:800;color:var(--primary);letter-spacing:0.08em;font-family:monospace;margin-bottom:12px;" id="successOrderId">MS88-892102</div>
+      <div style="background:#F8F9FA;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;text-align:left;font-size:13px;line-height:1.6;">
+        <div>📅 <strong>Jadwal:</strong> <span id="successOrderSchedule">-</span></div>
+        <div>🏟️ <strong>Venue:</strong> Lapangan Utama Pusdikif (30 × 50 M)</div>
+        <div>💰 <strong>Total Bayar:</strong> <strong style="color:var(--primary);" id="successOrderTotal">-</strong> (Termasuk Diskon Member 10%)</div>
+        <div>⭐ <strong>Bonus Poin:</strong> <span style="color:#16A34A;font-weight:700;">+20 Poin Reward Ditambahkan</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <a href="#" id="successBtnReceipt" class="btn btn-primary w-100 py-2 fw-bold" style="text-decoration:none;justify-content:center;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          Buka Nota &amp; Bukti Reservasi Digital
+        </a>
+        <a href="#" id="successBtnWa" target="_blank" class="btn btn-outline w-100 py-2 fw-bold" style="text-decoration:none;justify-content:center;color:#16A34A;border-color:#16A34A;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+          Teruskan Konfirmasi ke WhatsApp Admin
+        </a>
+      </div>
+    </div>
+    <div class="modal-footer-custom" style="justify-content:center;">
+      <button type="button" class="btn btn-outline btn-sm" onclick="closeBookingSuccessModal()">Tutup &amp; Lihat Riwayat Booking</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // State
+  let currentTab = 'overview';
+  let memberData = {
+    id: 'MS88-MBR-8801',
+    name: 'Reza Pratama',
+    phone: '081298765432',
+    team: 'Cimahi United FC',
+    points: 140,
+    matches: 6
+  };
+
+  // Toast Function
+  function showToast(msg, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type === 'error' ? 'toast-error' : ''}`;
+    toast.textContent = msg;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(20px)';
+      setTimeout(() => toast.remove(), 300);
+    }, 3500);
+  }
+
+  // Sidebar Toggle (Mobile)
+  function toggleSidebar() {
+    const sidebar = document.getElementById('memberSidebar');
+    const main = document.getElementById('memberMain');
+    sidebar.classList.toggle('collapsed');
+    main.classList.toggle('expanded');
+  }
+
+  // Tab Switcher
+  function switchTab(tab) {
+    currentTab = tab;
+
+    // Update active nav button
+    document.querySelectorAll('.sidebar-nav .nav-link-btn').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = document.getElementById('tabBtn' + tab.charAt(0).toUpperCase() + tab.slice(1));
+    if (activeBtn) activeBtn.classList.add('active');
+
+    // Update tab panels
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    const activePanel = document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1));
+    if (activePanel) activePanel.classList.add('active');
+
+    // Update Topbar Title
+    const titles = {
+      overview: 'Ringkasan Member',
+      booking: 'Booking Lapangan Baru',
+      bookings: 'Riwayat Booking Lapangan',
+      card: 'Kartu Member Digital',
+      mabar: 'Sesi Mabar & Komunitas',
+      partner: 'Pengajuan Kemitraan Sekolah & Event',
+      foto: 'Pemesanan Jasa Fotografer GERAK',
+      profile: 'Pengaturan Akun'
+    };
+    document.getElementById('topbarTitle').textContent = titles[tab] || 'Portal Member';
+
+    // On mobile, collapse sidebar on tab switch
+    if (window.innerWidth <= 992) {
+      document.getElementById('memberSidebar').classList.add('collapsed');
+      document.getElementById('memberMain').classList.add('expanded');
+    }
+  }
+
+  // Load Member Data
+  function loadMemberData() {
+    const saved = JSON.parse(sessionStorage.getItem('ms88_auth_user') || 'null');
+    if (saved) {
+      memberData = { ...memberData, ...saved };
+    }
+
+    // Update UI elements
+    document.getElementById('memberSidebarAvatar').textContent = (memberData.name || 'M').charAt(0).toUpperCase();
+    document.getElementById('memberSidebarName').textContent = memberData.name || 'Member 88';
+    document.getElementById('memberSidebarTeam').textContent = memberData.team || 'Member Resmi Pusdikif';
+
+    document.getElementById('greetHeading').textContent = `Halo, ${memberData.name || 'Pemain 88'}! 👋`;
+    document.getElementById('kpiBookings').textContent = `${memberData.matches || 6} Sesi`;
+    document.getElementById('kpiHours').textContent = `${(memberData.matches || 6) * 2 - 1} Jam`;
+    document.getElementById('kpiPoints').textContent = `${memberData.points || 140} Poin`;
+
+    // Cards
+    document.getElementById('cardMemberId').textContent = memberData.id || 'MS88-MBR-8801';
+    document.getElementById('cardHolderName').textContent = memberData.name || 'Reza Pratama';
+    document.getElementById('cardHolderTeam').textContent = memberData.team || 'Cimahi United FC';
+
+    document.getElementById('fullCardId').textContent = memberData.id || 'MS88-MBR-8801';
+    document.getElementById('fullCardName').textContent = memberData.name || 'Reza Pratama';
+    document.getElementById('fullCardTeam').textContent = memberData.team || 'Cimahi United FC';
+
+    // Form inputs
+    document.getElementById('profileIdInput').value = memberData.id || 'MS88-MBR-8801';
+    document.getElementById('profileNameInput').value = memberData.name || '';
+    document.getElementById('profilePhoneInput').value = memberData.phone || '';
+    document.getElementById('profileTeamInput').value = memberData.team || '';
+
+    document.getElementById('quickEditName').value = memberData.name || '';
+    document.getElementById('quickEditPhone').value = memberData.phone || '';
+    document.getElementById('quickEditTeam').value = memberData.team || '';
+  }
+
+  // Load Bookings Data
+  function loadBookings() {
+    let orders = JSON.parse(localStorage.getItem('ms88_orders') || '[]');
+
+    if (!orders || orders.length === 0) {
+      orders = [
+        {
+          id: 'MS88-847291',
+          name: memberData.name,
+          court: 'Lapangan 1 (FIFA Synth)',
+          date: '19 Sep 2026',
+          time: '20:00 - 22:00 WIB (2 Jam)',
+          total: 700000,
+          status: 'confirmed'
+        },
+        {
+          id: 'MS88-821904',
+          name: memberData.name,
+          court: 'Lapangan 1 (FIFA Synth)',
+          date: '12 Sep 2026',
+          time: '18:00 - 20:00 WIB (2 Jam)',
+          total: 700000,
+          status: 'completed'
+        },
+        {
+          id: 'MS88-793420',
+          name: memberData.name,
+          court: 'Lapangan 1 (FIFA Synth)',
+          date: '05 Sep 2026',
+          time: '16:00 - 18:00 WIB (2 Jam)',
+          total: 600000,
+          status: 'completed'
+        },
+        {
+          id: 'MS88-751098',
+          name: memberData.name,
+          court: 'Lapangan 1 (FIFA Synth)',
+          date: '28 Agu 2026',
+          time: '20:00 - 22:00 WIB (2 Jam)',
+          total: 700000,
+          status: 'completed'
+        }
+      ];
+      localStorage.setItem('ms88_orders', JSON.stringify(orders));
+    }
+
+    renderTableRows(orders);
+  }
+
+  function renderTableRows(orders) {
+    const tableOverview = document.getElementById('tableOverviewOrders');
+    const tableFull = document.getElementById('tableFullOrders');
+
+    let htmlOverview = '';
+    let htmlFull = '';
+
+    orders.forEach((ord, idx) => {
+      let badgeClass = 'pending';
+      let statusLabel = 'Pending';
+      if (ord.status === 'confirmed' || ord.status === 'success') {
+        badgeClass = 'confirmed';
+        statusLabel = 'Terkonfirmasi (Lunas)';
+      } else if (ord.status === 'completed') {
+        badgeClass = 'confirmed';
+        statusLabel = 'Selesai';
+      }
+
+      const rowHtml = `
+        <tr>
+          <td><code style="font-weight:700;color:var(--text);">${ord.id}</code></td>
+          <td><strong>${ord.court || 'Lapangan Pusdikif'}</strong></td>
+          <td>
+            <div style="font-size:13px;color:var(--text);">${ord.date}</div>
+            <small style="color:var(--text-muted);">${ord.time}</small>
+          </td>
+          <td><strong style="color:var(--primary);">Rp ${(ord.total || 350000).toLocaleString('id-ID')}</strong></td>
+          <td><span class="badge-status ${badgeClass}">${statusLabel}</span></td>
+          <td style="text-align:right;">
+            <a href="../receipt.html?order_id=${ord.id}" class="btn btn-outline btn-sm" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              Nota
+            </a>
+          </td>
+        </tr>
+      `;
+
+      if (idx < 3) htmlOverview += rowHtml;
+      htmlFull += rowHtml;
+    });
+
+    if (tableOverview) tableOverview.innerHTML = htmlOverview || '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">Belum ada riwayat reservasi.</td></tr>';
+    if (tableFull) tableFull.innerHTML = htmlFull || '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">Belum ada riwayat reservasi.</td></tr>';
+  }
+
+  // Filter Bookings
+  function filterBookings() {
+    const q = document.getElementById('searchBookings').value.toLowerCase();
+    const st = document.getElementById('filterStatus').value;
+    const orders = JSON.parse(localStorage.getItem('ms88_orders') || '[]');
+
+    const filtered = orders.filter(o => {
+      const matchQ = (o.id && o.id.toLowerCase().includes(q)) || (o.date && o.date.toLowerCase().includes(q)) || (o.court && o.court.toLowerCase().includes(q));
+      const matchSt = (st === 'all') || (st === 'confirmed' && (o.status === 'confirmed' || o.status === 'success')) || (o.status === st);
+      return matchQ && matchSt;
+    });
+
+    const tableFull = document.getElementById('tableFullOrders');
+    if (!tableFull) return;
+
+    if (filtered.length === 0) {
+      tableFull.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">Tidak ada riwayat booking yang cocok.</td></tr>';
+      return;
+    }
+
+    let html = '';
+    filtered.forEach(ord => {
+      let badgeClass = 'pending';
+      let statusLabel = 'Pending';
+      if (ord.status === 'confirmed' || ord.status === 'success') {
+        badgeClass = 'confirmed';
+        statusLabel = 'Terkonfirmasi (Lunas)';
+      } else if (ord.status === 'completed') {
+        badgeClass = 'confirmed';
+        statusLabel = 'Selesai';
+      }
+
+      html += `
+        <tr>
+          <td><code style="font-weight:700;color:var(--text);">${ord.id}</code></td>
+          <td><strong>${ord.court || 'Lapangan Pusdikif'}</strong></td>
+          <td>
+            <div style="font-size:13px;color:var(--text);">${ord.date}</div>
+            <small style="color:var(--text-muted);">${ord.time}</small>
+          </td>
+          <td><strong style="color:var(--primary);">Rp ${(ord.total || 350000).toLocaleString('id-ID')}</strong></td>
+          <td><span class="badge-status ${badgeClass}">${statusLabel}</span></td>
+          <td style="text-align:right;">
+            <a href="../receipt.html?order_id=${ord.id}" class="btn btn-outline btn-sm" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              Nota
+            </a>
+          </td>
+        </tr>
+      `;
+    });
+    tableFull.innerHTML = html;
+  }
+
+  // Profile Save Handlers
+  function saveProfileData(name, phone, team) {
+    memberData.name = name;
+    memberData.phone = phone;
+    memberData.team = team;
+
+    sessionStorage.setItem('ms88_auth_user', JSON.stringify(memberData));
+
+    // Update in registered users list
+    let users = JSON.parse(localStorage.getItem('ms88_users') || '[]');
+    const idx = users.findIndex(u => u.id === memberData.id || u.phone === memberData.phone);
+    if (idx !== -1) {
+      users[idx] = { ...users[idx], ...memberData };
+    } else {
+      users.push(memberData);
+    }
+    localStorage.setItem('ms88_users', JSON.stringify(users));
+
+    loadMemberData();
+    showToast('Profil Anda berhasil diperbarui!');
+  }
+
+  function handleProfileSubmit(e) {
+    e.preventDefault();
+    saveProfileData(
+      document.getElementById('profileNameInput').value.trim(),
+      document.getElementById('profilePhoneInput').value.trim(),
+      document.getElementById('profileTeamInput').value.trim()
+    );
+  }
+
+  function handleQuickProfileSubmit(e) {
+    e.preventDefault();
+    saveProfileData(
+      document.getElementById('quickEditName').value.trim(),
+      document.getElementById('quickEditPhone').value.trim(),
+      document.getElementById('quickEditTeam').value.trim()
+    );
+    closeEditProfileModal();
+  }
+
+  function openEditProfileModal() {
+    document.getElementById('modalEditProfile').classList.add('show');
+  }
+
+  function closeEditProfileModal() {
+    document.getElementById('modalEditProfile').classList.remove('show');
+  }
+
+  // ==========================================
+  // TRANSACTION & BOOKING FUNCTIONS
+  // ==========================================
+  function calculateBookingPrice() {
+    const sessionVal = document.getElementById('bookSession')?.value || 'Premium Night|350000';
+    const [sessName, sessRateStr] = sessionVal.split('|');
+    const rate = parseInt(sessRateStr, 10) || 350000;
+    const dur = parseInt(document.getElementById('bookDuration')?.value, 10) || 2;
+
+    const baseSubtotal = rate * dur;
+
+    // Addons
+    let addonsTotal = 0;
+    const hasFoto = document.getElementById('addonFoto')?.checked;
+    const hasRef = document.getElementById('addonRef')?.checked;
+    const hasWater = document.getElementById('addonWater')?.checked;
+
+    if (hasFoto) addonsTotal += 300000;
+    if (hasRef) addonsTotal += 100000;
+    if (hasWater) addonsTotal += 35000;
+
+    // 10% Member discount on field rate
+    const memberDiscount = Math.round(baseSubtotal * 0.1);
+    const finalTotal = baseSubtotal + addonsTotal - memberDiscount;
+
+    if (document.getElementById('sumSessionName')) document.getElementById('sumSessionName').textContent = sessName;
+    if (document.getElementById('sumBaseRate')) document.getElementById('sumBaseRate').textContent = 'Rp ' + baseSubtotal.toLocaleString('id-ID') + ' (' + dur + ' Jam)';
+    if (document.getElementById('sumAddons')) document.getElementById('sumAddons').textContent = 'Rp ' + addonsTotal.toLocaleString('id-ID');
+    if (document.getElementById('sumDiscount')) document.getElementById('sumDiscount').textContent = '- Rp ' + memberDiscount.toLocaleString('id-ID');
+    if (document.getElementById('sumFinalTotal')) document.getElementById('sumFinalTotal').textContent = 'Rp ' + finalTotal.toLocaleString('id-ID');
+
+    return { sessName, baseSubtotal, addonsTotal, memberDiscount, finalTotal, dur };
+  }
+
+  function handleNewBookingSubmit(e) {
+    e.preventDefault();
+    const court = document.getElementById('bookCourt').value;
+    const date = document.getElementById('bookDate').value;
+    const time = document.getElementById('bookTime').value;
+    const notes = document.getElementById('bookNotes').value.trim();
+    const { sessName, finalTotal, dur } = calculateBookingPrice();
+
+    const orderId = 'MS88-' + Math.floor(100000 + Math.random() * 900000);
+    const dateFormatted = new Date(date).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
+
+    const newOrder = {
+      id: orderId,
+      name: memberData.name || 'Member Resmi',
+      phone: memberData.phone || '081295679799',
+      court: court,
+      date: dateFormatted,
+      time: `${time} (${dur} Jam)`,
+      session: sessName,
+      total: finalTotal,
+      notes: notes,
+      status: 'confirmed',
+      timestamp: new Date().toLocaleDateString('id-ID', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })
+    };
+
+    let orders = JSON.parse(localStorage.getItem('ms88_orders') || '[]');
+    orders.unshift(newOrder);
+    localStorage.setItem('ms88_orders', JSON.stringify(orders));
+
+    // Update Member stats (+1 match, +20 points)
+    memberData.matches = (memberData.matches || 6) + 1;
+    memberData.points = (memberData.points || 140) + 20;
+    sessionStorage.setItem('ms88_auth_user', JSON.stringify(memberData));
+
+    let users = JSON.parse(localStorage.getItem('ms88_users') || '[]');
+    const uIdx = users.findIndex(u => u.id === memberData.id || u.phone === memberData.phone);
+    if (uIdx !== -1) {
+      users[uIdx] = { ...users[uIdx], ...memberData };
+      localStorage.setItem('ms88_users', JSON.stringify(users));
+    }
+
+    // Refresh UI
+    loadMemberData();
+    loadBookings();
+
+    // Show Success Modal
+    document.getElementById('successOrderId').textContent = orderId;
+    document.getElementById('successOrderSchedule').textContent = `${dateFormatted} • ${time} (${dur} Jam)`;
+    document.getElementById('successOrderTotal').textContent = 'Rp ' + finalTotal.toLocaleString('id-ID');
+    document.getElementById('successBtnReceipt').href = '../receipt.html?order_id=' + orderId;
+
+    const waMsg = `Halo Admin 88 Alpha Sport Pusdikif,%0A%0ASaya member *${encodeURIComponent(memberData.name)}* baru saja menyelesaikan reservasi lapangan di Portal Member:%0A• Kode Booking: *${orderId}*%0A• Sesi: ${encodeURIComponent(sessName)}%0A• Jadwal: ${encodeURIComponent(dateFormatted)} (${time}, ${dur} Jam)%0A• Total: Rp ${finalTotal.toLocaleString('id-ID')}%0A%0AMohon konfirmasi jadwal pertandingan kami. Terima kasih!`;
+    document.getElementById('successBtnWa').href = 'https://wa.me/6281295679799?text=' + waMsg;
+
+    document.getElementById('modalBookingSuccess').classList.add('show');
+    showToast('Reservasi lapangan berhasil disimpan! Nota digital diterbitkan.');
+  }
+
+  function closeBookingSuccessModal() {
+    document.getElementById('modalBookingSuccess').classList.remove('show');
+    switchTab('bookings');
+  }
+
+  // Handle Foto Order
+  function updateFotoSummary() {
+    const pkg = document.getElementById('fotoPackage')?.value || 'Paket Best Choice|450000';
+    const [name, price] = pkg.split('|');
+    if (document.getElementById('fotoSelectedName')) document.getElementById('fotoSelectedName').textContent = name;
+    if (document.getElementById('fotoSelectedPrice')) document.getElementById('fotoSelectedPrice').textContent = 'Rp ' + parseInt(price, 10).toLocaleString('id-ID');
+  }
+
+  function handleNewFotoSubmit(e) {
+    e.preventDefault();
+    const pkg = document.getElementById('fotoPackage').value;
+    const [name, price] = pkg.split('|');
+    const date = document.getElementById('fotoDate').value;
+    const time = document.getElementById('fotoTime').value;
+    const matchName = document.getElementById('fotoMatchName').value.trim();
+    const ig = document.getElementById('fotoIg').value.trim();
+
+    const waMsg = `Halo Tim Fotografer GERAK & Admin 88,%0A%0ASaya member *${encodeURIComponent(memberData.name)}* ingin pesan dokumentasi pertandingan:%0A• Paket: ${encodeURIComponent(name)} (Rp ${parseInt(price).toLocaleString('id-ID')})%0A• Tanggal & Jam: ${date} (${time})%0A• Match: ${encodeURIComponent(matchName)}%0A• IG: ${encodeURIComponent(ig)}%0A%0AMohon konfirmasi ketersediaan fotografer di Lapangan Pusdikif!`;
+    window.open('https://wa.me/6281295679799?text=' + waMsg, '_blank');
+    showToast('Pemesanan fotografer GERAK berhasil diajukan!');
+  }
+
+  // Handle Partner Proposal
+  function handleNewPartnerSubmit(e) {
+    e.preventDefault();
+    const instansi = document.getElementById('partnerInstansi').value.trim();
+    const pic = document.getElementById('partnerPic').value.trim();
+    const wa = document.getElementById('partnerWa').value.trim();
+    const type = document.getElementById('partnerType').value;
+    const date = document.getElementById('partnerDate').value;
+    const slot = document.getElementById('partnerSlot').value;
+    const notes = document.getElementById('partnerNotes').value.trim();
+
+    const waMsg = `Halo Admin 88 Alpha Sport Pusdikif (Divisi Kemitraan),%0A%0ASaya ingin mengajukan kerjasama resmi via Portal Member:%0A• Lembaga/Sekolah: ${encodeURIComponent(instansi)}%0A• PIC: ${encodeURIComponent(pic)} (${wa})%0A• Bentuk Kegiatan: ${encodeURIComponent(type)}%0A• Tanggal & Slot: ${date} (${slot})%0A• Catatan: ${encodeURIComponent(notes)}%0A%0AMohon arahan survey lapangan & tindak lanjut proposal resmi. Terima kasih!`;
+    window.open('https://wa.me/6281295679799?text=' + waMsg, '_blank');
+    showToast('Pengajuan kemitraan sekolah berhasil terkirim ke manajemen!');
+  }
+
+  // Logout
+  function doLogout() {
+    if (confirm('Apakah Anda yakin ingin keluar dari akun Member?')) {
+      sessionStorage.removeItem('ms88_auth_user');
+      sessionStorage.removeItem('ms88_auth_role');
+      sessionStorage.removeItem('ms88_admin_logged_in');
+      location.replace('/login.html');
+    }
+  }
+
+  // Responsive Init
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 992) {
+      document.getElementById('memberSidebar').classList.remove('collapsed');
+      document.getElementById('memberMain').classList.remove('expanded');
+    }
+  });
+
+  // Init
+  document.addEventListener('DOMContentLoaded', () => {
+    loadMemberData();
+    loadBookings();
+
+    // Default dates
+    const today = new Date().toISOString().split('T')[0];
+    const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+    if (document.getElementById('bookDate')) document.getElementById('bookDate').value = tomorrow;
+    if (document.getElementById('partnerDate')) document.getElementById('partnerDate').value = tomorrow;
+    if (document.getElementById('fotoDate')) document.getElementById('fotoDate').value = tomorrow;
+
+    calculateBookingPrice();
+    updateFotoSummary();
+
+    // Switch to tab if requested in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialTab = urlParams.get('tab');
+    if (initialTab) {
+      switchTab(initialTab);
+      const sessionParam = urlParams.get('session');
+      if (sessionParam && document.getElementById('bookSession')) {
+        for (let opt of document.getElementById('bookSession').options) {
+          if (opt.value.toLowerCase().includes(sessionParam.toLowerCase())) {
+            opt.selected = true;
+            break;
+          }
+        }
+        calculateBookingPrice();
+      }
+    }
+  });
+</script>
+</body>
+</html>

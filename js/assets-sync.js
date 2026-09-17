@@ -40,11 +40,15 @@
       }
 
       // 1. Logo
-      if (assets.logo) {
+      let activeLogo = assets.logo;
+      if (activeLogo && (activeLogo.includes('.svg') || activeLogo.includes('new-new-logo'))) {
+        activeLogo = 'assets/logo/ms88-logo-transparent.png';
+      }
+      if (activeLogo) {
         syncElements(
           '[data-ms88-asset="logo"], img.ayo-logo, img.ms88-brand-logo, img[alt*="Ayo Indonesia Logo"], img[alt*="Mini Soccer 88"], img[alt="Logo"], .navbar-brand img, .nav-logo img',
           'logo',
-          assets.logo,
+          activeLogo,
           el => {
             el.style.setProperty('max-height', '50px', 'important');
             el.style.setProperty('max-width', '220px', 'important');

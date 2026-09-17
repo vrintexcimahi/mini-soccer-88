@@ -1,0 +1,835 @@
+/* ==========================================================================
+   MINI SOCCER 88 ALPHA SPORT — OFFICIAL BRAND DESIGN SYSTEM
+   Brand Palette Specification:
+     - White: 40% (#FFFFFF) — Main background, spacious cards, forms, tables
+     - Sport Red: 25% (#D71926) — Brand anchor, hero accents, primary CTAs, active states
+     - Metallic Silver: 15% (#D9DCE1) — Structure, secondary panels, borders, subtle dividers
+     - Obsidian Black: 15% (#08090B) — High-contrast typography, headings, footer, dark anchors
+     - Metallic Gold: 5% (#D9A21B) — Premium accents, FIFA badges, star ratings, highlights
+   ========================================================================== */
+
+:root {
+  /* --- Primary Brand Color Tokens --- */
+  --as88-white: #FFFFFF;
+  --as88-sport-red: #D71926;
+  --as88-metallic-silver: #D9DCE1;
+  --as88-obsidian-black: #08090B;
+  --as88-metallic-gold: #D9A21B;
+
+  /* --- Sport Red Tints & Shades --- */
+  --as88-sport-red-dark: #B5141F;
+  --as88-sport-red-deep: #8E0E18;
+  --as88-sport-red-light: #E82C3A;
+  --as88-sport-red-soft: rgba(215, 25, 38, 0.08);
+  --as88-sport-red-glow: rgba(215, 25, 38, 0.28);
+
+  /* --- Metallic Silver Gradients & Tints --- */
+  --as88-silver-light: #F4F5F7;
+  --as88-silver-subtle: #E8EBEF;
+  --as88-silver-border: #D9DCE1;
+  --as88-silver-dark: #B8BCC4;
+  --as88-silver-grad: linear-gradient(135deg, #FFFFFF 0%, #D9DCE1 100%);
+  --as88-silver-panel: linear-gradient(180deg, #F8F9FA 0%, #E9ECEF 100%);
+
+  /* --- Obsidian Black Tints & Typography --- */
+  --as88-obsidian-text: #08090B;
+  --as88-obsidian-subtext: #4A505A;
+  --as88-obsidian-muted: #6E7582;
+  --as88-obsidian-surface: #121418;
+  --as88-obsidian-card: #181B22;
+
+  /* --- Metallic Gold Premium Accents --- */
+  --as88-gold-light: #F3C644;
+  --as88-gold-dark: #B88512;
+  --as88-gold-soft: rgba(217, 162, 27, 0.12);
+  --as88-gold-glow: rgba(217, 162, 27, 0.35);
+  --as88-gold-grad: linear-gradient(135deg, #D9A21B 0%, #F5C84C 50%, #B88512 100%);
+
+  /* --- Semantic Role Mappings --- */
+  --bg-primary: var(--as88-white);
+  --bg-secondary: var(--as88-silver-light);
+  --bg-tertiary: var(--as88-silver-subtle);
+  --bg-dark: var(--as88-obsidian-black);
+  
+  --text-primary: var(--as88-obsidian-text);
+  --text-secondary: var(--as88-obsidian-subtext);
+  --text-muted: var(--as88-obsidian-muted);
+  --text-inverse: var(--as88-white);
+
+  --border-subtle: var(--as88-silver-border);
+  --border-focus: var(--as88-sport-red);
+
+  --brand-primary: var(--as88-sport-red);
+  --brand-primary-hover: var(--as88-sport-red-dark);
+  --brand-accent: var(--as88-metallic-gold);
+
+  /* --- Multi-dimensional Status Badges --- */
+  --status-available-text: var(--as88-obsidian-black);
+  --status-available-bg: #F4F5F7;
+  --status-available-border: var(--as88-metallic-silver);
+
+  --status-booked-text: var(--as88-sport-red);
+  --status-booked-bg: #FEF2F2;
+  --status-booked-border: rgba(215, 25, 38, 0.25);
+
+  --status-pending-text: #8C680E;
+  --status-pending-bg: #FFFBEB;
+  --status-pending-border: var(--as88-metallic-gold);
+
+  --status-success-text: #08090B;
+  --status-success-bg: rgba(217, 162, 27, 0.15);
+  --status-success-border: var(--as88-metallic-gold);
+
+  /* --- Light Theme Glassmorphism Tokens --- */
+  --glass-white-bg: rgba(255, 255, 255, 0.92);
+  --glass-white-blur: blur(14px);
+  --glass-white-border: 1px solid rgba(217, 220, 225, 0.85);
+  --glass-white-shadow: 0 10px 30px rgba(8, 9, 11, 0.07);
+
+  /* --- Accessibility Focus Outline --- */
+  --focus-ring: 0 0 0 3px rgba(215, 25, 38, 0.28);
+  /* --- Grid Background Pattern Tokens --- */
+  --grid-line-color: rgba(215, 25, 38, 0.06);
+  --grid-size: 40px;
+}
+
+/* ==========================================================================
+   GLOBAL GRID BACKGROUND PATTERN
+   Subtle square grid on white — sporty, premium, modern feel
+   ========================================================================== */
+
+body {
+  background-color: var(--as88-white);
+  background-image:
+    linear-gradient(var(--grid-line-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-color) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  background-attachment: fixed;
+}
+
+
+/* ==========================================================================
+   GLOBAL UTILITIES & GLASSMORPHISM CLASSES
+   ========================================================================== */
+
+/* Glass Cards & Panels (Light Theme) */
+.as88-glass-card {
+  background: var(--glass-white-bg) !important;
+  backdrop-filter: var(--glass-white-blur);
+  -webkit-backdrop-filter: var(--glass-white-blur);
+  border: var(--glass-white-border) !important;
+  box-shadow: var(--glass-white-shadow) !important;
+  border-radius: 16px;
+}
+
+/* Primary Sport Red Buttons */
+.btn-as88-primary {
+  background: linear-gradient(135deg, var(--as88-sport-red) 0%, var(--as88-sport-red-dark) 100%) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+  padding: 12px 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 16px var(--as88-sport-red-glow) !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease !important;
+}
+
+.btn-as88-primary:hover {
+  background: linear-gradient(135deg, var(--as88-sport-red-light) 0%, var(--as88-sport-red) 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(215, 25, 38, 0.42) !important;
+  color: #FFFFFF !important;
+}
+
+.btn-as88-primary:active {
+  transform: translateY(0) !important;
+}
+
+.btn-as88-primary:focus-visible {
+  outline: none !important;
+  box-shadow: var(--focus-ring) !important;
+}
+
+/* Metallic Gold Accent Badges & Highlights */
+.badge-as88-gold {
+  background: var(--as88-gold-soft) !important;
+  color: var(--as88-gold-dark) !important;
+  border: 1px solid var(--as88-metallic-gold) !important;
+  font-weight: 700 !important;
+  font-size: 11.5px !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  padding: 4px 12px !important;
+  border-radius: 100px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.badge-as88-red {
+  background: var(--as88-sport-red-soft) !important;
+  color: var(--as88-sport-red) !important;
+  border: 1px solid rgba(215, 25, 38, 0.25) !important;
+  font-weight: 700 !important;
+  font-size: 11.5px !important;
+  letter-spacing: 0.5px !important;
+  padding: 4px 12px !important;
+  border-radius: 100px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.badge-as88-silver {
+  background: var(--as88-silver-light) !important;
+  color: var(--as88-obsidian-text) !important;
+  border: 1px solid var(--as88-silver-border) !important;
+  font-weight: 600 !important;
+  font-size: 11.5px !important;
+  padding: 4px 12px !important;
+  border-radius: 100px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.gold-text-accent {
+  color: var(--as88-metallic-gold) !important;
+  font-weight: 800 !important;
+}
+
+.red-text-accent {
+  color: var(--as88-sport-red) !important;
+  font-weight: 800 !important;
+}
+
+.obsidian-text {
+  color: var(--as88-obsidian-text) !important;
+}
+
+/* Secondary & Outline Buttons */
+.btn-as88-silver {
+  background: var(--as88-silver-light) !important;
+  color: var(--as88-obsidian-text) !important;
+  border: 1px solid var(--as88-silver-border) !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+  padding: 12px 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+.btn-as88-silver:hover {
+  background: #FFFFFF !important;
+  border-color: var(--as88-sport-red) !important;
+  color: var(--as88-sport-red) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(8, 9, 11, 0.08) !important;
+}
+
+.btn-as88-outline {
+  background: transparent !important;
+  color: var(--as88-sport-red) !important;
+  border: 1.5px solid var(--as88-sport-red) !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+  padding: 11px 22px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+.btn-as88-outline:hover {
+  background: var(--as88-sport-red) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px var(--as88-sport-red-glow) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Metallic Silver Section Backgrounds */
+.section-silver {
+  background-color: var(--as88-silver-light) !important;
+  border-top: 1px solid var(--as88-silver-border) !important;
+  border-bottom: 1px solid var(--as88-silver-border) !important;
+}
+
+/* App Install Pill */
+.btn-as88-install {
+  background: rgba(215, 25, 38, 0.08) !important;
+  color: var(--as88-sport-red) !important;
+  border: 1px solid rgba(215, 25, 38, 0.28) !important;
+  font-weight: 700 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 14px !important;
+  border-radius: 100px !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+.btn-as88-install:hover {
+  background: var(--as88-sport-red) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px var(--as88-sport-red-glow) !important;
+}
+
+/* Location Bar */
+.ms88-location-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--as88-silver-light);
+  border: 1px solid var(--as88-silver-border);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 13.5px;
+  color: var(--as88-obsidian-subtext);
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.ms88-location-bar:hover {
+  border-color: var(--as88-sport-red);
+  box-shadow: 0 0 0 3px rgba(215, 25, 38, 0.1);
+  color: var(--as88-obsidian-text);
+}
+.geo-pin {
+  display: inline-flex;
+  align-items: center;
+  color: var(--as88-sport-red) !important;
+}
+
+/* Accessible Focus Ring */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--as88-sport-red) !important;
+  outline-offset: 2px !important;
+}
+
+/* Reduced Motion Optimization */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   MINI SOCCER 88 — UNIVERSAL SUBPAGE HEADER & NAVIGATION
+   ========================================================================== */
+header.as88-subpage-header,
+header {
+  background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), #D71926 !important;
+  border-bottom: none !important;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.35) !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1050 !important;
+  width: 100% !important;
+}
+
+.nav-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 72px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none !important;
+  flex-shrink: 0;
+}
+
+.nav-logo img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Location Bar in Nav */
+.nav-left .ms88-location-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #F4F5F7;
+  border: 1px solid #D9DCE1;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: #08090B;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.nav-left .ms88-location-bar:hover {
+  border-color: #D71926;
+  box-shadow: 0 0 0 3px rgba(215, 25, 38, 0.08);
+}
+
+/* Nav Menu Links */
+.nav-links {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  margin: 0 12px;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 1100px) {
+  .nav-links {
+    display: flex !important;
+  }
+}
+
+.nav-links a,
+.nav-link-item {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: rgba(255,255,255,0.92) !important;
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  transition: all 0.18s ease !important;
+  display: inline-block;
+  line-height: 1.4;
+}
+
+.nav-links a:hover,
+.nav-link-item:hover {
+  color: #fff !important;
+  background: rgba(255,255,255,0.15) !important;
+}
+
+.nav-links a.active,
+.nav-link-item.active {
+  color: #fff !important;
+  background: rgba(255,255,255,0.2) !important;
+  font-weight: 700 !important;
+}
+
+/* Nav Action Buttons (Right) */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.nav-btn-install {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(215, 25, 38, 0.08) !important;
+  color: #D71926 !important;
+  border: 1px solid rgba(215, 25, 38, 0.28) !important;
+  padding: 6px 14px !important;
+  border-radius: 100px !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  transition: all 0.18s ease !important;
+}
+
+.nav-btn-install:hover {
+  background: rgba(215, 25, 38, 0.15) !important;
+  color: #D71926 !important;
+  transform: translateY(-1px);
+}
+
+/* Footer Features */
+footer, .as88-subpage-footer {
+  background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), #D71926 !important;
+  border-top: none !important;
+  color: #fff !important;
+}
+
+.as88-footer-btn-install {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(215, 25, 38, 0.08) !important;
+  color: #D71926 !important;
+  border: 1px solid rgba(215, 25, 38, 0.28) !important;
+  padding: 6px 14px !important;
+  border-radius: 100px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  transition: all 0.18s ease !important;
+}
+
+.as88-footer-btn-install:hover {
+  background: #D71926 !important;
+  color: #FFFFFF !important;
+  border-color: #D71926 !important;
+  transform: translateY(-1px);
+}
+
+.as88-subpage-footer a {
+  color: rgba(255,255,255,0.85);
+  transition: color 0.15s ease;
+}
+
+.as88-subpage-footer a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.nav-btn-back,
+.nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.15) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  padding: 6px 14px !important;
+  border-radius: 100px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  transition: all 0.18s ease !important;
+}
+
+.nav-btn-back:hover,
+.nav-back:hover {
+  background: rgba(255,255,255,0.28) !important;
+  color: #fff !important;
+  border-color: rgba(255,255,255,0.5) !important;
+  text-decoration: none !important;
+}
+
+.nav-hamburger-btn {
+  display: none;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: all 0.18s ease;
+}
+
+.nav-hamburger-btn:hover {
+  background: rgba(255,255,255,0.28);
+  border-color: rgba(255,255,255,0.5);
+  color: #fff;
+}
+
+@media (max-width: 1099px) {
+  .nav-hamburger-btn {
+    display: inline-flex !important;
+  }
+}
+
+/* Subpage Mobile Drawer */
+.as88-mobile-drawer {
+  display: none;
+  background: #B5141F;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  padding: 16px 20px 24px;
+}
+
+.as88-mobile-drawer.show {
+  display: block !important;
+}
+
+.as88-mobile-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.as88-mobile-links a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.92);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+.as88-mobile-links a:hover,
+.as88-mobile-links a.active {
+  color: #fff;
+  background: rgba(255,255,255,0.15);
+}
+
+/* ==========================================================================
+   AS88 HEADER & FOOTER — RED BRAND THEME
+   ========================================================================== */
+
+/* ── HEADER / NAVBAR ──────────────────────────────────────── */
+header.navbar:not(.ms88-navbar-seamless),
+.as88-subpage-header {
+  background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), #D71926 !important;
+  border-bottom: none !important;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Desktop nav links: white on red */
+header.navbar #main-nav-links a:not(.dropdown-item),
+header.navbar .nav-link:not(.dropdown-item) {
+  color: rgba(255,255,255,0.92) !important;
+}
+header.navbar #main-nav-links a:not(.dropdown-item):hover {
+  color: #fff !important;
+  background: rgba(255,255,255,0.15) !important;
+}
+
+/* Mobile nav collapse links (exclude dropdowns) */
+header.navbar .collapse > ul > li > a:not(.dropdown-item),
+header.navbar .d-xl-none a:not(.dropdown-item) {
+  color: rgba(255,255,255,0.9) !important;
+}
+
+/* ── DROPDOWNS INSIDE NAVBAR (USER PROFILE & LANGUAGE) ─────────────── */
+header.navbar .dropdown-menu,
+ul.user-menu {
+  background: #FFFFFF !important;
+  border-radius: 14px !important;
+  border: 1px solid #E5E7EB !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18), 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+  padding: 8px 0 !important;
+  min-width: 260px !important;
+  z-index: 1100 !important;
+}
+
+header.navbar .dropdown-menu a,
+header.navbar .dropdown-menu .dropdown-item,
+header.navbar .user-menu a,
+header.navbar .user-menu .dropdown-item,
+ul.user-menu li a.dropdown-item,
+ul.user-menu .dropdown-item {
+  color: #1F2937 !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  padding: 9px 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  text-decoration: none !important;
+  background: transparent !important;
+  transition: all 0.15s ease !important;
+}
+
+header.navbar .dropdown-menu a span,
+header.navbar .dropdown-menu .dropdown-item span,
+ul.user-menu .dropdown-item span {
+  color: inherit !important;
+}
+
+header.navbar .dropdown-menu a svg,
+header.navbar .dropdown-menu .dropdown-item svg,
+ul.user-menu .dropdown-item svg {
+  color: inherit !important;
+  stroke: currentColor !important;
+  flex-shrink: 0 !important;
+}
+
+header.navbar .dropdown-menu a:hover,
+header.navbar .dropdown-menu .dropdown-item:hover,
+ul.user-menu .dropdown-item:hover {
+  color: #D71926 !important;
+  background: #FEF2F2 !important;
+}
+
+header.navbar .dropdown-menu a.text-danger,
+header.navbar .dropdown-menu .dropdown-item.text-danger,
+ul.user-menu .dropdown-item.text-danger {
+  color: #D71926 !important;
+}
+
+header.navbar .dropdown-menu a.text-danger:hover,
+header.navbar .dropdown-menu .dropdown-item.text-danger:hover,
+ul.user-menu .dropdown-item.text-danger:hover {
+  color: #B5141F !important;
+  background: #FEE2E2 !important;
+}
+
+header.navbar .user-menu li.border-bottom,
+ul.user-menu li.border-bottom {
+  border-bottom: 1px solid #F3F4F6 !important;
+  padding: 10px 18px !important;
+}
+
+header.navbar .user-menu li.border-top,
+ul.user-menu li.border-top {
+  border-top: 1px solid #F3F4F6 !important;
+}
+
+header.navbar .user-menu .text-dark,
+ul.user-menu .text-dark {
+  color: #111827 !important;
+}
+
+header.navbar .user-menu .text-secondary,
+ul.user-menu .text-secondary {
+  color: #6B7280 !important;
+}
+
+/* Hamburger icon — white */
+header.navbar .navbar-toggler rect {
+  fill: #fff !important;
+}
+header.navbar .cart-icon-mobile svg path,
+header.navbar .cart-icon-mobile svg rect {
+  stroke: #fff !important;
+  fill: none !important;
+}
+header.navbar .cart-icon-mobile svg path[fill="#25282B"],
+header.navbar .cart-icon-mobile svg rect[fill="#25282B"] {
+  fill: #fff !important;
+  stroke: #fff !important;
+}
+header.navbar .cart-icon-counter {
+  background: #fff !important;
+  color: #D71926 !important;
+}
+
+/* Auth action icons */
+header.navbar #auth-action svg {
+  stroke: rgba(255,255,255,0.9) !important;
+}
+header.navbar #auth-action .btn {
+  border-color: rgba(255,255,255,0.45) !important;
+  color: #fff !important;
+}
+header.navbar #auth-action .btn:hover {
+  background: rgba(255,255,255,0.15) !important;
+}
+
+/* Globe / lang icon */
+header.navbar .btn-outline-secondary,
+header.navbar .dropdown-toggle {
+  color: rgba(255,255,255,0.9) !important;
+  border-color: rgba(255,255,255,0.3) !important;
+}
+
+/* Mobile drawer */
+.as88-mobile-drawer {
+  background: #B5141F !important;
+  border-top: 1px solid rgba(255,255,255,0.15) !important;
+}
+.as88-mobile-links a {
+  color: rgba(255,255,255,0.9) !important;
+}
+.as88-mobile-links a:hover,
+.as88-mobile-links a.active {
+  color: #fff !important;
+  background: rgba(255,255,255,0.15) !important;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+footer,
+.as88-subpage-footer {
+  background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), #D71926 !important;
+  color: #fff !important;
+  border-top: none !important;
+}
+
+footer h6, footer .fw-bold, footer strong,
+.as88-subpage-footer h6, .as88-subpage-footer .fw-bold, .as88-subpage-footer strong {
+  color: #fff !important;
+}
+
+footer p, footer small, footer .text-secondary, footer .text-muted,
+.as88-subpage-footer p, .as88-subpage-footer small,
+.as88-subpage-footer .text-secondary, .as88-subpage-footer .text-muted {
+  color: rgba(255,255,255,0.78) !important;
+}
+
+footer a, .as88-subpage-footer a {
+  color: rgba(255,255,255,0.85) !important;
+  transition: color 0.15s;
+}
+footer a:hover, .as88-subpage-footer a:hover {
+  color: #fff !important;
+  text-decoration: underline;
+}
+
+footer hr, .as88-subpage-footer hr {
+  border-color: rgba(255,255,255,0.2) !important;
+}
+
+/* Footer social icon buttons */
+footer .btn-light, .as88-subpage-footer .btn-light {
+  background: rgba(255,255,255,0.15) !important;
+  border-color: rgba(255,255,255,0.25) !important;
+  color: #fff !important;
+}
+footer .btn-light:hover, .as88-subpage-footer .btn-light:hover {
+  background: rgba(255,255,255,0.28) !important;
+}
+
+/* Footer location & install app buttons */
+footer #ms88LocationBar, .as88-subpage-footer #ms88LocationBar {
+  background: rgba(255,255,255,0.12) !important;
+  border-color: rgba(255,255,255,0.2) !important;
+  color: rgba(255,255,255,0.9) !important;
+}
+footer .as88-footer-btn-install, .as88-subpage-footer .as88-footer-btn-install {
+  background: rgba(255,255,255,0.12) !important;
+  border-color: rgba(255,255,255,0.25) !important;
+  color: #fff !important;
+}
+
+/* Footer CTA booking buttons */
+footer .btn-success, .as88-subpage-footer .btn-success,
+footer .btn-danger, .as88-subpage-footer .btn-danger {
+  background: rgba(0,0,0,0.25) !important;
+  border-color: rgba(255,255,255,0.3) !important;
+  color: #fff !important;
+}
+footer .btn-outline-dark, .as88-subpage-footer .btn-outline-dark {
+  border-color: rgba(255,255,255,0.4) !important;
+  color: #fff !important;
+}
+footer .btn-outline-dark:hover, .as88-subpage-footer .btn-outline-dark:hover {
+  background: rgba(255,255,255,0.12) !important;
+}
+
+/* Footer border divider */
+footer .border-top, .as88-subpage-footer .border-top {
+  border-color: rgba(255,255,255,0.2) !important;
+}
