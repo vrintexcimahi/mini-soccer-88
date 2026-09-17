@@ -1,0 +1,25 @@
+# Local development browser profile
+.dev_browser_profile/
+dev_browser_profile/
+
+# Python dev server and local launchers
+dev-server.py
+launch-dev-browser.bat
+launch-dev-browser.ps1
+*.pyc
+__pycache__/
+
+# OS and temp files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.log
+*.tmp
+*.bak
+.DS_Store
+
+# Git & editors
+.git/
+.vscode/
+.idea/
+.vercel/
