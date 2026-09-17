@@ -71,6 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSettings();
   loadWaGatewaySettings();
   renderUsers();
+  renderStaff();
+  applyRoleRestrictions();
 });
 
 // --- Tab Switching ---
@@ -86,6 +88,7 @@ function switchTab(tab) {
   const titles = {
     overview:'Dashboard', slots:'Kelola Slot', orders:'Manajemen Booking',
     payments:'Transaksi & Nota', mabar:'Sesi Mabar', users:'Manajemen User',
+    roles:'Manajemen Role & Staff',
     blog:'Blog & Artikel', assets:'Pengaturan Aset',
     pricing:'Tarif Lapangan', contact:'Kontak & Sosmed', settings:'Pengaturan Sistem'
   };
@@ -2006,4 +2009,311 @@ function exportUsersToCSV() {
   a.download= `Daftar_Member_MS88_${ts}.csv`;
   a.click();
   toast(`Ekspor ${users.length} member ke CSV berhasil`, 'success');
+}
+
+// =========================================================
+//  ROLE MANAGEMENT MODULE
+// =========================================================
+
+const ROLE_CONFIG = {
+  superadmin: {
+    label: 'Superadmin', emoji: '👑',
+    color: '#e9d5ff', bg: 'rgba(139,92,246,0.18)', border: 'rgba(139,92,246,0.4)',
+    sidebarLabel: 'Super Administrator',
+    allowedTabs: ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings'],
+  },
+  admin: {
+    label: 'Admin', emoji: '🛡️',
+    color: '#bfdbfe', bg: 'rgba(59,130,246,0.18)', border: 'rgba(59,130,246,0.4)',
+    sidebarLabel: 'Administrator',
+    allowedTabs: ['overview','slots','orders','payments','mabar','users','blog','assets','pricing','contact'],
+  },
+  cashier: {
+    label: 'Cashier', emoji: '🧾',
+    color: '#bbf7d0', bg: 'rgba(34,197,94,0.18)', border: 'rgba(34,197,94,0.4)',
+    sidebarLabel: 'Kasir / Operator',
+    allowedTabs: ['overview','orders','payments'],
+  },
+};
+
+const ROLE_HINTS = {
+  superadmin: '👑 Superadmin — Akses PENUH termasuk hapus data, kelola role, dan semua pengaturan sistem. Berikan hanya kepada pemilik/manajer.',
+  admin:      '🛡️ Admin — Akses operasional lengkap: booking, konten, member, tarif. Tidak bisa kelola role atau reset sistem.',
+  cashier:    '🧾 Cashier — Hanya akses transaksi dan booking. Tidak bisa ubah konten, pengaturan, atau melihat tab lainnya.',
+};
+
+function getLS_staff() {
+  try {
+    const raw = localStorage.getItem('ms88_staff');
+    if (raw) return JSON.parse(raw);
+  } catch(_) {}
+  // Seed default staff
+  const today = new Date().toISOString().slice(0,10);
+  const defaults = [
+    {
+      id: 'STF-001', name: 'Super Administrator', username: 'admin',
+      passwordHash: btoa('admin88alpha'), // base64 simple hash (not production-safe)
+      role: 'superadmin', phone: '081295679799', status: 'active',
+      lastLogin: new Date().toISOString(), createdBy: 'System', notes: 'Akun utama sistem', joinDate: '2026-01-01',
+    },
+    {
+      id: 'STF-002', name: 'Bima Operator', username: 'bima_admin',
+      passwordHash: btoa('bima2026'),
+      role: 'admin', phone: '082211223344', status: 'active',
+      lastLogin: '', createdBy: 'admin', notes: 'Admin shift pagi', joinDate: today,
+    },
+    {
+      id: 'STF-003', name: 'Kasir Sore', username: 'kasir1',
+      passwordHash: btoa('kasir2026'),
+      role: 'cashier', phone: '087812345678', status: 'active',
+      lastLogin: '', createdBy: 'admin', notes: 'Shift sore 15:00–22:00', joinDate: today,
+    },
+  ];
+  localStorage.setItem('ms88_staff', JSON.stringify(defaults));
+  return defaults;
+}
+
+function saveLS_staff(staff) {
+  localStorage.setItem('ms88_staff', JSON.stringify(staff));
+}
+
+function renderStaff() {
+  const staff   = getLS_staff();
+  const search  = (document.getElementById('filterStaffSearch') || {}).value || '';
+  const roleF   = (document.getElementById('filterStaffRole')   || {}).value || '';
+  const body    = document.getElementById('staffBody');
+  if (!body) return;
+
+  const filtered = staff.filter(s => {
+    const q = search.toLowerCase();
+    const matchQ = !q || s.name.toLowerCase().includes(q) || (s.username||'').toLowerCase().includes(q);
+    const matchR = !roleF || s.role === roleF;
+    return matchQ && matchR;
+  });
+
+  if (filtered.length === 0) {
+    body.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:#888;">Tidak ada staff ditemukan.</td></tr>';
+    return;
+  }
+
+  const loggedUser = sessionStorage.getItem('ms88_admin_user') || 'admin';
+
+  body.innerHTML = filtered.map((s, i) => {
+    const rc = ROLE_CONFIG[s.role] || ROLE_CONFIG.cashier;
+    const stColor = s.status === 'active' ? { c:'#15803d', bg:'#dcfce7' } : { c:'#6b7280', bg:'#f3f4f6' };
+    const lastLogin = s.lastLogin ? new Date(s.lastLogin).toLocaleDateString('id-ID', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+    const isSelf = (s.username === loggedUser);
+    const isOnlySuperadmin = s.role === 'superadmin' && staff.filter(x => x.role === 'superadmin').length === 1;
+    const canDelete = !isSelf && !isOnlySuperadmin;
+    return `
+      <tr${isSelf ? ' style="background:rgba(215,25,38,0.05);"' : ''}>
+        <td><small style="color:#888;">${i+1}</small></td>
+        <td>
+          <strong>${s.name}</strong>${isSelf ? ' <span style="font-size:10px;background:#D71926;color:#fff;padding:1px 6px;border-radius:100px;font-weight:700;">Anda</span>' : ''}
+          ${s.notes ? `<br><small style="color:#888;">${s.notes}</small>` : ''}
+        </td>
+        <td><code style="font-size:12.5px;color:#e2e8f0;">${s.username}</code></td>
+        <td>
+          <span style="background:${rc.bg};color:${rc.color};border:1px solid ${rc.border};font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:100px;white-space:nowrap;">
+            ${rc.emoji} ${rc.label}
+          </span>
+        </td>
+        <td>
+          <span style="background:${stColor.bg};color:${stColor.c};font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:100px;">
+            ${s.status === 'active' ? 'Aktif' : 'Nonaktif'}
+          </span>
+        </td>
+        <td><small>${lastLogin}</small></td>
+        <td><small>${s.createdBy||'—'}</small></td>
+        <td style="white-space:nowrap;">
+          <button class="btn-icon" title="Edit" onclick="openStaffModal('${s.id}')">${ICON.edit}</button>
+          ${canDelete ? `<button class="btn-icon btn-red" title="Hapus" onclick="deleteStaff('${s.id}')">${ICON.trash}</button>` : `<button class="btn-icon" style="opacity:0.3;cursor:not-allowed;" title="Tidak bisa dihapus" disabled>${ICON.trash}</button>`}
+        </td>
+      </tr>`;
+  }).join('');
+
+  // Update sidebar role badge
+  updateSidebarRoleBadge();
+}
+
+function openStaffModal(staffId) {
+  const modal = document.getElementById('staffModal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  document.getElementById('staffEditId').value  = staffId || '';
+  document.getElementById('sName').value        = '';
+  document.getElementById('sUsername').value    = '';
+  document.getElementById('sPassword').value    = '';
+  document.getElementById('sRole').value        = 'cashier';
+  document.getElementById('sPhone').value       = '';
+  document.getElementById('sStatus').value      = 'active';
+  document.getElementById('sNotes').value       = '';
+  document.getElementById('staffModalTitle').textContent = staffId ? 'Edit Data Staff' : 'Tambah Staff Baru';
+  updateRoleHint();
+
+  if (staffId) {
+    const staff = getLS_staff();
+    const s = staff.find(x => String(x.id) === String(staffId));
+    if (s) {
+      document.getElementById('sName').value     = s.name     || '';
+      document.getElementById('sUsername').value = s.username || '';
+      document.getElementById('sRole').value     = s.role     || 'cashier';
+      document.getElementById('sPhone').value    = s.phone    || '';
+      document.getElementById('sStatus').value   = s.status   || 'active';
+      document.getElementById('sNotes').value    = s.notes    || '';
+      document.getElementById('sPassword').placeholder = '(kosongkan jika tidak diganti)';
+      updateRoleHint();
+    }
+  }
+}
+
+function closeStaffModal(e) {
+  if (e && e.target !== document.getElementById('staffModal')) return;
+  const modal = document.getElementById('staffModal');
+  if (modal) modal.style.display = 'none';
+}
+window.closeStaffModal = function(e) {
+  if (!e || e.type !== 'click') {
+    const modal = document.getElementById('staffModal');
+    if (modal) modal.style.display = 'none';
+    return;
+  }
+  // only close if clicking the backdrop directly
+  if (e.currentTarget === document.getElementById('staffModal')) closeStaffModal(e);
+};
+
+function updateRoleHint() {
+  const role = (document.getElementById('sRole') || {}).value || 'cashier';
+  const box  = document.getElementById('roleHintBox');
+  if (!box) return;
+  const hints = {
+    superadmin: { text: ROLE_HINTS.superadmin, bg: 'rgba(139,92,246,0.12)', border: 'rgba(139,92,246,0.35)', color: '#c4b5fd' },
+    admin:      { text: ROLE_HINTS.admin,      bg: 'rgba(59,130,246,0.12)',  border: 'rgba(59,130,246,0.35)',  color: '#93c5fd' },
+    cashier:    { text: ROLE_HINTS.cashier,    bg: 'rgba(34,197,94,0.12)',   border: 'rgba(34,197,94,0.35)',   color: '#86efac' },
+  };
+  const h = hints[role] || hints.cashier;
+  box.style.background = h.bg;
+  box.style.border     = `1px solid ${h.border}`;
+  box.style.color      = h.color;
+  box.textContent      = h.text;
+}
+
+function saveStaff() {
+  const name     = (document.getElementById('sName').value     || '').trim();
+  const username = (document.getElementById('sUsername').value || '').trim().toLowerCase().replace(/\s+/g,'_');
+  const password = (document.getElementById('sPassword').value || '').trim();
+  const role     = document.getElementById('sRole').value;
+  const editId   = document.getElementById('staffEditId').value;
+
+  if (!name || !username) { toast('Nama dan username wajib diisi', 'error'); return; }
+  if (!editId && !password) { toast('Password wajib diisi untuk staff baru', 'error'); return; }
+  if (password && password.length < 6) { toast('Password minimal 6 karakter', 'error'); return; }
+
+  const staff = getLS_staff();
+
+  // Duplicate username check
+  const duplicate = staff.find(s => s.username === username && String(s.id) !== String(editId));
+  if (duplicate) { toast(`Username "${username}" sudah digunakan oleh ${duplicate.name}`, 'error'); return; }
+
+  const loggedUser = sessionStorage.getItem('ms88_admin_user') || 'admin';
+
+  if (editId) {
+    const idx = staff.findIndex(s => String(s.id) === String(editId));
+    if (idx !== -1) {
+      staff[idx] = {
+        ...staff[idx],
+        name, username, role,
+        phone:  document.getElementById('sPhone').value.trim(),
+        status: document.getElementById('sStatus').value,
+        notes:  document.getElementById('sNotes').value.trim(),
+        updatedAt: new Date().toISOString(),
+        ...(password ? { passwordHash: btoa(password) } : {}),
+      };
+      toast(`Staff "${name}" berhasil diperbarui (Role: ${ROLE_CONFIG[role]?.label})`, 'success');
+    }
+  } else {
+    staff.push({
+      id: 'STF-' + Date.now().toString().slice(-6),
+      name, username, role,
+      passwordHash: btoa(password),
+      phone:    document.getElementById('sPhone').value.trim(),
+      status:   document.getElementById('sStatus').value,
+      notes:    document.getElementById('sNotes').value.trim(),
+      lastLogin: '',
+      createdBy: loggedUser,
+      joinDate:  new Date().toISOString().slice(0,10),
+      createdAt: new Date().toISOString(),
+    });
+    toast(`Staff baru "${name}" ditambahkan sebagai ${ROLE_CONFIG[role]?.label}`, 'success');
+  }
+
+  saveLS_staff(staff);
+  window.closeStaffModal();
+  renderStaff();
+}
+
+function deleteStaff(staffId) {
+  const staff = getLS_staff();
+  const s = staff.find(x => String(x.id) === String(staffId));
+  if (!s) return;
+
+  // Safety: can't delete the only superadmin
+  if (s.role === 'superadmin' && staff.filter(x => x.role === 'superadmin').length <= 1) {
+    toast('Tidak bisa menghapus satu-satunya Superadmin!', 'error'); return;
+  }
+  // Can't delete self
+  const loggedUser = sessionStorage.getItem('ms88_admin_user') || 'admin';
+  if (s.username === loggedUser) {
+    toast('Tidak bisa menghapus akun yang sedang digunakan!', 'error'); return;
+  }
+  if (!confirm(`Hapus staff "${s.name}" (${ROLE_CONFIG[s.role]?.label})?\n\nAksi tidak dapat dibatalkan.`)) return;
+  saveLS_staff(staff.filter(x => String(x.id) !== String(staffId)));
+  renderStaff();
+  toast(`Staff "${s.name}" telah dihapus`, 'warning');
+}
+
+function updateSidebarRoleBadge() {
+  const loggedUser = sessionStorage.getItem('ms88_admin_user') || 'admin';
+  const staff      = getLS_staff();
+  const me         = staff.find(s => s.username === loggedUser);
+  const role       = me ? (me.role || 'superadmin') : 'superadmin';
+  const rc         = ROLE_CONFIG[role] || ROLE_CONFIG.superadmin;
+
+  const roleEl = document.getElementById('userRoleDisplay');
+  if (roleEl) {
+    roleEl.innerHTML = `<span style="display:inline-flex;align-items:center;gap:5px;">${rc.emoji} <span style="background:${rc.bg};color:${rc.color};border:1px solid ${rc.border};font-size:10px;font-weight:700;padding:1px 7px;border-radius:100px;letter-spacing:0.04em;">${rc.label}</span></span>`;
+  }
+}
+
+/**
+ * applyRoleRestrictions — hide nav buttons not allowed for the logged-in role.
+ * Superadmin sees everything; Admin hides roles/settings; Cashier sees only overview/orders/payments.
+ */
+function applyRoleRestrictions() {
+  const loggedUser = sessionStorage.getItem('ms88_admin_user') || 'admin';
+  const staff      = getLS_staff();
+  const me         = staff.find(s => s.username === loggedUser);
+  const role       = me ? (me.role || 'superadmin') : 'superadmin';
+  const allowed    = new Set(ROLE_CONFIG[role]?.allowedTabs || ROLE_CONFIG.superadmin.allowedTabs);
+
+  const allTabs = ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings'];
+  allTabs.forEach(tab => {
+    const btn = document.getElementById('tabBtn' + tab.charAt(0).toUpperCase() + tab.slice(1));
+    if (!btn) return;
+    if (!allowed.has(tab)) {
+      btn.style.display    = 'none';
+      btn.style.pointerEvents = 'none';
+    } else {
+      btn.style.display    = '';
+      btn.style.pointerEvents = '';
+    }
+  });
+
+  // If current tab is restricted, redirect to overview
+  if (!allowed.has(currentTab)) {
+    switchTab('overview');
+    toast(`Role ${ROLE_CONFIG[role]?.label} tidak memiliki akses ke tab ini`, 'warning');
+  }
+
+  updateSidebarRoleBadge();
 }

@@ -68,6 +68,11 @@
       <span>Manajemen User</span>
     </button>
 
+    <button class="nav-link-btn" id="tabBtnRoles" onclick="switchTab('roles')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+      <span>Manajemen Role</span>
+    </button>
+
     <div class="nav-section-title">Konten Website</div>
     <button class="nav-link-btn" id="tabBtnBlog" onclick="switchTab('blog')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
@@ -101,7 +106,7 @@
       <div class="user-avatar" id="userAvatar">A</div>
       <div class="user-details">
         <span class="user-name" id="userNameDisplay">Admin</span>
-        <span class="user-role">Super Administrator</span>
+        <span class="user-role" id="userRoleDisplay">Super Administrator</span>
       </div>
     </div>
     <button class="btn-logout" onclick="doLogout()" title="Logout">
@@ -1009,6 +1014,206 @@
       <div style="display:flex;gap:10px;">
         <button class="btn btn-primary" onclick="saveUser()" style="flex:1;">Simpan</button>
         <button class="btn btn-outline" onclick="closeUserModal()">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- === ROLES TAB === -->
+  <section class="tab-panel" id="tabRoles">
+    <div class="panel-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h2>Manajemen Role &amp; Staff</h2>
+        <p>Kelola akun operator, atur hak akses per role: Superadmin, Admin, Cashier</p>
+      </div>
+      <button class="btn btn-sm" onclick="openStaffModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="vertical-align:-2px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Tambah Staff
+      </button>
+    </div>
+
+    <!-- Role Cards -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:24px;">
+      <!-- Superadmin -->
+      <div style="background:linear-gradient(135deg,#1a0533,#3b0764);border:1px solid rgba(167,139,250,0.3);border-radius:16px;padding:20px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <span style="font-size:26px;">👑</span>
+          <div>
+            <div style="font-weight:800;font-size:15px;color:#e9d5ff;">Superadmin</div>
+            <div style="font-size:11.5px;color:#a78bfa;font-weight:600;">Akses Penuh Tertinggi</div>
+          </div>
+        </div>
+        <ul style="font-size:12.5px;color:#c4b5fd;line-height:1.8;margin:0;padding-left:16px;">
+          <li>Semua fitur Admin &amp; Cashier</li>
+          <li>Manajemen Role &amp; Staff</li>
+          <li>Hapus/Reset data sistem</li>
+          <li>Ubah kredensial &amp; pengaturan sistem</li>
+          <li>Akses penuh Midtrans &amp; WA Gateway</li>
+        </ul>
+        <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="background:rgba(139,92,246,0.2);color:#c4b5fd;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;border:1px solid rgba(139,92,246,0.4);">Semua Tab</span>
+          <span style="background:rgba(139,92,246,0.2);color:#c4b5fd;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;border:1px solid rgba(139,92,246,0.4);">Role Mgmt</span>
+          <span style="background:rgba(139,92,246,0.2);color:#c4b5fd;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;border:1px solid rgba(139,92,246,0.4);">System Reset</span>
+        </div>
+      </div>
+      <!-- Admin -->
+      <div style="background:linear-gradient(135deg,#0c1f3a,#1e3a5f);border:1px solid rgba(96,165,250,0.3);border-radius:16px;padding:20px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <span style="font-size:26px;">🛡️</span>
+          <div>
+            <div style="font-weight:800;font-size:15px;color:#bfdbfe;">Admin</div>
+            <div style="font-size:11.5px;color:#60a5fa;font-weight:600;">Akses Operasional</div>
+          </div>
+        </div>
+        <ul style="font-size:12.5px;color:#93c5fd;line-height:1.8;margin:0;padding-left:16px;">
+          <li>Semua fitur Cashier</li>
+          <li>Manajemen Booking &amp; Slot</li>
+          <li>Sesi Mabar, Blog &amp; Aset</li>
+          <li>Manajemen User (member)</li>
+          <li>Kontak, Tarif &amp; Sosmed</li>
+        </ul>
+        <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="background:rgba(59,130,246,0.2);color:#93c5fd;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;border:1px solid rgba(59,130,246,0.4);">Booking</span>
+          <span style="background:rgba(59,130,246,0.2);color:#93c5fd;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;border:1px solid rgba(59,130,246,0.4);">Konten</span>
+          <span style="background:rgba(59,130,246,0.2);color:#93c5fd;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;border:1px solid rgba(59,130,246,0.4);">Member</span>
+        </div>
+      </div>
+      <!-- Cashier -->
+      <div style="background:linear-gradient(135deg,#0d2a1a,#14532d);border:1px solid rgba(74,222,128,0.3);border-radius:16px;padding:20px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <span style="font-size:26px;">🧾</span>
+          <div>
+            <div style="font-weight:800;font-size:15px;color:#bbf7d0;">Cashier</div>
+            <div style="font-size:11.5px;color:#4ade80;font-weight:600;">Akses Transaksi</div>
+          </div>
+        </div>
+        <ul style="font-size:12.5px;color:#86efac;line-height:1.8;margin:0;padding-left:16px;">
+          <li>Lihat &amp; buat booking baru</li>
+          <li>Proses transaksi &amp; nota</li>
+          <li>Lihat slot lapangan</li>
+          <li>Cek omset harian (read-only)</li>
+          <li>Tidak bisa ubah pengaturan</li>
+        </ul>
+        <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="background:rgba(34,197,94,0.2);color:#86efac;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;border:1px solid rgba(34,197,94,0.4);">Transaksi</span>
+          <span style="background:rgba(34,197,94,0.2);color:#86efac;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;border:1px solid rgba(34,197,94,0.4);">Booking</span>
+          <span style="background:rgba(34,197,94,0.2);color:#86efac;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;border:1px solid rgba(34,197,94,0.4);">Read-Only</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Permission Matrix -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-head"><h3>Matriks Hak Akses per Role</h3></div>
+      <div class="card-body table-wrap">
+        <table class="data-table" style="font-size:12.5px;">
+          <thead>
+            <tr>
+              <th style="min-width:180px;">Fitur / Menu</th>
+              <th style="text-align:center;">👑 Superadmin</th>
+              <th style="text-align:center;">🛡️ Admin</th>
+              <th style="text-align:center;">🧾 Cashier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Dashboard &amp; Omset</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#f59e0b;">👁 Baca</td></tr>
+            <tr><td>Kelola Slot Lapangan</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#f59e0b;">👁 Baca</td></tr>
+            <tr><td>Manajemen Booking</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#22c55e;">✓ Full</td></tr>
+            <tr><td>Transaksi &amp; Nota</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#22c55e;">✓ Full</td></tr>
+            <tr><td>Sesi Mabar &amp; Sparring</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#ef4444;">✗ Tidak</td></tr>
+            <tr><td>Manajemen User (Member)</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#ef4444;">✗ Tidak</td></tr>
+            <tr><td>Manajemen Role &amp; Staff</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#ef4444;">✗ Tidak</td><td style="text-align:center;color:#ef4444;">✗ Tidak</td></tr>
+            <tr><td>Blog &amp; Artikel</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#ef4444;">✗ Tidak</td></tr>
+            <tr><td>Pengaturan Aset</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#ef4444;">✗ Tidak</td></tr>
+            <tr><td>Tarif Lapangan</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#ef4444;">✗ Tidak</td></tr>
+            <tr><td>Kontak &amp; Sosmed</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#ef4444;">✗ Tidak</td></tr>
+            <tr><td>Pengaturan Sistem</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#ef4444;">✗ Tidak</td><td style="text-align:center;color:#ef4444;">✗ Tidak</td></tr>
+            <tr><td>Reset &amp; Hapus Data</td><td style="text-align:center;color:#22c55e;">✓ Full</td><td style="text-align:center;color:#ef4444;">✗ Tidak</td><td style="text-align:center;color:#ef4444;">✗ Tidak</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Staff Table -->
+    <div class="card">
+      <div class="card-head">
+        <h3>Daftar Staff &amp; Operator</h3>
+        <div class="table-filters" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <input type="text" id="filterStaffSearch" class="input-inline" placeholder="Cari nama / username..." oninput="renderStaff()" style="min-width:180px;">
+          <select id="filterStaffRole" class="input-inline" onchange="renderStaff()">
+            <option value="">Semua Role</option>
+            <option value="superadmin">👑 Superadmin</option>
+            <option value="admin">🛡️ Admin</option>
+            <option value="cashier">🧾 Cashier</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-body table-wrap">
+        <table class="data-table" id="staffTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nama Lengkap</th>
+              <th>Username</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Login Terakhir</th>
+              <th>Dibuat Oleh</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="staffBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Staff Modal -->
+  <div id="staffModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);align-items:center;justify-content:center;" onclick="closeStaffModal(event)">
+    <div style="background:#1a1d23;border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;width:100%;max-width:480px;box-shadow:0 24px 64px rgba(0,0,0,0.7);position:relative;" onclick="event.stopPropagation()">
+      <button onclick="closeStaffModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.5);font-size:22px;line-height:1;">&times;</button>
+      <h3 id="staffModalTitle" style="font-size:17px;font-weight:700;color:#fff;margin:0 0 24px;">Tambah Staff Baru</h3>
+      <input type="hidden" id="staffEditId">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+        <div class="form-group" style="margin:0;">
+          <label class="form-label">Nama Lengkap *</label>
+          <input type="text" id="sName" class="form-input" placeholder="Nama staff">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label">Username *</label>
+          <input type="text" id="sUsername" class="form-input" placeholder="username_login" autocomplete="off">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label">Password *</label>
+          <input type="password" id="sPassword" class="form-input" placeholder="Min. 6 karakter" autocomplete="new-password">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label">Role / Jabatan *</label>
+          <select id="sRole" class="form-input" onchange="updateRoleHint()">
+            <option value="cashier">🧾 Cashier</option>
+            <option value="admin">🛡️ Admin</option>
+            <option value="superadmin">👑 Superadmin</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label">No. Telepon</label>
+          <input type="tel" id="sPhone" class="form-input" placeholder="08xxxxxxxxxx">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label">Status</label>
+          <select id="sStatus" class="form-input">
+            <option value="active">Aktif</option>
+            <option value="inactive">Nonaktif</option>
+          </select>
+        </div>
+      </div>
+      <div id="roleHintBox" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-radius:10px;padding:10px 14px;margin-bottom:18px;font-size:12.5px;color:#c4b5fd;"></div>
+      <div class="form-group" style="margin-bottom:20px;">
+        <label class="form-label">Catatan</label>
+        <input type="text" id="sNotes" class="form-input" placeholder="Shift kerja, catatan khusus...">
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-primary" onclick="saveStaff()" style="flex:1;">Simpan Staff</button>
+        <button class="btn btn-outline" onclick="closeStaffModal()">Batal</button>
       </div>
     </div>
   </div>
