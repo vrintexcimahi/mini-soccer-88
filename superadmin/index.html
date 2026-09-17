@@ -959,7 +959,7 @@
   </section>
 
   <!-- User Modal -->
-  <div id="userModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;" onclick="closeUserModal(event)">
+  <div id="userModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;" onclick="closeUserModal(event)">
     <div style="background:#1a1d23;border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;width:100%;max-width:520px;box-shadow:0 24px 64px rgba(0,0,0,0.6);position:relative;" onclick="event.stopPropagation()">
       <button onclick="closeUserModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.5);font-size:22px;line-height:1;">×</button>
       <h3 id="userModalTitle" style="font-size:17px;font-weight:700;color:#fff;margin:0 0 24px;">Tambah Member Baru</h3>
@@ -1101,6 +1101,22 @@
       </div>
     </div>
 
+    <!-- Custom Role Builder -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-head" style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <h3>⚙️ Custom Role</h3>
+          <p style="font-size:12.5px;color:#888;margin-top:2px;">Buat role sendiri dengan pilihan akses tab yang bebas dikustomisasi</p>
+        </div>
+        <button class="btn btn-sm" onclick="openCustomRoleModal()">+ Buat Role Baru</button>
+      </div>
+      <div class="card-body">
+        <div id="customRoleList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;">
+          <p class="empty-state" style="grid-column:1/-1;">Belum ada custom role. Klik "Buat Role Baru" untuk memulai.</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Permission Matrix -->
     <div class="card" style="margin-bottom:20px;">
       <div class="card-head"><h3>Matriks Hak Akses per Role</h3></div>
@@ -1167,6 +1183,72 @@
     </div>
   </section>
 
+  <!-- Custom Role Modal -->
+  <div id="customRoleModal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);align-items:center;justify-content:center;" onclick="closeCustomRoleModal(event)">
+    <div style="background:#1a1d23;border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:28px 32px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,0.8);position:relative;" onclick="event.stopPropagation()">
+      <button onclick="closeCustomRoleModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.5);font-size:22px;line-height:1;">&times;</button>
+      <h3 id="customRoleModalTitle" style="font-size:17px;font-weight:700;color:#fff;margin:0 0 6px;">Buat Custom Role Baru</h3>
+      <p style="font-size:12.5px;color:#888;margin:0 0 22px;">Pilih nama, ikon, warna, dan centang fitur/tab yang boleh diakses oleh role ini.</p>
+      <input type="hidden" id="crEditId">
+
+      <div style="display:grid;grid-template-columns:1fr 80px 110px;gap:12px;margin-bottom:18px;align-items:end;">
+        <div class="form-group" style="margin:0;">
+          <label class="form-label">Nama Role *</label>
+          <input type="text" id="crName" class="form-input" placeholder="cth: Operator Pagi, Marketing..." maxlength="32">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label">Emoji</label>
+          <select id="crEmoji" class="form-input" style="font-size:18px;text-align:center;" onchange="updateCustomRolePreview()">
+            <option>🔑</option><option>🎯</option><option>🧑‍💼</option><option>📋</option>
+            <option>🏷️</option><option>📊</option><option>🔧</option><option>🎪</option>
+            <option>⚡</option><option>🌟</option><option>🎖️</option><option>🔐</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label">Warna Badge</label>
+          <select id="crColor" class="form-input" onchange="updateCustomRolePreview()">
+            <option value="purple">🟣 Ungu</option>
+            <option value="blue">🔵 Biru</option>
+            <option value="green">🟢 Hijau</option>
+            <option value="amber">🟡 Kuning</option>
+            <option value="red">🔴 Merah</option>
+            <option value="pink">🩷 Pink</option>
+            <option value="teal">🩵 Teal</option>
+            <option value="gray">⚪ Abu</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div style="margin-bottom:18px;">
+        <label class="form-label">Preview Badge</label>
+        <div id="crPreview" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;font-size:13px;font-weight:700;border:1px solid;">🔑 Custom Role</div>
+      </div>
+
+      <!-- Tab Permissions Checkboxes -->
+      <div style="margin-bottom:18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <label class="form-label" style="margin:0;">Akses Tab / Fitur *</label>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm btn-outline" style="font-size:11px;padding:4px 10px;" onclick="checkAllTabs(true)">Pilih Semua</button>
+            <button class="btn btn-sm btn-outline" style="font-size:11px;padding:4px 10px;" onclick="checkAllTabs(false)">Hapus Semua</button>
+          </div>
+        </div>
+        <div id="crTabCheckboxes" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:22px;">
+        <label class="form-label">Deskripsi (opsional)</label>
+        <input type="text" id="crDesc" class="form-input" placeholder="Deskripsi singkat hak akses role ini...">
+      </div>
+
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-primary" onclick="saveCustomRole()" style="flex:1;">Simpan Role</button>
+        <button class="btn btn-outline" onclick="closeCustomRoleModal()">Batal</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Staff Modal -->
   <div id="staffModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);align-items:center;justify-content:center;" onclick="closeStaffModal(event)">
     <div style="background:#1a1d23;border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;width:100%;max-width:480px;box-shadow:0 24px 64px rgba(0,0,0,0.7);position:relative;" onclick="event.stopPropagation()">
@@ -1189,6 +1271,7 @@
         <div class="form-group" style="margin:0;">
           <label class="form-label">Role / Jabatan *</label>
           <select id="sRole" class="form-input" onchange="updateRoleHint()">
+            <!-- Options populated dynamically by populateRoleSelect() -->
             <option value="cashier">🧾 Cashier</option>
             <option value="admin">🛡️ Admin</option>
             <option value="superadmin">👑 Superadmin</option>

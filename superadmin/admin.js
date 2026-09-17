@@ -72,7 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
   loadWaGatewaySettings();
   renderUsers();
   renderStaff();
+  renderCustomRoles();
   applyRoleRestrictions();
+  // Live preview for custom role name
+  const crNameEl = document.getElementById('crName');
+  if (crNameEl) crNameEl.addEventListener('input', updateCustomRolePreview);
 });
 
 // --- Tab Switching ---
@@ -96,6 +100,8 @@ function switchTab(tab) {
   if (titleEl) titleEl.textContent = titles[tab] || 'Dashboard';
   currentTab = tab;
   if (tab === 'payments') renderPayments();
+  if (tab === 'users')    renderUsers();
+  if (tab === 'roles')    { renderStaff(); renderCustomRoles(); }
 }
 
 function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
@@ -2149,6 +2155,8 @@ function openStaffModal(staffId) {
   document.getElementById('sStatus').value      = 'active';
   document.getElementById('sNotes').value       = '';
   document.getElementById('staffModalTitle').textContent = staffId ? 'Edit Data Staff' : 'Tambah Staff Baru';
+  // Populate role options including custom roles
+  populateRoleSelect('cashier');
   updateRoleHint();
 
   if (staffId) {
@@ -2157,12 +2165,12 @@ function openStaffModal(staffId) {
     if (s) {
       document.getElementById('sName').value     = s.name     || '';
       document.getElementById('sUsername').value = s.username || '';
-      document.getElementById('sRole').value     = s.role     || 'cashier';
       document.getElementById('sPhone').value    = s.phone    || '';
       document.getElementById('sStatus').value   = s.status   || 'active';
       document.getElementById('sNotes').value    = s.notes    || '';
       document.getElementById('sPassword').placeholder = '(kosongkan jika tidak diganti)';
-      updateRoleHint();
+      // Populate role select WITH custom roles, then set correct value
+      populateRoleSelect(s.role || 'cashier');
     }
   }
 }
@@ -2286,34 +2294,369 @@ function updateSidebarRoleBadge() {
 }
 
 /**
- * applyRoleRestrictions — hide nav buttons not allowed for the logged-in role.
- * Superadmin sees everything; Admin hides roles/settings; Cashier sees only overview/orders/payments.
+ * applyRoleRestrictions — uses getEffectiveRoleConfig so custom roles also work.
  */
 function applyRoleRestrictions() {
   const loggedUser = sessionStorage.getItem('ms88_admin_user') || 'admin';
   const staff      = getLS_staff();
   const me         = staff.find(s => s.username === loggedUser);
   const role       = me ? (me.role || 'superadmin') : 'superadmin';
-  const allowed    = new Set(ROLE_CONFIG[role]?.allowedTabs || ROLE_CONFIG.superadmin.allowedTabs);
+  const rc         = getEffectiveRoleConfig(role);
+  const allowed    = new Set(rc.allowedTabs || ROLE_CONFIG.superadmin.allowedTabs);
 
   const allTabs = ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings'];
   allTabs.forEach(tab => {
     const btn = document.getElementById('tabBtn' + tab.charAt(0).toUpperCase() + tab.slice(1));
     if (!btn) return;
     if (!allowed.has(tab)) {
-      btn.style.display    = 'none';
+      btn.style.display       = 'none';
       btn.style.pointerEvents = 'none';
     } else {
-      btn.style.display    = '';
+      btn.style.display       = '';
       btn.style.pointerEvents = '';
     }
   });
 
-  // If current tab is restricted, redirect to overview
   if (!allowed.has(currentTab)) {
     switchTab('overview');
-    toast(`Role ${ROLE_CONFIG[role]?.label} tidak memiliki akses ke tab ini`, 'warning');
+    toast(`Role ${rc.label} tidak memiliki akses ke tab ini`, 'warning');
   }
 
   updateSidebarRoleBadge();
 }
+
+// =========================================================
+//  CUSTOM ROLE MODULE
+// =========================================================
+
+// All available tabs with human-readable labels
+const ALL_TABS = [
+  { id: 'overview',  label: 'Dashboard & Omset',       icon: '📊' },
+  { id: 'slots',     label: 'Kelola Slot Lapangan',     icon: '🕐' },
+  { id: 'orders',    label: 'Manajemen Booking',        icon: '📋' },
+  { id: 'payments',  label: 'Transaksi & Nota',         icon: '💳' },
+  { id: 'mabar',     label: 'Sesi Mabar & Sparring',    icon: '⚽' },
+  { id: 'users',     label: 'Manajemen User (Member)',  icon: '👥' },
+  { id: 'roles',     label: 'Manajemen Role & Staff',   icon: '🛡️' },
+  { id: 'blog',      label: 'Blog & Artikel',           icon: '✍️' },
+  { id: 'assets',    label: 'Pengaturan Aset',          icon: '🖼️' },
+  { id: 'pricing',   label: 'Tarif Lapangan',           icon: '💰' },
+  { id: 'contact',   label: 'Kontak & Sosmed',          icon: '📍' },
+  { id: 'settings',  label: 'Pengaturan Sistem',        icon: '⚙️' },
+];
+
+// Badge color palette
+const BADGE_COLORS = {
+  purple: { color: '#e9d5ff', bg: 'rgba(139,92,246,0.2)',  border: 'rgba(139,92,246,0.45)' },
+  blue:   { color: '#bfdbfe', bg: 'rgba(59,130,246,0.2)',   border: 'rgba(59,130,246,0.45)'  },
+  green:  { color: '#bbf7d0', bg: 'rgba(34,197,94,0.2)',    border: 'rgba(34,197,94,0.45)'   },
+  amber:  { color: '#fde68a', bg: 'rgba(217,162,27,0.2)',   border: 'rgba(217,162,27,0.45)'  },
+  red:    { color: '#fecaca', bg: 'rgba(239,68,68,0.2)',    border: 'rgba(239,68,68,0.45)'   },
+  pink:   { color: '#fbcfe8', bg: 'rgba(236,72,153,0.2)',   border: 'rgba(236,72,153,0.45)'  },
+  teal:   { color: '#99f6e4', bg: 'rgba(20,184,166,0.2)',   border: 'rgba(20,184,166,0.45)'  },
+  gray:   { color: '#d1d5db', bg: 'rgba(107,114,128,0.2)',  border: 'rgba(107,114,128,0.45)' },
+};
+
+function getLS_customRoles() {
+  try {
+    const raw = localStorage.getItem('ms88_custom_roles');
+    if (raw) return JSON.parse(raw);
+  } catch(_) {}
+  return [];
+}
+
+function saveLS_customRoles(roles) {
+  localStorage.setItem('ms88_custom_roles', JSON.stringify(roles));
+}
+
+/**
+ * Resolve role name → config object.
+ * Checks built-in ROLE_CONFIG first, then custom roles from localStorage.
+ */
+function getEffectiveRoleConfig(roleName) {
+  if (ROLE_CONFIG[roleName]) return ROLE_CONFIG[roleName];
+  const custom = getLS_customRoles().find(r => r.id === roleName);
+  if (custom) {
+    const bc = BADGE_COLORS[custom.color] || BADGE_COLORS.gray;
+    return {
+      label: custom.name,
+      emoji: custom.emoji || '🔑',
+      color: bc.color,
+      bg: bc.bg,
+      border: bc.border,
+      allowedTabs: custom.allowedTabs || [],
+      sidebarLabel: custom.name,
+      isCustom: true,
+    };
+  }
+  // Fallback
+  return ROLE_CONFIG.cashier;
+}
+
+function renderCustomRoles() {
+  const customs = getLS_customRoles();
+  const list    = document.getElementById('customRoleList');
+  if (!list) return;
+
+  if (!customs.length) {
+    list.innerHTML = '<p class="empty-state" style="grid-column:1/-1;">Belum ada custom role. Klik "+ Buat Role Baru" untuk memulai.</p>';
+    return;
+  }
+
+  list.innerHTML = customs.map(cr => {
+    const bc = BADGE_COLORS[cr.color] || BADGE_COLORS.gray;
+    const tabCount = (cr.allowedTabs || []).length;
+    const tabNames = (cr.allowedTabs || []).map(id => {
+      const t = ALL_TABS.find(x => x.id === id);
+      return t ? `${t.icon} ${t.label}` : id;
+    }).join(', ');
+    return `
+      <div style="background:${bc.bg};border:1px solid ${bc.border};border-radius:14px;padding:16px;position:relative;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:22px;">${cr.emoji || '🔑'}</span>
+          <div style="flex:1;">
+            <div style="font-weight:800;font-size:14px;color:${bc.color};">${cr.name}</div>
+            ${cr.description ? `<div style="font-size:11.5px;color:${bc.color};opacity:0.7;margin-top:2px;">${cr.description}</div>` : ''}
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button class="btn-icon" title="Edit" onclick="openCustomRoleModal('${cr.id}')">${ICON.edit}</button>
+            <button class="btn-icon btn-red" title="Hapus" onclick="deleteCustomRole('${cr.id}')">${ICON.trash}</button>
+          </div>
+        </div>
+        <div style="font-size:11px;color:${bc.color};opacity:0.8;margin-bottom:8px;">
+          <strong>${tabCount} tab</strong> dapat diakses
+        </div>
+        <div style="font-size:11px;color:${bc.color};opacity:0.65;line-height:1.6;word-break:break-word;">${tabNames || '<em>Tidak ada akses</em>'}</div>
+      </div>`;
+  }).join('');
+
+  // Also repopulate the role select in staff modal
+  populateRoleSelect();
+}
+
+function openCustomRoleModal(roleId) {
+  const modal = document.getElementById('customRoleModal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+
+  document.getElementById('crEditId').value = roleId || '';
+  document.getElementById('crName').value   = '';
+  document.getElementById('crEmoji').value  = '🔑';
+  document.getElementById('crColor').value  = 'purple';
+  document.getElementById('crDesc').value   = '';
+  document.getElementById('customRoleModalTitle').textContent = roleId ? 'Edit Custom Role' : 'Buat Custom Role Baru';
+
+  // Build checkbox list
+  buildTabCheckboxes([]);
+
+  if (roleId) {
+    const cr = getLS_customRoles().find(r => r.id === roleId);
+    if (cr) {
+      document.getElementById('crName').value  = cr.name  || '';
+      document.getElementById('crEmoji').value = cr.emoji || '🔑';
+      document.getElementById('crColor').value = cr.color || 'purple';
+      document.getElementById('crDesc').value  = cr.description || '';
+      buildTabCheckboxes(cr.allowedTabs || []);
+    }
+  }
+
+  updateCustomRolePreview();
+}
+
+function closeCustomRoleModal(e) {
+  if (e && e.target !== document.getElementById('customRoleModal')) return;
+  const modal = document.getElementById('customRoleModal');
+  if (modal) modal.style.display = 'none';
+}
+window.closeCustomRoleModal = function(e) {
+  if (!e || e.type !== 'click') {
+    const modal = document.getElementById('customRoleModal');
+    if (modal) modal.style.display = 'none';
+    return;
+  }
+  if (e.target === document.getElementById('customRoleModal')) {
+    const modal = document.getElementById('customRoleModal');
+    if (modal) modal.style.display = 'none';
+  }
+};
+
+function buildTabCheckboxes(checked) {
+  const container = document.getElementById('crTabCheckboxes');
+  if (!container) return;
+  const checkedSet = new Set(checked);
+  container.innerHTML = ALL_TABS.map(t => `
+    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px 12px;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+      <input type="checkbox" id="crtab_${t.id}" value="${t.id}" ${checkedSet.has(t.id) ? 'checked' : ''} style="width:15px;height:15px;accent-color:#D71926;cursor:pointer;">
+      <span style="font-size:13px;color:rgba(255,255,255,0.85);">${t.icon} ${t.label}</span>
+    </label>`).join('');
+}
+
+function updateCustomRolePreview() {
+  const name   = (document.getElementById('crName')  || {}).value  || 'Custom Role';
+  const emoji  = (document.getElementById('crEmoji') || {}).value  || '🔑';
+  const color  = (document.getElementById('crColor') || {}).value  || 'purple';
+  const bc     = BADGE_COLORS[color] || BADGE_COLORS.gray;
+  const prev   = document.getElementById('crPreview');
+  if (!prev) return;
+  prev.textContent     = `${emoji} ${name}`;
+  prev.style.background = bc.bg;
+  prev.style.color      = bc.color;
+  prev.style.borderColor= bc.border;
+}
+
+function checkAllTabs(state) {
+  ALL_TABS.forEach(t => {
+    const cb = document.getElementById('crtab_' + t.id);
+    if (cb) cb.checked = state;
+  });
+}
+
+function saveCustomRole() {
+  const name  = (document.getElementById('crName').value || '').trim();
+  const emoji = (document.getElementById('crEmoji').value || '🔑').trim();
+  const color = document.getElementById('crColor').value || 'purple';
+  const desc  = (document.getElementById('crDesc').value  || '').trim();
+  const editId = document.getElementById('crEditId').value;
+
+  if (!name) { toast('Nama role wajib diisi', 'error'); return; }
+
+  const allowedTabs = ALL_TABS
+    .filter(t => { const cb = document.getElementById('crtab_' + t.id); return cb && cb.checked; })
+    .map(t => t.id);
+
+  if (!allowedTabs.length) { toast('Pilih minimal 1 tab yang boleh diakses', 'error'); return; }
+
+  const customs = getLS_customRoles();
+
+  // Duplicate name check (ignore self)
+  const dup = customs.find(r => r.name.toLowerCase() === name.toLowerCase() && r.id !== editId);
+  if (dup) { toast(`Nama role "${name}" sudah ada!`, 'error'); return; }
+
+  if (editId) {
+    const idx = customs.findIndex(r => r.id === editId);
+    if (idx !== -1) {
+      customs[idx] = { ...customs[idx], name, emoji, color, description: desc, allowedTabs, updatedAt: new Date().toISOString() };
+      toast(`Custom role "${name}" berhasil diperbarui`, 'success');
+    }
+  } else {
+    customs.push({
+      id: 'ROLE-' + Date.now().toString(36).toUpperCase(),
+      name, emoji, color, description: desc, allowedTabs,
+      isCustom: true, createdAt: new Date().toISOString(),
+    });
+    toast(`Custom role "${name}" berhasil dibuat dengan ${allowedTabs.length} akses tab`, 'success');
+  }
+
+  saveLS_customRoles(customs);
+  window.closeCustomRoleModal();
+  renderCustomRoles();
+  // Refresh staff table so role badges update
+  renderStaff();
+}
+
+function deleteCustomRole(roleId) {
+  const customs = getLS_customRoles();
+  const cr = customs.find(r => r.id === roleId);
+  if (!cr) return;
+
+  // Check if any staff is using this role
+  const usingStaff = getLS_staff().filter(s => s.role === roleId);
+  if (usingStaff.length) {
+    toast(`Tidak bisa hapus: ${usingStaff.length} staff masih menggunakan role "${cr.name}"`, 'error');
+    return;
+  }
+
+  if (!confirm(`Hapus custom role "${cr.name}"?\n\nAksi tidak dapat dibatalkan.`)) return;
+  saveLS_customRoles(customs.filter(r => r.id !== roleId));
+  renderCustomRoles();
+  toast(`Custom role "${cr.name}" dihapus`, 'warning');
+}
+
+/**
+ * Populates the #sRole select in staff modal with built-in + custom roles.
+ * Preserves currently selected value.
+ */
+function populateRoleSelect(currentValue) {
+  const sel = document.getElementById('sRole');
+  if (!sel) return;
+  const prev = currentValue || sel.value;
+
+  const builtIn = [
+    { value: 'cashier',    label: '🧾 Cashier' },
+    { value: 'admin',      label: '🛡️ Admin' },
+    { value: 'superadmin', label: '👑 Superadmin' },
+  ];
+  const customs = getLS_customRoles();
+
+  sel.innerHTML = '';
+
+  // Built-in group
+  const grpBuiltin = document.createElement('optgroup');
+  grpBuiltin.label = '— Role Bawaan —';
+  builtIn.forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r.value;
+    opt.textContent = r.label;
+    grpBuiltin.appendChild(opt);
+  });
+  sel.appendChild(grpBuiltin);
+
+  // Custom role group
+  if (customs.length) {
+    const grpCustom = document.createElement('optgroup');
+    grpCustom.label = '— Custom Role —';
+    customs.forEach(cr => {
+      const opt = document.createElement('option');
+      opt.value = cr.id;
+      opt.textContent = `${cr.emoji || '🔑'} ${cr.name}`;
+      grpCustom.appendChild(opt);
+    });
+    sel.appendChild(grpCustom);
+  }
+
+  // Restore previous selection
+  if (prev) sel.value = prev;
+  updateRoleHint();
+}
+
+// Override updateRoleHint to handle custom roles
+const _origUpdateRoleHint = updateRoleHint;
+window.updateRoleHint = function() {
+  const role = (document.getElementById('sRole') || {}).value || 'cashier';
+  const box  = document.getElementById('roleHintBox');
+  if (!box) return;
+
+  // Custom role?
+  const cr = getLS_customRoles().find(r => r.id === role);
+  if (cr) {
+    const bc = BADGE_COLORS[cr.color] || BADGE_COLORS.gray;
+    box.style.background = bc.bg;
+    box.style.border     = `1px solid ${bc.border}`;
+    box.style.color      = bc.color;
+    const tabLabels = (cr.allowedTabs || []).map(id => {
+      const t = ALL_TABS.find(x => x.id === id);
+      return t ? `${t.icon} ${t.label}` : id;
+    });
+    box.innerHTML = `${cr.emoji || '🔑'} <strong>${cr.name}</strong> — ${cr.description || 'Custom role'}<br><span style="opacity:0.8;font-size:11.5px;">Akses: ${tabLabels.join(' · ') || 'Tidak ada'}</span>`;
+    return;
+  }
+
+  // Built-in hint
+  _origUpdateRoleHint();
+};
+
+// Override updateSidebarRoleBadge to support custom roles
+const _origUpdateSidebarRoleBadge = updateSidebarRoleBadge;
+window.updateSidebarRoleBadge = function() {
+  const loggedUser = sessionStorage.getItem('ms88_admin_user') || 'admin';
+  const staff      = getLS_staff();
+  const me         = staff.find(s => s.username === loggedUser);
+  const role       = me ? (me.role || 'superadmin') : 'superadmin';
+  const rc         = getEffectiveRoleConfig(role);
+
+  const roleEl = document.getElementById('userRoleDisplay');
+  if (roleEl) {
+    roleEl.innerHTML = `<span style="display:inline-flex;align-items:center;gap:5px;">${rc.emoji} <span style="background:${rc.bg};color:${rc.color};border:1px solid ${rc.border};font-size:10px;font-weight:700;padding:1px 7px;border-radius:100px;letter-spacing:0.04em;">${rc.label}</span></span>`;
+  }
+};
+
