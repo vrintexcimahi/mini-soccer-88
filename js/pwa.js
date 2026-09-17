@@ -17,9 +17,13 @@
   /* =====================================================
      1. Register Service Worker
      ===================================================== */
+  const isSubdir = window.location.pathname.includes('/user/') || window.location.pathname.includes('/superadmin/');
+  const swPath   = isSubdir ? '../sw.js' : './sw.js';
+  const swScope  = isSubdir ? '../' : './';
+
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js', { scope: './' })
+      navigator.serviceWorker.register(swPath, { scope: swScope })
         .then((reg) => {
           console.log('[MS88 PWA] Service Worker aktif dengan scope:', reg.scope);
 
@@ -50,11 +54,12 @@
   function preloadCriticalPages() {
     const idleRunner = window.requestIdleCallback || ((cb) => setTimeout(cb, 2500));
     idleRunner(() => {
+      const basePrefix = isSubdir ? '../' : './';
       const urlsToPrefetch = [
-        './sewa-lapangan.html',
-        './kompetisi.html',
-        './kontak.html',
-        './main-bareng.html'
+        basePrefix + 'sewa-lapangan.html',
+        basePrefix + 'kompetisi.html',
+        basePrefix + 'kontak.html',
+        basePrefix + 'main-bareng.html'
       ];
 
       urlsToPrefetch.forEach((url) => {
@@ -318,7 +323,93 @@
   });
 
   /* =====================================================
-     8. Public API for Global Access
+     9. Mobile Bottom Icon Navigation Bar Auto-Mount
+     Menampilkan icon di footer pada layar mobile, tetap diam saat scroll.
+     ===================================================== */
+  function initMobileBottomNav() {
+    if (window.location.pathname.includes('/superadmin/')) return;
+
+    let nav = document.getElementById('ms88MobileBottomNav');
+    if (!nav) {
+      nav = document.createElement('nav');
+      nav.className = 'ms88-mobile-bottom-nav';
+      nav.id = 'ms88MobileBottomNav';
+      nav.setAttribute('aria-label', 'Navigasi Bawah Ponsel');
+      nav.innerHTML = `
+        <a href="/" class="ms88-bottom-nav-item" data-nav="home" title="Beranda">
+          <span class="ms88-nav-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          </span>
+          <span class="ms88-nav-active-dot"></span>
+        </a>
+        <a href="/sewa-lapangan.html" class="ms88-bottom-nav-item" data-nav="sewa" title="Sewa Lapangan">
+          <span class="ms88-nav-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 10 16 14 16 16 12 12 8"></polygon></svg>
+          </span>
+          <span class="ms88-nav-active-dot"></span>
+        </a>
+        <a href="/main-bareng.html" class="ms88-bottom-nav-item" data-nav="mabar" title="Komunitas & Mabar">
+          <span class="ms88-nav-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </span>
+          <span class="ms88-nav-active-dot"></span>
+        </a>
+        <a href="/kompetisi.html" class="ms88-bottom-nav-item" data-nav="kompetisi" title="Dokumentasi & Turnamen">
+          <span class="ms88-nav-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+          </span>
+          <span class="ms88-nav-active-dot"></span>
+        </a>
+        <a href="/kontak.html" class="ms88-bottom-nav-item" data-nav="kontak" title="Kontak Venue">
+          <span class="ms88-nav-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          </span>
+          <span class="ms88-nav-active-dot"></span>
+        </a>
+        <a href="/login.html" class="ms88-bottom-nav-item" data-nav="account" title="Portal Member">
+          <span class="ms88-nav-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </span>
+          <span class="ms88-nav-active-dot"></span>
+        </a>
+      `;
+      document.body.appendChild(nav);
+    }
+
+    // Set active item based on current URL
+    const p = window.location.pathname;
+    const items = nav.querySelectorAll('.ms88-bottom-nav-item');
+    items.forEach(it => it.classList.remove('active'));
+
+    if (p.includes('sewa-lapangan')) {
+      const el = nav.querySelector('[data-nav="sewa"]');
+      if (el) el.classList.add('active');
+    } else if (p.includes('main-bareng') || p.includes('mabar')) {
+      const el = nav.querySelector('[data-nav="mabar"]');
+      if (el) el.classList.add('active');
+    } else if (p.includes('kompetisi') || p.includes('partner')) {
+      const el = nav.querySelector('[data-nav="kompetisi"]');
+      if (el) el.classList.add('active');
+    } else if (p.includes('kontak')) {
+      const el = nav.querySelector('[data-nav="kontak"]');
+      if (el) el.classList.add('active');
+    } else if (p.includes('login') || p.includes('/user/')) {
+      const el = nav.querySelector('[data-nav="account"]');
+      if (el) el.classList.add('active');
+    } else if (p === '/' || p.endsWith('/index.html') || p.endsWith('index.html')) {
+      const el = nav.querySelector('[data-nav="home"]');
+      if (el) el.classList.add('active');
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileBottomNav);
+  } else {
+    initMobileBottomNav();
+  }
+
+  /* =====================================================
+     10. Public API for Global Access
      ===================================================== */
   window.MS88PWA = {
     showInstallModal: showModal,
@@ -335,3 +426,4 @@
     }
   };
 })();
+
