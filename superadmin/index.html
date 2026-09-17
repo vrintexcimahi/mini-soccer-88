@@ -71,6 +71,12 @@
       max-width: 100% !important;
       border-radius: 0 !important;
     }
+    #tabDeveloper {
+      padding: 16px 20px 36px !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
   </style>
 </head>
 <body>
@@ -1702,9 +1708,10 @@
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           <span style="font-size:12px;font-weight:700;color:#c084fc;">💻 Desktop:</span>
           <select id="devDesktopDeviceSelect" class="form-input" style="width:auto;padding:5px 10px;font-size:12px;background:#090d13;" onchange="setDesktopDevicePreset(this.value)">
-            <option value="flex">Fluid Flex (Auto Responsive 100%)</option>
-            <option value="hd">HD Standard (1280 × 800)</option>
+            <option value="flex">Fluid Flex (Isi Seluruh Layar 100%)</option>
+            <option value="widescreen">Ultra-Wide (1600 × 852)</option>
             <option value="fhd">Full HD (1440 × 900)</option>
+            <option value="hd">HD Standard (1280 × 800)</option>
           </select>
         </div>
 
@@ -1723,7 +1730,7 @@
 
     <!-- DUAL VIEW STAGE CONTAINER -->
     <div id="devStageOuter" style="width:100%;overflow-x:auto;padding-bottom:20px;">
-      <div id="devWorkbenchStage" style="display:flex;gap:28px;align-items:flex-start;justify-content:center;min-width:1080px;transform-origin:top center;transition:transform 0.2s ease;">
+      <div id="devWorkbenchStage" style="display:flex;gap:20px;align-items:flex-start;justify-content:stretch;width:100%;transform-origin:top left;transition:transform 0.2s ease;">
 
         <!-- === LEFT: SMARTPHONE MOCKUP FRAME === -->
         <div id="devMobileWrapper" style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
@@ -1767,9 +1774,9 @@
         </div>
 
         <!-- === RIGHT: DESKTOP BROWSER MOCKUP FRAME === -->
-        <div id="devDesktopWrapper" style="display:flex;flex-direction:column;flex:1;min-width:640px;max-width:1200px;">
+        <div id="devDesktopWrapper" style="display:flex;flex-direction:column;flex:1 1 0%;min-width:550px;width:100%;max-width:100%;">
           <!-- Desktop Window Frame -->
-          <div id="devDesktopWindow" style="background:#1e232a;border:1px solid rgba(255,255,255,0.15);border-radius:16px;box-shadow:0 30px 70px -10px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.08);overflow:hidden;transition:all 0.3s ease;">
+          <div id="devDesktopWindow" style="width:100%;background:#1e232a;border:1px solid rgba(255,255,255,0.15);border-radius:16px;box-shadow:0 30px 70px -10px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.08);overflow:hidden;transition:all 0.3s ease;">
             
             <!-- Browser Chrome Top Bar -->
             <div style="background:#161b22;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:1px solid rgba(255,255,255,0.08);">

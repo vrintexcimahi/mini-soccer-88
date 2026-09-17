@@ -3990,14 +3990,22 @@ function applyDevDesktopDimensions() {
     if (labelEl) labelEl.textContent = 'Full HD (1440 × 900)';
     if (dimEl) dimEl.textContent = '1440 × 852 px';
     if (statDesktopW) statDesktopW.textContent = '1440 px';
+  } else if (DEV_STATE.desktopPreset === 'widescreen') {
+    wrapper.style.flex = 'none';
+    wrapper.style.width = '1600px';
+    wrapper.style.maxWidth = '1600px';
+    if (labelEl) labelEl.textContent = 'Ultra-Wide (1600 × 852)';
+    if (dimEl) dimEl.textContent = '1600 × 852 px';
+    if (statDesktopW) statDesktopW.textContent = '1600 px';
   } else {
-    // Fluid flex
-    wrapper.style.flex = '1';
-    wrapper.style.width = 'auto';
-    wrapper.style.maxWidth = '1200px';
-    if (labelEl) labelEl.textContent = 'Fluid Responsive Flex';
-    if (dimEl) dimEl.textContent = 'Auto × 852 px';
-    if (statDesktopW) statDesktopW.textContent = '100% Flex';
+    // Fluid flex - fills 100% of available space!
+    wrapper.style.flex = '1 1 0%';
+    wrapper.style.width = '100%';
+    wrapper.style.maxWidth = 'none';
+    const actualW = wrapper.offsetWidth || 'Auto';
+    if (labelEl) labelEl.textContent = 'Fluid Responsive Flex (Layar Penuh)';
+    if (dimEl) dimEl.textContent = `${actualW} × 852 px`;
+    if (statDesktopW) statDesktopW.textContent = `${actualW} px (100% Flex)`;
   }
 }
 
