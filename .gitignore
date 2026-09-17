@@ -24,3 +24,7 @@ Desktop.ini
 *.pyc
 __pycache__/
 .DS_Store
+
+# Isolated Developer Browser Profile
+.dev_browser_profile/
+dev_browser_profile/

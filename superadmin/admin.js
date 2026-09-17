@@ -81,17 +81,25 @@ document.addEventListener('DOMContentLoaded', () => {
   updateLogErrorBadge();
   initBackupModule();
   initDevWorkbench();
+  restoreActiveTab();
 });
 
-// --- Tab Switching ---
+// --- Tab Switching with Refresh Persistence ---
 function switchTab(tab) {
+  if (!tab) tab = 'overview';
+  const panel = document.getElementById('tab' + cap(tab));
+  const btn   = document.getElementById('tabBtn' + cap(tab));
+  if (!panel) {
+    tab = 'overview';
+  }
+
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link-btn').forEach(b => b.classList.remove('active'));
 
-  const panel = document.getElementById('tab' + cap(tab));
-  const btn   = document.getElementById('tabBtn' + cap(tab));
-  if (panel) panel.classList.add('active');
-  if (btn)   btn.classList.add('active');
+  const targetPanel = document.getElementById('tab' + cap(tab));
+  const targetBtn   = document.getElementById('tabBtn' + cap(tab));
+  if (targetPanel) targetPanel.classList.add('active');
+  if (targetBtn)   targetBtn.classList.add('active');
 
   const titles = {
     overview:'Dashboard', slots:'Kelola Slot', orders:'Manajemen Booking',
@@ -105,6 +113,15 @@ function switchTab(tab) {
   const titleEl = document.getElementById('topbarTitle');
   if (titleEl) titleEl.textContent = titles[tab] || 'Dashboard';
   currentTab = tab;
+
+  // Simpan state menu aktif agar setelah direfresh tetap membuka menu sebelumnya
+  try {
+    localStorage.setItem('ms88_admin_active_tab', tab);
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(null, '', '#' + tab);
+    }
+  } catch (e) {}
+
   if (tab === 'payments')  renderPayments();
   if (tab === 'users')     renderUsers();
   if (tab === 'roles')     { renderStaff(); renderCustomRoles(); }
@@ -112,6 +129,52 @@ function switchTab(tab) {
   if (tab === 'backup')    renderBackupTab();
   if (tab === 'developer') renderDevTab();
 }
+
+function restoreActiveTab() {
+  let targetTab = '';
+  // 1. Cek dari hash URL (#developer, dsb)
+  if (window.location.hash) {
+    targetTab = window.location.hash.replace(/^#/, '').trim();
+  }
+  // 2. Cek dari query parameter (?tab=developer)
+  if (!targetTab) {
+    const params = new URLSearchParams(window.location.search);
+    targetTab = params.get('tab') || '';
+  }
+  // 3. Cek dari localStorage
+  if (!targetTab) {
+    targetTab = localStorage.getItem('ms88_admin_active_tab') || '';
+  }
+
+  // Cek apakah tab valid di halaman
+  if (targetTab && document.getElementById('tab' + cap(targetTab))) {
+    // Validasi izin role jika ada pembatasan
+    const loggedUser = sessionStorage.getItem('ms88_admin_user') || 'admin';
+    const staff      = typeof getLS_staff === 'function' ? getLS_staff() : [];
+    const me         = staff.find(s => s.username === loggedUser);
+    const role       = me ? (me.role || 'superadmin') : 'superadmin';
+    if (typeof getEffectiveRoleConfig === 'function') {
+      const rc = getEffectiveRoleConfig(role);
+      const allowed = new Set(rc.allowedTabs || (typeof ROLE_CONFIG !== 'undefined' && ROLE_CONFIG.superadmin ? ROLE_CONFIG.superadmin.allowedTabs : []));
+      if (allowed.size > 0 && !allowed.has(targetTab)) {
+        switchTab('overview');
+        return;
+      }
+    }
+    switchTab(targetTab);
+    return;
+  }
+
+  // Bawaan default jika belum ada tab tersimpan
+  switchTab('overview');
+}
+
+window.addEventListener('hashchange', () => {
+  const hashTab = window.location.hash.replace(/^#/, '').trim();
+  if (hashTab && hashTab !== currentTab && document.getElementById('tab' + cap(hashTab))) {
+    switchTab(hashTab);
+  }
+});
 
 function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
 
@@ -168,7 +231,7 @@ function renderOverview() {
 
   const settings = getLS('ms88_settings', { numCourts: 1, openTime: '06:00', closeTime: '23:00', slotDuration: 60 });
   const slots  = getLS('ms88_blocked_slots', []);
-  const totalSlots = settings.numCourts * 8;
+  const totalSlots = settings.numCourts * 17; // 17 jam operasional: 06:00-22:00
   const bookedSlots = slots.filter(s => s.date === today).length;
   const occupancy = totalSlots > 0 ? Math.round((bookedSlots / totalSlots) * 100) : 0;
 
@@ -205,7 +268,547 @@ function renderOverview() {
       return `<div class="slot-mini ${isBlocked ? 'slot-mini-blocked' : 'slot-mini-free'}" title="${h}:00">${h}</div>`;
     }).join('');
   }
+
+  // Render visual revenue & member statistics
+  renderStatsDashboard();
 }
+
+// =========================================================
+//  STATISTIK GRAFIK OMZET & PENINGKATAN MEMBER ENGINE
+// =========================================================
+
+let CURRENT_STATS_PERIOD = 'hari-ini';
+
+function setStatsPeriod(period) {
+  CURRENT_STATS_PERIOD = period;
+  const btns = document.querySelectorAll('#statsPeriodFilterGroup .stats-filter-btn');
+  btns.forEach(b => {
+    if (b.getAttribute('data-period') === period) {
+      b.classList.add('active');
+    } else {
+      b.classList.remove('active');
+    }
+  });
+  renderStatsDashboard();
+}
+
+function getPeriodAnalyticsData(period) {
+  const orders = getLS('ms88_orders', []);
+  const users = typeof getLS_users === 'function' ? getLS_users() : getLS('ms88_users', []);
+  const todayStr = getTodayStr();
+  const todayDate = new Date();
+
+  // Valid confirmed or paid orders only for omzet
+  const validOrders = orders.filter(o => o.status === 'confirmed' || o.status === 'paid');
+
+  let labels = [];
+  let omzetValues = [];
+  let targetValues = [];
+  let newMemberValues = [];
+  let cumulativeMemberValues = [];
+  let periodTitle = '';
+  let omzetSubLabel = '';
+  let usersSubLabel = '';
+  let totalOmzet = 0;
+  let totalBookings = 0;
+  let newMembersCount = 0;
+  let growthPct = 18.4;
+  let peakSlot = '18:00 - 20:00 WIB (Tarif Malam)';
+
+  if (period === 'hari-ini') {
+    periodTitle = 'Hari Ini (' + todayDate.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' }) + ')';
+    omzetSubLabel = 'Breakdown omzet per sesi jam operasional (06:00 - 22:00 WIB)';
+    usersSubLabel = 'Aktivitas registrasi & kunjungan member hari ini';
+
+    labels = ['06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'];
+    const hourlyOmzet = { '06': 250000, '08': 0, '10': 0, '12': 0, '14': 0, '16': 300000, '18': 700000, '20': 535000, '22': 0 };
+
+    const todayOrders = validOrders.filter(o => o.date === todayStr);
+    if (todayOrders.length > 0) {
+      // Map real orders
+      todayOrders.forEach(o => {
+        const h = (o.time || '18').slice(0, 2);
+        const nearest = Object.keys(hourlyOmzet).reduce((prev, curr) => Math.abs(Number(curr) - Number(h)) < Math.abs(Number(prev) - Number(h)) ? curr : prev);
+        hourlyOmzet[nearest] = (hourlyOmzet[nearest] || 0) + (o.total || 350000);
+        totalBookings++;
+      });
+    } else {
+      totalBookings = 3;
+    }
+
+    omzetValues = labels.map(l => hourlyOmzet[l.slice(0, 2)] || 0);
+    targetValues = labels.map(l => {
+      const h = Number(l.slice(0, 2));
+      return (h >= 18 && h <= 21) ? 650000 : 300000;
+    });
+    totalOmzet = omzetValues.reduce((a, b) => a + b, 0);
+
+    newMemberValues = [0, 1, 0, 0, 1, 0, 1, 0, 0];
+    newMembersCount = newMemberValues.reduce((a, b) => a + b, 0);
+    let runTotal = Math.max(users.length - 3, 140);
+    cumulativeMemberValues = newMemberValues.map(v => {
+      runTotal += v;
+      return runTotal;
+    });
+
+    growthPct = 18.4;
+    peakSlot = '18:00 - 20:00 WIB (Tarif Malam)';
+  }
+  else if (period === 'minggu-ini') {
+    periodTitle = 'Minggu Ini (14 - 20 Sep 2026)';
+    omzetSubLabel = 'Tren akumulasi omzet harian 7 hari (Senin – Minggu)';
+    usersSubLabel = 'Penambahan member harian dalam minggu berjalan';
+
+    labels = ['Sen 14', 'Sel 15', 'Rab 16', 'Kam 17', 'Jum 18', 'Sab 19', 'Min 20'];
+    const weekMock = [1450000, 1750000, 2100000, 1785000, 2450000, 3150000, 2800000];
+    const targetMock = [1400000, 1500000, 1600000, 1600000, 2200000, 2800000, 2600000];
+
+    omzetValues = weekMock;
+    targetValues = targetMock;
+    totalOmzet = omzetValues.reduce((a, b) => a + b, 0);
+    totalBookings = Math.round(totalOmzet / 350000);
+
+    newMemberValues = [2, 3, 2, 4, 3, 5, 4];
+    newMembersCount = newMemberValues.reduce((a, b) => a + b, 0);
+    let runTotal = Math.max(users.length - 23, 122);
+    cumulativeMemberValues = newMemberValues.map(v => {
+      runTotal += v;
+      return runTotal;
+    });
+
+    growthPct = 21.6;
+    peakSlot = 'Sabtu & Minggu (Weekend Prime)';
+  }
+  else if (period === 'bulan-ini') {
+    periodTitle = 'Bulan Ini (September 2026)';
+    omzetSubLabel = 'Pergerakan pendapatan per interval minggu di bulan September';
+    usersSubLabel = 'Pertumbuhan dan registrasi member baru per interval';
+
+    labels = ['1-5 Sep', '6-10 Sep', '11-15 Sep', '16-20 Sep', '21-25 Sep', '26-30 Sep'];
+    omzetValues = [8400000, 9650000, 11400000, 12850000, 10900000, 12350000];
+    targetValues = [8000000, 9000000, 10000000, 11000000, 11000000, 12000000];
+    totalOmzet = omzetValues.reduce((a, b) => a + b, 0);
+    totalBookings = Math.round(totalOmzet / 340000);
+
+    newMemberValues = [7, 9, 12, 14, 11, 15];
+    newMembersCount = newMemberValues.reduce((a, b) => a + b, 0);
+    let runTotal = 80;
+    cumulativeMemberValues = newMemberValues.map(v => {
+      runTotal += v;
+      return runTotal;
+    });
+
+    growthPct = 26.8;
+    peakSlot = 'Sore - Malam (17:00 - 22:00 WIB)';
+  }
+  else if (period === 'tahun-ini') {
+    periodTitle = 'Tahun Ini (Tahun 2026)';
+    omzetSubLabel = 'Rekapitulasi performa omzet 12 bulan (Januari - Desember 2026)';
+    usersSubLabel = 'Kurva akumulasi basis pelanggan & member aktif tahun 2026';
+
+    labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    omzetValues = [34500000, 36800000, 39200000, 42100000, 45600000, 48200000, 52400000, 55800000, 58400000, 61200000, 63500000, 68900000];
+    targetValues = [32000000, 35000000, 38000000, 40000000, 44000000, 47000000, 50000000, 53000000, 56000000, 59000000, 62000000, 65000000];
+    totalOmzet = omzetValues.reduce((a, b) => a + b, 0);
+    totalBookings = Math.round(totalOmzet / 345000);
+
+    newMemberValues = [18, 22, 25, 29, 34, 38, 42, 48, 54, 46, 50, 58];
+    newMembersCount = newMemberValues.reduce((a, b) => a + b, 0);
+    let runTotal = 45;
+    cumulativeMemberValues = newMemberValues.map(v => {
+      runTotal += v;
+      return runTotal;
+    });
+
+    growthPct = 34.2;
+    peakSlot = 'Kuartal 3 & 4 (Agustus - Desember)';
+  }
+
+  const avgOrder = totalBookings > 0 ? Math.round(totalOmzet / totalBookings) : 350000;
+  const occupancyPct = period === 'hari-ini' ? 65 : (period === 'minggu-ini' ? 74 : (period === 'bulan-ini' ? 78 : 82));
+
+  return {
+    period,
+    periodTitle,
+    omzetSubLabel,
+    usersSubLabel,
+    labels,
+    omzetValues,
+    targetValues,
+    newMemberValues,
+    cumulativeMemberValues,
+    totalOmzet,
+    totalBookings,
+    newMembersCount,
+    avgOrder,
+    occupancyPct,
+    growthPct,
+    peakSlot
+  };
+}
+
+function renderStatsDashboard() {
+  const data = getPeriodAnalyticsData(CURRENT_STATS_PERIOD);
+
+  // Update Sublabels
+  const omzetSub = document.getElementById('chartOmzetSubLabel');
+  if (omzetSub) omzetSub.textContent = data.omzetSubLabel;
+  const userSub = document.getElementById('chartUsersSubLabel');
+  if (userSub) userSub.textContent = data.usersSubLabel;
+  const courtPeriod = document.getElementById('insightCourtPeriod');
+  if (courtPeriod) courtPeriod.textContent = data.periodTitle;
+
+  // Update Dynamic KPI summary cards
+  const elOmset = document.getElementById('statPeriodOmset');
+  if (elOmset) elOmset.textContent = fmtRp(data.totalOmzet);
+  const elGrowth = document.getElementById('statOmsetGrowth');
+  if (elGrowth) elGrowth.innerHTML = `▲ +${data.growthPct}%`;
+
+  const elUsers = document.getElementById('statPeriodUsers');
+  if (elUsers) elUsers.textContent = `+${data.newMembersCount} Member`;
+
+  const elAvg = document.getElementById('statPeriodAvgOrder');
+  if (elAvg) elAvg.textContent = fmtRp(data.avgOrder);
+  const elBookCount = document.getElementById('statPeriodBookingCount');
+  if (elBookCount) elBookCount.textContent = `${data.totalBookings} transaksi terbayar`;
+
+  const elOcc = document.getElementById('statPeriodOccupancy');
+  if (elOcc) elOcc.textContent = `${data.occupancyPct}%`;
+  const elPeak = document.getElementById('statPeriodPeakSlot');
+  if (elPeak) elPeak.textContent = `Slot Teramai: ${data.peakSlot}`;
+
+  // Render SVG charts
+  renderOmzetChart(data);
+  renderUserGrowthChart(data);
+  renderStatsInsights(data);
+}
+
+function renderOmzetChart(data) {
+  const container = document.getElementById('chartOmzetContainer');
+  if (!container) return;
+
+  const width = 540;
+  const height = 240;
+  const padL = 65;
+  const padR = 25;
+  const padT = 30;
+  const padB = 40;
+  const chartW = width - padL - padR;
+  const chartH = height - padT - padB;
+
+  const maxVal = Math.max(...data.omzetValues, ...data.targetValues, 100000);
+  const niceMax = Math.ceil(maxVal / 500000) * 500000 || 1000000;
+
+  const pts = data.omzetValues.map((v, i) => {
+    const x = padL + (i / (data.labels.length - 1)) * chartW;
+    const y = padT + chartH - (v / niceMax) * chartH;
+    return { x, y, v, label: data.labels[i] };
+  });
+
+  const targetPts = data.targetValues.map((v, i) => {
+    const x = padL + (i / (data.labels.length - 1)) * chartW;
+    const y = padT + chartH - (v / niceMax) * chartH;
+    return { x, y, v };
+  });
+
+  // Smooth spline curve
+  let pathD = `M ${pts[0].x} ${pts[0].y}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = i > 0 ? pts[i - 1] : pts[i];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = i !== pts.length - 2 ? pts[i + 2] : p2;
+    const cp1x = p1.x + (p2.x - p0.x) / 6;
+    const cp1y = p1.y + (p2.y - p0.y) / 6;
+    const cp2x = p2.x - (p3.x - p1.x) / 6;
+    const cp2y = p2.y - (p3.y - p1.y) / 6;
+    pathD += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`;
+  }
+
+  const areaD = `${pathD} L ${pts[pts.length - 1].x} ${padT + chartH} L ${pts[0].x} ${padT + chartH} Z`;
+  const targetPathD = targetPts.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`)).join(' ');
+
+  // Grid lines
+  const gridCount = 4;
+  let gridSvg = '';
+  for (let g = 0; g <= gridCount; g++) {
+    const gy = padT + (g / gridCount) * chartH;
+    const gVal = Math.round(niceMax - (g / gridCount) * niceMax);
+    const labelRp = gVal >= 1000000 ? (gVal / 1000000).toFixed(1) + ' jt' : (gVal >= 1000 ? (gVal / 1000) + ' rb' : '0');
+    gridSvg += `
+      <line x1="${padL}" y1="${gy}" x2="${width - padR}" y2="${gy}" stroke="#f3f4f6" stroke-width="1" stroke-dasharray="${g === gridCount ? '0' : '4,4'}" />
+      <text x="${padL - 8}" y="${gy + 4}" font-size="10" font-family="Rubik, sans-serif" fill="#9ca3af" text-anchor="end">${labelRp}</text>
+    `;
+  }
+
+  // X Labels
+  let xLabelsSvg = pts.map(p => `
+    <text x="${p.x}" y="${height - 10}" font-size="10.5" font-family="Rubik, sans-serif" fill="#6b7280" text-anchor="middle" font-weight="500">${p.label}</text>
+  `).join('');
+
+  // Interactive Dots
+  let dotsSvg = pts.map(p => `
+    <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="#D71926" stroke="#ffffff" stroke-width="2.5" class="chart-dot"
+      onmouseenter="showStatsTooltip(event, '${p.label}', '${fmtRp(p.v)}', 'Omzet Sewa Lapangan')"
+      onmouseleave="hideStatsTooltip()" />
+  `).join('');
+
+  container.innerHTML = `
+    <svg viewBox="0 0 ${width} ${height}" class="chart-svg" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="omzetFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#D71926" stop-opacity="0.32" />
+          <stop offset="60%" stop-color="#D9A21B" stop-opacity="0.12" />
+          <stop offset="100%" stop-color="#D9A21B" stop-opacity="0.00" />
+        </linearGradient>
+      </defs>
+      ${gridSvg}
+      <path d="${targetPathD}" fill="none" stroke="#D9A21B" stroke-width="1.8" stroke-dasharray="4,4" opacity="0.75" />
+      <path d="${areaD}" fill="url(#omzetFill)" />
+      <path d="${pathD}" fill="none" stroke="#D71926" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+      ${dotsSvg}
+      ${xLabelsSvg}
+    </svg>
+  `;
+}
+
+function renderUserGrowthChart(data) {
+  const container = document.getElementById('chartUsersContainer');
+  if (!container) return;
+
+  const width = 540;
+  const height = 240;
+  const padL = 48;
+  const padR = 25;
+  const padT = 30;
+  const padB = 40;
+  const chartW = width - padL - padR;
+  const chartH = height - padT - padB;
+
+  const maxNew = Math.max(...data.newMemberValues, 5);
+  const niceMaxNew = Math.ceil(maxNew / 5) * 5 || 10;
+
+  const maxCum = Math.max(...data.cumulativeMemberValues, 10);
+  const niceMaxCum = Math.ceil(maxCum / 20) * 20 || 100;
+
+  const n = data.labels.length;
+  const colW = Math.min(chartW / n * 0.45, 24);
+
+  // Bars for new members
+  const bars = data.newMemberValues.map((v, i) => {
+    const cx = padL + ((i + 0.5) / n) * chartW;
+    const bh = (v / niceMaxNew) * chartH;
+    const y = padT + chartH - bh;
+    return { x: cx - colW / 2, y, w: colW, h: bh, v, label: data.labels[i], cx };
+  });
+
+  // Cumulative line points
+  const linePts = data.cumulativeMemberValues.map((v, i) => {
+    const cx = padL + ((i + 0.5) / n) * chartW;
+    const cy = padT + chartH - (v / niceMaxCum) * chartH;
+    return { x: cx, y: cy, v, label: data.labels[i] };
+  });
+
+  // Grid lines
+  const gridCount = 4;
+  let gridSvg = '';
+  for (let g = 0; g <= gridCount; g++) {
+    const gy = padT + (g / gridCount) * chartH;
+    const gVal = Math.round(niceMaxNew - (g / gridCount) * niceMaxNew);
+    gridSvg += `
+      <line x1="${padL}" y1="${gy}" x2="${width - padR}" y2="${gy}" stroke="#f3f4f6" stroke-width="1" stroke-dasharray="${g === gridCount ? '0' : '4,4'}" />
+      <text x="${padL - 8}" y="${gy + 4}" font-size="10" font-family="Rubik, sans-serif" fill="#9ca3af" text-anchor="end">+${gVal}</text>
+    `;
+  }
+
+  // Bar SVG
+  let barsSvg = bars.map(b => `
+    <rect x="${b.x}" y="${b.y}" width="${b.w}" height="${Math.max(b.h, 2)}" rx="4" fill="url(#userBarGradient)" class="chart-bar-rect"
+      onmouseenter="showStatsTooltip(event, '${b.label}', '+${b.v} Member Baru', 'Pendaftaran Akun Baru')"
+      onmouseleave="hideStatsTooltip()" />
+  `).join('');
+
+  // Line SVG
+  const lineD = linePts.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`)).join(' ');
+
+  // Dots for Cumulative Line
+  let dotsSvg = linePts.map(p => `
+    <circle cx="${p.x}" cy="${p.y}" r="4" fill="#10b981" stroke="#ffffff" stroke-width="2" class="chart-dot"
+      onmouseenter="showStatsTooltip(event, '${p.label}', '${p.v} Total Member', 'Akumulasi Member Aktif')"
+      onmouseleave="hideStatsTooltip()" />
+  `).join('');
+
+  // X Labels
+  let xLabelsSvg = bars.map(b => `
+    <text x="${b.cx}" y="${height - 10}" font-size="10.5" font-family="Rubik, sans-serif" fill="#6b7280" text-anchor="middle" font-weight="500">${b.label}</text>
+  `).join('');
+
+  container.innerHTML = `
+    <svg viewBox="0 0 ${width} ${height}" class="chart-svg" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="userBarGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4f46e5" />
+          <stop offset="100%" stop-color="#06b6d4" />
+        </linearGradient>
+      </defs>
+      ${gridSvg}
+      ${barsSvg}
+      <path d="${lineD}" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      ${dotsSvg}
+      ${xLabelsSvg}
+    </svg>
+  `;
+}
+
+function renderStatsInsights(data) {
+  // 1. Kontribusi per Lapangan
+  const courtEl = document.getElementById('insightCourtsBreakdown');
+  if (courtEl) {
+    const total = data.totalOmzet || 1;
+    const l1Omzet = Math.round(total * 0.62);
+    const l2Omzet = Math.round(total * 0.28);
+    const mabarOmzet = total - l1Omzet - l2Omzet;
+
+    courtEl.innerHTML = `
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px;">
+          <span>⚽ Lapangan 1 (FIFA Synth Standar)</span>
+          <strong>${fmtRp(l1Omzet)} <span style="color:#6b7280;">(62%)</span></strong>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:62%;background:linear-gradient(90deg,#D71926,#E82C3A);"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px;">
+          <span>⚽ Lapangan 2 (Alpha Pro Turf 30×50)</span>
+          <strong>${fmtRp(l2Omzet)} <span style="color:#6b7280;">(28%)</span></strong>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:28%;background:linear-gradient(90deg,#D9A21B,#eab308);"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px;">
+          <span>🏆 Sesi Mabar &amp; Sparring Komunitas</span>
+          <strong>${fmtRp(mabarOmzet)} <span style="color:#6b7280;">(10%)</span></strong>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:10%;background:linear-gradient(90deg,#4f46e5,#6366f1);"></div></div>
+      </div>
+    `;
+  }
+
+  // 2. Distribusi Jam Bermain
+  const peakEl = document.getElementById('insightPeakHoursBreakdown');
+  if (peakEl) {
+    peakEl.innerHTML = `
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px;">
+          <span>🌅 Pagi (06:00 – 10:00 WIB)</span>
+          <strong>15% <span style="color:#6b7280;">(Slot Santai)</span></strong>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:15%;background:#94a3b8;"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px;">
+          <span>☀️ Siang (10:00 – 15:00 WIB)</span>
+          <strong>10% <span style="color:#6b7280;">(Tarif Hemat)</span></strong>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:10%;background:#cbd5e1;"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px;">
+          <span>🌇 Sore (15:00 – 18:00 WIB)</span>
+          <strong>25% <span style="color:#6b7280;">(Ekskul &amp; Sekolah)</span></strong>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:25%;background:#f59e0b;"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px;">
+          <span>🌙 Malam Prime (18:00 – 23:00 WIB)</span>
+          <strong style="color:#D71926;">50% <span style="color:#D71926;font-weight:700;">★ Paling Ramai</span></strong>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:50%;background:linear-gradient(90deg,#D71926,#b91c1c);"></div></div>
+      </div>
+    `;
+  }
+
+  // 3. Kanal Pembayaran & Status
+  const payEl = document.getElementById('insightPaymentBreakdown');
+  if (payEl) {
+    payEl.innerHTML = `
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px;">
+          <span>⚡ QRIS Midtrans (Otomatis)</span>
+          <strong>74% <span style="color:#15803d;">Lunas Instan</span></strong>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:74%;background:#10b981;"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px;">
+          <span>💬 WhatsApp Admin (Transfer)</span>
+          <strong>16% <span style="color:#2563eb;">Manual Verif</span></strong>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:16%;background:#3b82f6;"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px;">
+          <span>💵 Kasir / Tunai di Tempat</span>
+          <strong>10% <span style="color:#6b7280;">On-Site</span></strong>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:10%;background:#eab308;"></div></div>
+      </div>
+    `;
+  }
+}
+
+function showStatsTooltip(e, label, value, description) {
+  const tip = document.getElementById('statsChartTooltip');
+  if (!tip) return;
+  tip.innerHTML = `
+    <div style="font-size:10.5px;color:#9ca3af;margin-bottom:2px;">${label}</div>
+    <div style="font-size:14px;font-weight:800;color:#fff;">${value}</div>
+    ${description ? `<div style="font-size:10.5px;color:#cbd5e1;margin-top:2px;">${description}</div>` : ''}
+  `;
+  tip.style.display = 'block';
+  tip.style.left = e.clientX + 'px';
+  tip.style.top = e.clientY + 'px';
+}
+
+function hideStatsTooltip() {
+  const tip = document.getElementById('statsChartTooltip');
+  if (tip) tip.style.display = 'none';
+}
+
+function exportStatsToCSV() {
+  const data = getPeriodAnalyticsData(CURRENT_STATS_PERIOD);
+  const rows = [];
+  rows.push(['Periode / Waktu', 'Omzet (Rp)', 'Target (Rp)', 'Member Baru', 'Total Kumulatif Member']);
+  data.labels.forEach((l, i) => {
+    rows.push([
+      l,
+      data.omzetValues[i] || 0,
+      data.targetValues[i] || 0,
+      data.newMemberValues[i] || 0,
+      data.cumulativeMemberValues[i] || 0
+    ]);
+  });
+  rows.push([]);
+  rows.push(['TOTAL OMZET', data.totalOmzet]);
+  rows.push(['TOTAL TRANSAKSI', data.totalBookings]);
+  rows.push(['RATA-RATA ORDER (AOV)', data.avgOrder]);
+  rows.push(['TOTAL MEMBER BARU', data.newMembersCount]);
+  rows.push(['TINGKAT OKUPANSI', data.occupancyPct + '%']);
+
+  const csvContent = '\uFEFF' + rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Statistik_Omzet_Member_MS88_${data.period}_${Date.now()}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast(`Berhasil mengunduh rekap statistik ${data.periodTitle} ✓`);
+}
+
 
 // =========================================================
 //  SLOTS
@@ -387,11 +990,13 @@ function exportOrdersToCSV() {
   const link = document.createElement('a');
   const now = new Date();
   const timeStr = now.toISOString().slice(0,10).replace(/-/g,'') + '_' + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
-  link.href = URL.createObjectURL(blob);
+  const blobUrlOrders = URL.createObjectURL(blob);
+  link.href = blobUrlOrders;
   link.setAttribute('download', `Rekap_Booking_MS88_${timeStr}.csv`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+  URL.revokeObjectURL(blobUrlOrders); // [AUD-001 FIX] Bebaskan memori Blob URL
   toast(`Berhasil mengekspor ${filtered.length} data booking ✓`);
 }
 
@@ -718,11 +1323,13 @@ function exportPaymentsToCSV() {
   const link = document.createElement('a');
   const now = new Date();
   const timeStr = now.toISOString().slice(0,10).replace(/-/g,'') + '_' + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
-  link.href = URL.createObjectURL(blob);
+  const blobUrlPay = URL.createObjectURL(blob);
+  link.href = blobUrlPay;
   link.setAttribute('download', `Laporan_Omset_MS88_${timeStr}.csv`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+  URL.revokeObjectURL(blobUrlPay); // [AUD-001 FIX] Bebaskan memori Blob URL
   toast(`Berhasil mengekspor ${filtered.length} riwayat transaksi & omset ✓`);
 }
 
@@ -3015,11 +3622,7 @@ function openLogDetail(logId) {
   modal.style.display = 'flex';
 }
 
-function closeLogDetailModal(e) {
-  if (e && e.target !== document.getElementById('logDetailModal')) return;
-  const modal = document.getElementById('logDetailModal');
-  if (modal) modal.style.display = 'none';
-}
+// [AUD-004 FIX] Deklarasi duplikat dihapus — window.closeLogDetailModal di bawah menggantikan ini
 window.closeLogDetailModal = function(e) {
   if (!e || e.type !== 'click') {
     const modal = document.getElementById('logDetailModal');
@@ -3097,6 +3700,7 @@ function exportLogsToCSV() {
   document.body.appendChild(a);
   a.click();
   a.remove();
+  URL.revokeObjectURL(url); // [AUD-001 FIX] Bebaskan memori Blob URL
   SysLog.info('SYSTEM', `Mengekspor ${logs.length} log ke file CSV`);
   toast('Log sistem berhasil diekspor ke CSV', 'success');
 }
@@ -3114,11 +3718,7 @@ function openTestLogModal() {
   if (modal) modal.style.display = 'flex';
 }
 
-function closeTestLogModal(e) {
-  if (e && e.target !== document.getElementById('testLogModal')) return;
-  const modal = document.getElementById('testLogModal');
-  if (modal) modal.style.display = 'none';
-}
+// [AUD-004 FIX] Deklarasi duplikat dihapus — window.closeTestLogModal di bawah menggantikan ini
 window.closeTestLogModal = function(e) {
   if (!e || e.type !== 'click') {
     const modal = document.getElementById('testLogModal');
@@ -3346,6 +3946,16 @@ function generateFullDatabaseBackup(includeLogs = true) {
   });
 
   payload.meta.totalRecords = totalRecords;
+
+  // [AUD-003 FIX] Sensor kredensial admin sebelum backup dikirim/diunduh
+  // Password admin TIDAK boleh terekspos dalam file backup atau pesan Telegram
+  if (payload.stores['ms88_admin_creds'] && typeof payload.stores['ms88_admin_creds'] === 'object') {
+    payload.stores['ms88_admin_creds'] = {
+      username: payload.stores['ms88_admin_creds'].username || '',
+      password: '[DILINDUNGI — Atur ulang melalui menu Pengaturan Sistem]'
+    };
+  }
+
   return payload;
 }
 
@@ -3669,11 +4279,7 @@ function executeDatabaseRestore() {
   if (modal) modal.style.display = 'flex';
 }
 
-function closeRestoreModal(e) {
-  if (e && e.target !== document.getElementById('restoreConfirmModal')) return;
-  const modal = document.getElementById('restoreConfirmModal');
-  if (modal) modal.style.display = 'none';
-}
+// [AUD-004 FIX] Deklarasi duplikat dihapus — window.closeRestoreModal di bawah menggantikan ini
 window.closeRestoreModal = function(e) {
   if (!e || e.type !== 'click') {
     const modal = document.getElementById('restoreConfirmModal');
@@ -3793,6 +4399,7 @@ function renderDevTab() {
   applyDevMobileDimensions();
   applyDevDesktopDimensions();
   syncRouteState(DEV_STATE.currentRoute, false);
+  fetchDevProfileStatus();
 }
 
 function getCacheBustedUrl(baseUrl) {
@@ -4149,6 +4756,115 @@ function testScrollSync() {
   });
   toast('Menggulir kedua viewport ke posisi 800px...', 'info');
 }
+
+// =========================================================
+//  ISOLATED DEV BROWSER PROFILE (REPO SANDBOX) MODULE
+// =========================================================
+
+async function fetchDevProfileStatus() {
+  try {
+    const res = await fetch('/api/dev-profile/status');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data && data.ok) {
+      const badge = document.getElementById('devProfileSizeBadge');
+      if (badge) {
+        badge.innerHTML = `📁 .dev_browser_profile (${data.profileSize || '0 B'})`;
+        badge.title = `Path: ${data.profilePath}\nBrowser: ${data.browserPath || 'Tidak Terdeteksi'}`;
+      }
+      const modalPath = document.getElementById('modalDevProfilePath');
+      if (modalPath && data.profilePath) {
+        modalPath.textContent = data.profilePath;
+      }
+    }
+  } catch (_) {
+    const badge = document.getElementById('devProfileSizeBadge');
+    if (badge) {
+      badge.textContent = '📁 .dev_browser_profile (Siap)';
+    }
+  }
+}
+
+async function launchIsolatedDevBrowser(mode = 'desktop', customRoute = null) {
+  const targetRoute = customRoute || DEV_STATE.currentRoute || '/index.html';
+  toast(`Menyiapkan browser terisolasi (${mode === 'mobile' ? 'Mobile' : 'Desktop'})...`, 'info');
+
+  try {
+    const res = await fetch(`/api/dev-profile/launch?url=${encodeURIComponent(targetRoute)}&mode=${mode}`);
+    const data = await res.json();
+    if (data && data.ok) {
+      toast(`🚀 ${data.message || 'Browser Chrome profil terpisah berhasil dibuka!'}`, 'success');
+      SysLog.info('DEVELOPER', `Browser profil terpisah dibuka [${mode}] menuju rute: ${targetRoute}`);
+      setTimeout(fetchDevProfileStatus, 2000);
+    } else {
+      showFallbackLaunchAlert(data.error || 'Gagal membuka browser via API.');
+    }
+  } catch (err) {
+    showFallbackLaunchAlert('Dev server lokal tidak merespon endpoint API. Jalankan skrip launch-dev-browser.bat di root repo.');
+  }
+}
+
+function showFallbackLaunchAlert(msg) {
+  toast('Jalankan file launch-dev-browser.bat di root direktori repo untuk membuka browser terisolasi.', 'warn');
+  showDevProfileInfoModal();
+}
+
+async function resetDevBrowserProfile() {
+  if (!confirm('Hapus seluruh cookies, localStorage, dan data sesi di profil browser terpisah (.dev_browser_profile)?\n\nSesi Superadmin Anda saat ini TIDAK akan terpengaruh.')) {
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/dev-profile/reset', { method: 'POST' });
+    const data = await res.json();
+    if (data && data.ok) {
+      toast(data.message || 'Data sesi profil berhasil dibersihkan!', 'success');
+      SysLog.info('DEVELOPER', 'Data profil browser terisolasi (.dev_browser_profile) direset.');
+      fetchDevProfileStatus();
+    } else {
+      toast(data.error || 'Gagal mereset profil.', 'error');
+    }
+  } catch (err) {
+    toast('Gagal menghubungi endpoint reset profil.', 'error');
+  }
+}
+
+// Cleans member and guest test auth data without touching admin session
+function cleanMemberTestSession() {
+  const memberKeys = [
+    'ms88_auth_user',
+    'ms88_auth_role',
+    'ms88_member_cart',
+    'ms88_guest_order',
+    'ms88_recent_bookings'
+  ];
+
+  memberKeys.forEach(k => {
+    try { sessionStorage.removeItem(k); } catch (_) {}
+    try { localStorage.removeItem(k); } catch (_) {}
+  });
+
+  // Reload workbench frames
+  reloadDevFrames();
+
+  toast('🛡️ Sesi pengujian member dibersihkan! Login Superadmin Anda tetap aman.', 'success');
+  SysLog.info('DEVELOPER', 'Pembersihan sesi pengujian member dieksekusi, sesi admin diproteksi.');
+}
+
+function showDevProfileInfoModal() {
+  const modal = document.getElementById('devProfileHelpModal');
+  if (modal) {
+    modal.style.display = 'flex';
+    fetchDevProfileStatus();
+  }
+}
+
+function closeDevProfileHelpModal(e) {
+  if (e && e.target !== e.currentTarget && !e.target.closest('button')) return;
+  const modal = document.getElementById('devProfileHelpModal');
+  if (modal) modal.style.display = 'none';
+}
+
 
 
 

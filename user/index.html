@@ -1539,14 +1539,18 @@
     const { sessName, finalTotal, dur } = calculateBookingPrice();
 
     const orderId = 'MS88-' + Math.floor(100000 + Math.random() * 900000);
-    const dateFormatted = new Date(date).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
+    // [AUD-005 FIX] Tambahkan T00:00:00 agar parsing tidak tergantung pada UTC offset
+    // sehingga tanggal tidak mundur 1 hari di timezone WIB
+    const dateObj = new Date(date + 'T00:00:00');
+    const dateFormatted = dateObj.toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
 
     const newOrder = {
       id: orderId,
       name: memberData.name || 'Member Resmi',
       phone: memberData.phone || '081295679799',
       court: court,
-      date: dateFormatted,
+      date: date,         // [AUD-006 FIX] Simpan dalam format ISO YYYY-MM-DD agar cocok
+                          // dengan filter admin slot grid (o.date === date)
       time: `${time} (${dur} Jam)`,
       session: sessName,
       total: finalTotal,
@@ -1637,7 +1641,7 @@
       sessionStorage.removeItem('ms88_auth_user');
       sessionStorage.removeItem('ms88_auth_role');
       sessionStorage.removeItem('ms88_admin_logged_in');
-      location.replace('/login.html');
+      location.replace('../login.html');
     }
   }
 

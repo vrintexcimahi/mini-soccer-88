@@ -946,3 +946,412 @@ footer .border-top, .as88-subpage-footer .border-top {
   }
 }
 
+/* ==========================================================================
+   MOBILE COMPACT LAYOUT OPTIMIZATION (Maksimalisasi Konten Viewport Mobile)
+   Memperkecil padding, font, tombol, dan jarak agar konten tampil maksimal.
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* --- Global Mobile Typography & Spacing --- */
+  h1, .h1 { font-size: 24px !important; line-height: 1.18 !important; }
+  h2, .h2 { font-size: 20px !important; line-height: 1.25 !important; }
+  h3, .h3 { font-size: 16px !important; }
+  
+  /* --- Hero Section Mobile Compactness --- */
+  .hero-as88 {
+    min-height: auto !important;
+    max-height: none !important;
+  }
+  .hero-as88 .container,
+  .hero-container {
+    padding-top: 68px !important;
+    padding-bottom: 22px !important;
+  }
+  .hero-as88 .badge-as88-pill {
+    padding: 3.5px 11px !important;
+    font-size: 10.5px !important;
+    letter-spacing: 0.3px !important;
+    margin-bottom: 8px !important;
+    gap: 5px !important;
+  }
+  .hero-as88 .badge-as88-pill svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+  .hero-as88 h1,
+  .hero-title {
+    font-size: 24px !important;
+    line-height: 1.15 !important;
+    margin-bottom: 6px !important;
+    letter-spacing: -0.3px !important;
+  }
+  .hero-as88 .lead,
+  .hero-slogan {
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    margin-bottom: 6px !important;
+  }
+  .hero-as88 p.hero-desc,
+  .hero-as88 p.mb-4:not(.lead) {
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+    margin-bottom: 12px !important;
+    max-width: 100% !important;
+    opacity: 0.95;
+  }
+
+  /* --- Action Buttons (Sleek Compact Grid Layout) --- */
+  .hero-cta-group,
+  .hero-as88 .d-flex.flex-wrap.gap-3.mt-4 {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin-top: 10px !important;
+  }
+  /* Primary Button: Booking Sekarang takes full width of row 1 */
+  .hero-as88 .btn-as88-gold,
+  .hero-btn-primary {
+    grid-column: 1 / -1 !important;
+    padding: 9px 16px !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    justify-content: center !important;
+    min-height: 38px !important;
+    box-shadow: 0 3px 12px rgba(217, 162, 27, 0.4) !important;
+  }
+  .hero-as88 .btn-as88-gold svg,
+  .hero-btn-primary svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+  /* Secondary Button: Lihat Sewa & Tarif sits on left of row 2 */
+  .hero-as88 .btn-hero-secondary,
+  .hero-as88 .btn.rounded-pill.px-4.py-3 {
+    grid-column: 1 !important;
+    padding: 7.5px 10px !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    min-height: 36px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+  /* Tertiary Button: WhatsApp Admin sits on right of row 2 */
+  .hero-as88 .btn-as88-wa,
+  .hero-btn-wa {
+    grid-column: 2 !important;
+    padding: 7.5px 10px !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    min-height: 36px !important;
+  }
+  .hero-as88 .btn-as88-wa svg,
+  .hero-btn-wa svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  /* --- Venue Highlights Pills Compact --- */
+  .hero-pills,
+  .hero-as88 .d-flex.flex-wrap.gap-2.mt-4.pt-3 {
+    margin-top: 8px !important;
+    padding-top: 6px !important;
+    gap: 5px !important;
+  }
+  .hero-pills span,
+  .hero-as88 .d-flex.flex-wrap.gap-2.mt-4.pt-3 span {
+    padding: 3.5px 9px !important;
+    font-size: 10.5px !important;
+    border-radius: 50px !important;
+  }
+  .hero-pills svg,
+  .hero-as88 .d-flex.flex-wrap.gap-2.mt-4.pt-3 svg {
+    width: 11px !important;
+    height: 11px !important;
+  }
+
+  /* --- Quick Booking Card Compact --- */
+  .quick-booking-wrap,
+  .hero-as88 + .container,
+  div[style*="margin-top: -50px"] {
+    margin-top: -15px !important;
+  }
+  .quick-booking-wrap .card,
+  div[style*="margin-top: -50px"] .card {
+    padding: 14px 12px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+  }
+  .quick-booking-wrap .form-label,
+  div[style*="margin-top: -50px"] .form-label {
+    font-size: 10.5px !important;
+    margin-bottom: 2px !important;
+  }
+  .quick-booking-wrap .form-select,
+  .quick-booking-wrap .form-control,
+  div[style*="margin-top: -50px"] .form-select,
+  div[style*="margin-top: -50px"] .form-control {
+    font-size: 12px !important;
+    padding: 6px 10px !important;
+    height: 36px !important;
+  }
+  .quick-booking-wrap .btn-as88-red,
+  div[style*="margin-top: -50px"] .btn-as88-red {
+    padding: 8px 14px !important;
+    font-size: 12.5px !important;
+    min-height: 38px !important;
+    margin-top: 4px !important;
+  }
+
+  /* --- General Section Spacing on Mobile --- */
+  section.container,
+  section.py-5,
+  .my-5 {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  .py-5 {
+    padding-top: 1.75rem !important;
+    padding-bottom: 1.75rem !important;
+  }
+  .as88-card {
+    padding: 14px 12px !important;
+    border-radius: 14px !important;
+  }
+  .as88-card .display-6 {
+    font-size: 1.45rem !important;
+  }
+
+  /* --- Pricing Tier Cards on Mobile --- */
+  .pricing-tier-card {
+    padding: 16px 14px !important;
+    border-radius: 14px !important;
+  }
+  .pricing-tier-card h3 {
+    font-size: 16px !important;
+  }
+  .pricing-tier-card .display-5 {
+    font-size: 1.75rem !important;
+  }
+
+  /* --- Weekly Schedule Matrix Poster on Mobile --- */
+  .poster-top-header {
+    padding: 14px 16px !important;
+    gap: 10px !important;
+  }
+  .poster-brand-logo-img {
+    height: 48px !important;
+    max-width: 100px !important;
+  }
+  .poster-header-divider {
+    height: 36px !important;
+    margin: 0 8px !important;
+  }
+  .poster-sched-title {
+    font-size: 20px !important;
+  }
+  .poster-sched-subtitle {
+    font-size: 11px !important;
+  }
+  .poster-realtime-box {
+    padding: 4px 10px !important;
+    min-width: 130px !important;
+  }
+
+  /* --- Weekly Schedule Matrix Table Mobile Compact (3 Days Visible + Stacked Jam) --- */
+  .weekly-poster-container {
+    border-radius: 12px !important;
+    margin: 0 !important;
+  }
+  .poster-grid-table {
+    min-width: 734px !important;
+    width: 734px !important;
+    table-layout: fixed !important;
+  }
+  .poster-th-jam {
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    padding: 5px 2px !important;
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 15 !important;
+    background: linear-gradient(180deg, #172D42 0%, #091724 100%) !important;
+  }
+  .poster-th-jam-inner {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    font-size: 9px !important;
+    letter-spacing: 0.3px !important;
+  }
+  .poster-th-jam-inner svg {
+    width: 10px !important;
+    height: 10px !important;
+  }
+  .poster-th-day {
+    width: 98px !important;
+    min-width: 98px !important;
+    max-width: 98px !important;
+    padding: 5px 2px !important;
+    font-size: 10px !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0 !important;
+  }
+  .poster-th-date-pill {
+    font-size: 10.5px !important;
+    padding: 1px 6px !important;
+    margin-top: 2px !important;
+    border-radius: 12px !important;
+  }
+  .poster-today-tag {
+    font-size: 7.5px !important;
+    padding: 1px 4px !important;
+    letter-spacing: 0 !important;
+    line-height: 1 !important;
+  }
+  .poster-cell-time {
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    padding: 4px 1px !important;
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 10 !important;
+    white-space: normal !important;
+  }
+  .poster-cell-time .time-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 1px !important;
+    line-height: 1.1 !important;
+  }
+  .poster-cell-time .time-val {
+    font-size: 10px !important;
+    letter-spacing: -0.3px !important;
+    font-weight: 800 !important;
+  }
+  .poster-cell-time .time-start {
+    color: #FFFFFF !important;
+    font-size: 10.5px !important;
+  }
+  .poster-cell-time .time-end {
+    color: rgba(255, 255, 255, 0.72) !important;
+    font-size: 9px !important;
+  }
+  .time-cell-live-now .live-time-pill {
+    padding: 2px 2px !important;
+    flex-direction: column !important;
+    gap: 1px !important;
+    border-radius: 6px !important;
+    min-width: 40px !important;
+  }
+  .time-cell-live-now .live-time-dot {
+    width: 5px !important;
+    height: 5px !important;
+    margin-bottom: 1px !important;
+  }
+  .poster-cell-slot {
+    width: 98px !important;
+    min-width: 98px !important;
+    max-width: 98px !important;
+    padding: 2px 2px !important;
+    height: 40px !important;
+  }
+  .slot-empty-wrap {
+    min-width: 0 !important;
+    padding: 2px 5px !important;
+    gap: 3px !important;
+    border-radius: 12px !important;
+  }
+  .slot-beacon {
+    width: 6px !important;
+    height: 6px !important;
+  }
+  .slot-beacon-dot {
+    width: 4px !important;
+    height: 4px !important;
+  }
+  .slot-status-text {
+    font-size: 9.5px !important;
+    letter-spacing: 0.2px !important;
+    font-weight: 800 !important;
+  }
+  .slot-empty-live-wrap {
+    min-width: 0 !important;
+    padding: 2px 4px !important;
+    gap: 3px !important;
+    border-radius: 12px !important;
+  }
+  .live-slot-label {
+    font-size: 9px !important;
+  }
+  .booked-team-name {
+    font-size: 9.5px !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0 !important;
+    padding: 0 !important;
+  }
+  .table-side-nav-btn {
+    width: 32px !important;
+    height: 32px !important;
+    opacity: 0.75 !important;
+  }
+  .table-side-nav-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  .table-nav-next {
+    right: 4px !important;
+  }
+  .table-nav-prev {
+    left: 4px !important;
+  }
+  .scroll-hint-bar {
+    padding: 5px 8px !important;
+    font-size: 10px !important;
+  }
+  .poster-subbar {
+    padding: 6px 12px !important;
+    gap: 6px !important;
+  }
+  .slanted-badge {
+    padding: 3px 10px !important;
+    font-size: 11px !important;
+  }
+}
+
+/* --- Base time-stack styles --- */
+.time-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.15;
+  gap: 1px;
+}
+.time-val {
+  display: block;
+  font-family: 'Rubik', monospace, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+.time-start {
+  color: #F8FAFC;
+  font-size: 11.5px;
+}
+.time-end {
+  color: rgba(248, 250, 252, 0.78);
+  font-size: 10px;
+}
+
+
+

@@ -675,12 +675,16 @@
     const user = sessionStorage.getItem('ms88_auth_user');
     const dest = getRedirectDestination();
 
-    if (role === 'user' && user) {
-      location.replace(dest);
-      return;
-    } else if (role === 'admin' || sessionStorage.getItem('ms88_admin_logged_in') === '1') {
-      location.replace('/superadmin/index.html');
-      return;
+    // Allow isolated preview inside developer workbench iframes without redirect loops
+    const isInIframe = window.self !== window.top;
+    if (!isInIframe) {
+      if (role === 'user' && user) {
+        location.replace(dest);
+        return;
+      } else if (role === 'admin' || sessionStorage.getItem('ms88_admin_logged_in') === '1') {
+        location.replace('/superadmin/index.html');
+        return;
+      }
     }
 
     // Show banner notice if coming from transaction button

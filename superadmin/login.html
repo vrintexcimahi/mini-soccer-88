@@ -301,8 +301,8 @@
     password: 'ms88admin2024'
   };
 
-  // If already logged in, redirect to dashboard
-  if (sessionStorage.getItem('ms88_admin_logged_in') === '1') {
+  // If already logged in, redirect to dashboard (only if not inside iframe workbench)
+  if (sessionStorage.getItem('ms88_admin_logged_in') === '1' && window.self === window.top) {
     location.replace('/superadmin/');
   }
 

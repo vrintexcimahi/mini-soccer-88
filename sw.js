@@ -3,7 +3,7 @@
    Service Worker — Intelligent Caching & PWA Engine
    ===================================================== */
 
-const CACHE_VERSION = 'ms88-v4.1';
+const CACHE_VERSION = 'ms88-v4.5';
 const CACHE_STATIC  = `ms88-static-${CACHE_VERSION}`;
 const CACHE_PAGES   = `ms88-pages-${CACHE_VERSION}`;
 const CACHE_IMAGES  = `ms88-images-${CACHE_VERSION}`;
@@ -109,6 +109,7 @@ self.addEventListener('fetch', (event) => {
   // Never cache payment & superadmin dynamic API endpoints
   if (url.pathname.startsWith('/api/') || 
       url.hostname.includes('midtrans') || 
+      url.hostname.includes('telegram.org') || 
       url.hostname.includes('google-analytics') ||
       url.hostname.includes('googletagmanager')) {
     return;

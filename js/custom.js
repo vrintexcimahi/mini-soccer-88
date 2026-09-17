@@ -28,25 +28,28 @@ const createGmapsUrl = (latitude, longitude) => `https://maps.google.com/?q=${la
 
 const open_map = (lat, lng) => window.open(`https://maps.google.com/?q=${lat},${lng}`, '_blank').focus();
 
-window.totalCartItem = window.totalCartItem || 0;
+var totalCartItem = window.totalCartItem || 0;
+window.totalCartItem = totalCartItem;
 
 const incrementCartItem = (totalCart = '') => {
     // Check if cart icon counter is exist or not
     const cartIconCounter = document.querySelectorAll(`span.cart-icon-counter`)
 
     if (totalCart !== '') {
-        window.totalCartItem = parseInt(totalCart, 10) || 0;
+        totalCartItem = parseInt(totalCart, 10) || 0;
     } else {
-        window.totalCartItem++;
+        totalCartItem++;
     }
+    window.totalCartItem = totalCartItem;
 
-    cartIconCounter.forEach(el => el.innerText = window.totalCartItem);
+    cartIconCounter.forEach(el => el.innerText = totalCartItem);
 }
 
 const decrementCartItem = () => {
-    window.totalCartItem = Math.max(0, (window.totalCartItem || 0) - 1);
+    totalCartItem = Math.max(0, (totalCartItem || 0) - 1);
+    window.totalCartItem = totalCartItem;
     const cartIconCounter = document.querySelectorAll(`span.cart-icon-counter`);
-    cartIconCounter.forEach(el => el.innerText = window.totalCartItem);
+    cartIconCounter.forEach(el => el.innerText = totalCartItem);
 }
 
 /**

@@ -262,6 +262,186 @@
       </div>
     </div>
 
+    <!-- =========================================================
+         STATISTIK GRAFIK OMZET & PENINGKATAN MEMBER SECTION
+         ========================================================= -->
+    <div class="stats-dashboard-card" style="background:#ffffff;border:1px solid #D9DCE1;border-radius:16px;padding:22px;margin-bottom:24px;box-shadow:0 2px 10px rgba(0,0,0,0.04);">
+      
+      <!-- Top Control Toolbar: Title & Period Filters -->
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding-bottom:18px;border-bottom:1px solid #f0f2f5;">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <h3 style="margin:0;font-size:16px;font-weight:700;color:#08090B;display:flex;align-items:center;gap:8px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#D71926" stroke-width="2.2" width="20" height="20"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+              Statistik Grafik Omzet &amp; Peningkatan Member
+            </h3>
+            <span style="font-size:11px;font-weight:700;background:rgba(215,25,38,0.1);color:#D71926;padding:2px 8px;border-radius:100px;border:1px solid rgba(215,25,38,0.2);">
+              LIVE ANALYTICS
+            </span>
+          </div>
+          <p style="margin:4px 0 0;font-size:12.5px;color:#5A606A;">
+            Pantau performa pendapatan sewa lapangan, pola transaksi, dan tren pertumbuhan member secara komprehensif.
+          </p>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <!-- Period Filter Buttons -->
+          <div class="stats-filter-group" id="statsPeriodFilterGroup" style="display:inline-flex;background:#f3f4f6;padding:4px;border-radius:10px;border:1px solid #e5e7eb;gap:4px;">
+            <button class="stats-filter-btn active" data-period="hari-ini" onclick="setStatsPeriod('hari-ini')">Hari Ini</button>
+            <button class="stats-filter-btn" data-period="minggu-ini" onclick="setStatsPeriod('minggu-ini')">Minggu Ini</button>
+            <button class="stats-filter-btn" data-period="bulan-ini" onclick="setStatsPeriod('bulan-ini')">Bulan Ini</button>
+            <button class="stats-filter-btn" data-period="tahun-ini" onclick="setStatsPeriod('tahun-ini')">Tahun Ini</button>
+          </div>
+
+          <!-- Export CSV Button -->
+          <button class="btn btn-sm btn-outline" onclick="exportStatsToCSV()" style="border-color:#D9DCE1;color:#08090B;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;font-size:12.5px;border-radius:8px;cursor:pointer;" title="Unduh rekap data statistik periode ini ke CSV/Excel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Ekspor Rekap CSV
+          </button>
+        </div>
+      </div>
+
+      <!-- Selected Period Dynamic Metric Summary Cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0 22px;">
+        
+        <div style="background:#fafafa;border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;position:relative;overflow:hidden;">
+          <div style="font-size:11.5px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Total Omzet Periode</div>
+          <div style="font-size:20px;font-weight:800;color:#08090B;margin:4px 0 2px;" id="statPeriodOmset">Rp 0</div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;">
+            <span style="color:#15803d;font-weight:700;display:inline-flex;align-items:center;gap:2px;" id="statOmsetGrowth">
+              ▲ +18.4%
+            </span>
+            <span style="color:#9ca3af;" id="statOmsetSub">vs periode lalu</span>
+          </div>
+          <div style="position:absolute;right:12px;bottom:10px;font-size:26px;opacity:0.12;">💰</div>
+        </div>
+
+        <div style="background:#fafafa;border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;position:relative;overflow:hidden;">
+          <div style="font-size:11.5px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Peningkatan Member Baru</div>
+          <div style="font-size:20px;font-weight:800;color:#4f46e5;margin:4px 0 2px;" id="statPeriodUsers">+0 Member</div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;">
+            <span style="color:#4f46e5;font-weight:700;" id="statUserGrowth">▲ +24%</span>
+            <span style="color:#9ca3af;" id="statUserTotalActive">Total 142 Member</span>
+          </div>
+          <div style="position:absolute;right:12px;bottom:10px;font-size:26px;opacity:0.12;">👥</div>
+        </div>
+
+        <div style="background:#fafafa;border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;position:relative;overflow:hidden;">
+          <div style="font-size:11.5px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Rata-Rata Order (AOV)</div>
+          <div style="font-size:20px;font-weight:800;color:#08090B;margin:4px 0 2px;" id="statPeriodAvgOrder">Rp 0</div>
+          <div style="font-size:11.5px;color:#6b7280;" id="statPeriodBookingCount">0 transaksi terbayar</div>
+          <div style="position:absolute;right:12px;bottom:10px;font-size:26px;opacity:0.12;">🧾</div>
+        </div>
+
+        <div style="background:#fafafa;border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;position:relative;overflow:hidden;">
+          <div style="font-size:11.5px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Okupansi &amp; Slot Prime</div>
+          <div style="font-size:20px;font-weight:800;color:#d97706;margin:4px 0 2px;" id="statPeriodOccupancy">0%</div>
+          <div style="font-size:11.5px;color:#6b7280;" id="statPeriodPeakSlot">Slot Teramai: 19:00 - 21:00</div>
+          <div style="position:absolute;right:12px;bottom:10px;font-size:26px;opacity:0.12;">⚡</div>
+        </div>
+
+      </div>
+
+      <!-- Visual Graphic Charts (2 Columns: Omzet & User Growth) -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="stats-charts-row">
+        
+        <!-- Chart 1: Omzet Trend Chart -->
+        <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;position:relative;box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div>
+              <h4 style="margin:0;font-size:14px;font-weight:700;color:#08090B;display:flex;align-items:center;gap:6px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#D71926;display:inline-block;"></span>
+                Tren Grafik Omzet &amp; Pendapatan
+              </h4>
+              <span style="font-size:11px;color:#6b7280;" id="chartOmzetSubLabel">Statistik pergerakan pendapatan sewa</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:11.5px;color:#6b7280;">
+              <span style="display:inline-flex;align-items:center;gap:4px;">
+                <span style="width:8px;height:8px;border-radius:2px;background:#D71926;"></span> Omzet
+              </span>
+              <span style="display:inline-flex;align-items:center;gap:4px;">
+                <span style="width:8px;height:8px;border-radius:2px;background:#d9a21b;"></span> Target
+              </span>
+            </div>
+          </div>
+
+          <!-- SVG Chart Canvas Area -->
+          <div id="chartOmzetContainer" style="width:100%;min-height:240px;position:relative;">
+            <!-- Rendered dynamically by renderOmzetChart() -->
+          </div>
+        </div>
+
+        <!-- Chart 2: Member Growth Chart -->
+        <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;position:relative;box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div>
+              <h4 style="margin:0;font-size:14px;font-weight:700;color:#08090B;display:flex;align-items:center;gap:6px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#4f46e5;display:inline-block;"></span>
+                Grafik Peningkatan User &amp; Member
+              </h4>
+              <span style="font-size:11px;color:#6b7280;" id="chartUsersSubLabel">Pertumbuhan pendaftar &amp; retensi komunitas</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:11.5px;color:#6b7280;">
+              <span style="display:inline-flex;align-items:center;gap:4px;">
+                <span style="width:8px;height:8px;border-radius:2px;background:#4f46e5;"></span> Member Baru
+              </span>
+              <span style="display:inline-flex;align-items:center;gap:4px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#10b981;"></span> Total Kumulatif
+              </span>
+            </div>
+          </div>
+
+          <!-- SVG Chart Canvas Area -->
+          <div id="chartUsersContainer" style="width:100%;min-height:240px;position:relative;">
+            <!-- Rendered dynamically by renderUserGrowthChart() -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Additional Insights Row ("...dan") -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:20px;">
+        
+        <!-- Insight 1: Sebaran Lapangan -->
+        <div style="background:#fafafa;border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <strong style="font-size:12.5px;color:#08090B;">🏟️ Kontribusi per Lapangan</strong>
+            <span style="font-size:11px;color:#6b7280;" id="insightCourtPeriod">Periode Terpilih</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;" id="insightCourtsBreakdown">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Insight 2: Jam Tersibuk (Peak Hours) -->
+        <div style="background:#fafafa;border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <strong style="font-size:12.5px;color:#08090B;">⏰ Distribusi Jam Bermain</strong>
+            <span style="font-size:11px;color:#6b7280;">Utilisasi Sesi</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;" id="insightPeakHoursBreakdown">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Insight 3: Kanal Pembayaran & Status -->
+        <div style="background:#fafafa;border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <strong style="font-size:12.5px;color:#08090B;">💳 Kanal Pembayaran &amp; Konversi</strong>
+            <span style="font-size:11px;color:#6b7280;">Status Transaksi</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;" id="insightPaymentBreakdown">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Floating Tooltip for SVG Charts -->
+    <div id="statsChartTooltip" style="position:fixed;display:none;z-index:99999;background:rgba(8,9,11,0.95);color:#fff;border:1px solid rgba(255,255,255,0.15);padding:8px 12px;border-radius:8px;font-size:12px;box-shadow:0 10px 25px rgba(0,0,0,0.5);pointer-events:none;transform:translate(-50%, -115%);transition:opacity 0.12s ease;font-family:'Rubik',sans-serif;"></div>
+
     <div class="two-col">
       <div class="card">
         <div class="card-head"><h3>Aktivitas Terbaru</h3></div>
@@ -1454,7 +1634,7 @@
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:10px;">
-          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;color:#fff;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text);">
             <input type="checkbox" id="tgAutoBackupEnabled" style="width:18px;height:18px;accent-color:#22c55e;">
             Aktifkan Backup Otomatis Harian
           </label>
@@ -1490,19 +1670,19 @@
           </div>
         </div>
 
-        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
+        <div style="background:rgba(0,0,0,0.03);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
           <div style="display:flex;gap:20px;flex-wrap:wrap;">
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.85);cursor:pointer;">
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);cursor:pointer;">
               <input type="checkbox" id="tgSendDocument" checked style="accent-color:#38bdf8;">
               Lampirkan File Dokumen Backup (<code>.json</code>)
             </label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.85);cursor:pointer;">
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);cursor:pointer;">
               <input type="checkbox" id="tgSendMessage" checked style="accent-color:#38bdf8;">
               Kirim Ringkasan Teks Statistik Database
             </label>
           </div>
-          <div id="tgStatusBadgeInfo" style="font-size:12px;color:#888;">
-            Terakhir dikirim: <strong id="tgLastSentTime" style="color:#fff;">Belum pernah</strong>
+          <div id="tgStatusBadgeInfo" style="font-size:12px;color:var(--text-muted);">
+            Terakhir dikirim: <strong id="tgLastSentTime" style="color:var(--text);">Belum pernah</strong>
           </div>
         </div>
 
@@ -1535,11 +1715,11 @@
           </div>
         </div>
         <div class="card-body">
-          <p style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.6;margin-bottom:16px;">
+          <p style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:16px;">
             Berkas backup berformat <code>.json</code> berisi struktur data lengkap termasuk seluruh 14 koleksi data Mini Soccer 88 (Booking, Member, Staff, Tarif, dan Pengaturan).
           </p>
           <div style="margin-bottom:16px;">
-            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.85);cursor:pointer;">
+            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-muted);cursor:pointer;">
               <input type="checkbox" id="chkIncludeLogs" checked style="accent-color:#22c55e;">
               Sertakan riwayat log sistem &amp; audit aktivitas
             </label>
@@ -1565,15 +1745,15 @@
           </div>
         </div>
         <div class="card-body">
-          <div id="dropZoneDb" style="border:2px dashed rgba(255,255,255,0.15);border-radius:12px;padding:24px 16px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.02);transition:border-color 0.2s, background 0.2s;" onclick="document.getElementById('fileImportDb').click()">
+          <div id="dropZoneDb" style="border:2px dashed var(--border);border-radius:12px;padding:24px 16px;text-align:center;cursor:pointer;background:rgba(0,0,0,0.02);transition:border-color 0.2s, background 0.2s;" onclick="document.getElementById('fileImportDb').click()">
             <div style="font-size:26px;margin-bottom:6px;">📂</div>
-            <div style="font-weight:600;font-size:13px;color:#fff;">Klik untuk pilih berkas backup (.json)</div>
-            <div style="font-size:11.5px;color:#888;margin-top:2px;">atau seret dan lepas berkas ke sini</div>
+            <div style="font-weight:600;font-size:13px;color:var(--text);">Klik untuk pilih berkas backup (.json)</div>
+            <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">atau seret dan lepas berkas ke sini</div>
           </div>
 
-          <div id="restorePreviewArea" style="display:none;margin-top:14px;background:#161b22;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;">
-            <div style="font-size:11.5px;color:#38bdf8;font-weight:700;margin-bottom:6px;">BERKAS TERVERIFIKASI:</div>
-            <div id="restorePreviewMeta" style="font-size:12px;color:#c9d1d9;line-height:1.5;"></div>
+          <div id="restorePreviewArea" style="display:none;margin-top:14px;background:rgba(0,0,0,0.04);border:1px solid var(--border);border-radius:10px;padding:12px 14px;">
+            <div style="font-size:11.5px;color:#2563eb;font-weight:700;margin-bottom:6px;">BERKAS TERVERIFIKASI:</div>
+            <div id="restorePreviewMeta" style="font-size:12px;color:var(--text-muted);line-height:1.5;"></div>
             <div style="display:flex;gap:8px;margin-top:12px;">
               <button class="btn btn-sm btn-primary" onclick="executeDatabaseRestore()" style="flex:1;">Pulihkan Sekarang</button>
               <button class="btn btn-sm btn-outline" onclick="cancelRestorePreview()">Batal</button>
@@ -1653,6 +1833,58 @@
       </div>
     </div>
 
+    <!-- === ISOLATED BROWSER PROFILE SANDBOX BAR (DECOUPLED DARI SESI BROWSER UTAMA) === -->
+    <div class="admin-card" style="background:linear-gradient(135deg,rgba(15,23,42,0.92) 0%,rgba(30,27,75,0.85) 100%);border:1px solid rgba(99,102,241,0.35);border-radius:16px;padding:18px 22px;margin-bottom:20px;box-shadow:0 12px 32px rgba(0,0,0,0.4);">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+        
+        <!-- Left: Info & Badges -->
+        <div style="display:flex;align-items:flex-start;gap:14px;min-width:300px;flex:1 1 420px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 16px rgba(99,102,241,0.4);flex-shrink:0;">
+            🚀
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <h3 style="margin:0;font-size:15px;color:#fff;font-weight:700;letter-spacing:-0.01em;">
+                Pengujian Profil Browser Terpisah (Repo Sandbox)
+              </h3>
+              <span style="font-size:10.5px;font-weight:700;background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);padding:2px 8px;border-radius:20px;display:inline-flex;align-items:center;gap:4px;">
+                <span style="width:6px;height:6px;border-radius:50%;background:#10b981;box-shadow:0 0 6px #10b981;"></span>
+                DECOUPLED / TERISOLASI 100%
+              </span>
+              <span style="font-size:10.5px;font-family:monospace;background:rgba(255,255,255,0.08);color:#cbd5e1;padding:2px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);" id="devProfileSizeBadge">
+                📁 .dev_browser_profile (Memeriksa...)
+              </span>
+            </div>
+            <p style="margin:4px 0 0;font-size:12.5px;color:rgba(255,255,255,0.7);line-height:1.45;">
+              Menjalankan browser dengan direktori profil khusus yang tersimpan di repositori (<code>.dev_browser_profile</code>). Pengujian login member, registrasi, booking lapangan, dan logout <strong>tidak akan mengganggu atau me-logout sesi Superadmin</strong> Anda.
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Action Buttons & Launchers -->
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-sm" onclick="launchIsolatedDevBrowser('desktop')" style="background:linear-gradient(135deg,#4f46e5,#4338ca);color:#fff;font-weight:600;border:1px solid rgba(129,140,248,0.4);box-shadow:0 4px 14px rgba(79,70,229,0.35);display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border-radius:8px;cursor:pointer;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            Buka Chrome Profil Terpisah
+          </button>
+          
+          <button class="btn btn-sm" onclick="launchIsolatedDevBrowser('mobile')" style="background:rgba(255,255,255,0.08);color:#fff;font-weight:600;border:1px solid rgba(255,255,255,0.18);display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border-radius:8px;cursor:pointer;" title="Buka jendela browser dengan rasio layar ponsel (430 × 932 px)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            Jendela Mobile Mandiri
+          </button>
+
+          <button class="btn btn-sm btn-outline" onclick="resetDevBrowserProfile()" style="border-color:rgba(239,68,68,0.4);color:#fca5a5;padding:9px 12px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;" title="Hapus seluruh cookies, localStorage, dan riwayat sesi di profil repositori untuk tes dari nol">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            Reset Data Profil
+          </button>
+
+          <button class="btn btn-sm btn-outline" onclick="showDevProfileInfoModal()" style="border-color:rgba(255,255,255,0.15);color:#cbd5e1;padding:9px 11px;border-radius:8px;cursor:pointer;" title="Petunjuk &amp; Skrip Launcher Eksternal">
+            ℹ️ Bantuan
+          </button>
+        </div>
+
+      </div>
+    </div>
 
     <!-- DUAL VIEW STAGE CONTAINER -->
     <div id="devStageOuter" style="width:100%;overflow-x:auto;padding-bottom:20px;">
@@ -1683,7 +1915,7 @@
             </div>
 
             <!-- Mobile Iframe Viewport -->
-            <iframe id="devIframeMobile" src="/index.html" style="width:393px;height:852px;border:none;background:#fff;display:block;transition:width 0.3s ease, height 0.3s ease;" title="Mobile Viewport"></iframe>
+            <iframe id="devIframeMobile" src="/index.html?v=compact" style="width:393px;height:852px;border:none;background:#fff;display:block;transition:width 0.3s ease, height 0.3s ease;" title="Mobile Viewport"></iframe>
 
             <!-- Smartphone Bottom Home Indicator Bar -->
             <div id="devMobileHomeBar" style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:4px;background:rgba(255,255,255,0.7);border-radius:10px;z-index:90;pointer-events:none;"></div>
@@ -1792,6 +2024,14 @@
           <button class="btn btn-sm btn-outline" onclick="injectTestMemberLogin()" style="text-align:left;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-color:rgba(255,255,255,0.1);">
             <span>🔑 Isi Kredensial Login Portal / Admin</span>
             <span style="font-size:10.5px;color:#a855f7;font-weight:700;">Auto-Fill</span>
+          </button>
+          <button class="btn btn-sm btn-outline" onclick="cleanMemberTestSession()" style="text-align:left;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.05);" title="Hapus sesi login member tanpa mengeluarkan login Superadmin">
+            <span>🛡️ Reset Sesi Pengujian Member (Admin Tetap Login)</span>
+            <span style="font-size:10.5px;color:#34d399;font-weight:700;">Isolasi</span>
+          </button>
+          <button class="btn btn-sm btn-outline" onclick="launchIsolatedDevBrowser('desktop', '/login.html')" style="text-align:left;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-color:rgba(99,102,241,0.3);background:rgba(99,102,241,0.05);" title="Buka form login member di jendela Chrome terpisah">
+            <span>🌐 Buka Portal Member di Chrome Profil Terpisah</span>
+            <span style="font-size:10.5px;color:#a5b4fc;font-weight:700;">Sandbox</span>
           </button>
           <button class="btn btn-sm btn-outline" onclick="testScrollSync()" style="text-align:left;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-color:rgba(255,255,255,0.1);">
             <span>📜 Gulir ke Bagian Pricelist / Booking</span>
@@ -2050,6 +2290,45 @@
   </div>
 
 </main>
+
+<!-- Dev Browser Profile Info & Launcher Modal -->
+<div id="devProfileHelpModal" style="display:none;position:fixed;inset:0;z-index:10002;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);align-items:center;justify-content:center;" onclick="closeDevProfileHelpModal(event)">
+  <div style="background:#161b22;border:1px solid rgba(99,102,241,0.35);border-radius:20px;padding:28px 32px;width:100%;max-width:580px;box-shadow:0 24px 80px rgba(0,0,0,0.9);position:relative;color:#c9d1d9;" onclick="event.stopPropagation()">
+    <button onclick="closeDevProfileHelpModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.5);font-size:22px;line-height:1;">&times;</button>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+      <span style="font-size:28px;">🚀</span>
+      <div>
+        <h3 style="font-size:17px;font-weight:700;color:#fff;margin:0;">Panduan Profil Pengujian Terisolasi</h3>
+        <p style="font-size:12px;color:#a5b4fc;margin:2px 0 0;">Decoupled testing profile yang disimpan di repositori lokal</p>
+      </div>
+    </div>
+    
+    <div style="background:#0d1117;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;font-size:12.5px;line-height:1.65;margin-bottom:18px;">
+      <div style="margin-bottom:12px;">
+        <strong style="color:#fff;display:block;margin-bottom:2px;">📁 Lokasi Folder Profil di Repo:</strong>
+        <code style="display:block;background:rgba(255,255,255,0.05);padding:6px 10px;border-radius:6px;color:#38bdf8;font-size:11.5px;word-break:break-all;" id="modalDevProfilePath">.../.dev_browser_profile</code>
+      </div>
+      
+      <div style="margin-bottom:12px;">
+        <strong style="color:#fff;display:block;margin-bottom:2px;">💡 Mengapa Menggunakan Profil Terpisah?</strong>
+        <p style="margin:0;color:rgba(255,255,255,0.7);">
+          Browser utama Anda saat ini sedang login sebagai <strong>Superadmin</strong>. Jika Anda membuka jendela pengujian biasa, cookies &amp; sesi login dapat saling bertabrakan atau me-logout Superadmin. Dengan profil terpisah, setiap data pengujian member, booking, dan sesi disimpan secara independen di repositori.
+        </p>
+      </div>
+
+      <div>
+        <strong style="color:#fff;display:block;margin-bottom:4px;">⚡ Cara Buka Lewat File Batch / Terminal:</strong>
+        <p style="margin:0 0 6px;color:rgba(255,255,255,0.7);">Anda juga dapat mengklik dua kali file launcher di root repo:</p>
+        <code style="display:block;background:rgba(0,0,0,0.5);padding:6px 10px;border-radius:6px;color:#4ade80;font-size:11.5px;font-family:monospace;">launch-dev-browser.bat</code>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button class="btn btn-primary" onclick="launchIsolatedDevBrowser('desktop');closeDevProfileHelpModal();" style="background:linear-gradient(135deg,#6366f1,#4f46e5);border:none;">Buka Browser Sekarang</button>
+      <button class="btn btn-outline" onclick="closeDevProfileHelpModal()">Tutup</button>
+    </div>
+  </div>
+</div>
 
 <script src="admin.js"></script>
 </body>

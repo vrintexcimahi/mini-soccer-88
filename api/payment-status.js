@@ -25,8 +25,8 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'order_id wajib diisi.' });
   }
 
-  // Validasi format order_id (MS88-YYYYMMDD-XXXXXX)
-  if (!/^MS88-\d{8}-[A-Z0-9]{6}$/.test(order_id)) {
+  // Validasi format order_id (MS88-YYYYMMDD-XXXXXX atau format MS88-...)
+  if (!/^MS88-[\w-]{4,24}$/i.test(order_id)) {
     return res.status(400).json({ error: 'Format order_id tidak valid.' });
   }
 
