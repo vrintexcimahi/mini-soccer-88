@@ -72,7 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
   loadWaGatewaySettings();
   renderUsers();
   renderStaff();
+  renderCustomRoles();
   applyRoleRestrictions();
+  // Live preview for custom role name
+  const crNameEl = document.getElementById('crName');
+  if (crNameEl) crNameEl.addEventListener('input', updateCustomRolePreview);
+  initLogs();
+  updateLogErrorBadge();
 });
 
 // --- Tab Switching ---
@@ -90,12 +96,16 @@ function switchTab(tab) {
     payments:'Transaksi & Nota', mabar:'Sesi Mabar', users:'Manajemen User',
     roles:'Manajemen Role & Staff',
     blog:'Blog & Artikel', assets:'Pengaturan Aset',
-    pricing:'Tarif Lapangan', contact:'Kontak & Sosmed', settings:'Pengaturan Sistem'
+    pricing:'Tarif Lapangan', contact:'Kontak & Sosmed', settings:'Pengaturan Sistem',
+    logs:'Log Sistem & Monitoring'
   };
   const titleEl = document.getElementById('topbarTitle');
   if (titleEl) titleEl.textContent = titles[tab] || 'Dashboard';
   currentTab = tab;
   if (tab === 'payments') renderPayments();
+  if (tab === 'users')    renderUsers();
+  if (tab === 'roles')    { renderStaff(); renderCustomRoles(); }
+  if (tab === 'logs')     renderLogs();
 }
 
 function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
@@ -1959,6 +1969,7 @@ function saveUser() {
         joinDate: document.getElementById('uJoinDate').value,
         notes:    document.getElementById('uNotes').value.trim(),
       };
+      SysLog.info('MEMBER', `Memperbarui data member: "${name}" (${finalLevel})`, { id: editId, name, phone, level: finalLevel });
       toast(`Member "${name}" berhasil diperbarui (Level: ${finalLevel})`, 'success');
     }
   } else {
@@ -1974,6 +1985,7 @@ function saveUser() {
       notes:    document.getElementById('uNotes').value.trim(),
       createdAt: new Date().toISOString(),
     });
+    SysLog.success('MEMBER', `Member baru ditambahkan: "${name}" (${finalLevel})`, { id: newId, name, phone, level: finalLevel });
     toast(`Member baru "${name}" ditambahkan (Level: ${finalLevel})`, 'success');
   }
 
@@ -1987,6 +1999,7 @@ function deleteUser(userId) {
   const u = users.find(x => String(x.id) === String(userId));
   if (!u) return;
   if (!confirm(`Hapus member "${u.name}"? Aksi tidak dapat dibatalkan.`)) return;
+  SysLog.warn('MEMBER', `Member dihapus: "${u.name}" (ID: ${userId})`, { id: userId, name: u.name, phone: u.phone });
   saveLS_users(users.filter(x => String(x.id) !== String(userId)));
   renderUsers();
   toast(`Member "${u.name}" telah dihapus`, 'warning');
@@ -2020,13 +2033,13 @@ const ROLE_CONFIG = {
     label: 'Superadmin', emoji: '👑',
     color: '#e9d5ff', bg: 'rgba(139,92,246,0.18)', border: 'rgba(139,92,246,0.4)',
     sidebarLabel: 'Super Administrator',
-    allowedTabs: ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings'],
+    allowedTabs: ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings','logs'],
   },
   admin: {
     label: 'Admin', emoji: '🛡️',
     color: '#bfdbfe', bg: 'rgba(59,130,246,0.18)', border: 'rgba(59,130,246,0.4)',
     sidebarLabel: 'Administrator',
-    allowedTabs: ['overview','slots','orders','payments','mabar','users','blog','assets','pricing','contact'],
+    allowedTabs: ['overview','slots','orders','payments','mabar','users','blog','assets','pricing','contact','logs'],
   },
   cashier: {
     label: 'Cashier', emoji: '🧾',
@@ -2149,6 +2162,8 @@ function openStaffModal(staffId) {
   document.getElementById('sStatus').value      = 'active';
   document.getElementById('sNotes').value       = '';
   document.getElementById('staffModalTitle').textContent = staffId ? 'Edit Data Staff' : 'Tambah Staff Baru';
+  // Populate role options including custom roles
+  populateRoleSelect('cashier');
   updateRoleHint();
 
   if (staffId) {
@@ -2157,12 +2172,12 @@ function openStaffModal(staffId) {
     if (s) {
       document.getElementById('sName').value     = s.name     || '';
       document.getElementById('sUsername').value = s.username || '';
-      document.getElementById('sRole').value     = s.role     || 'cashier';
       document.getElementById('sPhone').value    = s.phone    || '';
       document.getElementById('sStatus').value   = s.status   || 'active';
       document.getElementById('sNotes').value    = s.notes    || '';
       document.getElementById('sPassword').placeholder = '(kosongkan jika tidak diganti)';
-      updateRoleHint();
+      // Populate role select WITH custom roles, then set correct value
+      populateRoleSelect(s.role || 'cashier');
     }
   }
 }
@@ -2229,11 +2244,14 @@ function saveStaff() {
         updatedAt: new Date().toISOString(),
         ...(password ? { passwordHash: btoa(password) } : {}),
       };
-      toast(`Staff "${name}" berhasil diperbarui (Role: ${ROLE_CONFIG[role]?.label})`, 'success');
+      const roleLabel = getEffectiveRoleConfig(role)?.label || role;
+      SysLog.info('ROLES', `Memperbarui staff: "${name}" (@${username}) [Role: ${roleLabel}]`, { id: editId, username, role });
+      toast(`Staff "${name}" berhasil diperbarui (Role: ${roleLabel})`, 'success');
     }
   } else {
+    const newId = 'STF-' + Date.now().toString().slice(-6);
     staff.push({
-      id: 'STF-' + Date.now().toString().slice(-6),
+      id: newId,
       name, username, role,
       passwordHash: btoa(password),
       phone:    document.getElementById('sPhone').value.trim(),
@@ -2244,7 +2262,9 @@ function saveStaff() {
       joinDate:  new Date().toISOString().slice(0,10),
       createdAt: new Date().toISOString(),
     });
-    toast(`Staff baru "${name}" ditambahkan sebagai ${ROLE_CONFIG[role]?.label}`, 'success');
+    const roleLabel = getEffectiveRoleConfig(role)?.label || role;
+    SysLog.success('ROLES', `Staff baru ditambahkan: "${name}" (@${username}) [Role: ${roleLabel}]`, { id: newId, username, role });
+    toast(`Staff baru "${name}" ditambahkan sebagai ${roleLabel}`, 'success');
   }
 
   saveLS_staff(staff);
@@ -2266,7 +2286,9 @@ function deleteStaff(staffId) {
   if (s.username === loggedUser) {
     toast('Tidak bisa menghapus akun yang sedang digunakan!', 'error'); return;
   }
-  if (!confirm(`Hapus staff "${s.name}" (${ROLE_CONFIG[s.role]?.label})?\n\nAksi tidak dapat dibatalkan.`)) return;
+  const roleLabel = getEffectiveRoleConfig(s.role)?.label || s.role;
+  if (!confirm(`Hapus staff "${s.name}" (${roleLabel})?\n\nAksi tidak dapat dibatalkan.`)) return;
+  SysLog.warn('ROLES', `Staff dihapus: "${s.name}" (@${s.username}) [Role: ${roleLabel}]`, { id: staffId, username: s.username });
   saveLS_staff(staff.filter(x => String(x.id) !== String(staffId)));
   renderStaff();
   toast(`Staff "${s.name}" telah dihapus`, 'warning');
@@ -2286,34 +2308,866 @@ function updateSidebarRoleBadge() {
 }
 
 /**
- * applyRoleRestrictions — hide nav buttons not allowed for the logged-in role.
- * Superadmin sees everything; Admin hides roles/settings; Cashier sees only overview/orders/payments.
+ * applyRoleRestrictions — uses getEffectiveRoleConfig so custom roles also work.
  */
 function applyRoleRestrictions() {
   const loggedUser = sessionStorage.getItem('ms88_admin_user') || 'admin';
   const staff      = getLS_staff();
   const me         = staff.find(s => s.username === loggedUser);
   const role       = me ? (me.role || 'superadmin') : 'superadmin';
-  const allowed    = new Set(ROLE_CONFIG[role]?.allowedTabs || ROLE_CONFIG.superadmin.allowedTabs);
+  const rc         = getEffectiveRoleConfig(role);
+  const allowed    = new Set(rc.allowedTabs || ROLE_CONFIG.superadmin.allowedTabs);
 
-  const allTabs = ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings'];
+  const allTabs = ['overview','slots','orders','payments','mabar','users','roles','blog','assets','pricing','contact','settings','logs'];
   allTabs.forEach(tab => {
     const btn = document.getElementById('tabBtn' + tab.charAt(0).toUpperCase() + tab.slice(1));
     if (!btn) return;
     if (!allowed.has(tab)) {
-      btn.style.display    = 'none';
+      btn.style.display       = 'none';
       btn.style.pointerEvents = 'none';
     } else {
-      btn.style.display    = '';
+      btn.style.display       = '';
       btn.style.pointerEvents = '';
     }
   });
 
-  // If current tab is restricted, redirect to overview
   if (!allowed.has(currentTab)) {
     switchTab('overview');
-    toast(`Role ${ROLE_CONFIG[role]?.label} tidak memiliki akses ke tab ini`, 'warning');
+    toast(`Role ${rc.label} tidak memiliki akses ke tab ini`, 'warning');
   }
 
   updateSidebarRoleBadge();
 }
+
+// =========================================================
+//  CUSTOM ROLE MODULE
+// =========================================================
+
+// All available tabs with human-readable labels
+const ALL_TABS = [
+  { id: 'overview',  label: 'Dashboard & Omset',       icon: '📊' },
+  { id: 'slots',     label: 'Kelola Slot Lapangan',     icon: '🕐' },
+  { id: 'orders',    label: 'Manajemen Booking',        icon: '📋' },
+  { id: 'payments',  label: 'Transaksi & Nota',         icon: '💳' },
+  { id: 'mabar',     label: 'Sesi Mabar & Sparring',    icon: '⚽' },
+  { id: 'users',     label: 'Manajemen User (Member)',  icon: '👥' },
+  { id: 'roles',     label: 'Manajemen Role & Staff',   icon: '🛡️' },
+  { id: 'blog',      label: 'Blog & Artikel',           icon: '✍️' },
+  { id: 'assets',    label: 'Pengaturan Aset',          icon: '🖼️' },
+  { id: 'pricing',   label: 'Tarif Lapangan',           icon: '💰' },
+  { id: 'contact',   label: 'Kontak & Sosmed',          icon: '📍' },
+  { id: 'settings',  label: 'Pengaturan Sistem',        icon: '⚙️' },
+  { id: 'logs',      label: 'Log & Monitoring',         icon: '⚡' },
+];
+
+// Badge color palette
+const BADGE_COLORS = {
+  purple: { color: '#e9d5ff', bg: 'rgba(139,92,246,0.2)',  border: 'rgba(139,92,246,0.45)' },
+  blue:   { color: '#bfdbfe', bg: 'rgba(59,130,246,0.2)',   border: 'rgba(59,130,246,0.45)'  },
+  green:  { color: '#bbf7d0', bg: 'rgba(34,197,94,0.2)',    border: 'rgba(34,197,94,0.45)'   },
+  amber:  { color: '#fde68a', bg: 'rgba(217,162,27,0.2)',   border: 'rgba(217,162,27,0.45)'  },
+  red:    { color: '#fecaca', bg: 'rgba(239,68,68,0.2)',    border: 'rgba(239,68,68,0.45)'   },
+  pink:   { color: '#fbcfe8', bg: 'rgba(236,72,153,0.2)',   border: 'rgba(236,72,153,0.45)'  },
+  teal:   { color: '#99f6e4', bg: 'rgba(20,184,166,0.2)',   border: 'rgba(20,184,166,0.45)'  },
+  gray:   { color: '#d1d5db', bg: 'rgba(107,114,128,0.2)',  border: 'rgba(107,114,128,0.45)' },
+};
+
+function getLS_customRoles() {
+  try {
+    const raw = localStorage.getItem('ms88_custom_roles');
+    if (raw) return JSON.parse(raw);
+  } catch(_) {}
+  return [];
+}
+
+function saveLS_customRoles(roles) {
+  localStorage.setItem('ms88_custom_roles', JSON.stringify(roles));
+}
+
+/**
+ * Resolve role name → config object.
+ * Checks built-in ROLE_CONFIG first, then custom roles from localStorage.
+ */
+function getEffectiveRoleConfig(roleName) {
+  if (ROLE_CONFIG[roleName]) return ROLE_CONFIG[roleName];
+  const custom = getLS_customRoles().find(r => r.id === roleName);
+  if (custom) {
+    const bc = BADGE_COLORS[custom.color] || BADGE_COLORS.gray;
+    return {
+      label: custom.name,
+      emoji: custom.emoji || '🔑',
+      color: bc.color,
+      bg: bc.bg,
+      border: bc.border,
+      allowedTabs: custom.allowedTabs || [],
+      sidebarLabel: custom.name,
+      isCustom: true,
+    };
+  }
+  // Fallback
+  return ROLE_CONFIG.cashier;
+}
+
+function renderCustomRoles() {
+  const customs = getLS_customRoles();
+  const list    = document.getElementById('customRoleList');
+  if (!list) return;
+
+  if (!customs.length) {
+    list.innerHTML = '<p class="empty-state" style="grid-column:1/-1;">Belum ada custom role. Klik "+ Buat Role Baru" untuk memulai.</p>';
+    return;
+  }
+
+  list.innerHTML = customs.map(cr => {
+    const bc = BADGE_COLORS[cr.color] || BADGE_COLORS.gray;
+    const tabCount = (cr.allowedTabs || []).length;
+    const tabNames = (cr.allowedTabs || []).map(id => {
+      const t = ALL_TABS.find(x => x.id === id);
+      return t ? `${t.icon} ${t.label}` : id;
+    }).join(', ');
+    return `
+      <div style="background:${bc.bg};border:1px solid ${bc.border};border-radius:14px;padding:16px;position:relative;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:22px;">${cr.emoji || '🔑'}</span>
+          <div style="flex:1;">
+            <div style="font-weight:800;font-size:14px;color:${bc.color};">${cr.name}</div>
+            ${cr.description ? `<div style="font-size:11.5px;color:${bc.color};opacity:0.7;margin-top:2px;">${cr.description}</div>` : ''}
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button class="btn-icon" title="Edit" onclick="openCustomRoleModal('${cr.id}')">${ICON.edit}</button>
+            <button class="btn-icon btn-red" title="Hapus" onclick="deleteCustomRole('${cr.id}')">${ICON.trash}</button>
+          </div>
+        </div>
+        <div style="font-size:11px;color:${bc.color};opacity:0.8;margin-bottom:8px;">
+          <strong>${tabCount} tab</strong> dapat diakses
+        </div>
+        <div style="font-size:11px;color:${bc.color};opacity:0.65;line-height:1.6;word-break:break-word;">${tabNames || '<em>Tidak ada akses</em>'}</div>
+      </div>`;
+  }).join('');
+
+  // Also repopulate the role select in staff modal
+  populateRoleSelect();
+}
+
+function openCustomRoleModal(roleId) {
+  const modal = document.getElementById('customRoleModal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+
+  document.getElementById('crEditId').value = roleId || '';
+  document.getElementById('crName').value   = '';
+  document.getElementById('crEmoji').value  = '🔑';
+  document.getElementById('crColor').value  = 'purple';
+  document.getElementById('crDesc').value   = '';
+  document.getElementById('customRoleModalTitle').textContent = roleId ? 'Edit Custom Role' : 'Buat Custom Role Baru';
+
+  // Build checkbox list
+  buildTabCheckboxes([]);
+
+  if (roleId) {
+    const cr = getLS_customRoles().find(r => r.id === roleId);
+    if (cr) {
+      document.getElementById('crName').value  = cr.name  || '';
+      document.getElementById('crEmoji').value = cr.emoji || '🔑';
+      document.getElementById('crColor').value = cr.color || 'purple';
+      document.getElementById('crDesc').value  = cr.description || '';
+      buildTabCheckboxes(cr.allowedTabs || []);
+    }
+  }
+
+  updateCustomRolePreview();
+}
+
+function closeCustomRoleModal(e) {
+  if (e && e.target !== document.getElementById('customRoleModal')) return;
+  const modal = document.getElementById('customRoleModal');
+  if (modal) modal.style.display = 'none';
+}
+window.closeCustomRoleModal = function(e) {
+  if (!e || e.type !== 'click') {
+    const modal = document.getElementById('customRoleModal');
+    if (modal) modal.style.display = 'none';
+    return;
+  }
+  if (e.target === document.getElementById('customRoleModal')) {
+    const modal = document.getElementById('customRoleModal');
+    if (modal) modal.style.display = 'none';
+  }
+};
+
+function buildTabCheckboxes(checked) {
+  const container = document.getElementById('crTabCheckboxes');
+  if (!container) return;
+  const checkedSet = new Set(checked);
+  container.innerHTML = ALL_TABS.map(t => `
+    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px 12px;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+      <input type="checkbox" id="crtab_${t.id}" value="${t.id}" ${checkedSet.has(t.id) ? 'checked' : ''} style="width:15px;height:15px;accent-color:#D71926;cursor:pointer;">
+      <span style="font-size:13px;color:rgba(255,255,255,0.85);">${t.icon} ${t.label}</span>
+    </label>`).join('');
+}
+
+function updateCustomRolePreview() {
+  const name   = (document.getElementById('crName')  || {}).value  || 'Custom Role';
+  const emoji  = (document.getElementById('crEmoji') || {}).value  || '🔑';
+  const color  = (document.getElementById('crColor') || {}).value  || 'purple';
+  const bc     = BADGE_COLORS[color] || BADGE_COLORS.gray;
+  const prev   = document.getElementById('crPreview');
+  if (!prev) return;
+  prev.textContent     = `${emoji} ${name}`;
+  prev.style.background = bc.bg;
+  prev.style.color      = bc.color;
+  prev.style.borderColor= bc.border;
+}
+
+function checkAllTabs(state) {
+  ALL_TABS.forEach(t => {
+    const cb = document.getElementById('crtab_' + t.id);
+    if (cb) cb.checked = state;
+  });
+}
+
+function saveCustomRole() {
+  const name  = (document.getElementById('crName').value || '').trim();
+  const emoji = (document.getElementById('crEmoji').value || '🔑').trim();
+  const color = document.getElementById('crColor').value || 'purple';
+  const desc  = (document.getElementById('crDesc').value  || '').trim();
+  const editId = document.getElementById('crEditId').value;
+
+  if (!name) { toast('Nama role wajib diisi', 'error'); return; }
+
+  const allowedTabs = ALL_TABS
+    .filter(t => { const cb = document.getElementById('crtab_' + t.id); return cb && cb.checked; })
+    .map(t => t.id);
+
+  if (!allowedTabs.length) { toast('Pilih minimal 1 tab yang boleh diakses', 'error'); return; }
+
+  const customs = getLS_customRoles();
+
+  // Duplicate name check (ignore self)
+  const dup = customs.find(r => r.name.toLowerCase() === name.toLowerCase() && r.id !== editId);
+  if (dup) { toast(`Nama role "${name}" sudah ada!`, 'error'); return; }
+
+  if (editId) {
+    const idx = customs.findIndex(r => r.id === editId);
+    if (idx !== -1) {
+      customs[idx] = { ...customs[idx], name, emoji, color, description: desc, allowedTabs, updatedAt: new Date().toISOString() };
+      SysLog.info('ROLES', `Custom role diperbarui: "${name}" (${allowedTabs.length} tab)`, { id: editId, name, allowedTabs });
+      toast(`Custom role "${name}" berhasil diperbarui`, 'success');
+    }
+  } else {
+    const newRoleId = 'ROLE-' + Date.now().toString(36).toUpperCase();
+    customs.push({
+      id: newRoleId,
+      name, emoji, color, description: desc, allowedTabs,
+      isCustom: true, createdAt: new Date().toISOString(),
+    });
+    SysLog.success('ROLES', `Custom role baru dibuat: "${name}" (${allowedTabs.length} tab)`, { id: newRoleId, name, allowedTabs });
+    toast(`Custom role "${name}" berhasil dibuat dengan ${allowedTabs.length} akses tab`, 'success');
+  }
+
+  saveLS_customRoles(customs);
+  window.closeCustomRoleModal();
+  renderCustomRoles();
+  // Refresh staff table so role badges update
+  renderStaff();
+}
+
+function deleteCustomRole(roleId) {
+  const customs = getLS_customRoles();
+  const cr = customs.find(r => r.id === roleId);
+  if (!cr) return;
+
+  // Check if any staff is using this role
+  const usingStaff = getLS_staff().filter(s => s.role === roleId);
+  if (usingStaff.length) {
+    toast(`Tidak bisa hapus: ${usingStaff.length} staff masih menggunakan role "${cr.name}"`, 'error');
+    return;
+  }
+
+  if (!confirm(`Hapus custom role "${cr.name}"?\n\nAksi tidak dapat dibatalkan.`)) return;
+  SysLog.warn('ROLES', `Custom role dihapus: "${cr.name}" (ID: ${roleId})`, { id: roleId, name: cr.name });
+  saveLS_customRoles(customs.filter(r => r.id !== roleId));
+  renderCustomRoles();
+  toast(`Custom role "${cr.name}" dihapus`, 'warning');
+}
+
+/**
+ * Populates the #sRole select in staff modal with built-in + custom roles.
+ * Preserves currently selected value.
+ */
+function populateRoleSelect(currentValue) {
+  const sel = document.getElementById('sRole');
+  if (!sel) return;
+  const prev = currentValue || sel.value;
+
+  const builtIn = [
+    { value: 'cashier',    label: '🧾 Cashier' },
+    { value: 'admin',      label: '🛡️ Admin' },
+    { value: 'superadmin', label: '👑 Superadmin' },
+  ];
+  const customs = getLS_customRoles();
+
+  sel.innerHTML = '';
+
+  // Built-in group
+  const grpBuiltin = document.createElement('optgroup');
+  grpBuiltin.label = '— Role Bawaan —';
+  builtIn.forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r.value;
+    opt.textContent = r.label;
+    grpBuiltin.appendChild(opt);
+  });
+  sel.appendChild(grpBuiltin);
+
+  // Custom role group
+  if (customs.length) {
+    const grpCustom = document.createElement('optgroup');
+    grpCustom.label = '— Custom Role —';
+    customs.forEach(cr => {
+      const opt = document.createElement('option');
+      opt.value = cr.id;
+      opt.textContent = `${cr.emoji || '🔑'} ${cr.name}`;
+      grpCustom.appendChild(opt);
+    });
+    sel.appendChild(grpCustom);
+  }
+
+  // Restore previous selection
+  if (prev) sel.value = prev;
+  updateRoleHint();
+}
+
+// Override updateRoleHint to handle custom roles
+const _origUpdateRoleHint = updateRoleHint;
+window.updateRoleHint = function() {
+  const role = (document.getElementById('sRole') || {}).value || 'cashier';
+  const box  = document.getElementById('roleHintBox');
+  if (!box) return;
+
+  // Custom role?
+  const cr = getLS_customRoles().find(r => r.id === role);
+  if (cr) {
+    const bc = BADGE_COLORS[cr.color] || BADGE_COLORS.gray;
+    box.style.background = bc.bg;
+    box.style.border     = `1px solid ${bc.border}`;
+    box.style.color      = bc.color;
+    const tabLabels = (cr.allowedTabs || []).map(id => {
+      const t = ALL_TABS.find(x => x.id === id);
+      return t ? `${t.icon} ${t.label}` : id;
+    });
+    box.innerHTML = `${cr.emoji || '🔑'} <strong>${cr.name}</strong> — ${cr.description || 'Custom role'}<br><span style="opacity:0.8;font-size:11.5px;">Akses: ${tabLabels.join(' · ') || 'Tidak ada'}</span>`;
+    return;
+  }
+
+  // Built-in hint
+  _origUpdateRoleHint();
+};
+
+// Override updateSidebarRoleBadge to support custom roles
+const _origUpdateSidebarRoleBadge = updateSidebarRoleBadge;
+window.updateSidebarRoleBadge = function() {
+  const loggedUser = sessionStorage.getItem('ms88_admin_user') || 'admin';
+  const staff      = getLS_staff();
+  const me         = staff.find(s => s.username === loggedUser);
+  const role       = me ? (me.role || 'superadmin') : 'superadmin';
+  const rc         = getEffectiveRoleConfig(role);
+
+  const roleEl = document.getElementById('userRoleDisplay');
+  if (roleEl) {
+    roleEl.innerHTML = `<span style="display:inline-flex;align-items:center;gap:5px;">${rc.emoji} <span style="background:${rc.bg};color:${rc.color};border:1px solid ${rc.border};font-size:10px;font-weight:700;padding:1px 7px;border-radius:100px;letter-spacing:0.04em;">${rc.label}</span></span>`;
+  }
+};
+
+// =========================================================
+//  SYSTEM LOGGING & REAL-TIME MONITORING MODULE
+// =========================================================
+
+let isLogStreamActive = true;
+const LOGS_STORAGE_KEY = 'ms88_system_logs';
+const MAX_LOG_ENTRIES = 400;
+
+/**
+ * SysLog — Core logging engine
+ */
+const SysLog = {
+  getLogs() {
+    try {
+      const raw = localStorage.getItem(LOGS_STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (_) {}
+    return this.seedDefaultLogs();
+  },
+
+  saveLogs(logs) {
+    try {
+      localStorage.setItem(LOGS_STORAGE_KEY, JSON.stringify(logs.slice(0, MAX_LOG_ENTRIES)));
+    } catch (_) {}
+  },
+
+  seedDefaultLogs() {
+    const now = Date.now();
+    const seeds = [
+      {
+        id: 'LOG-INIT-01',
+        timestamp: new Date(now - 1000 * 60 * 35).toISOString(),
+        level: 'SUCCESS',
+        module: 'SYSTEM',
+        message: 'Mini Soccer 88 Alpha Sport Core Engine diinisialisasi.',
+        details: { version: '4.2.0-stable', environment: 'Production', os: 'Linux/Windows' },
+        actor: 'system'
+      },
+      {
+        id: 'LOG-INIT-02',
+        timestamp: new Date(now - 1000 * 60 * 28).toISOString(),
+        level: 'INFO',
+        module: 'AUTH',
+        message: 'Sesi login diverifikasi untuk Super Administrator.',
+        details: { user: 'admin', role: 'superadmin', authMethod: 'session' },
+        actor: 'admin'
+      },
+      {
+        id: 'LOG-INIT-03',
+        timestamp: new Date(now - 1000 * 60 * 18).toISOString(),
+        level: 'INFO',
+        module: 'BOOKING',
+        message: 'Sinkronisasi ketersediaan 3 lapangan sintetis standar FIFA (Lapangan 1, 2, 3) selesai.',
+        details: { courts: 3, operationalHours: '06:00 - 24:00', totalSlots: 48 },
+        actor: 'system'
+      },
+      {
+        id: 'LOG-INIT-04',
+        timestamp: new Date(now - 1000 * 60 * 8).toISOString(),
+        level: 'SUCCESS',
+        module: 'PAYMENT',
+        message: 'Verifikasi transaksi nota NOTA-609171 (Pesanan MS88-20260917-SPARTA1) lunas Rp 350.000.',
+        details: { orderId: 'MS88-20260917-SPARTA1', court: 'Lapangan 1', method: 'Transfer BCA' },
+        actor: 'kasir1'
+      }
+    ];
+    this.saveLogs(seeds);
+    return seeds;
+  },
+
+  add(level, module, message, details = null) {
+    const logs = this.getLogs();
+    const actor = (sessionStorage.getItem('ms88_admin_user') || 'system');
+    const entry = {
+      id: 'LOG-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substr(2, 4).toUpperCase(),
+      timestamp: new Date().toISOString(),
+      level: level.toUpperCase(),
+      module: module.toUpperCase(),
+      message: String(message || ''),
+      details: details || null,
+      actor: actor,
+      url: window.location.pathname + window.location.hash
+    };
+
+    logs.unshift(entry);
+    this.saveLogs(logs);
+
+    // Update error badge
+    updateLogErrorBadge();
+
+    // If currently viewing logs tab and streaming is active, inject live into DOM
+    if (typeof currentTab !== 'undefined' && currentTab === 'logs' && isLogStreamActive) {
+      this.injectLiveRow(entry);
+      updateLogKPIs();
+    }
+
+    return entry;
+  },
+
+  info(module, message, details) {
+    return this.add('INFO', module, message, details);
+  },
+
+  success(module, message, details) {
+    return this.add('SUCCESS', module, message, details);
+  },
+
+  warn(module, message, details) {
+    return this.add('WARN', module, message, details);
+  },
+
+  error(module, message, details) {
+    return this.add('ERROR', module, message, details);
+  },
+
+  injectLiveRow(entry) {
+    const container = document.getElementById('logStreamContainer');
+    if (!container) return;
+
+    // Remove empty-state if present
+    const empty = container.querySelector('.empty-log-state');
+    if (empty) empty.remove();
+
+    const row = document.createElement('div');
+    row.className = 'log-stream-row new-entry';
+    row.onclick = () => openLogDetail(entry.id);
+    row.innerHTML = buildLogRowHTML(entry);
+
+    container.insertBefore(row, container.firstChild);
+
+    // Auto-scroll if enabled
+    const autoScroll = document.getElementById('chkAutoScroll');
+    if (autoScroll && autoScroll.checked) {
+      container.scrollTop = 0;
+    }
+  }
+};
+
+window.SysLog = SysLog;
+
+// Global Uncaught Error Interceptors
+window.addEventListener('error', function(event) {
+  SysLog.error('RUNTIME', event.message || 'Script Error', {
+    filename: event.filename,
+    lineno: event.lineno,
+    colno: event.colno,
+    stack: event.error ? event.error.stack : null
+  });
+});
+
+window.addEventListener('unhandledrejection', function(event) {
+  const reason = event.reason;
+  SysLog.error('RUNTIME', 'Unhandled Promise Rejection: ' + (reason?.message || String(reason)), {
+    reason: reason?.stack || reason
+  });
+});
+
+function initLogs() {
+  SysLog.getLogs();
+  updateLogErrorBadge();
+}
+
+function updateLogErrorBadge() {
+  const badge = document.getElementById('logErrorBadge');
+  if (!badge) return;
+  const logs = SysLog.getLogs();
+  const errorCount = logs.filter(l => l.level === 'ERROR').length;
+  if (errorCount > 0) {
+    badge.textContent = errorCount > 99 ? '99+' : errorCount;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function updateLogKPIs() {
+  const logs = SysLog.getLogs();
+  const total = logs.length;
+  const infoCount = logs.filter(l => l.level === 'INFO' || l.level === 'SUCCESS').length;
+  const warnCount = logs.filter(l => l.level === 'WARN').length;
+  const errorCount = logs.filter(l => l.level === 'ERROR').length;
+
+  const elTotal = document.getElementById('kpiLogTotal');
+  const elInfo  = document.getElementById('kpiLogInfo');
+  const elWarn  = document.getElementById('kpiLogWarn');
+  const elErr   = document.getElementById('kpiLogError');
+
+  if (elTotal) elTotal.textContent = total;
+  if (elInfo)  elInfo.textContent  = infoCount;
+  if (elWarn)  elWarn.textContent  = warnCount;
+  if (elErr)   elErr.textContent   = errorCount;
+}
+
+function buildLogRowHTML(l) {
+  const time = new Date(l.timestamp).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const ms   = String(new Date(l.timestamp).getMilliseconds()).padStart(3, '0');
+  const tagClass = 'log-tag-' + (l.level || 'info').toLowerCase();
+
+  return `
+    <span style="color:rgba(255,255,255,0.38);font-size:11px;flex-shrink:0;white-space:nowrap;">${time}.${ms}</span>
+    <span class="log-tag ${tagClass}">${l.level}</span>
+    <span class="log-module-badge">[${l.module}]</span>
+    <span style="color:#58a6ff;font-size:11.5px;flex-shrink:0;opacity:0.85;">@${l.actor || 'system'}</span>
+    <span style="color:rgba(255,255,255,0.9);flex:1;word-break:break-word;">${escapeLogHtml(l.message)}</span>
+    ${l.details ? '<span style="font-size:11px;color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:0 4px;" title="Memiliki data detail">+data</span>' : ''}
+  `;
+}
+
+function escapeLogHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function renderLogs() {
+  const logs = SysLog.getLogs();
+  updateLogKPIs();
+  updateLogErrorBadge();
+
+  const search = (document.getElementById('filterLogSearch') || {}).value?.toLowerCase().trim() || '';
+  const levelF = (document.getElementById('filterLogLevel')   || {}).value || '';
+  const modF   = (document.getElementById('filterLogModule')  || {}).value || '';
+  const container = document.getElementById('logStreamContainer');
+  if (!container) return;
+
+  const filtered = logs.filter(l => {
+    const matchSearch = !search ||
+      l.message.toLowerCase().includes(search) ||
+      l.module.toLowerCase().includes(search)  ||
+      (l.actor || '').toLowerCase().includes(search) ||
+      (l.id || '').toLowerCase().includes(search);
+    const matchLevel = !levelF || l.level === levelF;
+    const matchMod   = !modF   || l.module === modF;
+    return matchSearch && matchLevel && matchMod;
+  });
+
+  const visibleCountEl = document.getElementById('logVisibleCount');
+  const totalCountEl   = document.getElementById('logTotalCount');
+  if (visibleCountEl) visibleCountEl.textContent = filtered.length;
+  if (totalCountEl)   totalCountEl.textContent   = logs.length;
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div class="empty-log-state" style="padding:48px 24px;text-align:center;color:rgba(255,255,255,0.4);">
+        <div style="font-size:28px;margin-bottom:8px;">🔍</div>
+        <div style="font-weight:600;font-size:14px;color:rgba(255,255,255,0.7);">Tidak ada log yang sesuai filter</div>
+        <div style="font-size:12px;margin-top:4px;">Coba ubah kata kunci pencarian atau reset filter level & modul.</div>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(l => `
+    <div class="log-stream-row" onclick="openLogDetail('${l.id}')">
+      ${buildLogRowHTML(l)}
+    </div>
+  `).join('');
+}
+
+function toggleLogStream() {
+  isLogStreamActive = !isLogStreamActive;
+  const btnIcon = document.getElementById('btnToggleStreamIcon');
+  const btnText = document.getElementById('btnToggleStreamText');
+  const liveIndicator = document.getElementById('logLiveIndicator');
+
+  if (isLogStreamActive) {
+    if (btnIcon) btnIcon.textContent = '⏸';
+    if (btnText) btnText.textContent = 'Jeda Stream';
+    if (liveIndicator) {
+      liveIndicator.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;box-shadow:0 0 8px #22c55e;"></span> LIVE STREAM';
+      liveIndicator.style.color = '#86efac';
+      liveIndicator.style.borderColor = 'rgba(34,197,94,0.3)';
+      liveIndicator.style.background = 'rgba(34,197,94,0.15)';
+    }
+    toast('Live stream log diaktifkan', 'success');
+  } else {
+    if (btnIcon) btnIcon.textContent = '▶';
+    if (btnText) btnText.textContent = 'Lanjutkan Stream';
+    if (liveIndicator) {
+      liveIndicator.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block;"></span> DIJEDA';
+      liveIndicator.style.color = '#fde047';
+      liveIndicator.style.borderColor = 'rgba(245,158,11,0.3)';
+      liveIndicator.style.background = 'rgba(245,158,11,0.15)';
+    }
+    toast('Live stream log dijeda sementara', 'warning');
+  }
+}
+
+let activeLogDetail = null;
+
+function openLogDetail(logId) {
+  const logs = SysLog.getLogs();
+  const l = logs.find(x => x.id === logId);
+  if (!l) return;
+  activeLogDetail = l;
+
+  const modal = document.getElementById('logDetailModal');
+  if (!modal) return;
+
+  const badge = document.getElementById('logDetailBadge');
+  if (badge) {
+    badge.textContent = l.level;
+    badge.className = 'log-tag log-tag-' + (l.level || 'info').toLowerCase();
+  }
+
+  const ts = document.getElementById('logDetailTimestamp');
+  if (ts) {
+    ts.textContent = `${new Date(l.timestamp).toLocaleString('id-ID')} • ID: ${l.id}`;
+  }
+
+  const mod = document.getElementById('logDetailModule');
+  if (mod) mod.textContent = `[${l.module}]`;
+
+  const actor = document.getElementById('logDetailActor');
+  if (actor) actor.textContent = `@${l.actor || 'system'}`;
+
+  const msg = document.getElementById('logDetailMessage');
+  if (msg) msg.textContent = l.message;
+
+  const jsonPre = document.getElementById('logDetailJson');
+  if (jsonPre) {
+    const payloadData = l.details || { note: 'Tidak ada payload tambahan' };
+    jsonPre.textContent = JSON.stringify(payloadData, null, 2);
+  }
+
+  modal.style.display = 'flex';
+}
+
+function closeLogDetailModal(e) {
+  if (e && e.target !== document.getElementById('logDetailModal')) return;
+  const modal = document.getElementById('logDetailModal');
+  if (modal) modal.style.display = 'none';
+}
+window.closeLogDetailModal = function(e) {
+  if (!e || e.type !== 'click') {
+    const modal = document.getElementById('logDetailModal');
+    if (modal) modal.style.display = 'none';
+    return;
+  }
+  if (e.target === document.getElementById('logDetailModal')) {
+    const modal = document.getElementById('logDetailModal');
+    if (modal) modal.style.display = 'none';
+  }
+};
+
+function copyLogDetail() {
+  if (!activeLogDetail) return;
+  const content = JSON.stringify(activeLogDetail, null, 2);
+  navigator.clipboard.writeText(content).then(() => {
+    toast('Detail log berhasil disalin ke clipboard!', 'success');
+  }).catch(() => {
+    toast('Gagal menyalin log', 'error');
+  });
+}
+
+function copyAllFilteredLogs() {
+  const logs = SysLog.getLogs();
+  if (!logs.length) {
+    toast('Tidak ada log untuk disalin', 'warning');
+    return;
+  }
+  const text = logs.map(l => `[${l.timestamp}] [${l.level}] [${l.module}] (@${l.actor}) ${l.message}`).join('\n');
+  navigator.clipboard.writeText(text).then(() => {
+    toast(`${logs.length} log berhasil disalin ke clipboard`, 'success');
+  }).catch(() => {
+    toast('Gagal menyalin log', 'error');
+  });
+}
+
+function exportLogsToJSON() {
+  const logs = SysLog.getLogs();
+  if (!logs.length) {
+    toast('Tidak ada data log untuk diekspor', 'warning');
+    return;
+  }
+  const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(logs, null, 2));
+  const a = document.createElement('a');
+  a.href = dataStr;
+  a.download = `ms88-system-logs-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  SysLog.info('SYSTEM', `Mengekspor ${logs.length} log ke file JSON`);
+  toast('Log sistem berhasil diekspor ke JSON', 'success');
+}
+
+function exportLogsToCSV() {
+  const logs = SysLog.getLogs();
+  if (!logs.length) {
+    toast('Tidak ada log untuk diekspor', 'warning');
+    return;
+  }
+  const headers = ['ID', 'Waktu', 'Level', 'Modul', 'Aktor', 'Pesan'];
+  const rows = logs.map(l => [
+    `"${l.id}"`,
+    `"${l.timestamp}"`,
+    `"${l.level}"`,
+    `"${l.module}"`,
+    `"${l.actor || 'system'}"`,
+    `"${(l.message || '').replace(/"/g, '""')}"`
+  ]);
+  const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = `ms88-system-logs-${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  SysLog.info('SYSTEM', `Mengekspor ${logs.length} log ke file CSV`);
+  toast('Log sistem berhasil diekspor ke CSV', 'success');
+}
+
+function clearAllLogs() {
+  if (!confirm('Hapus seluruh catatan log sistem?\n\nAksi ini tidak dapat dibatalkan.')) return;
+  localStorage.removeItem(LOGS_STORAGE_KEY);
+  SysLog.info('SYSTEM', 'Log sistem telah dibersihkan oleh administrator.');
+  renderLogs();
+  toast('Seluruh log berhasil dibersihkan', 'warning');
+}
+
+function openTestLogModal() {
+  const modal = document.getElementById('testLogModal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeTestLogModal(e) {
+  if (e && e.target !== document.getElementById('testLogModal')) return;
+  const modal = document.getElementById('testLogModal');
+  if (modal) modal.style.display = 'none';
+}
+window.closeTestLogModal = function(e) {
+  if (!e || e.type !== 'click') {
+    const modal = document.getElementById('testLogModal');
+    if (modal) modal.style.display = 'none';
+    return;
+  }
+  if (e.target === document.getElementById('testLogModal')) {
+    const modal = document.getElementById('testLogModal');
+    if (modal) modal.style.display = 'none';
+  }
+};
+
+function runTestLog(type) {
+  switch (type) {
+    case 'SUCCESS':
+      SysLog.success('BOOKING', 'Simulasi: Pesanan booking Lapangan 1 Malam berhasil dikonfirmasi (Rp 350.000).', {
+        orderId: 'MS88-SIMULASI-' + Date.now().toString().slice(-4),
+        court: 'Lapangan 1 (FIFA Synth)',
+        amount: 350000,
+        customer: 'Budi Santoso (Member Gold)'
+      });
+      toast('Log Sukses berhasil dicatat!', 'success');
+      break;
+
+    case 'INFO':
+      SysLog.info('SYSTEM', 'Simulasi: Pengecekan slot otomatis selesai. Seluruh 48 slot sinkron dengan server.', {
+        checkedSlots: 48,
+        conflicts: 0,
+        latencyMs: 34
+      });
+      toast('Log Info berhasil dicatat!', 'info');
+      break;
+
+    case 'WARN':
+      SysLog.warn('SYSTEM', 'Simulasi: Respon gateway WhatsApp membutuhkan waktu 2.850 ms (High latency warning).', {
+        endpoint: 'https://api.fonnte.com/send',
+        responseTimeMs: 2850,
+        thresholdMs: 1500
+      });
+      toast('Log Warning berhasil dicatat!', 'warning');
+      break;
+
+    case 'ERROR':
+      SysLog.error('RUNTIME', "Simulasi: Uncaught TypeError: Cannot read property 'quota' of undefined at processPayment()", {
+        file: 'payment-gateway.js',
+        line: 142,
+        column: 28,
+        stack: "TypeError: Cannot read property 'quota' of undefined\n    at processPayment (http://localhost:8888/superadmin/admin.js:142:28)\n    at HTMLButtonElement.onclick (http://localhost:8888/superadmin/index.html:86:14)"
+      });
+      toast('Log Eror berhasil dicatat & dideteksi!', 'error');
+      break;
+  }
+
+  if (typeof currentTab !== 'undefined' && currentTab === 'logs') {
+    renderLogs();
+  }
+}
+
+
